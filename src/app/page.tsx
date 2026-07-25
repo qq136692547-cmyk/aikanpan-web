@@ -1,8 +1,9 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { IndexCard, LimitStockList, IndustryCard, NewsCard, MarketStatCard } from "@/components/market";
+import { MiniChart } from "@/components/chart/mini-chart";
 import { api, type Dashboard, type Insights } from "@/lib/api";
-import { formatPct } from "@/lib/format";
+import { formatPct, formatPrice, formatChange, trendClass, trendBgClass } from "@/lib/format";
 
 export const revalidate = 30;
 
@@ -69,9 +70,34 @@ export default async function HomePage() {
             </span>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {dashboard.indices.map((idx) => (
-              <IndexCard key={idx.code} data={idx} />
-            ))}
+            {dashboard.indices.map((idx) => {
+              const tvSymbol = idx.code.startsWith("sh.") ? `SSE:${idx.code.slice(3)}` : `SZSE:${idx.code.slice(3)}`;
+              return (
+                <div key={idx.code} className="card-hover rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm font-medium text-[var(--text-primary)]">{idx.name}</span>
+                      <span className="font-num text-xs text-[var(--text-tertiary)]">{idx.code}</span>
+                    </div>
+                    <span className={`rounded px-2 py-0.5 text-xs font-medium ${trendBgClass(idx.change_pct)} ${trendClass(idx.change_pct)}`}>
+                      {formatPct(idx.change_pct)}
+                    </span>
+                  </div>
+                  <div className="mt-3 flex items-baseline gap-3">
+                    <span className={`font-num text-3xl font-bold ${trendClass(idx.change_pct)}`}>{formatPrice(idx.last)}</span>
+                    <span className={`font-num text-sm ${trendClass(idx.change_pct)}`}>{formatChange(idx.change)}</span>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2 text-xs">
+                    <span className="text-[var(--text-tertiary)]">{idx.date}</span>
+                    <span className="text-[var(--border-default)]">|</span>
+                    <span className="text-[var(--text-tertiary)]">数据源 {idx.source}</span>
+                  </div>
+                  <div className="mt-3 -mx-1">
+                    <MiniChart symbol={tvSymbol} name={idx.name} changePct={idx.change_pct} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
