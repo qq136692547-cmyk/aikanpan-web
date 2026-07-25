@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  trailingSlash: true,
+  productionBrowserSourceMaps: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "aikanpan.top" },
+    ],
+  },
 };
 
 export default nextConfig;

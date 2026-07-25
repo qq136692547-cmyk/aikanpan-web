@@ -1,0 +1,121 @@
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+
+export const revalidate = 3600;
+
+const apiEndpoints = [
+  { method: "GET", path: "/api/v1/health", desc: "健康检查" },
+  { method: "GET", path: "/api/v1/workbench/dashboard", desc: "工作台仪表盘 — 指数 + 涨跌停 + 强势行业" },
+  { method: "GET", path: "/api/v1/workbench/daily-review", desc: "每日复盘数据" },
+  { method: "GET", path: "/api/v1/workbench/insights", desc: "市场洞察 — 焦点 + 热门板块 + 新闻 + 研报" },
+  { method: "GET", path: "/api/v1/market/sectors", desc: "行业板块行情列表" },
+  { method: "GET", path: "/api/v1/market/sectors/{sector_code}/stocks", desc: "板块成分股列表" },
+  { method: "GET", path: "/api/v1/stocks/{code}/quote", desc: "个股实时行情" },
+  { method: "GET", path: "/api/v1/stocks/{code}/history", desc: "个股历史K线" },
+  { method: "GET", path: "/api/v1/stocks/{code}/indicators", desc: "个股技术指标 (MA/MACD/KDJ/RSI)" },
+  { method: "GET", path: "/api/v1/stocks/{code}/moneyflow", desc: "个股资金流向" },
+  { method: "GET", path: "/api/v1/stocks/{code}/events", desc: "个股事件/AI摘要" },
+  { method: "GET", path: "/api/v1/stocks/{code}/pattern", desc: "AI 形态识别" },
+  { method: "GET", path: "/api/v1/stocks/{code}/financials", desc: "个股财务数据" },
+  { method: "GET", path: "/api/v1/stocks/search", desc: "搜索股票 (keyword 参数)" },
+  { method: "GET", path: "/api/v1/stocks/watchlist", desc: "自选股列表" },
+  { method: "POST", path: "/api/v1/ai/comment", desc: "AI 个股点评" },
+  { method: "POST", path: "/api/v1/ai/daily-review", desc: "AI 每日复盘生成" },
+  { method: "POST", path: "/api/v1/ai/score-batch", desc: "AI 批量评分" },
+  { method: "GET", path: "/api/v1/portfolio/positions", desc: "持仓列表" },
+  { method: "POST", path: "/api/v1/portfolio/positions", desc: "添加持仓" },
+  { method: "DELETE", path: "/api/v1/portfolio/positions/{position_id}", desc: "删除持仓" },
+  { method: "GET", path: "/api/v1/portfolio/summary", desc: "持仓汇总" },
+  { method: "GET", path: "/api/v1/alerts", desc: "预警列表" },
+  { method: "POST", path: "/api/v1/alerts", desc: "创建预警" },
+  { method: "PATCH", path: "/api/v1/alerts/{alert_id}", desc: "更新预警" },
+  { method: "DELETE", path: "/api/v1/alerts/{alert_id}", desc: "删除预警" },
+  { method: "GET", path: "/api/v1/alerts/triggered", desc: "已触发预警" },
+  { method: "POST", path: "/api/v1/alerts/parse", desc: "解析预警指令" },
+  { method: "POST", path: "/api/v1/feedback", desc: "提交反馈" },
+  { method: "GET", path: "/api/v1/feedback", desc: "反馈列表" },
+];
+
+const methodColors: Record<string, string> = {
+  GET: "text-up",
+  POST: "text-brand",
+  PATCH: "text-[#e3b341]",
+  DELETE: "text-down",
+};
+
+export default function ApiDocsPage() {
+  return (
+    <>
+      <Navbar />
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+        <section className="animate-fade-up">
+          <h1 className="text-xl font-bold text-[var(--text-primary)]">API 文档</h1>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">
+            后端 Base URL: <code className="font-num rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-xs text-brand">https://aikanpan.top/api/v1</code>
+          </p>
+        </section>
+
+        <section className="mt-6 animate-fade-up" style={{ animationDelay: "60ms" }}>
+          <div className="overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border-subtle)] text-[11px] uppercase tracking-wide text-[var(--text-tertiary)]">
+                  <th className="px-4 py-2 text-left font-medium">Method</th>
+                  <th className="px-4 py-2 text-left font-medium">Path</th>
+                  <th className="px-4 py-2 text-left font-medium">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                {apiEndpoints.map((ep) => (
+                  <tr key={`${ep.method}-${ep.path}`} className="row-hover border-b border-[var(--border-subtle)] last:border-b-0">
+                    <td className="px-4 py-2.5">
+                      <span className={`font-num text-xs font-bold ${methodColors[ep.method] || "text-[var(--text-secondary)]"}`}>{ep.method}</span>
+                    </td>
+                    <td className="font-num px-4 py-2.5 text-xs text-[var(--text-primary)]">{ep.path}</td>
+                    <td className="px-4 py-2.5 text-xs text-[var(--text-secondary)]">{ep.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="mt-6 animate-fade-up" style={{ animationDelay: "120ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">股票代码格式</h2>
+          <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
+            <p className="text-sm text-[var(--text-secondary)]">后端使用 <code className="font-num rounded bg-[var(--bg-elevated)] px-1 py-0.5 text-xs text-brand">exchange.code</code> 格式：</p>
+            <ul className="mt-3 space-y-1.5 text-xs">
+              <li className="flex items-center gap-3">
+                <span className="font-num rounded bg-up-soft px-2 py-0.5 text-up">sh.600518</span>
+                <span className="text-[var(--text-tertiary)]">上海证券交易所 (6开头)</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="font-num rounded bg-up-soft px-2 py-0.5 text-up">sz.300414</span>
+                <span className="text-[var(--text-tertiary)]">深圳证券交易所 (0/3开头)</span>
+              </li>
+            </ul>
+            <p className="mt-3 text-xs text-[var(--text-tertiary)]">Web 路由同时支持 <code className="font-num">sz300414</code> 和 <code className="font-num">sz.300414</code> 两种格式。</p>
+          </div>
+        </section>
+
+        <section className="mt-6 animate-fade-up" style={{ animationDelay: "180ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">示例</h2>
+          <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] p-4">
+            <pre className="font-num text-xs leading-relaxed text-[var(--text-secondary)] overflow-x-auto"><code>{`# 获取仪表盘数据
+curl https://aikanpan.top/api/v1/workbench/dashboard
+
+# 搜索股票
+curl "https://aikanpan.top/api/v1/stocks/search?keyword=300414"
+
+# 个股行情
+curl https://aikanpan.top/api/v1/stocks/sz.300414/quote
+
+# 个股AI事件摘要
+curl https://aikanpan.top/api/v1/stocks/sz.300414/events`}</code></pre>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
