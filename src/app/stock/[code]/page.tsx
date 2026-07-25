@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { TradingViewChart } from "@/components/chart/tradingview-chart";
 import { api, type StockQuote, type StockMoneyflow, type StockEvents, type Dashboard } from "@/lib/api";
 import { formatPrice, formatPct, formatChange, formatVolume, formatAmount, trendClass, trendBgClass } from "@/lib/format";
 import { notFound } from "next/navigation";
@@ -123,6 +124,15 @@ export default async function StockDetailPage({
             <QuoteCell label="成交量" value={formatVolume(quote.volume)} />
             <QuoteCell label="成交额" value={formatAmount(quote.amount)} />
           </div>
+        </section>
+
+        {/* K-Line Chart */}
+        <section className="mt-6 animate-fade-up" style={{ animationDelay: "100ms" }}>
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)]">K 线图</h3>
+            <span className="text-[11px] text-[var(--text-tertiary)]">数据由 TradingView 提供</span>
+          </div>
+          <TradingViewChart code={code} name={displayName} />
         </section>
 
         {/* AI Summary + Money Flow */}
