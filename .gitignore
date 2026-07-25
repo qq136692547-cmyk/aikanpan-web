@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Temp files
+check-colors.js
+dom-dump*.txt
+parse_api.py
+test_api.pyscreenshot-*.png
