@@ -1,7 +1,13 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "API 文档",
+  description: "爱看盘后端API接口文档，包含29个端点的完整说明。",
+};
 
 const apiEndpoints = [
   { method: "GET", path: "/api/v1/health", desc: "健康检查" },

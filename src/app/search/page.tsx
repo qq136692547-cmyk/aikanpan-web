@@ -1,8 +1,14 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api, type StockSearchResult } from "@/lib/api";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "搜索股票",
+  description: "搜索A股股票，按代码或名称查找个股行情数据。",
+};
 
 export default async function SearchPage({
   searchParams,

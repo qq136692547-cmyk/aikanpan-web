@@ -43,6 +43,27 @@ export const metadata: Metadata = {
   },
 };
 
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "爱看盘",
+  alternateName: "AI 股票复盘工具",
+  url: SITE_URL,
+  description: "A股行情浏览、AI每日复盘、个股分析、持仓管理",
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "CNY",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "爱看盘",
+    url: SITE_URL,
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,6 +75,10 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
         {children}
       </body>
     </html>

@@ -3,8 +3,22 @@ import { Footer } from "@/components/layout/footer";
 import { api, type StockQuote, type StockMoneyflow, type StockEvents, type Dashboard } from "@/lib/api";
 import { formatPrice, formatPct, formatChange, formatVolume, formatAmount, trendClass, trendBgClass } from "@/lib/format";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 export const revalidate = 30;
+
+export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
+  const { code: rawCode } = await params;
+  const code = rawCode.toLowerCase();
+  return {
+    title: `${code} 个股详情`,
+    description: `${code} 股票实时行情、AI摘要、资金流向分析。爱看盘提供A股个股全面数据。`,
+    openGraph: {
+      title: `${code} · 爱看盘`,
+      description: `${code} 股票实时行情与AI分析`,
+    },
+  };
+}
 
 function parseCode(raw: string): string {
   // Accept formats like "sz300414", "sz.300414", "sh600518"

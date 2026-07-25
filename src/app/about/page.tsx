@@ -1,7 +1,13 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import type { Metadata } from "next";
 
 export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "关于爱看盘",
+  description: "爱看盘是一款AI驱动的股票复盘工具，提供A股行情、AI复盘、个股分析等功能。",
+};
 
 export default function AboutPage() {
   return (

@@ -2,8 +2,18 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice, trendClass, trendBgClass } from "@/lib/format";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "每日复盘",
+  description: "AI驱动的A股每日复盘报告，包含市场概览、强势行业、资讯新闻和研报精选。",
+  openGraph: {
+    title: "每日复盘 · 爱看盘",
+    description: "AI驱动的A股每日复盘报告",
+  },
+};
 
 export default async function ReviewPage() {
   let dashboard: Dashboard | null = null;

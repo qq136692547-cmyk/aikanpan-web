@@ -2,8 +2,18 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api, type Dashboard, type Insights, type Sector } from "@/lib/api";
 import { formatPct, formatPrice, trendClass, trendBgClass } from "@/lib/format";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "市场总览",
+  description: "A股三大指数、行业板块行情、涨停跌停个股一览。实时市场数据，全面掌握市场脉搏。",
+  openGraph: {
+    title: "市场总览 · 爱看盘",
+    description: "A股三大指数、行业板块行情、涨停跌停个股一览",
+  },
+};
 
 export default async function MarketPage() {
   let dashboard: Dashboard | null = null;

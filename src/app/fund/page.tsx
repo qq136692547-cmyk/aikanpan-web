@@ -2,8 +2,14 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api, type Dashboard } from "@/lib/api";
 import { formatPct, trendClass } from "@/lib/format";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "基金行情",
+  description: "基金实时行情数据，即将上线。",
+};
 
 export default async function FundPage() {
   let dashboard: Dashboard | null = null;
