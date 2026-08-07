@@ -16,9 +16,9 @@
 - 账户系统：游客自动登录，手机号绑定后自选、持仓、计划跨设备同步
 ## 界面预览
 
-![仪表盘（移动端）](docs/screenshots/dashboard-mobile.png)
+![首页（移动端）](docs/screenshots/home-mobile.png)
 
-![仪表盘（桌面端）](docs/screenshots/dashboard-desktop.png)
+![首页（桌面端）](docs/screenshots/home-desktop.png)
 
 ![市场总览（移动端）](docs/screenshots/market-mobile.png)
 
