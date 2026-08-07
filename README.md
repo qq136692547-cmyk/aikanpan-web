@@ -14,6 +14,15 @@
 - 个股诊断：K 线、技术指标、资金流、财务数据、事件与 AI 摘要
 - 研究台：自选、盘前计划、公司档案、投资论点，数据云端同步
 - 账户系统：游客自动登录，手机号绑定后自选、持仓、计划跨设备同步
+## 界面预览
+
+![仪表盘（移动端）](docs/screenshots/dashboard-mobile.png)
+
+![仪表盘（桌面端）](docs/screenshots/dashboard-desktop.png)
+
+![市场总览（移动端）](docs/screenshots/market-mobile.png)
+
+![个股页（移动端）](docs/screenshots/stock-mobile.png)
 
 ## 技术栈
 
