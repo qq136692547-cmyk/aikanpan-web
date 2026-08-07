@@ -79,7 +79,7 @@ export default async function MarketPage() {
           <div className="relative flex items-center justify-between overflow-hidden py-1">
             <h1 className="text-[14px] font-medium text-neo-ink shrink-0">市场总览</h1>
             <span className="text-[11px] text-neo-dim truncate ml-2" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-              {dashboard.index.date} · {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+              {dashboard.index?.date ?? ""} · {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
             </span>
           </div>
         </section>
@@ -88,7 +88,7 @@ export default async function MarketPage() {
         <section className="mt-3">
           <h2 className="mb-2 text-[12px] text-neo-mid">三大指数</h2>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            {dashboard.indices.map((idx) => {
+            {(dashboard.indices || []).map((idx) => {
               const t = neoTrendClass(idx.change_pct);
               const bgT = neoTrendBgClass(idx.change_pct);
               return (
@@ -112,17 +112,17 @@ export default async function MarketPage() {
         </section>
 
         {/* Sectors */}
-        {sectorsData && sectorsData.sectors.length > 0 && (
+        {sectorsData && sectorsData.sectors && sectorsData.sectors.length > 0 && (
           <section className="mt-4">
-            <h2 className="mb-2 text-[12px] text-neo-mid">行业板块 ({sectorsData.count})</h2>
+            <h2 className="mb-2 text-[12px] text-neo-mid">行业板块 ({sectorsData.count ?? 0})</h2>
             <SortableSectorTable sectors={sectorsData.sectors} />
           </section>
         )}
 
         {/* Limit Up / Down */}
         <section className="mt-4 grid grid-cols-1 gap-2 lg:grid-cols-2">
-          <LimitTable title="涨停板" stocks={dashboard.limit_up} type="up" />
-          <LimitTable title="跌停板" stocks={dashboard.limit_down} type="down" />
+          <LimitTable title="涨停板" stocks={dashboard.limit_up || []} type="up" />
+          <LimitTable title="跌停板" stocks={dashboard.limit_down || []} type="down" />
         </section>
 
         {/* Strong Industries + Market Focus */}
@@ -184,7 +184,7 @@ export default async function MarketPage() {
   );
 }
 
-function LimitTable({ title, stocks, type }: { title: string; stocks: any[]; type: "up" | "down" }) {
+function LimitTable({ title, stocks = [], type }: { title: string; stocks?: any[]; type: "up" | "down" }) {
   const headerColor = type === "up" ? "text-neo-up" : "text-neo-down";
 
   return (

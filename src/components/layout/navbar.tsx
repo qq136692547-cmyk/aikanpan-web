@@ -78,7 +78,7 @@ export function Navbar() {
               title={user.user_id}
             >
               <UserRound size={13} />
-              {user.type === "guest" ? "游客" : "已登录"}
+              {user.type === "guest" ? "登录" : "已登录"}
             </a>
           )}
         </div>
