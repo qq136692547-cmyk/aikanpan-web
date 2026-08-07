@@ -1,82 +1,150 @@
 "use client";
 
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
+import { BarChart3, Search, UserRound } from "lucide-react";
 
 const navItems = [
-  { label: "首页", href: "/" },
-  { label: "市场总览", href: "/market" },
-  { label: "每日复盘", href: "/review" },
-  { label: "ETF", href: "/etf", badge: "soon" },
-  { label: "基金", href: "/fund", badge: "soon" },
+  { href: "/", label: "首页", icon: "I01_dashboard.png" },
+  { href: "/market/", label: "市场", icon: "I02_market.png" },
+  { href: "/review/", label: "复盘", icon: "I03_review.png" },
+  { href: "/research/", label: "研究", icon: "I07_research.png" },
+  { href: "/search", label: "搜索", icon: "I04_search.png" },
+  { href: "/alerts", label: "盯盘", icon: "I05_alerts.png" },
+  { href: "/about/", label: "关于", icon: "I06_about.png" },
 ];
 
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
+
 export function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { user, loading } = useAuth();
 
+  useEffect(() => setMounted(true), []);
+
+  // Neomorphism navbar for sub-pages
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--bg-base)]/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-[1440px] items-center gap-6 px-6">
+    <header className="neo-navbar sticky top-0 z-50">
+      <nav className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 transition-fast hover:opacity-80">
-          <span className="text-lg font-bold text-gradient-brand">
-            爱看盘
-          </span>
-          <span className="rounded bg-brand-soft px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-brand">
-            AI
-          </span>
-        </Link>
+        <a href="/" className="flex items-center gap-2">
+          <div className="neo-card-sm flex h-7 w-7 items-center justify-center" style={{ borderRadius: 8 }}>
+            <BarChart3 size={15} style={{ color: "var(--neo-primary)" }} />
+          </div>
+          <span className="text-[15px] font-bold tracking-tight text-neo-ink">爱看盘</span>
+        </a>
 
-        {/* Nav */}
-        <nav className="flex items-center gap-0.5">
+        {/* Desktop nav — neo chips */}
+        <div className="hidden items-center gap-1.5 md:flex">
           {navItems.map((item) => {
-            const active =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
+            const active = isActive(pathname, item.href);
             return (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-sm transition-fast",
+                className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
                   active
-                    ? "bg-brand-soft text-brand font-medium"
-                    : "text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-                )}
+                    ? "neo-chip-active"
+                    : "neo-chip"
+                }`}
               >
                 {item.label}
-                {"badge" in item && item.badge === "soon" && (
-                  <span className="ml-1 rounded bg-[var(--bg-elevated)] px-1 py-0.5 text-[9px] text-[var(--text-tertiary)]">soon</span>
-                )}
-              </Link>
+              </a>
             );
           })}
-        </nav>
+        </div>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+        {/* Right side: search + user badge */}
+        <div className="hidden items-center gap-2 md:flex">
+          <form action="/search" className="flex items-center">
+            <input
+              type="text"
+              name="q"
+              placeholder="股票代码…"
+              className="neo-input w-32 px-3.5 py-1.5 text-[12px]"
+            />
+          </form>
+          {/* User badge */}
+          {mounted && user && (
+            <a
+              href="/account"
+              className="neo-chip flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-neo-ink-mid"
+              title={user.user_id}
+            >
+              <UserRound size={13} />
+              {user.type === "guest" ? "游客" : "已登录"}
+            </a>
+          )}
+        </div>
 
-        {/* Search */}
-        <form
-          action="/search"
-          className="hidden items-center gap-2 rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-1.5 transition-fast focus-within:border-[var(--brand)] sm:flex"
-        >
-          <svg className="h-3.5 w-3.5 text-[var(--text-tertiary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-4.3-4.3M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" />
-          </svg>
-          <input
-            type="text"
-            name="q"
-            placeholder="搜索股票代码/名称"
-            className="w-44 bg-transparent text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none"
-          />
-          <kbd className="hidden rounded border border-[var(--border-subtle)] px-1.5 py-0.5 text-[10px] text-[var(--text-tertiary)] lg:inline">
-            /
-          </kbd>
-        </form>
-      </div>
+        {/* Mobile search + toggle */}
+        <div className="flex items-center md:hidden">
+          <button
+            className="neo-card-sm mr-1 flex items-center justify-center p-2"
+            style={{ borderRadius: 10 }}
+            onClick={() => window.dispatchEvent(new CustomEvent("open-global-search"))}
+            aria-label="搜索"
+          >
+            <Search size={16} style={{ color: "var(--neo-ink)" }} />
+          </button>
+          <button
+            className="neo-card-sm flex items-center justify-center p-2"
+            style={{ borderRadius: 10 }}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="菜单"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neo-ink)" strokeWidth="2">
+              {mobileOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="neo-page px-6 py-3 md:hidden">
+          <div className="flex flex-col gap-1.5">
+            {navItems.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-4 py-2 text-[13px] ${
+                    active ? "neo-chip-active" : "neo-chip"
+                  }`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
+            <a
+              href="/account"
+              className={`rounded-full px-4 py-2 text-[13px] ${
+                pathname === "/account" ? "neo-chip-active" : "neo-chip"
+              }`}
+              onClick={() => setMobileOpen(false)}
+            >
+              账户
+            </a>
+          </div>
+          <form action="/search" className="mt-3 mb-1">
+            <input
+              type="text"
+              name="q"
+              placeholder="股票代码…"
+              className="neo-input w-full px-3.5 py-2 text-[12px]"
+            />
+          </form>
+        </div>
+      )}
     </header>
   );
 }

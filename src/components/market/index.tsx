@@ -1,78 +1,56 @@
 /**
  * 爱看盘 — 市场组件库
- * Dial: DENSITY 7 / VARIANCE 5 / MOTION 4
+ * Neomorphism style, neo panel system
  */
+import React from "react";
 import { formatPrice, formatPct, formatChange, trendClass, trendBgClass } from "@/lib/format";
-import type { IndexData, LimitStock, StrongIndustry, NewsItem } from "@/lib/api";
+import type { IndexData, LimitStock, StrongIndustry, NewsItem, AIScoreItem } from "@/lib/api";
+import { AIScoreBadge, AIScoreBadgeSkeleton, AIScoreBadgeEmpty } from "@/components/ai/ai-score-badge";
 
-/** 指数卡片 — 三大指数 */
 export function IndexCard({ data }: { data: IndexData }) {
   const trend = trendClass(data.change_pct);
   const bgTrend = trendBgClass(data.change_pct);
-
   return (
-    <div className="card-hover rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
+    <div className="neo-card-sm p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-medium text-[var(--text-primary)]">{data.name}</span>
-          <span className="font-num text-xs text-[var(--text-tertiary)]">{data.code}</span>
+          <span className="text-[15px] font-semibold text-neo-ink">{data.name}</span>
+          <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[11px] text-neo-dim">{data.code}</span>
         </div>
-        <span className={`rounded px-2 py-0.5 text-xs font-medium ${bgTrend} ${trend}`}>
+        <span className={`rounded-md px-2 py-0.5 text-[12px] font-medium ${bgTrend} ${trend}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
           {formatPct(data.change_pct)}
         </span>
       </div>
-      <div className="mt-3 flex items-baseline gap-3">
-        <span className={`font-num text-3xl font-bold ${trend}`}>
-          {formatPrice(data.last)}
-        </span>
-        <span className={`font-num text-sm ${trend}`}>
-          {formatChange(data.change)}
-        </span>
+      <div className="mt-4 flex items-baseline gap-3">
+        <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-[32px] font-bold tracking-tighter ${trend}`}>{formatPrice(data.last)}</span>
+        <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-[14px] ${trend}`}>{formatChange(data.change)}</span>
       </div>
-      <div className="mt-2 flex items-center gap-2 text-xs">
-        <span className="text-[var(--text-tertiary)]">{data.date}</span>
-        <span className="text-[var(--border-default)]">|</span>
-        <span className="text-[var(--text-tertiary)]">数据源 {data.source}</span>
-      </div>
+      <div className="mt-2 text-[11px] text-neo-dim">{data.date} · {data.source}</div>
     </div>
   );
 }
 
-/** 涨跌停列表 */
 export function LimitStockList({
-  title,
-  stocks,
-  type,
-  delay = 0,
+  title, stocks, type, delay = 0, scores = {}, scoreLoading = false,
 }: {
-  title: string;
-  stocks: LimitStock[];
-  type: "up" | "down";
-  delay?: number;
+  title: string; stocks: LimitStock[]; type: "up" | "down";
+  delay?: number; scores?: Record<string, AIScoreItem>; scoreLoading?: boolean;
 }) {
-  const headerColor = type === "up" ? "text-up" : "text-down";
-  const headerDot = type === "up" ? "bg-up" : "bg-down";
-
+  const headerColor = type === "up" ? "text-neo-up" : "text-neo-down";
+  const hasScores = Object.keys(scores).length > 0 || scoreLoading;
   return (
-    <div
-      className="animate-fade-up overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className={`h-2 w-2 rounded-full ${headerDot}`} />
-          <h3 className="text-sm font-semibold text-[var(--text-primary)]">{title}</h3>
-        </div>
-        <span className={`text-xs ${headerColor}`}>
-          共 {stocks.length} 只
-        </span>
+    <div className="neo-card-sm overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-2.5">
+        <h3 className="text-[13px] font-semibold text-neo-ink">{title}</h3>
+        <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-[12px] font-medium ${headerColor}`}>{stocks.length}</span>
       </div>
       <div>
-        <div className="grid grid-cols-[1fr_90px_72px_56px] gap-2 border-b border-[var(--border-subtle)] px-4 py-2 text-[11px] uppercase tracking-wide text-[var(--text-tertiary)]">
+        <div className={`grid ${hasScores ? "grid-cols-[1fr_64px_56px_40px_38px] sm:grid-cols-[1fr_80px_64px_48px_40px]" : "grid-cols-[1fr_72px_56px_40px] sm:grid-cols-[1fr_90px_72px_56px]"} gap-2 px-3 py-1.5 text-[10px] uppercase tracking-wider text-neo-dim sm:px-5`}>
           <span>名称 / 代码</span>
           <span className="text-right">价格</span>
           <span className="text-right">涨跌幅</span>
-          <span className="text-right">类型</span>
+          {!hasScores && <span className="text-right">类型</span>}
+          {hasScores && <span className="text-center">AI</span>}
         </div>
         {stocks.map((s) => {
           const t = trendClass(s.pct);
@@ -80,19 +58,24 @@ export function LimitStockList({
             <a
               key={s.code}
               href={`/stock/${s.code.replace(/\./, "")}/`}
-              className="row-hover grid grid-cols-[1fr_90px_72px_56px] items-center gap-2 border-b border-[var(--border-subtle)] px-4 py-2 text-sm last:border-b-0"
+              className={`transition-colors hover-neo-inset grid ${hasScores ? "grid-cols-[1fr_64px_56px_40px_38px] sm:grid-cols-[1fr_80px_64px_48px_40px]" : "grid-cols-[1fr_72px_56px_40px] sm:grid-cols-[1fr_90px_72px_56px]"} items-center gap-2 px-3 py-2 text-[13px] sm:px-5`}
             >
               <div className="flex flex-col">
-                <span className="truncate text-sm font-medium text-[var(--text-primary)]">{s.name}</span>
-                <span className="font-num text-[10px] text-[var(--text-tertiary)]">{s.code}</span>
+                <span className="truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+                <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{s.code}</span>
               </div>
-              <span className={`font-num text-right font-medium ${t}`}>{formatPrice(s.price)}</span>
-              <span className={`font-num text-right ${t}`}>{formatPct(s.pct)}</span>
-              <span className="text-right">
-                <span className="rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-[10px] text-[var(--text-secondary)]">
-                  {s.tag}
+              <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-right text-[13px] ${t}`}>{formatPrice(s.price)}</span>
+              <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-right text-[12px] ${t}`}>{formatPct(s.pct)}</span>
+              {!hasScores && (
+                <span className="text-right">
+                  <span className="neo-inset rounded px-1.5 py-0.5 text-[10px] text-neo-mid">{s.tag}</span>
                 </span>
-              </span>
+              )}
+              {hasScores && (
+                <span className="flex justify-center">
+                  {scoreLoading && !scores[s.code] ? <AIScoreBadgeSkeleton /> : scores[s.code] ? <AIScoreBadge item={scores[s.code]} /> : <AIScoreBadgeEmpty />}
+                </span>
+              )}
             </a>
           );
         })}
@@ -101,51 +84,29 @@ export function LimitStockList({
   );
 }
 
-/** 强势行业卡片 */
-export function IndustryCard({
-  industries,
-  delay = 0,
-}: {
-  industries: StrongIndustry[];
-  delay?: number;
-}) {
+export function IndustryCard({ industries }: { industries: StrongIndustry[]; delay?: number }) {
   const maxPct = Math.max(...industries.map((i) => Math.abs(i.change_pct)), 0.1);
-
   return (
-    <div
-      className="animate-fade-up rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5"
-      style={{ animationDelay: `${delay}ms` }}
-    >
+    <div className="neo-card-sm h-full p-5">
       <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-brand pulse-dot" />
-          <h3 className="text-sm font-semibold text-[var(--text-primary)]">强势行业</h3>
-        </div>
-        <span className="text-xs text-[var(--text-tertiary)]">TOP {industries.length}</span>
+        <h3 className="text-[13px] font-semibold text-neo-ink">强势行业</h3>
+        <span className="text-[10px] uppercase tracking-wider text-neo-dim">TOP {industries.length}</span>
       </div>
-      <div className="space-y-1">
+      <div className="space-y-0.5">
         {industries.map((ind, i) => {
           const t = trendClass(ind.change_pct);
           const barWidth = Math.min(Math.abs(ind.change_pct) / maxPct * 100, 100);
-          const barColor = ind.change_pct > 0 ? "bg-up" : "bg-down";
           return (
-            <div
-              key={ind.name}
-              className="row-hover flex items-center gap-3 rounded px-2 py-2"
-            >
-              <span className="font-num w-6 text-xs text-[var(--text-tertiary)]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="flex-1 truncate text-sm text-[var(--text-primary)]">{ind.name}</span>
-              <div className="hidden h-1.5 w-20 overflow-hidden rounded-full bg-[var(--bg-elevated)] sm:block">
+            <div key={ind.name} className="transition-colors hover-neo-inset flex items-center gap-3 rounded-md px-2 py-1.5">
+              <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="w-4 text-[11px] text-neo-dim">{i + 1}</span>
+              <span className="w-20 truncate text-[13px] text-neo-ink">{ind.name}</span>
+              <div className="flex-1 h-1 overflow-hidden rounded-full bg-[var(--neo-surface-inset)]">
                 <div
-                  className={`h-full rounded-full ${barColor} transition-base`}
+                  className={`h-full rounded-full transition-all duration-500 ${ind.change_pct > 0 ? "bg-neo-up" : "bg-neo-down"}`}
                   style={{ width: `${barWidth}%` }}
                 />
               </div>
-              <span className={`font-num w-16 text-right text-sm font-medium ${t}`}>
-                {formatPct(ind.change_pct)}
-              </span>
+              <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`w-14 text-right text-[13px] font-medium ${t}`}>{formatPct(ind.change_pct)}</span>
             </div>
           );
         })}
@@ -154,64 +115,40 @@ export function IndustryCard({
   );
 }
 
-/** 新闻卡片 */
-export function NewsCard({ news }: { news: NewsItem }) {
+export function NewsCard({ news, featured = false }: { news: NewsItem; featured?: boolean }) {
   return (
     <a
       href={news.url || "#"}
       target="_blank"
       rel="noopener noreferrer"
-      className="card-hover group flex flex-col rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4"
+      className={`neo-card-sm transition-all duration-200 hover:-translate-y-0.5 group flex h-full flex-col ${featured ? "p-5" : "p-4"}`}
     >
       <div className="flex items-center gap-2 text-[11px]">
-        <span className="text-[var(--text-secondary)]">{news.source}</span>
-        <span className="text-[var(--border-default)]">|</span>
-        <span className="font-num text-[var(--text-tertiary)]">{(news.time || "").slice(5, 16)}</span>
+        <span className="font-medium text-neo-primary">{news.source}</span>
+        <span className="text-neo-dim">·</span>
+        <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-neo-dim">{(news.time || "").slice(5, 16)}</span>
       </div>
-      <h4 className="mt-2 line-clamp-2 text-sm font-medium text-[var(--text-primary)] transition-fast group-hover:text-brand">
+      <h4 className={`mt-2 ${featured ? "line-clamp-3 text-[15px]" : "line-clamp-2 text-[13px]"} font-medium leading-snug text-neo-ink group-hover:text-neo-primary transition-colors`}>
         {news.title}
       </h4>
-      <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--text-secondary)]">
+      <p className={`mt-1 ${featured ? "line-clamp-3 text-[13px]" : "line-clamp-2 text-[12px]"} leading-relaxed text-neo-mid`}>
         {news.summary || ""}
       </p>
-      <div className="mt-auto pt-2">
-        <span className="text-[11px] text-[var(--text-tertiary)] transition-fast group-hover:text-brand">
-          阅读全文 →
-        </span>
-      </div>
     </a>
   );
 }
 
-/** 市场统计卡片 */
 export function MarketStatCard({
-  label,
-  value,
-  sub,
-  trend,
+  label, value, sub, trend,
 }: {
-  label: string;
-  value: string | number;
-  sub?: string;
-  trend?: number;
+  label: string; value: React.ReactNode; sub?: string; trend?: number;
 }) {
   const trendCls = trend !== undefined ? trendClass(trend) : "";
-  const dotColor = trend !== undefined
-    ? trend > 0 ? "bg-up" : trend < 0 ? "bg-down" : "bg-flat"
-    : "";
-
   return (
-    <div className="card-hover rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-      <div className="flex items-center gap-2">
-        {trend !== undefined && (
-          <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} />
-        )}
-        <span className="text-xs text-[var(--text-secondary)]">{label}</span>
-      </div>
-      <div className={`mt-2 font-num text-2xl font-bold ${trendCls}`}>
-        {value}
-      </div>
-      {sub && <div className="mt-1 text-xs text-[var(--text-tertiary)]">{sub}</div>}
+    <div className="neo-inset px-4 py-3">
+      <div className="text-[10px] uppercase tracking-wider text-neo-dim">{label}</div>
+      <div style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`mt-1 text-[26px] font-bold tracking-tighter ${trendCls}`}>{value}</div>
+      {sub && <div className="mt-1 text-[10px] text-neo-dim">{sub}</div>}
     </div>
   );
 }

@@ -43,29 +43,29 @@ const apiEndpoints = [
 ];
 
 const methodColors: Record<string, string> = {
-  GET: "text-up",
+  GET: "text-neo-up",
   POST: "text-brand",
   PATCH: "text-[#e3b341]",
-  DELETE: "text-down",
+  DELETE: "text-neo-down",
 };
 
 export default function ApiDocsPage() {
   return (
-    <>
+    <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
-        <section className="animate-fade-up">
-          <h1 className="text-xl font-bold text-[var(--text-primary)]">API 文档</h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            后端 Base URL: <code className="font-num rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-xs text-brand">https://aikanpan.top/api/v1</code>
+        <section className="neo-fade-up">
+          <h1 className="text-xl font-bold text-neo-ink">API 文档</h1>
+          <p className="mt-1 text-sm text-neo-mid">
+            后端 Base URL: <code style={{ fontFamily: 'var(--font-inter), system-ui' }} className="neo-inset rounded px-1.5 py-0.5 text-xs text-brand">https://aikanpan.top/api/v1</code>
           </p>
         </section>
 
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "60ms" }}>
-          <div className="overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]">
-            <table className="w-full">
+        <section className="neo-fade-up mt-6" style={{ animationDelay: "60ms" }}>
+          <div className="neo-inset overflow-x-auto neo-scrollbar">
+            <table className="w-full min-w-[720px]">
               <thead>
-                <tr className="border-b border-[var(--border-subtle)] text-[11px] uppercase tracking-wide text-[var(--text-tertiary)]">
+                <tr className="bg-[var(--neo-surface-inset)] text-[11px] uppercase tracking-wide text-neo-mid">
                   <th className="px-4 py-2 text-left font-medium">Method</th>
                   <th className="px-4 py-2 text-left font-medium">Path</th>
                   <th className="px-4 py-2 text-left font-medium">说明</th>
@@ -73,12 +73,12 @@ export default function ApiDocsPage() {
               </thead>
               <tbody>
                 {apiEndpoints.map((ep) => (
-                  <tr key={`${ep.method}-${ep.path}`} className="row-hover border-b border-[var(--border-subtle)] last:border-b-0">
+                  <tr key={`${ep.method}-${ep.path}`} className="border-b border-[var(--neo-edge)] transition-colors hover-neo-inset last:border-b-0">
                     <td className="px-4 py-2.5">
-                      <span className={`font-num text-xs font-bold ${methodColors[ep.method] || "text-[var(--text-secondary)]"}`}>{ep.method}</span>
+                      <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-xs font-bold ${methodColors[ep.method] || "text-neo-mid"}`}>{ep.method}</span>
                     </td>
-                    <td className="font-num px-4 py-2.5 text-xs text-[var(--text-primary)]">{ep.path}</td>
-                    <td className="px-4 py-2.5 text-xs text-[var(--text-secondary)]">{ep.desc}</td>
+                    <td style={{ fontFamily: 'var(--font-inter), system-ui' }} className="px-4 py-2.5 font-mono text-xs text-neo-ink">{ep.path}</td>
+                    <td className="px-4 py-2.5 text-xs text-neo-mid">{ep.desc}</td>
                   </tr>
                 ))}
               </tbody>
@@ -86,28 +86,28 @@ export default function ApiDocsPage() {
           </div>
         </section>
 
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "120ms" }}>
-          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">股票代码格式</h2>
-          <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-            <p className="text-sm text-[var(--text-secondary)]">后端使用 <code className="font-num rounded bg-[var(--bg-elevated)] px-1 py-0.5 text-xs text-brand">exchange.code</code> 格式：</p>
+        <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-neo-mid">股票代码格式</h2>
+          <div className="neo-card p-4">
+            <p className="text-sm text-neo-mid">后端使用 <code style={{ fontFamily: 'var(--font-inter), system-ui' }} className="neo-inset rounded px-1 py-0.5 text-xs text-brand">exchange.code</code> 格式：</p>
             <ul className="mt-3 space-y-1.5 text-xs">
               <li className="flex items-center gap-3">
-                <span className="font-num rounded bg-up-soft px-2 py-0.5 text-up">sh.600518</span>
-                <span className="text-[var(--text-tertiary)]">上海证券交易所 (6开头)</span>
+                <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="neo-up-soft rounded px-2 py-0.5 text-neo-up">sh.600518</span>
+                <span className="text-neo-dim">上海证券交易所 (6开头)</span>
               </li>
               <li className="flex items-center gap-3">
-                <span className="font-num rounded bg-up-soft px-2 py-0.5 text-up">sz.300414</span>
-                <span className="text-[var(--text-tertiary)]">深圳证券交易所 (0/3开头)</span>
+                <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="neo-up-soft rounded px-2 py-0.5 text-neo-up">sz.300414</span>
+                <span className="text-neo-dim">深圳证券交易所 (0/3开头)</span>
               </li>
             </ul>
-            <p className="mt-3 text-xs text-[var(--text-tertiary)]">Web 路由同时支持 <code className="font-num">sz300414</code> 和 <code className="font-num">sz.300414</code> 两种格式。</p>
+            <p className="mt-3 text-xs text-neo-dim">Web 路由同时支持 <code style={{ fontFamily: 'var(--font-inter), system-ui' }}>sz300414</code> 和 <code style={{ fontFamily: 'var(--font-inter), system-ui' }}>sz.300414</code> 两种格式。</p>
           </div>
         </section>
 
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "180ms" }}>
-          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">示例</h2>
-          <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] p-4">
-            <pre className="font-num text-xs leading-relaxed text-[var(--text-secondary)] overflow-x-auto"><code>{`# 获取仪表盘数据
+        <section className="neo-fade-up mt-6" style={{ animationDelay: "180ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-neo-mid">示例</h2>
+          <div className="neo-inset p-4">
+            <pre style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-xs leading-relaxed text-neo-mid overflow-x-auto"><code>{`# 获取仪表盘数据
 curl https://aikanpan.top/api/v1/workbench/dashboard
 
 # 搜索股票
@@ -122,6 +122,6 @@ curl https://aikanpan.top/api/v1/stocks/sz.300414/events`}</code></pre>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

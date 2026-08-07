@@ -1,11 +1,44 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { IndexCard, LimitStockList, IndustryCard, NewsCard, MarketStatCard } from "@/components/market";
-import { MiniChart } from "@/components/chart/mini-chart";
+import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
+import { AIReview } from "@/components/ai/ai-review";
+import { Sparkline } from "@/components/chart/sparkline";
 import { api, type Dashboard, type Insights } from "@/lib/api";
-import { formatPct, formatPrice, formatChange, trendClass, trendBgClass } from "@/lib/format";
+import { formatPct, formatPrice, formatChange } from "@/lib/format";
+import type { Metadata } from "next";
 
 export const revalidate = 30;
+
+export const metadata: Metadata = {
+  title: "爱看盘 · AI 复盘工作台",
+  description: "A股实时行情、情绪温度、涨停池、强势行业与 AI 复盘摘要，一屏看懂的复盘工作台。",
+};
+
+function neoTrendClass(pct: number) {
+  return pct > 0 ? "text-neo-up" : pct < 0 ? "text-neo-down" : "text-neo-mid";
+}
+
+function sourceLabel(source?: string): string {
+  const map: Record<string, string> = {
+    tx: "腾讯行情",
+    sina: "新浪行情",
+    eastmoney: "东方财富",
+    ths: "同花顺",
+    "sina-finance": "新浪财经",
+  };
+  return map[source || ""] || source || "行情";
+}
+
+function tagLabel(tag: string): string {
+  const map: Record<string, string> = {
+    limit30: "30cm",
+    limit20: "20cm",
+    limit10: "10cm",
+    st: "ST",
+  };
+  return map[tag] || tag;
+}
+
 
 export default async function HomePage() {
   let dashboard: Dashboard | null = null;
@@ -17,240 +50,285 @@ export default async function HomePage() {
       api.getInsights(),
     ]);
   } catch (e) {
-    console.error("Failed to fetch homepage data:", e);
+    console.error("Failed to fetch home data:", e);
+  }
+
+  let indexHistories: Record<string, number[]> = {};
+  if (dashboard) {
+    try {
+      const indexCodes = dashboard.indices.map((idx) => idx.code).filter((c): c is string => Boolean(c));
+      const settled = await Promise.allSettled(indexCodes.map((c) => api.getStockHistory(c)));
+      dashboard.indices.forEach((idx, i) => {
+        const result = settled[i];
+        if (result.status === "fulfilled" && result.value.closes && result.value.closes.length >= 2) {
+          if (idx.code) indexHistories[idx.code] = result.value.closes;
+        }
+      });
+    } catch (e) {
+      console.error("Failed to fetch index histories:", e);
+    }
   }
 
   if (!dashboard) {
     return (
-      <>
+      <div className="neo-page">
         <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-20 text-center">
-          <p className="text-[var(--text-secondary)]">数据加载中</p>
-          <p className="mt-2 text-xs text-[var(--text-tertiary)]">
-            如果持续无数据，请检查后端服务是否正常
-          </p>
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-8">
+          <div className="neo-skeleton mb-6 h-8 w-48" />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="neo-skeleton h-44" />
+            <div className="neo-skeleton h-44" />
+            <div className="neo-skeleton h-44" />
+          </div>
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
+  const idx0 = dashboard.indices[0];
+  const otherIndices = dashboard.indices.slice(1, 3);
   const upCount = dashboard.limit_up_count;
   const downCount = dashboard.limit_down_count;
-  const upRatio = upCount + downCount > 0 ? (upCount / (upCount + downCount) * 100).toFixed(1) : "0";
-  const sentiment = upCount > downCount * 2 ? "多头主导"
-    : upCount > downCount ? "偏多"
-    : downCount > upCount * 2 ? "空头主导"
-    : downCount > upCount ? "偏空"
-    : "多空均衡";
+  const total = upCount + downCount;
+  const upRatio = total > 0 ? (upCount / total) * 100 : 0;
 
   return (
-    <>
+    <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
-        {/* === 三大指数 === */}
-        <section className="animate-fade-up">
-          <div className="mb-3 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-[var(--text-primary)]">市场总览</h2>
-              {dashboard.market_status === "complete" ? (
-                <span className="flex items-center gap-1 rounded bg-[var(--bg-elevated)] px-2 py-0.5 text-[11px] text-[var(--text-tertiary)]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--text-tertiary)]" />
-                  已收盘
-                </span>
-              ) : (
-                <span className="flex items-center gap-1 rounded bg-up-soft px-2 py-0.5 text-[11px] text-up">
-                  <span className="h-1.5 w-1.5 rounded-full bg-up pulse-dot" />
-                  交易中
-                </span>
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
+        {/* 工作台头部 */}
+        <section className="neo-fade-up relative overflow-hidden rounded-2xl">
+          <img loading="lazy"
+            src="/images/ai-art/dashboard-banner-v2.png"
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/85 via-[var(--neo-bg)]/65 to-[var(--neo-bg)]/85" />
+          <div className="relative px-5 py-4 sm:px-6 sm:py-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-[20px] font-bold tracking-tight text-neo-ink">AI 复盘工作台</h1>
+                  <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${dashboard.market_status !== "complete" ? "neo-up-soft text-neo-up" : "neo-down-soft text-neo-down"}`}>
+                    {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+                  </span>
+                </div>
+                <p className="mt-1 text-[12px] text-neo-mid">
+                  {dashboard.index.date} · 更新于 {dashboard.market_updated_at}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <a href="/review/" className="neo-btn-primary px-3 py-1.5 text-[12px]">复盘报告</a>
+                <a href="/search" className="neo-btn px-3 py-1.5 text-[12px]">个股诊断</a>
+                <a href="/alerts" className="neo-btn px-3 py-1.5 text-[12px]">智能盯盘</a>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2 text-[10px]">
+              <span className="neo-chip px-2 py-1 text-neo-mid">行情 {sourceLabel(idx0?.source)}</span>
+              <span className="neo-chip px-2 py-1 text-neo-mid">资讯 东方财富 / 财联社</span>
+              {insights && (
+                <span className="neo-chip px-2 py-1 text-neo-mid">AI 生成 {insights.generated_at.slice(5, 16).replace("T", " ")}</span>
               )}
             </div>
-            <span className="font-num text-xs text-[var(--text-tertiary)]">
-              {dashboard.index.date} · 更新于 {dashboard.market_updated_at}
-            </span>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {dashboard.indices.map((idx) => {
-              const tvSymbol = idx.code.startsWith("sh.") ? `SSE:${idx.code.slice(3)}` : `SZSE:${idx.code.slice(3)}`;
-              return (
-                <div key={idx.code} className="card-hover rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-sm font-medium text-[var(--text-primary)]">{idx.name}</span>
-                      <span className="font-num text-xs text-[var(--text-tertiary)]">{idx.code}</span>
-                    </div>
-                    <span className={`rounded px-2 py-0.5 text-xs font-medium ${trendBgClass(idx.change_pct)} ${trendClass(idx.change_pct)}`}>
-                      {formatPct(idx.change_pct)}
-                    </span>
-                  </div>
-                  <div className="mt-3 flex items-baseline gap-3">
-                    <span className={`font-num text-3xl font-bold ${trendClass(idx.change_pct)}`}>{formatPrice(idx.last)}</span>
-                    <span className={`font-num text-sm ${trendClass(idx.change_pct)}`}>{formatChange(idx.change)}</span>
-                  </div>
-                  <div className="mt-2 flex items-center gap-2 text-xs">
-                    <span className="text-[var(--text-tertiary)]">{idx.date}</span>
-                    <span className="text-[var(--border-default)]">|</span>
-                    <span className="text-[var(--text-tertiary)]">数据源 {idx.source}</span>
-                  </div>
-                  <div className="mt-3 -mx-1">
-                    <MiniChart symbol={tvSymbol} name={idx.name} changePct={idx.change_pct} />
-                  </div>
+        </section>
+
+        {/* 市场快照 */}
+        <section className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 neo-fade-up">
+          {idx0 && (
+            <div className="neo-card p-5 sm:col-span-2 lg:row-span-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[15px] font-semibold text-neo-ink">{idx0.name}</span>
+                  <span className="ml-2 text-[11px] text-neo-dim">{idx0.code}</span>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* === 市场情绪统计 === */}
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "60ms" }}>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <MarketStatCard
-              label="涨停"
-              value={upCount}
-              trend={1}
-              sub={`占比 ${upRatio}%`}
-            />
-            <MarketStatCard
-              label="跌停"
-              value={downCount}
-              trend={-1}
-              sub={`占比 ${(100 - parseFloat(upRatio)).toFixed(1)}%`}
-            />
-            <MarketStatCard
-              label="涨跌比"
-              value={upCount > 0 && downCount > 0 ? (upCount / downCount).toFixed(2) : "-"}
-              sub={upCount > downCount ? "多头占优" : "空头占优"}
-            />
-            <MarketStatCard
-              label="市场情绪"
-              value={sentiment}
-              sub={upCount > downCount ? "偏多" : "偏空"}
-            />
-          </div>
-        </section>
-
-        {/* === 涨停板 + 跌停板 === */}
-        <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <LimitStockList
-            title="涨停板"
-            stocks={dashboard.limit_up.slice(0, 10)}
-            type="up"
-            delay={120}
-          />
-          <LimitStockList
-            title="跌停板"
-            stocks={dashboard.limit_down.slice(0, 10)}
-            type="down"
-            delay={180}
-          />
-        </section>
-
-        {/* === 强势行业 + 市场聚焦 === */}
-        <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <IndustryCard
-            industries={dashboard.strong_industries}
-            delay={240}
-          />
-          {insights && (
-            <div
-              className="animate-fade-up flex flex-col rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5"
-              style={{ animationDelay: "300ms" }}
-            >
-              <div className="mb-3 flex items-center gap-2">
-                <span className="rounded bg-brand-soft px-2 py-1 text-[11px] font-medium text-brand">
-                  市场聚焦
-                </span>
-                <span className="font-num text-[11px] text-[var(--text-tertiary)]">
-                  {insights.generated_at}
+                <span className={`rounded-full px-2.5 py-0.5 text-[12px] font-semibold ${idx0.change_pct > 0 ? "neo-up-soft text-neo-up" : "neo-down-soft text-neo-down"}`}>
+                  {formatPct(idx0.change_pct)}
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-[var(--text-primary)]">
-                {insights.focus}
-              </p>
-              <div className="mt-4">
-                <div className="mb-2 text-xs text-[var(--text-secondary)]">热门板块</div>
-                <div className="flex flex-wrap gap-2">
-                  {insights.hot_sectors.map((s) => (
-                    <a
-                      key={s.name}
-                      href={`/market/`}
-                      className={`row-hover rounded-md border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-2.5 py-1 text-xs transition-fast ${s.change_pct > 0 ? "text-up" : "text-down"}`}
-                    >
-                      {s.name} <span className="font-num">{formatPct(s.change_pct)}</span>
-                    </a>
-                  ))}
-                </div>
+              <div className={`mt-4 text-[34px] font-bold tracking-tight ${neoTrendClass(idx0.change_pct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                {formatPrice(idx0.last)}
               </div>
-              {insights.reports && insights.reports.length > 0 && (
-                <div className="mt-4 pt-3 border-t border-[var(--border-subtle)]">
-                  <div className="mb-2 text-xs text-[var(--text-secondary)]">研报</div>
-                  <div className="space-y-1.5">
-                    {insights.reports.slice(0, 3).map((r) => (
-                      <a
-                        key={r.id}
-                        href={r.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="row-hover block rounded px-2 py-1.5"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] text-[var(--text-tertiary)]">{r.source}</span>
-                          <span className="truncate text-xs text-[var(--text-secondary)]">{r.title}</span>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <div className={`mt-1 text-[14px] ${neoTrendClass(idx0.change_pct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                {formatChange(idx0.change)}
+              </div>
+              <Sparkline data={indexHistories[idx0.code || ""] || []} trend={idx0.change_pct} height={44} className="mt-4 w-full" />
+              <div className="mt-3 text-[10px] text-neo-dim">来源 {sourceLabel(idx0.source)} · 30 日走势</div>
             </div>
           )}
+
+          {otherIndices.map((idx) => (
+            <div key={idx.code} className="neo-card-sm p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[13px] font-medium text-neo-mid">{idx.name}</span>
+                <span className={`text-[12px] font-semibold ${neoTrendClass(idx.change_pct)}`}>{formatPct(idx.change_pct)}</span>
+              </div>
+              <div className={`mt-2 text-[22px] font-bold tracking-tight ${neoTrendClass(idx.change_pct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                {formatPrice(idx.last)}
+              </div>
+              <Sparkline data={indexHistories[idx.code || ""] || []} trend={idx.change_pct} height={28} className="mt-2 w-full" />
+            </div>
+          ))}
+
+          <div className="neo-card-sm p-4">
+            <div className="text-[10px] uppercase tracking-wider text-neo-dim">涨跌停</div>
+            <div className="mt-2 flex items-baseline gap-3">
+              <span className="text-[26px] font-bold leading-none text-neo-up" style={{ fontFamily: "var(--font-inter), system-ui" }}>{upCount}</span>
+              <span className="text-[13px] text-neo-up">涨停</span>
+              <span className="text-[26px] font-bold leading-none text-neo-down" style={{ fontFamily: "var(--font-inter), system-ui" }}>{downCount}</span>
+              <span className="text-[13px] text-neo-down">跌停</span>
+            </div>
+            <div className="neo-inset-sm mt-3 h-1.5 overflow-hidden rounded-full">
+              <div className="h-full rounded-full bg-neo-up transition-all duration-500" style={{ width: `${upRatio}%` }} />
+            </div>
+            <div className="mt-1.5 flex justify-between text-[10px] text-neo-dim">
+              <span>涨停占比 {upRatio.toFixed(0)}%</span>
+              <span>{dashboard.market_updated_at}</span>
+            </div>
+          </div>
         </section>
 
-        {/* === 新闻资讯 === */}
-        {insights && insights.news.length > 0 && (
-          <section className="mt-6 animate-fade-up" style={{ animationDelay: "360ms" }}>
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[var(--text-primary)]">市场资讯</h3>
-              <span className="text-xs text-[var(--text-tertiary)]">{insights.news.length} 条</span>
+        {/* 情绪温度 + 涨停池 */}
+        <section className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-5 neo-fade-up">
+          <div className="neo-card p-5 lg:col-span-2">
+            <MarketTemperaturePanel upCount={upCount} downCount={downCount} />
+          </div>
+
+          <div className="neo-card-sm overflow-hidden lg:col-span-3">
+            <div className="flex items-center justify-between px-5 py-2.5">
+              <h2 className="text-[14px] font-semibold text-neo-ink">涨停池 TOP 8</h2>
+              <a href="/market/" className="text-[11px] text-neo-primary hover:underline">市场页 →</a>
             </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {insights.news.slice(0, 6).map((n) => (
-                <NewsCard key={n.id} news={n} />
+            <div>
+              {dashboard.limit_up.slice(0, 8).map((s, i) => (
+                <a
+                  key={s.code}
+                  href={`/stock/${s.code.replace(/\./, "")}/`}
+                  className="grid grid-cols-[32px_1fr_1fr_1fr] items-center gap-2 px-5 py-2 text-[13px] transition-colors hover-neo-inset"
+                >
+                  <span className="text-[11px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>{String(i + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0">
+                    <div className="truncate font-medium text-neo-ink">{s.name}</div>
+                    <div className="text-[10px] text-neo-dim">{s.code}</div>
+                  </div>
+                  <span style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-right text-neo-mid">{formatPrice(s.price)}</span>
+                  <span className="flex items-center justify-end gap-1.5">
+                    <span style={{ fontFamily: "var(--font-inter), system-ui" }} className={`text-[13px] font-semibold ${neoTrendClass(s.pct)}`}>{formatPct(s.pct)}</span>
+                    <span className="neo-chip px-1.5 py-0.5 text-[10px] text-neo-mid">{tagLabel(s.tag)}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 强势行业 */}
+        {dashboard.strong_industries && dashboard.strong_industries.length > 0 && (
+          <section className="mt-4 neo-card p-5 neo-fade-up">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-[14px] font-semibold text-neo-ink">强势行业</h2>
+              <span className="text-[10px] uppercase tracking-wider text-neo-dim">纯计算 · 无 AI 参与</span>
+            </div>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {dashboard.strong_industries.slice(0, 6).map((ind) => (
+                <div key={ind.name} className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover-neo-inset">
+                  <span className="w-24 truncate text-[13px] font-medium text-neo-ink">{ind.name}</span>
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--neo-surface-inset)]">
+                    <div
+                      className="h-full rounded-full bg-neo-up transition-all duration-500"
+                      style={{ width: `${Math.min(Math.abs(ind.change_pct) * 10, 100)}%` }}
+                    />
+                  </div>
+                  <span style={{ fontFamily: "var(--font-inter), system-ui" }} className={`w-16 text-right text-[13px] font-semibold ${neoTrendClass(ind.change_pct)}`}>
+                    {formatPct(ind.change_pct)}
+                  </span>
+                </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* === AI 复盘入口 === */}
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "420ms" }}>
-          <div className="relative overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6">
-            {/* 装饰渐变 */}
-            <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-brand-soft to-transparent" />
-            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="rounded bg-brand-soft px-2 py-1 text-[11px] font-medium text-brand">
-                    AI 复盘
-                  </span>
-                  <h3 className="text-base font-semibold text-[var(--text-primary)]">今日市场复盘</h3>
-                </div>
-                <p className="mt-3 max-w-[600px] text-sm leading-relaxed text-[var(--text-secondary)]">
-                  {insights?.focus || "市场数据已更新，AI 复盘分析正在生成中"}
-                </p>
+        {/* AI 复盘摘要 */}
+        <section className="relative mt-4 neo-fade-up">
+          <img loading="lazy"
+            src="/images/ai-art/ai-neural-bg.png"
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute inset-0 h-full w-full rounded-2xl object-cover opacity-5"
+          />
+          <div className="neo-ai relative p-5">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span className="rounded-md bg-neo-primary-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘摘要</span>
+              <span className="text-[11px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>{insights?.generated_at || ""}</span>
+            </div>
+            <p className="text-[14px] leading-relaxed text-neo-mid">{insights?.focus || "等待 AI 复盘摘要生成…"}</p>
+
+            {insights?.hot_sectors && insights.hot_sectors.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {insights.hot_sectors.map((s) => (
+                  <a key={s.name} href="/market/" className={`neo-chip px-3 py-1 text-[12px] font-medium ${s.change_pct > 0 ? "text-neo-up" : "text-neo-down"}`}>
+                    {s.name} <span className="ml-1" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPct(s.change_pct)}</span>
+                  </a>
+                ))}
               </div>
-              <div className="flex shrink-0 gap-3">
-                <a
-                  href="/review/"
-                  className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white transition-fast hover:bg-[var(--brand-hover)] active:translate-y-px"
-                >
-                  查看完整复盘
-                </a>
+            )}
+
+            {insights?.news && insights.news.length > 0 && (
+              <div className="mt-4 grid grid-cols-1 gap-2 md:grid-cols-3">
+                {insights.news.slice(0, 3).map((n) => (
+                  <a
+                    key={n.id}
+                    href={n.url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="neo-card-sm block p-3 transition-all duration-200 hover:-translate-y-0.5"
+                  >
+                    <div className="flex items-center gap-2 text-[10px] text-neo-dim">
+                      <span className="font-medium text-neo-primary">{n.source}</span>
+                      <span>·</span>
+                      <span>{n.time || ""}</span>
+                    </div>
+                    <h3 className="mt-1.5 line-clamp-2 text-[13px] font-medium leading-snug text-neo-ink">{n.title}</h3>
+                  </a>
+                ))}
               </div>
+            )}
+
+            <div className="mt-4 flex flex-wrap gap-2 text-[10px]">
+              <span className="neo-chip px-2 py-1 text-neo-mid">引用：三大指数</span>
+              <span className="neo-chip px-2 py-1 text-neo-mid">引用：涨跌停</span>
+              <span className="neo-chip px-2 py-1 text-neo-mid">引用：行业板块</span>
+              <span className="neo-chip px-2 py-1 text-neo-mid">引用：市场资讯</span>
+              <span className="neo-chip px-2 py-1 text-neo-mid">由 AI 生成，不构成投资建议</span>
             </div>
           </div>
         </section>
+
+        <section className="mt-4 neo-fade-up">
+          <AIReview />
+        </section>
+
+        {/* 工作台入口 */}
+        <section className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4 neo-fade-up">
+          {[
+            { href: "/review/", img: "/images/ai-art/ai-review-illustration-dark.png", title: "每日复盘", desc: "AI 自动生成市场复盘报告" },
+            { href: "/search", img: "/images/ai-art/ai-diagnosis-illustration-dark.png", title: "个股诊断", desc: "输入代码，AI 秒出诊断报告" },
+            { href: "/alerts", img: "/images/ai-art/ai-alert-illustration-dark.png", title: "智能盯盘", desc: "价格、涨跌幅、成交量多条件组合" },
+            { href: "/market/", img: "/images/ai-art/ai-quick-check-illustration-dark.png", title: "市场全景", desc: "板块、涨跌停、资金与资讯" },
+          ].map((item) => (
+            <a key={item.href} href={item.href} className="group neo-card-sm overflow-hidden transition-all duration-200 hover:-translate-y-0.5">
+              <img loading="lazy" src={item.img} alt="" aria-hidden className="h-20 w-full object-cover opacity-90" />
+              <div className="p-3">
+                <div className="text-[13px] font-semibold text-neo-ink">{item.title}</div>
+                <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-neo-dim">{item.desc}</p>
+              </div>
+            </a>
+          ))}
+        </section>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

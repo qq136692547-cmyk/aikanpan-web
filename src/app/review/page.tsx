@@ -1,7 +1,10 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { AIReview } from "@/components/ai/ai-review";
+import { DatePicker } from "@/components/review/date-picker";
+import { ReviewStatusBar } from "@/components/review/review-status-bar";
 import { api, type Dashboard, type Insights } from "@/lib/api";
-import { formatPct, formatPrice, trendClass, trendBgClass } from "@/lib/format";
+import { formatPct, formatPrice } from "@/lib/format";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -9,13 +12,40 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "每日复盘",
   description: "AI驱动的A股每日复盘报告，包含市场概览、强势行业、资讯新闻和研报精选。",
-  openGraph: {
-    title: "每日复盘 · 爱看盘",
-    description: "AI驱动的A股每日复盘报告",
-  },
 };
 
-export default async function ReviewPage() {
+const reviewJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "每日复盘 · 爱看盘",
+  description: "AI驱动的A股每日复盘报告",
+  author: { "@type": "Organization", name: "爱看盘" },
+  publisher: { "@type": "Organization", name: "爱看盘", url: "https://aikanpan.top" },
+  about: ["A股", "AI复盘", "股票市场", "行情分析"],
+};
+
+/** Neomorphism trend class mapping */
+function neoTrendClass(n: number): string {
+  if (n > 0) return "text-neo-up";
+  if (n < 0) return "text-neo-down";
+  return "text-neo-mid";
+}
+
+function neoTrendBgClass(n: number): string {
+  if (n > 0) return "neo-up-soft";
+  if (n < 0) return "neo-down-soft";
+  return "neo-inset";
+}
+
+export default async function ReviewPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string }>;
+}) {
+  const params = await searchParams;
+  const selectedDate = params?.date;
+  const isCustomDate = selectedDate && selectedDate !== new Date().toISOString().split("T")[0];
+
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;
 
@@ -30,13 +60,20 @@ export default async function ReviewPage() {
 
   if (!dashboard) {
     return (
-      <>
+      <div className="neo-page">
         <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-20 text-center">
-          <p className="text-[var(--text-secondary)]">数据加载中</p>
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6">
+          <div className="neo-skeleton mb-4 h-6 w-40" />
+          <div className="neo-skeleton h-32" />
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="neo-skeleton h-20" />
+            <div className="neo-skeleton h-20" />
+            <div className="neo-skeleton h-20" />
+            <div className="neo-skeleton h-20" />
+          </div>
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
@@ -50,106 +87,113 @@ export default async function ReviewPage() {
     : "多空均衡";
 
   return (
-    <>
+    <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
         {/* Header */}
-        <section className="animate-fade-up">
-          <div className="flex items-center justify-between">
+        <section>
+          <div className="relative overflow-hidden rounded-2xl">
+            <img loading="lazy"
+              src="/images/ai-art/review-decoration-v2.png"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/70 via-[var(--neo-bg)]/50 to-[var(--neo-bg)]/70" />
+            <div className="relative flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-[var(--text-primary)]">每日复盘</h1>
-              <p className="mt-1 text-xs text-[var(--text-tertiary)]">{dashboard.index.date} · 更新于 {dashboard.market_updated_at}</p>
+              <h1 className="text-[14px] font-medium text-neo-ink">每日复盘</h1>
+              <p className="mt-0.5 text-[11px] text-neo-dim">{dashboard.index.date} · {dashboard.market_updated_at}</p>
             </div>
-            <span className={`rounded px-3 py-1 text-sm font-medium ${dashboard.market_status === "complete" ? "bg-[var(--bg-elevated)] text-[var(--text-tertiary)]" : "bg-up-soft text-up"}`}>
-              {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
-            </span>
+            <div className="flex items-center gap-3">
+              <DatePicker initialDate={selectedDate} />
+              <span className={`px-2 py-0.5 text-[11px] ${dashboard.market_status === "complete" ? "neo-inset text-neo-dim" : "neo-up-soft text-neo-up"}`}>
+                {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+              </span>
+            </div>
+          </div>
           </div>
         </section>
 
-        {/* AI Summary */}
-        {insights && (
-          <section className="mt-6 animate-fade-up" style={{ animationDelay: "60ms" }}>
-            <div className="relative overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6">
-              <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-brand-soft to-transparent" />
-              <div className="relative">
-                <div className="flex items-center gap-2">
-                  <span className="rounded bg-brand-soft px-2 py-1 text-[11px] font-medium text-brand">AI 复盘</span>
-                  <span className="font-num text-[11px] text-[var(--text-tertiary)]">{insights.generated_at}</span>
-                </div>
-                <p className="mt-4 text-base leading-relaxed text-[var(--text-primary)]">{insights.focus}</p>
-              </div>
+        <section className="mt-3">
+          <ReviewStatusBar />
+        </section>
+
+        {/* 日期提示 */}
+        {isCustomDate && (
+          <section className="mt-3">
+            <div className="neo-inset px-3 py-2 text-[12px] text-neo-mid">
+              {selectedDate} 复盘数据加载中…
             </div>
           </section>
         )}
 
-        {/* Market Overview */}
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "120ms" }}>
-          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">市场概览</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-up" />
-                <span className="text-xs text-[var(--text-secondary)]">涨停</span>
-              </div>
-              <div className="font-num mt-2 text-2xl font-bold text-up">{upCount}</div>
-              <div className="mt-1 text-xs text-[var(--text-tertiary)]">占比 {upRatio}%</div>
+        {/* AI 复盘报告 */}
+        <section className="mt-3">
+          <AIReview />
+        </section>
+
+        {/* 市场概览 */}
+        <section className="mt-4">
+          <h2 className="mb-2 text-[12px] text-neo-mid">市场概览</h2>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="neo-card-sm p-3">
+              <div className="text-[11px] text-neo-mid">涨停</div>
+              <div className="mt-1.5 text-xl font-semibold text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{upCount}</div>
+              <div className="mt-0.5 text-[10px] text-neo-dim">占比 {upRatio}%</div>
             </div>
-            <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-down" />
-                <span className="text-xs text-[var(--text-secondary)]">跌停</span>
-              </div>
-              <div className="font-num mt-2 text-2xl font-bold text-down">{downCount}</div>
-              <div className="mt-1 text-xs text-[var(--text-tertiary)]">占比 {(100 - parseFloat(upRatio)).toFixed(1)}%</div>
+            <div className="neo-card-sm p-3">
+              <div className="text-[11px] text-neo-mid">跌停</div>
+              <div className="mt-1.5 text-xl font-semibold text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{downCount}</div>
+              <div className="mt-0.5 text-[10px] text-neo-dim">占比 {(100 - parseFloat(upRatio)).toFixed(1)}%</div>
             </div>
-            <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-              <div className="text-xs text-[var(--text-secondary)]">涨跌比</div>
-              <div className="font-num mt-2 text-2xl font-bold text-[var(--text-primary)]">
+            <div className="neo-card-sm p-3">
+              <div className="text-[11px] text-neo-mid">涨跌比</div>
+              <div className="mt-1.5 text-xl font-semibold text-neo-ink" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
                 {upCount > 0 && downCount > 0 ? (upCount / downCount).toFixed(2) : "-"}
               </div>
-              <div className="mt-1 text-xs text-[var(--text-tertiary)]">{upCount > downCount ? "多头占优" : "空头占优"}</div>
+              <div className="mt-0.5 text-[10px] text-neo-dim">{upCount > downCount ? "多头占优" : "空头占优"}</div>
             </div>
-            <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
-              <div className="text-xs text-[var(--text-secondary)]">市场情绪</div>
-              <div className="mt-2 text-2xl font-bold text-[var(--text-primary)]">{sentiment}</div>
-              <div className="mt-1 text-xs text-[var(--text-tertiary)]">{upCount > downCount ? "偏多" : "偏空"}</div>
+            <div className="neo-card-sm p-3">
+              <div className="text-[11px] text-neo-mid">市场情绪</div>
+              <div className="mt-1.5 text-xl font-semibold text-neo-ink">{sentiment}</div>
             </div>
           </div>
         </section>
 
-        {/* Indices */}
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "180ms" }}>
-          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">指数表现</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* 指数表现 */}
+        <section className="mt-4">
+          <h2 className="mb-2 text-[12px] text-neo-mid">指数表现</h2>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {dashboard.indices.map((idx) => {
-              const t = trendClass(idx.change_pct);
-              const bgT = trendBgClass(idx.change_pct);
+              const t = neoTrendClass(idx.change_pct);
+              const bgT = neoTrendBgClass(idx.change_pct);
               return (
-                <div key={idx.code} className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
+                <div key={idx.code} className="neo-card-sm p-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-[var(--text-secondary)]">{idx.name}</span>
-                    <span className={`rounded px-2 py-0.5 text-xs font-medium ${bgT} ${t}`}>{formatPct(idx.change_pct)}</span>
+                    <span className="text-[13px] text-neo-mid">{idx.name}</span>
+                    <span className={`px-1.5 py-0.5 text-[11px] ${bgT} ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPct(idx.change_pct)}</span>
                   </div>
-                  <div className={`font-num mt-2 text-2xl font-bold ${t}`}>{formatPrice(idx.last)}</div>
-                  <div className={`font-num mt-1 text-sm ${t}`}>{idx.change >= 0 ? "+" : ""}{idx.change.toFixed(2)}</div>
+                  <div className={`mt-1.5 text-xl font-semibold ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPrice(idx.last)}</div>
+                  <div className={`mt-0.5 text-[12px] ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{idx.change >= 0 ? "+" : ""}{idx.change.toFixed(2)}</div>
                 </div>
               );
             })}
           </div>
         </section>
 
-        {/* Strong Industries */}
-        <section className="mt-6 animate-fade-up" style={{ animationDelay: "240ms" }}>
-          <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">强势行业</h2>
-          <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {/* 强势行业 */}
+        <section className="mt-4">
+          <h2 className="mb-2 text-[12px] text-neo-mid">强势行业</h2>
+          <div className="neo-card p-4">
+            <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3">
               {dashboard.strong_industries.map((ind, i) => {
-                const t = trendClass(ind.change_pct);
+                const t = neoTrendClass(ind.change_pct);
                 return (
-                  <div key={ind.name} className="row-hover flex items-center gap-3 rounded px-2 py-2">
-                    <span className="font-num w-6 text-xs text-[var(--text-tertiary)]">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="flex-1 truncate text-sm text-[var(--text-primary)]">{ind.name}</span>
-                    <span className={`font-num text-sm font-medium ${t}`}>{formatPct(ind.change_pct)}</span>
+                  <div key={ind.name} className="transition-colors hover-neo-inset flex items-center gap-2 px-1 py-1.5">
+                    <span className="w-5 text-[11px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{i + 1}</span>
+                    <span className="flex-1 truncate text-[13px] text-neo-ink">{ind.name}</span>
+                    <span className={`text-[13px] ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPct(ind.change_pct)}</span>
                   </div>
                 );
               })}
@@ -157,56 +201,53 @@ export default async function ReviewPage() {
           </div>
         </section>
 
-        {/* News */}
+        {/* 资讯 */}
         {insights && insights.news.length > 0 && (
-          <section className="mt-6 animate-fade-up" style={{ animationDelay: "300ms" }}>
-            <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">市场资讯 ({insights.news.length})</h2>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <section className="mt-4">
+            <h2 className="mb-2 text-[12px] text-neo-mid">资讯 ({insights.news.length})</h2>
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {insights.news.map((n) => (
                 <a
                   key={n.id}
                   href={n.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="card-hover group flex flex-col rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4"
+                  className="transition-colors hover-neo-inset group flex flex-col neo-card-sm p-3"
                 >
-                  <div className="flex items-center gap-2 text-[11px]">
-                    <span className="text-[var(--text-secondary)]">{n.source}</span>
-                    <span className="text-[var(--border-default)]">|</span>
-                    <span className="font-num text-[var(--text-tertiary)]">{(n.time || "").slice(5, 16)}</span>
+                  <div className="flex items-center gap-2 text-[10px]">
+                    <span className="text-neo-mid">{n.source}</span>
+                    <span className="text-neo-dim">·</span>
+                    <span className="text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{(n.time || "").slice(5, 16)}</span>
                   </div>
-                  <h4 className="mt-2 line-clamp-2 text-sm font-medium text-[var(--text-primary)] transition-fast group-hover:text-brand">{n.title}</h4>
-                  <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--text-secondary)]">{n.summary}</p>
-                  <div className="mt-auto pt-2">
-                    <span className="text-[11px] text-[var(--text-tertiary)] transition-fast group-hover:text-brand">阅读全文 →</span>
-                  </div>
+                  <h4 className="mt-1.5 line-clamp-2 text-[13px] font-medium text-neo-ink">{n.title}</h4>
+                  <p className="mt-1 line-clamp-2 text-[12px] leading-relaxed text-neo-mid">{n.summary}</p>
                 </a>
               ))}
             </div>
           </section>
         )}
 
-        {/* Reports */}
+        {/* 研报 */}
         {insights && insights.reports && insights.reports.length > 0 && (
-          <section className="mt-6 animate-fade-up" style={{ animationDelay: "360ms" }}>
-            <h2 className="mb-3 text-sm font-semibold text-[var(--text-secondary)]">研报精选 ({insights.reports.length})</h2>
-            <div className="space-y-2">
+          <section className="mt-4">
+            <h2 className="mb-2 text-[12px] text-neo-mid">研报 ({insights.reports.length})</h2>
+            <div className="space-y-1">
               {insights.reports.map((r) => (
                 <a
                   key={r.id}
                   href={r.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="card-hover group flex items-start gap-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4"
+                  className="transition-colors hover-neo-inset group flex items-start gap-3 neo-card-sm p-3"
                 >
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 text-[11px]">
-                      <span className="text-[var(--text-secondary)]">{r.source}</span>
-                      <span className="text-[var(--border-default)]">|</span>
-                      <span className="font-num text-[var(--text-tertiary)]">{(r.publish_at || r.time || "").slice(0, 10)}</span>
+                    <div className="flex items-center gap-2 text-[10px]">
+                      <span className="text-neo-mid">{r.source}</span>
+                      <span className="text-neo-dim">·</span>
+                      <span className="text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{(r.publish_at || r.time || "").slice(0, 10)}</span>
                     </div>
-                    <h4 className="mt-1.5 text-sm font-medium text-[var(--text-primary)] transition-fast group-hover:text-brand">{r.title}</h4>
-                    {r.summary && <p className="mt-1 line-clamp-2 text-xs text-[var(--text-secondary)]">{r.summary}</p>}
+                    <h4 className="mt-1 text-[13px] font-medium text-neo-ink">{r.title}</h4>
+                    {r.summary && <p className="mt-0.5 line-clamp-2 text-[12px] text-neo-mid">{r.summary}</p>}
                   </div>
                 </a>
               ))}
@@ -214,46 +255,40 @@ export default async function ReviewPage() {
           </section>
         )}
 
-        {/* Limit Lists */}
-        <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="animate-fade-up overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]" style={{ animationDelay: "420ms" }}>
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-up" />
-                <h3 className="text-sm font-semibold text-[var(--text-primary)]">涨停板</h3>
-              </div>
-              <span className="text-xs text-up">共 {dashboard.limit_up.length} 只</span>
+        {/* 涨跌停 */}
+        <section className="mt-4 grid grid-cols-1 gap-2 lg:grid-cols-2">
+          <div className="overflow-hidden neo-card-sm">
+            <div className="flex items-center justify-between neo-inset px-3 py-2">
+              <h3 className="text-[12px] font-medium text-neo-ink">涨停板</h3>
+              <span className="text-[11px] text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{dashboard.limit_up.length} 只</span>
             </div>
             <div className="max-h-96 overflow-y-auto scrollbar-thin">
               {dashboard.limit_up.map((s) => (
-                <a key={s.code} href={`/stock/${s.code.replace(/\./, "")}/`} className="row-hover flex items-center gap-2 border-b border-[var(--border-subtle)] px-4 py-2 text-sm last:border-b-0">
+                <a key={s.code} href={`/stock/${s.code.replace(/\./, "")}/`} className="transition-colors hover-neo-inset flex items-center gap-2 neo-inset px-3 py-1.5 last:border-b-0">
                   <div className="flex flex-1 flex-col">
-                    <span className="truncate font-medium text-[var(--text-primary)]">{s.name}</span>
-                    <span className="font-num text-[10px] text-[var(--text-tertiary)]">{s.code}</span>
+                    <span className="truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+                    <span className="text-[10px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{s.code}</span>
                   </div>
-                  <span className="font-num text-right text-up">{s.price.toFixed(2)}</span>
-                  <span className="font-num w-20 text-right font-medium text-up">{formatPct(s.pct)}</span>
+                  <span className="text-right text-[13px] text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{s.price.toFixed(2)}</span>
+                  <span className="w-20 text-right text-[13px] text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPct(s.pct)}</span>
                 </a>
               ))}
             </div>
           </div>
-          <div className="animate-fade-up overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)]" style={{ animationDelay: "480ms" }}>
-            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-4 py-3">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-down" />
-                <h3 className="text-sm font-semibold text-[var(--text-primary)]">跌停板</h3>
-              </div>
-              <span className="text-xs text-down">共 {dashboard.limit_down.length} 只</span>
+          <div className="overflow-hidden neo-card-sm">
+            <div className="flex items-center justify-between neo-inset px-3 py-2">
+              <h3 className="text-[12px] font-medium text-neo-ink">跌停板</h3>
+              <span className="text-[11px] text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{dashboard.limit_down.length} 只</span>
             </div>
             <div className="max-h-96 overflow-y-auto scrollbar-thin">
               {dashboard.limit_down.map((s) => (
-                <a key={s.code} href={`/stock/${s.code.replace(/\./, "")}/`} className="row-hover flex items-center gap-2 border-b border-[var(--border-subtle)] px-4 py-2 text-sm last:border-b-0">
+                <a key={s.code} href={`/stock/${s.code.replace(/\./, "")}/`} className="transition-colors hover-neo-inset flex items-center gap-2 neo-inset px-3 py-1.5 last:border-b-0">
                   <div className="flex flex-1 flex-col">
-                    <span className="truncate font-medium text-[var(--text-primary)]">{s.name}</span>
-                    <span className="font-num text-[10px] text-[var(--text-tertiary)]">{s.code}</span>
+                    <span className="truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+                    <span className="text-[10px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{s.code}</span>
                   </div>
-                  <span className="font-num text-right text-down">{s.price.toFixed(2)}</span>
-                  <span className="font-num w-20 text-right font-medium text-down">{formatPct(s.pct)}</span>
+                  <span className="text-right text-[13px] text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{s.price.toFixed(2)}</span>
+                  <span className="w-20 text-right text-[13px] text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPct(s.pct)}</span>
                 </a>
               ))}
             </div>
@@ -261,6 +296,10 @@ export default async function ReviewPage() {
         </section>
       </main>
       <Footer />
-    </>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
+      />
+    </div>
   );
 }

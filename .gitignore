@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+/.next-standalone-tmp/
 
 # production
 /build
@@ -32,6 +33,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -44,4 +46,20 @@ next-env.d.ts
 check-colors.js
 dom-dump*.txt
 parse_api.py
-test_api.pyscreenshot-*.png
+test_api.py
+screenshot-*.png
+screenshot-full.png
+screenshots/
+.gitignore.tmp
+
+# Deploy artifacts
+*.zip
+*.tar.gz
+standalone-*
+.omx/
+patches/
+
+# Internal planning docs
+DESIGN.md
+NEOMORPHISM-PLAN.md
+ai-art-integration_*.md

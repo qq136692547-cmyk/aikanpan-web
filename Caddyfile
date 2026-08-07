@@ -1,0 +1,21 @@
+{
+	email admin@aikanpan.top
+}
+
+aikanpan.top, www.aikanpan.top {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	handle /_next/static/* {
+		reverse_proxy 127.0.0.1:3000
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:3000 {
+			header_down Cache-Control "no-cache, no-store, must-revalidate"
+		}
+	}
+}
