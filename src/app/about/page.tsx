@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { AboutBrandBanner } from "@/components/about/about-brand-banner";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
@@ -15,11 +16,7 @@ export default function AboutPage() {
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-6">
         {/* 品牌故事横幅 */}
-        <img loading="lazy"
-          src="/images/ai-art/about-brand-story.png"
-          alt="爱看盘品牌故事"
-          className="neo-art-bright mb-6 h-56 w-full rounded-2xl object-cover sm:h-72"
-        />
+        <AboutBrandBanner />
 
         <section className="neo-fade-up">
           <h1 className="text-xl font-bold text-neo-ink">关于爱看盘</h1>
