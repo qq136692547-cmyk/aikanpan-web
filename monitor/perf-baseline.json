@@ -1,0 +1,196 @@
+{
+  "generated_at": "2026-08-07T18:07:58.429Z",
+  "base_url": "https://aikanpan.top",
+  "samples_per_url": 5,
+  "items": [
+    {
+      "url": "https://aikanpan.top/",
+      "status": 200,
+      "p50_ms": 99.8,
+      "p95_ms": 167.1,
+      "max_ms": 167.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/dashboard/",
+      "status": 200,
+      "p50_ms": 106.5,
+      "p95_ms": 110.8,
+      "max_ms": 110.8,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/market/",
+      "status": 200,
+      "p50_ms": 45.9,
+      "p95_ms": 50.8,
+      "max_ms": 50.8,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/review/",
+      "status": 200,
+      "p50_ms": 144.3,
+      "p95_ms": 172.8,
+      "max_ms": 172.8,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/research/",
+      "status": 200,
+      "p50_ms": 57.6,
+      "p95_ms": 83.1,
+      "max_ms": 83.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/search/",
+      "status": 200,
+      "p50_ms": 223.4,
+      "p95_ms": 243.1,
+      "max_ms": 243.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/alerts/",
+      "status": 200,
+      "p50_ms": 150.8,
+      "p95_ms": 173.2,
+      "max_ms": 173.2,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/account/",
+      "status": 200,
+      "p50_ms": 32.5,
+      "p95_ms": 59.1,
+      "max_ms": 59.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/portfolio/",
+      "status": 200,
+      "p50_ms": 29.7,
+      "p95_ms": 32.1,
+      "max_ms": 32.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/etf/",
+      "status": 200,
+      "p50_ms": 32,
+      "p95_ms": 35.8,
+      "max_ms": 35.8,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/fund/",
+      "status": 200,
+      "p50_ms": 34.9,
+      "p95_ms": 36.1,
+      "max_ms": 36.1,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/about/",
+      "status": 200,
+      "p50_ms": 37.2,
+      "p95_ms": 39,
+      "max_ms": 39,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api-docs/",
+      "status": 200,
+      "p50_ms": 48.8,
+      "p95_ms": 50.9,
+      "max_ms": 50.9,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/privacy/",
+      "status": 200,
+      "p50_ms": 32.8,
+      "p95_ms": 36.4,
+      "max_ms": 36.4,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/stock/sh600519/",
+      "status": 200,
+      "p50_ms": 275.8,
+      "p95_ms": 278.9,
+      "max_ms": 278.9,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/health",
+      "status": 200,
+      "p50_ms": 25.9,
+      "p95_ms": 26.8,
+      "max_ms": 26.8,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/workbench/dashboard",
+      "status": 200,
+      "p50_ms": 63.6,
+      "p95_ms": 65.2,
+      "max_ms": 65.2,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/workbench/insights",
+      "status": 200,
+      "p50_ms": 21.3,
+      "p95_ms": 23.2,
+      "max_ms": 23.2,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/market/sectors",
+      "status": 200,
+      "p50_ms": 24.1,
+      "p95_ms": 24.7,
+      "max_ms": 24.7,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/stocks/sh.600519/quote",
+      "status": 200,
+      "p50_ms": 3818.8,
+      "p95_ms": 3820.4,
+      "max_ms": 3820.4,
+      "samples": 5,
+      "errors": 0
+    },
+    {
+      "url": "https://aikanpan.top/api/v1/portfolio/positions",
+      "status": 200,
+      "p50_ms": 4391.5,
+      "p95_ms": 4393,
+      "max_ms": 4393,
+      "samples": 5,
+      "errors": 0
+    }
+  ]
+}

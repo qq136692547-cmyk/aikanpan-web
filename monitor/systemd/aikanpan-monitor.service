@@ -1,0 +1,7 @@
+[Unit]
+Description=Aikanpan backend error scan
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/dsa-mp/monitor/scan_errors.py --minutes 60

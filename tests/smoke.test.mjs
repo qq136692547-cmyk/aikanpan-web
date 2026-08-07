@@ -110,3 +110,13 @@ test("review status exposes task fields", { timeout: 30000 }, async () => {
   assert.equal(typeof data.last_error, "string");
   assert.equal(typeof data.cached, "boolean");
 });
+
+test("monitor errors endpoint accepts and lists", { timeout: 30000 }, async () => {
+  const saved = await request("/monitor/errors", {
+    method: "POST",
+    body: JSON.stringify({ message: "smoke monitor", url: "https://aikanpan.top/tests", type: "test" }),
+  });
+  assert.equal(typeof saved.accepted, "boolean");
+  const list = await request("/monitor/errors?limit=5");
+  assert.ok(Array.isArray(list.errors));
+});

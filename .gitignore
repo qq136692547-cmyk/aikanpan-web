@@ -44,6 +44,7 @@ next-env.d.ts
 
 # Temp files
 check-colors.js
+__pycache__/
 dom-dump*.txt
 parse_api.py
 test_api.py

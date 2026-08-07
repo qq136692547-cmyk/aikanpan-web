@@ -3,6 +3,7 @@ import "@fontsource-variable/inter";
 import { AuthProvider } from "@/lib/auth";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { GlobalSearch } from "@/components/layout/global-search";
+import { ErrorReporter } from "@/components/system/error-reporter";
 import "./globals.css";
 
 
@@ -45,6 +46,7 @@ export default function RootLayout({
           <BottomNav />
         </AuthProvider>
         <GlobalSearch />
+        <ErrorReporter />
       </body>
     </html>
   );
