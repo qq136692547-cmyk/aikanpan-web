@@ -363,6 +363,13 @@
 .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
 .data-flash { animation: dataFlash 500ms ease-out; }
 
+@keyframes klineDraw { from { stroke-dashoffset: 1800; } to { stroke-dashoffset: 0; } }
+@keyframes klineGlow { 0%, 100% { opacity: 0.28; } 50% { opacity: 0.7; } }
+@keyframes priceTick { from { transform: translateY(3px); opacity: 0.45; } to { transform: translateY(0); opacity: 1; } }
+.kline-draw { stroke-dasharray: 1800; stroke-dashoffset: 1800; animation: klineDraw 2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.kline-glow { animation: klineGlow 3s ease-in-out infinite; }
+.price-tick { animation: priceTick 320ms ease-out; }
+
 .scanline { position: relative; overflow: hidden; }
 .scanline::after {
   content: '';

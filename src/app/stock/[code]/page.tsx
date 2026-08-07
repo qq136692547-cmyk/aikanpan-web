@@ -5,10 +5,9 @@ import { AIComment } from "@/components/ai/ai-comment";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { StockTabs } from "@/components/stock/stock-tabs";
+import { StockTitleBar } from "@/components/stock/stock-title-bar";
 import { api } from "@/lib/api";
-import { WatchlistButton } from "@/components/stock/watchlist-button";
-import { formatPct, formatPrice, formatChange, formatVolume, formatAmount } from "@/lib/format";
-import Image from "next/image";
+import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
@@ -19,9 +18,6 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   return { title: `个股 ${code}` };
 }
 
-function neoTrendClass(pct: number) {
-  return pct > 0 ? "text-neo-up" : pct < 0 ? "text-neo-down" : "text-neo-mid";
-}
 
 export default async function StockPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = await params;
@@ -53,37 +49,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
-        {/* 报价头部 */}
-        <div className="neo-card relative overflow-hidden p-6 mb-4 neo-fade-up">
-          <Image
-            src="/images/ai-art/stock-detail-decoration.png"
-            alt=""
-            aria-hidden
-            fill
-            className="pointer-events-none object-cover opacity-20"
-          />
-          <div className="relative">
-          <div className="flex items-start justify-between flex-wrap gap-2">
-            <div>
-              <h1 className="text-[20px] font-bold text-neo-ink">{quote?.name || code}</h1>
-              <p className="mt-0.5 text-[12px] text-neo-dim">{code}</p>
-            </div>
-            {quote && (
-              <div className="flex items-center gap-3">
-                <div className="text-right whitespace-nowrap">
-                  <div className={`text-[24px] sm:text-[32px] font-bold ${neoTrendClass(quote.change_pct)}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    {formatPrice(quote.last)}
-                  </div>
-                  <div className={`text-[14px] ${neoTrendClass(quote.change_pct)}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    {formatChange(quote.change)} ({formatPct(quote.change_pct)})
-                  </div>
-                </div>
-                <WatchlistButton code={code} name={quote.name || code} />
-              </div>
-            )}
-          </div>
-          </div>
-        </div>
+        <StockTitleBar code={code} initial={quote} />
 
         {/* 统计数据网格 */}
         {quote && (
