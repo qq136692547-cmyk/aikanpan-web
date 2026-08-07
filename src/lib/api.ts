@@ -81,6 +81,10 @@ export class ApiClient {
     });
   }
 
+  getNewsRadar() {
+    return this.request<NewsRadar>("/ai/news-radar", { method: "POST", body: "{}", next: { revalidate: 900 } });
+  }
+
   /** 板块行情 */
   getSectors() {
     return this.request<{ sectors: Sector[]; count: number }>("/market/sectors", {
@@ -447,6 +451,14 @@ export interface MarketTemperature {
     generated_at: string;
     cached: boolean;
   };
+}
+
+export interface NewsRadar {
+  radar: string;
+  news_count: number;
+  model: string;
+  generated_at: string;
+  cached: boolean;
 }
 
 export interface NewsItem {

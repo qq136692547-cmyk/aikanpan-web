@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
+import { NewsRadarCard } from "@/components/ai/news-radar";
+import { TechCanvasBackground } from "@/components/landing/tech-canvas-background";
 import { AIReview } from "@/components/ai/ai-review";
 import { Sparkline } from "@/components/chart/sparkline";
 import { api, type Dashboard, type Insights } from "@/lib/api";
@@ -98,15 +100,11 @@ export default async function HomePage() {
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
         {/* 工作台头部 */}
-        <section className="neo-fade-up relative overflow-hidden rounded-2xl">
-          <img loading="lazy"
-            src="/images/ai-art/dashboard-banner-v2.png"
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/85 via-[var(--neo-bg)]/65 to-[var(--neo-bg)]/85" />
-          <div className="relative px-5 py-4 sm:px-6 sm:py-5">
+        <section className="neo-fade-up relative min-h-[190px] overflow-hidden rounded-2xl sm:min-h-[230px]">
+          <TechCanvasBackground className="pointer-events-none absolute inset-0 h-full w-full" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/80 via-[var(--neo-bg)]/35 to-[var(--neo-bg)]/80" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--neo-bg)]/90 to-transparent" />
+          <div className="relative flex min-h-[190px] flex-col justify-center px-5 py-4 sm:min-h-[230px] sm:px-6 sm:py-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
@@ -188,6 +186,8 @@ export default async function HomePage() {
               <span>{dashboard.market_updated_at}</span>
             </div>
           </div>
+
+          <NewsRadarCard />
         </section>
 
         {/* 情绪温度 + 涨停池 */}
