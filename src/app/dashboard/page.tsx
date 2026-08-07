@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { LimitListWithScore } from "@/components/ai/limit-list-with-score";
+import { LimitStatsPersonalized } from "@/components/ai/limit-stats-personalized";
 import { AIReview } from "@/components/ai/ai-review";
 import { AIQuickDiagnosis } from "@/components/ai/ai-quick-diagnosis";
 import { MarketSentiment } from "@/components/ai/market-sentiment";
@@ -52,7 +53,7 @@ export default async function DashboardPage() {
 
   const upCount = dashboard.limit_up_count;
 
-  let indexHistories: Record<string, number[]> = {};
+  const indexHistories: Record<string, number[]> = {};
   try {
     const indexCodes = dashboard.indices.map((idx) => idx.code).filter((c): c is string => Boolean(c));
     const settled = await Promise.allSettled(indexCodes.map((c) => api.getStockHistory(c)));
@@ -66,8 +67,6 @@ export default async function DashboardPage() {
     console.error("Failed to fetch index histories:", e);
   }
   const downCount = dashboard.limit_down_count;
-  const total = upCount + downCount;
-  const upRatio = total > 0 ? (upCount / total * 100) : 0;
   const idx0 = dashboard.indices[0];
   const otherIndices = dashboard.indices.slice(1);
 
@@ -157,34 +156,13 @@ export default async function DashboardPage() {
 
         {/* 涨跌停统计 — 凹陷数字格 */}
         <section className="mt-4 neo-fade-up" style={{ animationDelay: "60ms" }}>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <div className="neo-inset px-4 py-3">
-              <div className="text-[10px] uppercase tracking-wider text-neo-dim">涨停</div>
-              <div className="mt-1 text-[28px] font-bold leading-none text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{upCount}</div>
-              <div className="mt-1 text-[10px] text-neo-dim">{upRatio.toFixed(0)}%</div>
-            </div>
-            <div className="neo-inset px-4 py-3">
-              <div className="text-[10px] uppercase tracking-wider text-neo-dim">跌停</div>
-              <div className="mt-1 text-[28px] font-bold leading-none text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{downCount}</div>
-              <div className="mt-1 text-[10px] text-neo-dim">{(100 - upRatio).toFixed(0)}%</div>
-            </div>
-            <div className="neo-inset px-4 py-3 sm:col-span-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase tracking-wider text-neo-dim">涨跌分布</span>
-                <span className="text-[11px] text-neo-mid" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                  {upCount > 0 && downCount > 0 ? (upCount / downCount).toFixed(2) : "-"}
-                </span>
-              </div>
-              <div className="mt-2.5 flex h-1.5 overflow-hidden rounded-full bg-[var(--neo-surface-active)]">
-                <div className="bg-[var(--neo-up)] transition-all duration-500" style={{ width: `${upRatio}%` }} />
-                <div className="bg-[var(--neo-down)] transition-all duration-500" style={{ width: `${100 - upRatio}%` }} />
-              </div>
-              <div className="mt-1.5 flex justify-between text-[10px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                <span className="text-neo-up">{upCount}</span>
-                <span className="text-neo-down">{downCount}</span>
-              </div>
-            </div>
-          </div>
+          <LimitStatsPersonalized
+            upStocks={dashboard.limit_up}
+            downStocks={dashboard.limit_down}
+            upCount={upCount}
+            downCount={downCount}
+            sparkData={indexHistories[idx0.code || ""] || []}
+          />
         </section>
 
         {/* 板块速览 */}
