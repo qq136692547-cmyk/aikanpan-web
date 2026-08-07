@@ -47,6 +47,11 @@ export function trendClass(n: number): string {
   return "text-flat";
 }
 
+/** Normalize stock code: sh.600519 / 600519 -> 600519 */
+export function normalizeStockCode(code: string): string {
+  return (code || "").toLowerCase().replace(/[^0-9]/g, "");
+}
+
 /** 根据涨跌返回背景 class */
 export function trendBgClass(n: number): string {
   if (n > 0) return "bg-up-soft";

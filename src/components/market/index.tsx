@@ -3,7 +3,7 @@
  * Neomorphism style, neo panel system
  */
 import React from "react";
-import { formatPrice, formatPct, formatChange, trendClass, trendBgClass } from "@/lib/format";
+import { formatPrice, formatPct, formatChange, trendClass, trendBgClass, normalizeStockCode } from "@/lib/format";
 import type { IndexData, LimitStock, StrongIndustry, NewsItem, AIScoreItem } from "@/lib/api";
 import { AIScoreBadge, AIScoreBadgeSkeleton, AIScoreBadgeEmpty } from "@/components/ai/ai-score-badge";
 
@@ -32,9 +32,11 @@ export function IndexCard({ data }: { data: IndexData }) {
 
 export function LimitStockList({
   title, stocks, type, delay = 0, scores = {}, scoreLoading = false,
+  mineCodes = new Set<string>(), badges = {}, emptyText = "",
 }: {
   title: string; stocks: LimitStock[]; type: "up" | "down";
   delay?: number; scores?: Record<string, AIScoreItem>; scoreLoading?: boolean;
+  mineCodes?: Set<string>; badges?: Record<string, string[]>; emptyText?: string;
 }) {
   const headerColor = type === "up" ? "text-neo-up" : "text-neo-down";
   const hasScores = Object.keys(scores).length > 0 || scoreLoading;
@@ -54,14 +56,22 @@ export function LimitStockList({
         </div>
         {stocks.map((s) => {
           const t = trendClass(s.pct);
+          const normalized = normalizeStockCode(s.code);
+          const mine = mineCodes.has(normalized);
+          const rowBadges = badges[normalized] || [];
           return (
             <a
               key={s.code}
               href={`/stock/${s.code.replace(/\./, "")}/`}
-              className={`transition-colors hover-neo-inset grid ${hasScores ? "grid-cols-[1fr_64px_56px_40px_38px] sm:grid-cols-[1fr_80px_64px_48px_40px]" : "grid-cols-[1fr_72px_56px_40px] sm:grid-cols-[1fr_90px_72px_56px]"} items-center gap-2 px-3 py-2 text-[13px] sm:px-5`}
+              className={`transition-colors hover-neo-inset grid ${hasScores ? "grid-cols-[1fr_64px_56px_40px_38px] sm:grid-cols-[1fr_80px_64px_48px_40px]" : "grid-cols-[1fr_72px_56px_40px] sm:grid-cols-[1fr_90px_72px_56px]"} items-center gap-2 px-3 py-2 text-[13px] sm:px-5 ${mine ? "bg-[var(--neo-surface-active)]/60" : ""}`}
             >
-              <div className="flex flex-col">
-                <span className="truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+              <div className="flex min-w-0 flex-col">
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <span className="truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+                  {rowBadges.map((b) => (
+                    <span key={b} className={`shrink-0 rounded px-1 py-0.5 text-[9px] font-semibold ${b === "持仓" ? "bg-[var(--neo-amber)]/15 text-[var(--neo-amber)]" : "bg-[var(--neo-primary)]/15 text-[var(--neo-primary)]"}`}>{b}</span>
+                  ))}
+                </div>
                 <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{s.code}</span>
               </div>
               <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`text-right text-[13px] ${t}`}>{formatPrice(s.price)}</span>
@@ -79,6 +89,9 @@ export function LimitStockList({
             </a>
           );
         })}
+        {stocks.length === 0 && emptyText && (
+          <div className="px-5 py-8 text-center text-[12px] text-neo-dim">{emptyText}</div>
+        )}
       </div>
     </div>
   );
