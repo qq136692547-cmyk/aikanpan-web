@@ -115,8 +115,8 @@ export function IndustryCard({ industries }: { industries: StrongIndustry[]; del
               <span className="w-20 truncate text-[13px] text-neo-ink">{ind.name}</span>
               <div className="flex-1 h-1 overflow-hidden rounded-full bg-[var(--neo-surface-inset)]">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${ind.change_pct > 0 ? "bg-neo-up" : "bg-neo-down"}`}
-                  style={{ width: `${barWidth}%` }}
+                  className={`bar-grow h-full rounded-full transition-all duration-500 ${ind.change_pct > 0 ? "bg-neo-up" : "bg-neo-down"}`}
+                  style={{ width: `${barWidth}%`, animationDelay: `${Math.min(i * 70, 420)}ms` }}
                 />
               </div>
               <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className={`w-14 text-right text-[13px] font-medium ${t}`}>{formatPct(ind.change_pct)}</span>

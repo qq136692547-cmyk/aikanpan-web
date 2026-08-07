@@ -198,13 +198,13 @@ export default async function HomePage() {
               <span className="text-[10px] uppercase tracking-wider text-neo-dim">纯计算 · 无 AI 参与</span>
             </div>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {dashboard.strong_industries.slice(0, 6).map((ind) => (
+              {dashboard.strong_industries.slice(0, 6).map((ind, i) => (
                 <div key={ind.name} className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover-neo-inset">
                   <span className="w-24 truncate text-[13px] font-medium text-neo-ink">{ind.name}</span>
                   <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--neo-surface-inset)]">
                     <div
-                      className="h-full rounded-full bg-neo-up transition-all duration-500"
-                      style={{ width: `${Math.min(Math.abs(ind.change_pct) * 10, 100)}%` }}
+                      className="bar-grow h-full rounded-full bg-neo-up transition-all duration-500"
+                      style={{ width: `${Math.min(Math.abs(ind.change_pct) * 10, 100)}%`, animationDelay: `${Math.min(i * 70, 420)}ms` }}
                     />
                   </div>
                   <span style={{ fontFamily: "var(--font-inter), system-ui" }} className={`w-16 text-right text-[13px] font-semibold ${neoTrendClass(ind.change_pct)}`}>

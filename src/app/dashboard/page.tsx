@@ -170,7 +170,7 @@ export default async function DashboardPage() {
           <section className="mt-4 neo-fade-up" style={{ animationDelay: "80ms" }}>
             <h3 className="mb-2 text-[14px] font-semibold text-neo-ink">板块速览</h3>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-              {dashboard.strong_industries.slice(0, 6).map((ind) => (
+              {dashboard.strong_industries.slice(0, 6).map((ind, i) => (
                 <div key={ind.name} className="neo-card-sm p-3">
                   <div className="truncate text-[12px] font-medium text-neo-ink">{ind.name}</div>
                   <div className={`mt-1 text-[14px] font-semibold ${neoTrendClass(ind.change_pct)}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
@@ -178,8 +178,8 @@ export default async function DashboardPage() {
                   </div>
                   <div className="neo-inset-sm mt-2 h-1 overflow-hidden rounded-full">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${ind.change_pct > 0 ? 'bg-[var(--neo-up)]' : 'bg-[var(--neo-down)]'}`}
-                      style={{ width: `${Math.min(Math.abs(ind.change_pct) * 10, 100)}%` }}
+                      className={`bar-grow h-full rounded-full transition-all duration-500 ${ind.change_pct > 0 ? 'bg-[var(--neo-up)]' : 'bg-[var(--neo-down)]'}`}
+                      style={{ width: `${Math.min(Math.abs(ind.change_pct) * 10, 100)}%`, animationDelay: `${Math.min(i * 70, 420)}ms` }}
                     />
                   </div>
                 </div>
