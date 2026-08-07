@@ -2,6 +2,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
 import { NewsRadarCard } from "@/components/ai/news-radar";
+import { HomeLimitCard } from "@/components/ai/home-limit-card";
+import { HomeLimitTopList } from "@/components/ai/home-limit-top-list";
 import { TechCanvasBackground } from "@/components/landing/tech-canvas-background";
 import { AIReview } from "@/components/ai/ai-review";
 import { Sparkline } from "@/components/chart/sparkline";
@@ -31,15 +33,6 @@ function sourceLabel(source?: string): string {
   return map[source || ""] || source || "行情";
 }
 
-function tagLabel(tag: string): string {
-  const map: Record<string, string> = {
-    limit30: "30cm",
-    limit20: "20cm",
-    limit10: "10cm",
-    st: "ST",
-  };
-  return map[tag] || tag;
-}
 
 
 export default async function HomePage() {
@@ -55,7 +48,7 @@ export default async function HomePage() {
     console.error("Failed to fetch home data:", e);
   }
 
-  let indexHistories: Record<string, number[]> = {};
+  const indexHistories: Record<string, number[]> = {};
   if (dashboard) {
     try {
       const indexCodes = dashboard.indices.map((idx) => idx.code).filter((c): c is string => Boolean(c));
@@ -170,22 +163,14 @@ export default async function HomePage() {
             </div>
           ))}
 
-          <div className="neo-card-sm p-4">
-            <div className="text-[10px] uppercase tracking-wider text-neo-dim">涨跌停</div>
-            <div className="mt-2 flex items-baseline gap-3">
-              <span className="text-[26px] font-bold leading-none text-neo-up" style={{ fontFamily: "var(--font-inter), system-ui" }}>{upCount}</span>
-              <span className="text-[13px] text-neo-up">涨停</span>
-              <span className="text-[26px] font-bold leading-none text-neo-down" style={{ fontFamily: "var(--font-inter), system-ui" }}>{downCount}</span>
-              <span className="text-[13px] text-neo-down">跌停</span>
-            </div>
-            <div className="neo-inset-sm mt-3 h-1.5 overflow-hidden rounded-full">
-              <div className="h-full rounded-full bg-neo-up transition-all duration-500" style={{ width: `${upRatio}%` }} />
-            </div>
-            <div className="mt-1.5 flex justify-between text-[10px] text-neo-dim">
-              <span>涨停占比 {upRatio.toFixed(0)}%</span>
-              <span>{dashboard.market_updated_at}</span>
-            </div>
-          </div>
+          <HomeLimitCard
+            upCount={upCount}
+            downCount={downCount}
+            upRatio={upRatio}
+            updatedAt={dashboard.market_updated_at}
+            limitUp={dashboard.limit_up}
+            limitDown={dashboard.limit_down}
+          />
 
           <NewsRadarCard />
         </section>
@@ -201,26 +186,7 @@ export default async function HomePage() {
               <h2 className="text-[14px] font-semibold text-neo-ink">涨停池 TOP 8</h2>
               <a href="/market/" className="text-[11px] text-neo-primary hover:underline">市场页 →</a>
             </div>
-            <div>
-              {dashboard.limit_up.slice(0, 8).map((s, i) => (
-                <a
-                  key={s.code}
-                  href={`/stock/${s.code.replace(/\./, "")}/`}
-                  className="grid grid-cols-[32px_1fr_1fr_1fr] items-center gap-2 px-5 py-2 text-[13px] transition-colors hover-neo-inset"
-                >
-                  <span className="text-[11px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>{String(i + 1).padStart(2, "0")}</span>
-                  <div className="min-w-0">
-                    <div className="truncate font-medium text-neo-ink">{s.name}</div>
-                    <div className="text-[10px] text-neo-dim">{s.code}</div>
-                  </div>
-                  <span style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-right text-neo-mid">{formatPrice(s.price)}</span>
-                  <span className="flex items-center justify-end gap-1.5">
-                    <span style={{ fontFamily: "var(--font-inter), system-ui" }} className={`text-[13px] font-semibold ${neoTrendClass(s.pct)}`}>{formatPct(s.pct)}</span>
-                    <span className="neo-chip px-1.5 py-0.5 text-[10px] text-neo-mid">{tagLabel(s.tag)}</span>
-                  </span>
-                </a>
-              ))}
-            </div>
+            <HomeLimitTopList stocks={dashboard.limit_up.slice(0, 8)} />
           </div>
         </section>
 
