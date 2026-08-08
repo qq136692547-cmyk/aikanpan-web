@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import useSWR from "swr";
-import { api } from "@/lib/api";
+import { api, type UsSearchResult } from "@/lib/api";
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
@@ -14,7 +14,8 @@ function useDebounced<T>(value: T, delay: number): T {
   return debounced;
 }
 
-export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
+export function SearchBox({ initialQuery = "", market = "cn" }: { initialQuery?: string; market?: "all" | "cn" | "us" }) {
+  const isUs = market === "us";
   const router = useRouter();
   const boxRef = useRef<HTMLFormElement>(null);
   const [value, setValue] = useState(initialQuery);
@@ -23,8 +24,8 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
   const query = debounced.trim();
 
   const { data, error, isValidating } = useSWR(
-    query ? ["stock-search", query] : null,
-    () => api.searchStocks(query),
+    query ? [isUs ? "us-stock-search" : "stock-search", query] : null,
+    () => (isUs ? api.searchUsStocks(query) : api.searchStocks(query)),
     { revalidateOnFocus: false, dedupingInterval: 30_000 }
   );
 
@@ -45,12 +46,13 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
     const q = value.trim();
     if (!q) return;
     setOpen(false);
-    router.push(`/search?q=${encodeURIComponent(q)}`);
+    router.push(`/search?q=${encodeURIComponent(q)}${isUs ? "&market=us" : ""}`);
   }
 
   return (
     <form ref={boxRef} action="/search" onSubmit={handleSubmit} className="relative">
       <div className="flex gap-2">
+        {isUs && <input type="hidden" name="market" value="us" />}
         <input
           type="text"
           name="q"
@@ -60,7 +62,7 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          placeholder="输入股票代码、名称或拼音…"
+          placeholder={isUs ? "输入美股代码或名称…" : "输入股票代码、名称或拼音…"}
           autoComplete="off"
           className="neo-input flex-1 px-4 py-3 text-sm"
         />
@@ -85,13 +87,13 @@ export function SearchBox({ initialQuery = "" }: { initialQuery?: string }) {
                   <span className="truncate font-medium text-neo-ink">{s.name}</span>
                   <span className="flex shrink-0 items-center gap-2 text-[11px] text-neo-dim">
                     <span style={{ fontFamily: "var(--font-inter), system-ui" }}>{s.code}</span>
-                    <span>{s.pinyin || s.initials || "-"}</span>
+                    <span>{isUs ? ((s as UsSearchResult).type || "??") : (s.pinyin || s.initials || "-")}</span>
                   </span>
                 </a>
               ))}
             </div>
           ) : !isValidating ? (
-            <div className="px-4 py-3 text-xs text-neo-dim">未找到匹配的股票，试试完整代码或中文名称</div>
+            <div className="px-4 py-3 text-xs text-neo-dim">{isUs ? "未找到匹配的美股，试试完整代码或名称" : "未找到匹配的股票，试试完整代码或中文名称"}</div>
           ) : (
             <div className="px-4 py-3 text-xs text-neo-dim">搜索中…</div>
           )}

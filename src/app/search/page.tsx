@@ -1,11 +1,12 @@
 import { Navbar } from "@/components/layout/navbar";
 import { EmptyState } from "@/components/ui/state";
 import { Footer } from "@/components/layout/footer";
-import { api, type StockSearchResult, type Dashboard } from "@/lib/api";
+import { api, type Dashboard, type StockSearchResult, type UsDashboard, type UsSearchResult } from "@/lib/api";
 import { formatPrice, formatPct } from "@/lib/format";
 import Image from "next/image";
 import Link from "next/link";
 import { SearchBox } from "@/components/search/search-box";
+import { marketFromSearchParams } from "@/lib/market";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -79,32 +80,48 @@ function SearchStockCard({
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; market?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, market } = await searchParams;
+  const scope = marketFromSearchParams(market);
+  const isUs = scope === "us";
   let results: StockSearchResult[] = [];
+  let usResults: UsSearchResult[] = [];
   let error: string | null = null;
   let dashboard: Dashboard | null = null;
+  let usDashboard: UsDashboard | null = null;
 
   // 同时获取 dashboard 用于展示涨停板热门
-  try {
-    dashboard = await api.getDashboard();
-  } catch {}
+  if (!isUs) {
+    try {
+      dashboard = await api.getDashboard();
+    } catch {}
+  } else {
+    try {
+      usDashboard = await api.getUsDashboard();
+    } catch {}
+  }
 
   // 批量获取热门股票实时报价
-  const hotQuotes = await fetchHotStockQuotes();
+  const hotQuotes: Record<string, { last: number; change_pct: number }> = isUs ? {} : await fetchHotStockQuotes();
 
   if (q && q.trim()) {
     try {
-      const data = await api.searchStocks(q.trim());
-      results = data.list || [];
+      if (isUs) {
+        const data = await api.searchUsStocks(q.trim());
+        usResults = data.list || [];
+      } else {
+        const data = await api.searchStocks(q.trim());
+        results = data.list || [];
+      }
     } catch {
-      error = "搜索接口暂时不可用";
+      error = isUs ? "美股搜索接口暂时不可用" : "搜索接口暂时不可用";
     }
   }
 
   // 从涨停板提取热门股票
-  const hotFromMarket = dashboard?.limit_up?.slice(0, 6) || [];
+  const hotFromMarket = isUs ? [] : dashboard?.limit_up?.slice(0, 6) || [];
+  const searchResults = isUs ? usResults : results;
 
   return (
     <div className="neo-page">
@@ -125,7 +142,7 @@ export default async function SearchPage({
         </div>
 
         <div className="mt-4">
-          <SearchBox initialQuery={q || ""} />
+          <SearchBox initialQuery={q || ""} market={scope} />
         </div>
 
         {/* 搜索结果 */}
@@ -133,7 +150,7 @@ export default async function SearchPage({
           <div className="mt-4">
             <p className="text-sm text-neo-mid">
               关键词: <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-neo-ink">{q}</span>
-              {results.length > 0 && <span className="ml-2 text-neo-dim">({results.length} 条结果)</span>}
+              {searchResults.length > 0 && <span className="ml-2 text-neo-dim">({searchResults.length} 条结果)</span>}
             </p>
 
             {error && (
@@ -143,18 +160,18 @@ export default async function SearchPage({
               </div>
             )}
 
-            {!error && results.length === 0 && (
+            {!error && searchResults.length === 0 && (
               <div className="mt-4">
                 <EmptyState
                   image="/images/ai-art/empty-state-robot.png"
-                  title="未找到匹配的股票"
-                  description="试试直接输入 6 位代码（如 300414）或改用拼音搜索"
-                  action={q.match(/^\d{6}$/) ? (<a href={`/stock/${q}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q} →</a>) : undefined}
+                  title={isUs ? "未找到匹配的美股" : "未找到匹配的股票"}
+                  description={isUs ? "试试直接输入美股代码（如 AAPL）或公司名称" : "试试直接输入 6 位代码（如 300414）或改用拼音搜索"}
+                  action={isUs ? (/^[A-Za-z][A-Za-z0-9.-]{0,9}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().toUpperCase()}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().toUpperCase()} →</a>) : undefined) : (q.match(/^\d{6}$/) ? (<a href={`/stock/${q}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q} →</a>) : undefined)}
                 />
               </div>
             )}
 
-            {results.length > 0 && (
+            {!isUs && searchResults.length > 0 && (
               <div className="neo-card-sm mt-4 overflow-hidden">
                 <table className="w-full">
                   <thead>
@@ -180,12 +197,43 @@ export default async function SearchPage({
                 </table>
               </div>
             )}
+
+            {isUs && searchResults.length > 0 && (
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {searchResults.map((s) => (
+                  <a key={s.code} href={`/stock/${s.code}/`} className="neo-card-sm p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-sm font-medium text-neo-ink">{s.name}</span>
+                      <span className="shrink-0 rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-mid">{(s as UsSearchResult).type || "美股"}</span>
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-inter), system-ui' }} className="mt-1 text-[11px] text-neo-dim">{s.code}</div>
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {/* 没有搜索词时展示热门 */}
         {!q && (
           <>
+            {isUs && usDashboard && (
+              <section className="neo-fade-up mt-6">
+                <div className="mb-3 flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-neo-mid">美股热门</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                  {usDashboard.indices.map((idx) => (
+                    <SearchStockCard key={idx.code} name={idx.name ?? idx.code} code={idx.code} price={idx.last} pct={idx.change_pct} tag="指数ETF" href={`/stock/${idx.code}/`} />
+                  ))}
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {usDashboard.stocks.map((s) => (
+                    <SearchStockCard key={s.code} name={s.name ?? s.code} code={s.code} price={s.last} pct={s.change_pct} tag="美股" href={`/stock/${s.code}/`} />
+                  ))}
+                </div>
+              </section>
+            )}
             {/* 今日涨停热门 */}
             {hotFromMarket.length > 0 && (
               <section className="neo-fade-up mt-6">
@@ -234,16 +282,30 @@ export default async function SearchPage({
             </section>
 
             {/* 搜索提示 */}
-            <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
-              <div className="neo-card-sm p-5">
-                <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
-                <ul className="mt-2 space-y-1.5 text-xs text-neo-dim">
-                  <li>• 输入 6 位股票代码可直接跳转，如 <Link href="/stock/sz300414/" className="text-brand hover:underline">300414</Link></li>
-                  <li>• 输入股票名称搜索，如「茅台」「宁德」</li>
-                  <li>• 也可以从上方热门股票或今日涨停直接进入</li>
-                </ul>
-              </div>
-            </section>
+            {!isUs && (
+              <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
+                <div className="neo-card-sm p-5">
+                  <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
+                  <ul className="mt-2 space-y-1.5 text-xs text-neo-dim">
+                    <li>• 输入 6 位股票代码可直接跳转，如 <Link href="/stock/sz300414/" className="text-brand hover:underline">300414</Link></li>
+                    <li>• 输入股票名称搜索，如「茅台」「宁德」</li>
+                    <li>• 也可以从上方热门股票或今日涨停直接进入</li>
+                  </ul>
+                </div>
+              </section>
+            )}
+            {isUs && (
+              <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
+                <div className="neo-card-sm p-5">
+                  <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
+                  <ul className="mt-2 space-y-1.5 text-xs text-neo-dim">
+                    <li>• 输入美股代码可直接跳转，如 AAPL、NVDA、BRK.B</li>
+                    <li>• 输入公司名称搜索，如 Apple、Nvidia</li>
+                    <li>• 也可以从上方美股热门直接进入</li>
+                  </ul>
+                </div>
+              </section>
+            )}
           </>
         )}
       </main>
