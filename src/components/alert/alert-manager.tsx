@@ -35,9 +35,10 @@ function conditionLabel(cond: string): string {
 
 export function AlertManager() {
   const [deleting, setDeleting] = useState<string | null>(null);
-  const { data: alertData, error, isLoading, mutate } = useSWR("alerts", () => api.getAlerts());
-  const { data: historyData } = useSWR("alert-history", () =>
-    api.getAlertHistory().catch(() => ({ alerts: [], count: 0 }))
+  const { data: alertData, error, isLoading, mutate } = useSWR("alerts", () => api.getAlerts(), { refreshInterval: 15000 });
+  const { data: historyData, mutate: mutateHistory } = useSWR("alert-history", () =>
+    api.getAlertHistory().catch(() => ({ alerts: [], count: 0 })),
+    { refreshInterval: 15000 }
   );
   const { data: settings } = useSWR("alert-settings", () => api.getAlertSettings(), { refreshInterval: 30000 });
 
@@ -45,6 +46,15 @@ export function AlertManager() {
   const history = historyData?.alerts || [];
   const seenHistory = useRef<Set<string>>(new Set());
   const historyInitialized = useRef(false);
+
+  useEffect(() => {
+    const handler = () => {
+      mutate();
+      mutateHistory();
+    };
+    window.addEventListener("alerts-refresh", handler);
+    return () => window.removeEventListener("alerts-refresh", handler);
+  }, [mutate, mutateHistory]);
 
   useEffect(() => {
     if (!historyInitialized.current) {
@@ -71,7 +81,7 @@ export function AlertManager() {
       mutate((prev) =>
         prev ? { ...prev, alerts: prev.alerts.filter((a) => a.id !== id), count: Math.max(0, prev.count - 1) } : prev
       );
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
     } finally {
       setDeleting(null);
@@ -88,7 +98,9 @@ export function AlertManager() {
     );
   }
 
+  if (error) {
     return <ErrorState title="盯盘数据加载失败" description="请检查网络后重试" onRetry={() => mutate()} />;
+  }
 
   return (
     <div className="space-y-4">

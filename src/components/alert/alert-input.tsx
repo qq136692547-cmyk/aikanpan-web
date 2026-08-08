@@ -78,8 +78,8 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
       setConditions(conds.length ? conds : [emptyCondition()]);
       setCodeInput(result.code || "");
       setBuilderOpen(true);
-    } catch (e: any) {
-      setError(e.message || "解析失败，请重试");
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "解析失败，请重试");
     } finally {
       setLoading(false);
     }
@@ -127,8 +127,9 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
       setText("");
       setBuilderOpen(false);
       onCreated?.();
-    } catch (e: any) {
-      setError(e.message || "创建失败，请重试");
+      window.dispatchEvent(new CustomEvent("alerts-refresh"));
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "创建失败，请重试");
     } finally {
       setCreating(false);
     }
