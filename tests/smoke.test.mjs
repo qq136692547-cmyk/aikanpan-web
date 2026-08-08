@@ -191,3 +191,20 @@ test("US portfolio summary responds", { timeout: 30000 }, async () => {
   assert.equal(typeof data.total_value, "number");
   assert.equal(typeof data.usd_cny, "number");
 });
+
+test("US portfolio transactions roundtrip", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const tx = await request("/us/portfolio/transactions", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ code: "AAPL", name: "苹果", type: "buy", shares: 10, price: 300 }),
+  });
+  assert.equal(tx.currency, "USD");
+  const list = await request("/us/portfolio/transactions", { headers });
+  assert.ok(list.transactions.some((t) => t.id === tx.id));
+  const positions = await request("/us/portfolio/positions", { headers });
+  assert.ok(positions.positions.some((p) => p.code === "AAPL"));
+  const removed = await request(`/us/portfolio/transactions/${tx.id}`, { method: "DELETE", headers });
+  assert.equal(removed.deleted, true);
+});

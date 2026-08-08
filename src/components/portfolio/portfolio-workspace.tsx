@@ -58,8 +58,8 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
     { refreshInterval: 30000 }
   );
   const { data: txData, mutate: mutateTx } = useSWR(
-    "portfolio-transactions",
-    () => api.getTransactions(),
+    isUs ? "us-portfolio-transactions" : "portfolio-transactions",
+    () => (isUs ? api.getUsTransactions() : api.getTransactions()),
     { refreshInterval: 30000 }
   );
 
@@ -196,9 +196,9 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
         note: txNote.trim() || undefined,
       };
       if (editingTx) {
-        await api.updateTransaction(editingTx.id, payload);
+        await (isUs ? api.updateUsTransaction(editingTx.id, payload) : api.updateTransaction(editingTx.id, payload));
       } else {
-        await api.createTransaction(payload);
+        await (isUs ? api.createUsTransaction(payload) : api.createTransaction(payload));
       }
       setTxCode("");
       setTxName("");
@@ -241,7 +241,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
     setMutating(true);
     setActionError("");
     try {
-      await api.deleteTransaction(tx.id);
+      await (isUs ? api.deleteUsTransaction(tx.id) : api.deleteTransaction(tx.id));
       await Promise.all([mutate(), mutateTx()]);
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "删除流水失败");
@@ -259,7 +259,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `aikanpan-transactions-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `aikanpan-${isUs ? "us-" : ""}transactions-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -483,7 +483,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
 
       <section className="neo-card p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[14px] font-semibold text-neo-ink">交易流水</h2>
+          <h2 className="text-[14px] font-semibold text-neo-ink">{isUs ? "交易流水 (USD)" : "交易流水"}</h2>
           <div className="flex items-center gap-2">
             {editingTx && <span className="text-[11px] text-neo-primary">正在编辑 {editingTx.name}</span>}
             <button onClick={exportTxCsv} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">导出 CSV</button>
@@ -508,7 +508,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
         </form>
         {transactions.length === 0 ? (
           <div className="mt-4">
-            <EmptyState title="暂无交易流水" description="记录买入、卖出或分红后自动更新持仓" />
+            <EmptyState title={isUs ? "暂无美股交易流水" : "暂无交易流水"} description="记录买入、卖出或分红后自动更新持仓" />
           </div>
         ) : (
           <div className="mt-3 divide-y divide-[var(--neo-edge)]">

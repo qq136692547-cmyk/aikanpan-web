@@ -248,6 +248,28 @@ export class ApiClient {
     return this.request<UsPortfolioSummary>("/us/portfolio/summary", { cache: "no-store" as RequestCache });
   }
 
+  getUsTransactions() {
+    return this.request<{ transactions: TransactionItem[]; count: number; total: number; currency: string }>("/us/portfolio/transactions", { cache: "no-store" as RequestCache });
+  }
+
+  createUsTransaction(data: { code: string; name?: string; type: "buy" | "sell" | "dividend"; shares: number; price: number; date?: string; note?: string }) {
+    return this.request<TransactionItem>("/us/portfolio/transactions", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  updateUsTransaction(id: string, data: { code: string; name?: string; type: "buy" | "sell" | "dividend"; shares: number; price: number; date?: string; note?: string }) {
+    return this.request<TransactionItem>(`/us/portfolio/transactions/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
+
+  deleteUsTransaction(id: string) {
+    return this.request<{ deleted: boolean; id: string }>(`/us/portfolio/transactions/${id}`, { method: "DELETE" });
+  }
+
   getUsAI(symbol: string) {
     return this.request<AIComment>(`/us/stocks/${encodeURIComponent(symbol)}/ai`, { method: "POST", body: JSON.stringify({}) });
   }
