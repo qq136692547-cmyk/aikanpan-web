@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import useSWR from "swr";
-import { api, type PortfolioReview, type Position, type PortfolioSummary, type TransactionItem } from "@/lib/api";
+import { api, type PortfolioReview, type Position, type PortfolioSummary, type TransactionItem, type UsPortfolioSummary, type UsPosition } from "@/lib/api";
 import { formatAmount, formatPct, formatPrice } from "@/lib/format";
 import { Sparkline } from "@/components/chart/sparkline";
 import { EmptyState, ErrorState } from "@/components/ui/state";
@@ -27,7 +27,8 @@ const TX_TYPE_CLASS: Record<string, string> = {
   dividend: "text-[var(--neo-amber)]",
 };
 
-export function PortfolioWorkspace() {
+export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) {
+  const isUs = market === "us";
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [shares, setShares] = useState("");
@@ -47,13 +48,13 @@ export function PortfolioWorkspace() {
   const [editingTx, setEditingTx] = useState<TransactionItem | null>(null);
 
   const { data: positionsData, error, mutate } = useSWR(
-    "portfolio-positions",
-    () => api.getPositions(),
+    isUs ? "us-portfolio-positions" : "portfolio-positions",
+    () => (isUs ? api.getUsPositions() : api.getPositions()),
     { refreshInterval: 30000 }
   );
-  const { data: summary } = useSWR<PortfolioSummary>(
-    "portfolio-summary",
-    () => api.getPortfolioSummary(),
+  const { data: summary } = useSWR<PortfolioSummary | UsPortfolioSummary>(
+    isUs ? "us-portfolio-summary" : "portfolio-summary",
+    () => (isUs ? api.getUsPortfolioSummary() : api.getPortfolioSummary()),
     { refreshInterval: 30000 }
   );
   const { data: txData, mutate: mutateTx } = useSWR(
@@ -62,7 +63,7 @@ export function PortfolioWorkspace() {
     { refreshInterval: 30000 }
   );
 
-  const positions: Position[] = positionsData?.positions || [];
+  const positions: (Position | UsPosition)[] = positionsData?.positions || [];
   const transactions: TransactionItem[] = txData?.transactions || [];
   const totalValue = summary?.total_value ?? positions.reduce((s, p) => s + p.market_value, 0);
   const totalCost = summary?.total_cost ?? positions.reduce((s, p) => s + p.cost * p.shares, 0);
@@ -74,7 +75,7 @@ export function PortfolioWorkspace() {
     `portfolio-curve-${codesKey}`,
     async () => {
       if (positions.length === 0) return [];
-      const settled = await Promise.allSettled(positions.map((p) => api.getStockHistory(p.code)));
+      const settled = await Promise.allSettled(positions.map((p) => (isUs ? api.getUsHistory(p.code, 30) : api.getStockHistory(p.code))));
       const series = positions.map((p, i) => ({
         shares: p.shares,
         closes: settled[i].status === "fulfilled" ? (settled[i].value.closes || []) : [],
@@ -103,12 +104,13 @@ export function PortfolioWorkspace() {
     setMutating(true);
     setActionError("");
     try {
-      await api.upsertPosition({
+      const payload = {
         code: code.trim(),
         name: name.trim() || undefined,
         shares: sharesNum,
         cost_price: costNum,
-      });
+      };
+      await (isUs ? api.upsertUsPosition(payload) : api.upsertPosition(payload));
       setCode("");
       setName("");
       setShares("");
@@ -133,7 +135,7 @@ export function PortfolioWorkspace() {
     setMutating(true);
     setActionError("");
     try {
-      await api.deletePosition(id);
+      await (isUs ? api.deleteUsPosition(id) : api.deletePosition(id));
       await mutate();
     } catch (err) {
       setActionError(err instanceof Error ? err.message : "删除失败");
@@ -286,7 +288,7 @@ export function PortfolioWorkspace() {
           </div>
           <div className="flex flex-wrap gap-4">
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-neo-dim">总市值</div>
+              <div className="text-[10px] uppercase tracking-wider text-neo-dim">{isUs ? "总市值 (USD)" : "总市值"}</div>
               <div key={totalValue} className="data-flash mt-0.5 text-[22px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                 {formatAmount(totalValue)}
               </div>
@@ -297,6 +299,14 @@ export function PortfolioWorkspace() {
                 {totalPnl >= 0 ? "+" : ""}{formatAmount(totalPnl)}
               </div>
             </div>
+            {isUs && summary && (
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-neo-dim">人民币市值</div>
+                <div className="data-flash mt-0.5 text-[22px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                  {formatAmount((summary as UsPortfolioSummary).total_rmb_value ?? 0)}
+                </div>
+              </div>
+            )}
             <div>
               <div className="text-[10px] uppercase tracking-wider text-neo-dim">盈亏比例</div>
               <div key={totalPnlPct} className={`data-flash mt-0.5 text-[18px] font-bold ${totalPnlPct >= 0 ? "text-neo-up" : "text-neo-down"}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
@@ -389,7 +399,7 @@ export function PortfolioWorkspace() {
                     <span className="text-neo-dim">股数 <b className="text-neo-ink">{p.shares}</b></span>
                     <span className="text-neo-dim">成本 <b className="text-neo-ink">{formatPrice(p.cost)}</b></span>
                     <span className="text-neo-dim">现价 <b className="text-neo-ink">{formatPrice(p.current)}</b></span>
-                    <span className="text-neo-dim">市值 <b className="text-neo-ink">{formatAmount(p.market_value)}</b></span>
+                    <span className="text-neo-dim">市值 <b className="text-neo-ink">{isUs ? `$${formatAmount(p.market_value)}` : formatAmount(p.market_value)}</b>{isUs && <span className="ml-1 text-[10px] text-neo-dim">≈¥{formatAmount((p as UsPosition).rmb_market_value ?? 0)}</span>}</span>
                   </div>
                   <div className="mt-1.5 flex items-center justify-between gap-2">
                     <span className={`text-[12px] font-semibold ${p.pnl >= 0 ? "text-neo-up" : "text-neo-down"}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
@@ -427,7 +437,10 @@ export function PortfolioWorkspace() {
                     <span className="text-right text-neo-mid" style={{ fontFamily: "var(--font-inter), system-ui" }}>{p.shares}</span>
                     <span className="text-right text-neo-mid" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPrice(p.cost)}</span>
                     <span className="text-right text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPrice(p.current)}</span>
-                    <span className="text-right text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatAmount(p.market_value)}</span>
+                    <span className="flex flex-col items-end">
+                    <span className="text-right text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>{isUs ? `$${formatAmount(p.market_value)}` : formatAmount(p.market_value)}</span>
+                    {isUs && <span className="text-[10px] text-neo-dim">≈¥{formatAmount((p as UsPosition).rmb_market_value ?? 0)}</span>}
+                  </span>
                     <span className={`text-right ${p.pnl >= 0 ? "text-neo-up" : "text-neo-down"}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
                       {formatAmount(p.pnl)}<span className="ml-1 text-[10px]">{formatPct(p.pnl_pct)}</span>
                     </span>

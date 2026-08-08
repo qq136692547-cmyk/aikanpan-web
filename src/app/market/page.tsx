@@ -2,9 +2,11 @@ import { Navbar } from "@/components/layout/navbar";
 import { AutoRefresh } from "@/components/system/auto-refresh";
 import { Footer } from "@/components/layout/footer";
 import { SortableSectorTable } from "@/components/market/sortable-sector-table";
-import { api, type Dashboard, type Insights, type LimitStock, type Sector } from "@/lib/api";
+import { UsDashboardSection } from "@/components/us/us-dashboard-section";
+import { api, type Dashboard, type Insights, type LimitStock, type Sector, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { marketPhaseText } from "@/lib/market-status";
+import { marketFromSearchParams } from "@/lib/market";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -33,11 +35,14 @@ function neoTrendBgClass(pct: number) {
   return pct > 0 ? "neo-up-soft" : pct < 0 ? "neo-down-soft" : "neo-inset";
 }
 
-export default async function MarketPage() {
+export default async function MarketPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;
   let sectorsData: { sectors: Sector[]; count: number } | null = null;
+  let usDashboard: UsDashboard | null = null;
 
+  const { market: marketParam } = await searchParams;
+  const scope = marketFromSearchParams(marketParam);
   try {
     [dashboard, insights, sectorsData] = await Promise.all([
       api.getDashboard(),
@@ -46,6 +51,26 @@ export default async function MarketPage() {
     ]);
   } catch (e) {
     console.error("Failed to fetch market data:", e);
+  }
+  if (scope !== "cn") {
+    try {
+      usDashboard = await api.getUsDashboard();
+    } catch (e) {
+      console.error("Failed to fetch US market data:", e);
+    }
+  }
+
+  if (scope === "us" && usDashboard) {
+    return (
+      <div className="neo-page">
+        <Navbar />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
+          <AutoRefresh />
+          <UsDashboardSection dashboard={usDashboard} />
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   if (!dashboard) {
@@ -177,6 +202,9 @@ export default async function MarketPage() {
             </div>
           )}
         </section>
+        {scope === "all" && usDashboard && (
+          <UsDashboardSection dashboard={usDashboard} />
+        )}
       </main>
       <Footer />
       <script

@@ -6,6 +6,7 @@ import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { StockTabs } from "@/components/stock/stock-tabs";
 import { StockTitleBar } from "@/components/stock/stock-title-bar";
+import { UsStockDetail } from "@/components/us/us-stock-detail";
 import { api } from "@/lib/api";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import type { Metadata } from "next";
@@ -33,6 +34,18 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
   const { code: rawCode } = await params;
   // 将路由参数 sh600519 转换为后端格式 sh.600519
   const code = /^(sh|sz|bj)(\d{6})$/.test(rawCode) ? `${rawCode.slice(0, 2)}.${rawCode.slice(2)}` : rawCode;
+  const isUs = !/^(sh|sz|bj)(\d{6})$/.test(rawCode) && /^[A-Z][A-Z0-9.-]{0,9}$/.test(rawCode);
+  if (isUs) {
+    return (
+      <div className="neo-page">
+        <Navbar />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+          <UsStockDetail symbol={rawCode.toUpperCase()} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
   let quote = null;
   let moneyflow = null;
   let indicators = null;

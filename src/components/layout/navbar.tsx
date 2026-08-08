@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { BarChart3, Search, UserRound } from "lucide-react";
+import { MarketSwitcher } from "@/components/layout/market-switcher";
 
 const navItems = [
   { href: "/", label: "首页", icon: "I01_dashboard.png" },
@@ -60,8 +61,9 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Right side: search + user badge */}
+        {/* Right side: market switcher + search + user badge */}
         <div className="hidden items-center gap-2 md:flex">
+          <Suspense fallback={null}><MarketSwitcher /></Suspense>
           <form action="/search" className="flex items-center">
             <input
               type="text"
@@ -134,6 +136,9 @@ export function Navbar() {
             >
               账户
             </a>
+          </div>
+          <div className="mb-3">
+            <Suspense fallback={null}><MarketSwitcher /></Suspense>
           </div>
           <form action="/search" className="mt-3 mb-1">
             <input

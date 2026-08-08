@@ -186,6 +186,76 @@ export class ApiClient {
     return this.request<PortfolioSummary>("/portfolio/summary");
   }
 
+  // ============================================
+  // US Market
+  // ============================================
+
+  getUsDashboard() {
+    return this.request<UsDashboard>("/us/dashboard", { next: { revalidate: 30 } });
+  }
+
+  getUsQuote(symbol: string) {
+    return this.request<UsQuote>(`/us/stocks/${encodeURIComponent(symbol)}/quote`, { next: { revalidate: 30 } });
+  }
+
+  getUsHistory(symbol: string, days = 120) {
+    return this.request<UsHistory>(`/us/stocks/${encodeURIComponent(symbol)}/history?days=${days}`, { next: { revalidate: 60 } });
+  }
+
+  getUsFinancials(symbol: string) {
+    return this.request<UsFinancials>(`/us/stocks/${encodeURIComponent(symbol)}/financials`, { next: { revalidate: 3600 } });
+  }
+
+  getUsNews(symbol: string, limit = 8) {
+    return this.request<{ news: UsNewsItem[]; count: number }>(`/us/stocks/${encodeURIComponent(symbol)}/news?limit=${limit}`, { next: { revalidate: 900 } });
+  }
+
+  searchUsStocks(q: string) {
+    return this.request<{ list: UsSearchResult[]; total: number }>(`/us/stocks/search?q=${encodeURIComponent(q)}`, { next: { revalidate: 600 } });
+  }
+
+  getUsWatchlist() {
+    return this.request<{ watchlist: UsQuote[]; count: number }>("/us/watchlist", { cache: "no-store" as RequestCache });
+  }
+
+  addUsWatchlist(code: string, name?: string) {
+    return this.request<{ ok: boolean; code: string; count: number }>("/us/watchlist", {
+      method: "POST",
+      body: JSON.stringify({ code, name }),
+    });
+  }
+
+  removeUsWatchlist(code: string) {
+    return this.request<{ deleted: boolean; code: string; count: number }>(`/us/watchlist/${encodeURIComponent(code)}`, { method: "DELETE" });
+  }
+
+  getUsPositions() {
+    return this.request<{ positions: UsPosition[]; count: number; usd_cny: number }>("/us/portfolio/positions", { cache: "no-store" as RequestCache });
+  }
+
+  upsertUsPosition(data: { code: string; name?: string; shares: number; cost_price: number }) {
+    return this.request<PositionUpsert>("/us/portfolio/positions", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  deleteUsPosition(id: string) {
+    return this.request<{ deleted: boolean; id: string }>(`/us/portfolio/positions/${id}`, { method: "DELETE" });
+  }
+
+  getUsPortfolioSummary() {
+    return this.request<UsPortfolioSummary>("/us/portfolio/summary", { cache: "no-store" as RequestCache });
+  }
+
+  getUsAI(symbol: string) {
+    return this.request<AIComment>(`/us/stocks/${encodeURIComponent(symbol)}/ai`, { method: "POST", body: JSON.stringify({}) });
+  }
+
+  getUsDailyReview() {
+    return this.request<AIReview>("/us/daily-review", { method: "POST", body: JSON.stringify({}) });
+  }
+
   /** 新增/更新持仓 */
   upsertPosition(data: { code: string; name?: string; shares: number; cost_price: number }) {
     return this.request<PositionUpsert>("/portfolio/positions", {
@@ -683,6 +753,96 @@ export interface AuthMe {
 }
 
 /** 持仓汇总 */
+export interface UsQuote {
+  code: string;
+  name?: string;
+  last: number;
+  change: number;
+  change_pct: number;
+  open?: number;
+  high?: number;
+  low?: number;
+  prev_close?: number;
+  volume?: number;
+  market_cap?: number | null;
+  currency?: string;
+  source?: string;
+  date?: string;
+  usd_cny?: number;
+}
+
+export interface UsHistory {
+  code: string;
+  bars: KlineData[];
+  closes: number[];
+  source?: string;
+}
+
+export interface UsFinancials {
+  code: string;
+  available: boolean;
+  source?: string;
+  metrics?: {
+    pe_ratio?: number;
+    pb_ratio?: number;
+    roe_pct?: number;
+    revenue_yoy_pct?: number;
+    profit_yoy_pct?: number;
+    gross_margin_pct?: number;
+    market_cap?: number;
+  };
+}
+
+export interface UsDashboard {
+  indices: UsQuote[];
+  stocks: UsQuote[];
+  generated_at: string;
+  source?: string;
+  usd_cny?: number;
+  market?: string;
+}
+
+export interface UsNewsItem {
+  id: string;
+  title: string;
+  summary?: string;
+  source?: string;
+  time?: string;
+  url?: string;
+}
+
+export interface UsSearchResult {
+  code: string;
+  name: string;
+  type?: string;
+  market?: string;
+}
+
+export interface UsPosition {
+  id: string;
+  code: string;
+  name: string;
+  shares: number;
+  cost: number;
+  current: number;
+  market_value: number;
+  rmb_market_value: number;
+  pnl: number;
+  pnl_pct: number;
+  currency?: string;
+  date?: string;
+}
+
+export interface UsPortfolioSummary {
+  total_cost: number;
+  total_value: number;
+  total_rmb_value: number;
+  total_pnl: number;
+  total_pnl_pct: number;
+  position_count: number;
+  usd_cny: number;
+}
+
 export interface PortfolioSummary {
   total_value: number;
   total_cost: number;

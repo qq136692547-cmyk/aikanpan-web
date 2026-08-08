@@ -8,8 +8,10 @@ import { HomeLimitTopList } from "@/components/ai/home-limit-top-list";
 import { TechCanvasBackground } from "@/components/landing/tech-canvas-background";
 import { AIReview } from "@/components/ai/ai-review";
 import { Sparkline } from "@/components/chart/sparkline";
-import { api, type Dashboard, type Insights } from "@/lib/api";
+import { UsDashboardSection } from "@/components/us/us-dashboard-section";
+import { api, type Dashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice, formatChange } from "@/lib/format";
+import { marketFromSearchParams } from "@/lib/market";
 import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
 import type { Metadata } from "next";
 
@@ -37,10 +39,13 @@ function sourceLabel(source?: string): string {
 
 
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;
+  let usDashboard: UsDashboard | null = null;
 
+  const { market: marketParam } = await searchParams;
+  const scope = marketFromSearchParams(marketParam);
   try {
     [dashboard, insights] = await Promise.all([
       api.getDashboard(),
@@ -48,6 +53,13 @@ export default async function HomePage() {
     ]);
   } catch (e) {
     console.error("Failed to fetch home data:", e);
+  }
+  if (scope !== "cn") {
+    try {
+      usDashboard = await api.getUsDashboard();
+    } catch (e) {
+      console.error("Failed to fetch US home data:", e);
+    }
   }
 
   const indexHistories: Record<string, number[]> = {};
@@ -77,6 +89,19 @@ export default async function HomePage() {
             <div className="neo-skeleton h-44" />
             <div className="neo-skeleton h-44" />
           </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (scope === "us" && usDashboard) {
+    return (
+      <div className="neo-page">
+        <Navbar />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
+          <AutoRefresh />
+          <UsDashboardSection dashboard={usDashboard} />
         </main>
         <Footer />
       </div>
@@ -296,6 +321,10 @@ export default async function HomePage() {
             </a>
           ))}
         </section>
+
+        {scope === "all" && usDashboard && (
+          <UsDashboardSection dashboard={usDashboard} />
+        )}
       </main>
       <Footer />
     </div>

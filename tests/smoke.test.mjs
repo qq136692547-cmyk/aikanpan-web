@@ -150,3 +150,44 @@ test("analytics retention returns cohorts and totals", { timeout: 30000 }, async
   assert.equal(typeof data.totals.unique_visitors, "number");
   assert.equal(typeof data.totals.page_views, "number");
 });
+
+test("US dashboard returns indices", { timeout: 30000 }, async () => {
+  const data = await request("/us/dashboard");
+  assert.ok(Array.isArray(data.indices) && data.indices.length === 3);
+  assert.ok(Array.isArray(data.stocks) && data.stocks.length > 0);
+});
+
+test("US quote and history degrade gracefully", { timeout: 30000 }, async () => {
+  const q = await request("/us/stocks/AAPL/quote");
+  assert.equal(typeof q.code, "string");
+  const h = await request("/us/stocks/AAPL/history?days=30");
+  assert.ok(Array.isArray(h.bars));
+});
+
+test("US search returns list", { timeout: 30000 }, async () => {
+  const data = await request("/us/stocks/search?q=apple");
+  assert.ok(Array.isArray(data.list));
+});
+
+test("US watchlist roundtrip", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const added = await request("/us/watchlist", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ code: "AAPL", name: "苹果" }),
+  });
+  assert.equal(added.ok, true);
+  const list = await request("/us/watchlist", { headers });
+  assert.ok(list.watchlist.some((w) => w.code === "AAPL"));
+  const removed = await request("/us/watchlist/AAPL", { method: "DELETE", headers });
+  assert.equal(removed.deleted, true);
+});
+
+test("US portfolio summary responds", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const data = await request("/us/portfolio/summary", { headers });
+  assert.equal(typeof data.total_value, "number");
+  assert.equal(typeof data.usd_cny, "number");
+});

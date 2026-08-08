@@ -3,8 +3,10 @@ import { Footer } from "@/components/layout/footer";
 import { AIReview } from "@/components/ai/ai-review";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
+import { UsDailyReview } from "@/components/us/us-daily-review";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
+import { marketFromSearchParams } from "@/lib/market";
 import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
 import type { Metadata } from "next";
 
@@ -45,11 +47,24 @@ function neoTrendBgClass(n: number): string {
 export default async function ReviewPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string }>;
+  searchParams: Promise<{ date?: string; market?: string }>;
 }) {
   const params = await searchParams;
   const selectedDate = params?.date;
+  const scope = marketFromSearchParams(params?.market);
   const isCustomDate = selectedDate && selectedDate !== todayLocal();
+
+  if (scope === "us") {
+    return (
+      <div className="neo-page">
+        <Navbar />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
+          <UsDailyReview />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;

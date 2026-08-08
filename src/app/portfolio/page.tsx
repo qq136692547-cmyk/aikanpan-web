@@ -8,12 +8,14 @@ export const metadata: Metadata = {
   description: "爱看盘持仓管理：盈亏汇总、仓位占比、持仓明细。",
 };
 
-export default function PortfolioPage() {
+export default async function PortfolioPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
+  const { market } = await searchParams;
+  const scope = market === "us" ? "us" : "cn";
   return (
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
-        <PortfolioWorkspace />
+        <PortfolioWorkspace market={scope} />
       </main>
       <Footer />
     </div>
