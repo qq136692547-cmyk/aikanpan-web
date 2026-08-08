@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { SortableSectorTable } from "@/components/market/sortable-sector-table";
 import { api, type Dashboard, type Insights, type LimitStock, type Sector } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
+import { marketPhaseText } from "@/lib/market-status";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -81,7 +82,7 @@ export default async function MarketPage() {
           <div className="relative flex items-center justify-between overflow-hidden py-1">
             <h1 className="text-[14px] font-medium text-neo-ink shrink-0">市场总览</h1>
             <span className="text-[11px] text-neo-dim truncate ml-2" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-              {dashboard.index?.date ?? ""} · {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+              {dashboard.index?.date ?? ""} · {marketPhaseText(dashboard.market_phase)}
             </span>
           </div>
         </section>

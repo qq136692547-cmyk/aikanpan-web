@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSync } from "@/lib/use-sync";
 import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type WatchlistItem } from "@/lib/api";
+import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 import { formatPct, formatPrice } from "@/lib/format";
 import { useWatchlist } from "@/lib/use-watchlist";
 
@@ -551,6 +552,7 @@ export function ResearchWorkspace({
                   <span className="text-[10px] text-neo-dim">{planFocus.generated_at?.slice(0, 16).replace("T", " ")}</span>
                 </div>
                 <p className="whitespace-pre-wrap text-[12px] leading-relaxed text-neo-mid">{planFocus.content}</p>
+                <AiDisclaimer className="mt-2" />
               </div>
             )}
           </div>

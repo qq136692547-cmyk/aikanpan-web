@@ -20,6 +20,7 @@ test("health is reachable", { timeout: 15000 }, async () => {
 test("dashboard returns indices", { timeout: 30000 }, async () => {
   const data = await request("/workbench/dashboard");
   assert.ok(Array.isArray(data.indices) && data.indices.length > 0);
+  assert.ok(["pre", "trading", "lunch", "closed", "unknown"].includes(data.market_phase));
 });
 
 test("indicators include BOLL and no NaN", { timeout: 30000 }, async () => {
@@ -125,4 +126,9 @@ test("sector stocks return real constituents", { timeout: 40000 }, async () => {
   const data = await request("/market/sectors/BK1600/stocks?top=5");
   assert.ok(Array.isArray(data.stocks) && data.stocks.length > 0);
   assert.ok(data.stocks.every((s) => /^(sh|sz)\.\d{6}$/.test(s.code || "")));
+});
+
+test("terms page is reachable", { timeout: 15000 }, async () => {
+  const res = await fetch("https://aikanpan.top/terms/");
+  assert.ok(res.ok, `terms -> ${res.status}`);
 });

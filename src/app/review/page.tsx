@@ -5,6 +5,7 @@ import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
+import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -126,8 +127,8 @@ export default async function ReviewPage({
             </div>
             <div className="flex items-center gap-3">
               <DatePicker initialDate={selectedDate} />
-              <span className={`px-2 py-0.5 text-[11px] ${dashboard.market_status === "complete" ? "neo-inset text-neo-dim" : "neo-up-soft text-neo-up"}`}>
-                {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+              <span className={`px-2 py-0.5 text-[11px] ${marketPhaseLive(dashboard.market_phase) ? "neo-up-soft text-neo-up" : "neo-inset text-neo-dim"}`}>
+                {marketPhaseText(dashboard.market_phase)}
               </span>
             </div>
           </div>

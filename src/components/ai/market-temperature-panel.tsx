@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bot, RefreshCw, Sparkles } from "lucide-react";
 import { api, type MarketTemperature } from "@/lib/api";
 import { formatPct } from "@/lib/format";
+import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 
 const DIM_ORDER: (keyof MarketTemperature["dimensions"])[] = ["index", "sector", "limit", "ai"];
 
@@ -177,6 +178,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
       {error && !data && (
         <p className="mt-3 text-[10px] text-neo-down">温度接口暂不可用，当前为涨跌停简化评分</p>
       )}
+      <AiDisclaimer className="mt-3" />
     </div>
   );
 }

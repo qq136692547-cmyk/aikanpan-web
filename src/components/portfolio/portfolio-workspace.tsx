@@ -7,6 +7,7 @@ import { api, type PortfolioReview, type Position, type PortfolioSummary, type T
 import { formatAmount, formatPct, formatPrice } from "@/lib/format";
 import { Sparkline } from "@/components/chart/sparkline";
 import { EmptyState, ErrorState } from "@/components/ui/state";
+import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 
 const TX_TYPES = [
   { value: "buy", label: "买入" },
@@ -328,6 +329,7 @@ export function PortfolioWorkspace() {
         ) : (
           <p className="mt-3 text-[12px] text-neo-mid">暂无组合诊断，点击生成后展示集中度与风险分析</p>
         )}
+        {portfolioReview && <AiDisclaimer className="mt-2" />}
       </section>
 
 

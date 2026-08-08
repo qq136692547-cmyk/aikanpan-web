@@ -10,6 +10,7 @@ import { AIReview } from "@/components/ai/ai-review";
 import { Sparkline } from "@/components/chart/sparkline";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice, formatChange } from "@/lib/format";
+import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
@@ -104,8 +105,8 @@ export default async function HomePage() {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-[20px] font-bold tracking-tight text-neo-ink">AI 复盘工作台</h1>
-                  <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${dashboard.market_status !== "complete" ? "neo-up-soft text-neo-up" : "neo-down-soft text-neo-down"}`}>
-                    {dashboard.market_status === "complete" ? "已收盘" : "交易中"}
+                  <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${marketPhaseLive(dashboard.market_phase) ? "neo-up-soft text-neo-up" : "neo-down-soft text-neo-down"}`}>
+                    {marketPhaseText(dashboard.market_phase)}
                   </span>
                 </div>
                 <p className="mt-1 text-[12px] text-neo-mid">

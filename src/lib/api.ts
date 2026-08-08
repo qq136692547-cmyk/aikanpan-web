@@ -398,6 +398,7 @@ export interface Dashboard {
   index: IndexData;
   indices: IndexData[];
   market_status: string;
+  market_phase?: string;
   market_updated_at: string;
   limit_up_count: number;
   limit_down_count: number;

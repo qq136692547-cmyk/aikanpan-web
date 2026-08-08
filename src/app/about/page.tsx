@@ -42,8 +42,8 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { title: "实时行情", desc: "三大指数、涨跌停个股、行业板块" },
-              { title: "AI 复盘", desc: "AI 生成市场摘要和投资信号" },
-              { title: "AI 个股诊断", desc: "LLM 生成结构化分析、评分与操作建议" },
+              { title: "AI 复盘", desc: "AI 生成市场摘要与风险提示" },
+              { title: "AI 个股诊断", desc: "LLM 生成结构化分析、评分与决策参考" },
               { title: "AI 批量评分", desc: "涨停跌停板一键 AI 评分，快速筛选" },
               { title: "智能盯盘", desc: "自然语言创建盯盘任务，到价自动提醒" },
               { title: "个股详情", desc: "报价、资金流向、信号面板、AI 诊断" },

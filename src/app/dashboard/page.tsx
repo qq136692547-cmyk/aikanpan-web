@@ -9,6 +9,7 @@ import { MarketSentiment } from "@/components/ai/market-sentiment";
 import { Sparkline } from "@/components/chart/sparkline";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice, formatChange } from "@/lib/format";
+import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
@@ -90,12 +91,12 @@ export default async function DashboardPage() {
             <div>
               <h2 className="text-[18px] font-bold tracking-tight text-neo-ink">市场总览</h2>
               <p className="mt-0.5 text-[12px] text-neo-dim">
-                {dashboard.market_status === "complete" ? "已收盘" : "交易中"} · {dashboard.index.date} {dashboard.market_updated_at}
+                {marketPhaseText(dashboard.market_phase)} · {dashboard.index.date} {dashboard.market_updated_at}
               </p>
             </div>
             <span className="flex items-center gap-1.5 text-[11px] font-medium text-neo-dim">
-              {dashboard.market_status !== "complete" && <span className="h-1.5 w-1.5 rounded-full bg-[var(--neo-up)] neo-pulse" />}
-              {dashboard.market_status === "complete" ? "CLOSED" : "LIVE"}
+              {marketPhaseLive(dashboard.market_phase) && <span className="h-1.5 w-1.5 rounded-full bg-[var(--neo-up)] neo-pulse" />}
+              {marketPhaseLive(dashboard.market_phase) ? "LIVE" : "CLOSED"}
             </span>
           </div>
 
