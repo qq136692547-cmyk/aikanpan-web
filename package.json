@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs",
-    "monitor:perf": "node monitor/perf-baseline.mjs"
+    "monitor:perf": "node monitor/perf-baseline.mjs",
+    "test:unit": "node --experimental-strip-types --test tests/format.test.mjs",
+    "monitor:retention": "node monitor/retention.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

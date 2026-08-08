@@ -6,7 +6,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "隐私政策",
-  description: "爱看盘网站的隐私政策，说明信息收集、使用、存储与用户权利。",
+  description: "爱看盘网站的隐私政策，说明信息收集、使用、存储、统计分析与用户权利。",
 };
 
 const sections = [
@@ -31,12 +31,24 @@ const sections = [
     content: "上述信息用于提供行情展示、AI 复盘与个股分析、自选与持仓管理、价格提醒和反馈处理。AI 请求会发送至服务端并由模型生成结果后返回。",
   },
   {
+    title: "访问统计与留存分析",
+    content: "为改进产品，我们会以第一方统计方式记录页面访问、首次访问、回访和功能使用事件。访问者使用不可逆哈希后的去标识化标识，不采集 IP 明细、设备指纹、账号密码或持仓明细。统计仅用于分析日活、回访与 D1/D7/D30 留存，不接入第三方统计或广告 SDK。",
+  },
+  {
     title: "数据来源与第三方",
-    content: "行情与资讯数据来自东方财富、新浪财经等第三方平台，我们不对数据的准确性、完整性和及时性作保证。当前版本未接入第三方统计或广告 SDK。",
+    content: "行情与资讯数据来自东方财富、新浪财经等第三方平台。我们不对数据的准确性、完整性和及时性作保证，也不会转售第三方行情数据。部分数据源的商用授权尚未最终确认，对外商用或分发数据前，运营方须另行确认授权。",
   },
   {
     title: "错误监控",
     content: "为排查稳定性问题，前端会记录页面运行错误并上报服务器，错误信息不包含自选股、持仓明细等敏感业务数据。",
+  },
+  {
+    title: "Cookie 与本地存储",
+    content: "网站会使用浏览器本地存储保存登录凭证、自选同步缓存、复盘状态和访问统计标记。你可以随时清理浏览器站点数据，清理后游客数据只能通过当前登录状态继续访问。",
+  },
+  {
+    title: "未成年人保护",
+    content: "本服务面向具备相应风险承受能力的成年用户。如你未满 18 周岁，请在监护人指导下使用，并在监护人同意后提供任何信息。",
   },
   {
     title: "你的权利",
@@ -71,15 +83,15 @@ export default function PrivacyPage() {
           ))}
         </section>
 
-        <section className="neo-card neo-fade-up mt-6 p-5" style={{ animationDelay: "540ms" }}>
+        <section className="neo-card neo-fade-up mt-6 p-5" style={{ animationDelay: "720ms" }}>
           <h2 className="text-sm font-semibold text-neo-ink">应用与备案信息</h2>
           <div className="mt-3 space-y-2 text-sm text-neo-mid">
             <p>应用名称：爱看盘</p>
-            <p>备案号：浙ICP备2026014729号-2A</p>
+            <p>网站备案：浙ICP备2026014729号-2A（已备案）</p>
           </div>
         </section>
 
-        <section className="neo-fade-up mt-6" style={{ animationDelay: "600ms" }}>
+        <section className="neo-fade-up mt-6" style={{ animationDelay: "780ms" }}>
           <p className="text-xs leading-relaxed text-neo-dim">
             本站数据仅供参考，不构成投资建议。投资有风险，入市需谨慎。
           </p>

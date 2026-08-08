@@ -132,3 +132,21 @@ test("terms page is reachable", { timeout: 15000 }, async () => {
   const res = await fetch("https://aikanpan.top/terms/");
   assert.ok(res.ok, `terms -> ${res.status}`);
 });
+
+test("analytics events endpoint accepts page_view", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const saved = await request("/analytics/events", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ event: "page_view", path: "/smoke", label: "test" }),
+  });
+  assert.equal(saved.accepted, true);
+});
+
+test("analytics retention returns cohorts and totals", { timeout: 30000 }, async () => {
+  const data = await request("/analytics/retention?days=7");
+  assert.ok(Array.isArray(data.cohorts));
+  assert.equal(typeof data.totals.unique_visitors, "number");
+  assert.equal(typeof data.totals.page_views, "number");
+});

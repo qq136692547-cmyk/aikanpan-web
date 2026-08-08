@@ -4,6 +4,7 @@ import { AuthProvider } from "@/lib/auth";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { GlobalSearch } from "@/components/layout/global-search";
 import { ErrorReporter } from "@/components/system/error-reporter";
+import { AnalyticsReporter } from "@/components/system/analytics-reporter";
 import "./globals.css";
 
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <BottomNav />
+          <AnalyticsReporter />
         </AuthProvider>
         <GlobalSearch />
         <ErrorReporter />
