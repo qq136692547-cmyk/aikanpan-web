@@ -21,7 +21,7 @@ export function MarketSentiment({ upCount, downCount }: { upCount: number; downC
 
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wider text-neo-dim">情绪</div>
+      <div className="text-[10px] uppercase tracking-wider text-neo-dim">涨跌停情绪</div>
       <div className="mt-1.5 flex items-center gap-2.5">
         <svg width="64" height="40" viewBox="0 0 100 56">
           <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" strokeLinecap="round" />

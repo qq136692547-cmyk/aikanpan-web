@@ -1,9 +1,10 @@
 import { Navbar } from "@/components/layout/navbar";
 import { EmptyState } from "@/components/ui/state";
 import { Footer } from "@/components/layout/footer";
-import { api, type StockSearchResult, type Dashboard, type StockQuote } from "@/lib/api";
+import { api, type StockSearchResult, type Dashboard } from "@/lib/api";
 import { formatPrice, formatPct } from "@/lib/format";
 import Image from "next/image";
+import Link from "next/link";
 import { SearchBox } from "@/components/search/search-box";
 import type { Metadata } from "next";
 
@@ -30,17 +31,17 @@ const HOT_STOCKS = [
   { code: "sz.002475", name: "立讯精密", tag: "消费电子" },
 ];
 
-// 批量获取热门股票实时报价，失败的保持原样不显示价格
-async function fetchHotStockQuotes(): Promise<Record<string, StockQuote>> {
-  const results = await Promise.allSettled(
-    HOT_STOCKS.map((s) => api.getStockQuote(s.code))
-  );
-  const quotes: Record<string, StockQuote> = {};
-  results.forEach((r, i) => {
-    if (r.status === "fulfilled") {
-      quotes[HOT_STOCKS[i].code] = r.value;
+// Batch hot quotes via a single watchlist request
+async function fetchHotStockQuotes(): Promise<Record<string, { last: number; change_pct: number }>> {
+  const quotes: Record<string, { last: number; change_pct: number }> = {};
+  try {
+    const res = await api.getWatchlistByCodes(HOT_STOCKS.map((s) => s.code));
+    for (const item of res.watchlist) {
+      quotes[item.code] = { last: item.price, change_pct: item.change_pct };
     }
-  });
+  } catch {
+    // keep quotes empty
+  }
   return quotes;
 }
 
@@ -237,7 +238,7 @@ export default async function SearchPage({
               <div className="neo-card-sm p-5">
                 <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
                 <ul className="mt-2 space-y-1.5 text-xs text-neo-dim">
-                  <li>• 输入 6 位股票代码可直接跳转，如 <a href="/stock/sz300414/" className="text-brand hover:underline">300414</a></li>
+                  <li>• 输入 6 位股票代码可直接跳转，如 <Link href="/stock/sz300414/" className="text-brand hover:underline">300414</Link></li>
                   <li>• 输入股票名称搜索，如「茅台」「宁德」</li>
                   <li>• 也可以从上方热门股票或今日涨停直接进入</li>
                 </ul>

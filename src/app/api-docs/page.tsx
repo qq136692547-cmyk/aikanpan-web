@@ -23,7 +23,7 @@ const apiEndpoints = [
   { method: "GET", path: "/api/v1/stocks/{code}/events", desc: "个股事件/AI摘要" },
   { method: "GET", path: "/api/v1/stocks/{code}/pattern", desc: "AI 形态识别" },
   { method: "GET", path: "/api/v1/stocks/{code}/financials", desc: "个股财务数据" },
-  { method: "GET", path: "/api/v1/stocks/search", desc: "搜索股票 (keyword 参数)" },
+  { method: "GET", path: "/api/v1/stocks/search", desc: "搜索股票 (q 参数，keyword 兼容)" },
   { method: "GET", path: "/api/v1/stocks/watchlist", desc: "自选股列表" },
   { method: "POST", path: "/api/v1/ai/comment", desc: "AI 个股点评" },
   { method: "POST", path: "/api/v1/ai/daily-review", desc: "AI 每日复盘生成" },
@@ -111,7 +111,7 @@ export default function ApiDocsPage() {
 curl https://aikanpan.top/api/v1/workbench/dashboard
 
 # 搜索股票
-curl "https://aikanpan.top/api/v1/stocks/search?keyword=300414"
+curl "https://aikanpan.top/api/v1/stocks/search?q=300414"
 
 # 个股行情
 curl https://aikanpan.top/api/v1/stocks/sz.300414/quote

@@ -150,6 +150,12 @@ export class ApiClient {
     return this.request<{ watchlist: WatchlistItem[]; count: number }>("/stocks/watchlist");
   }
 
+  getWatchlistByCodes(codes: string[]) {
+    return this.request<{ watchlist: WatchlistItem[]; count: number }>(
+      `/stocks/watchlist?codes=${encodeURIComponent(codes.join(","))}`
+    );
+  }
+
   /** 游客登录 */
   guestLogin() {
     return this.request<GuestLoginResp>("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
