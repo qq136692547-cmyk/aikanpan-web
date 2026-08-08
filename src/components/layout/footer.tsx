@@ -14,7 +14,7 @@ export function Footer() {
             <a href="/api-docs/" className="transition-colors hover:text-neo-primary">API</a>
             <a href="/privacy/" className="transition-colors hover:text-neo-primary">隐私</a>
             <a href="/terms/" className="transition-colors hover:text-neo-primary">协议</a>
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neo-primary">浙ICP备2026014729号-2A</a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neo-primary">渝ICP备2026014729号-1</a>
             <span>数据：东方财富</span>
           </div>
         </div>

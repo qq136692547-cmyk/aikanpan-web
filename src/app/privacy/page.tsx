@@ -87,7 +87,9 @@ export default function PrivacyPage() {
           <h2 className="text-sm font-semibold text-neo-ink">应用与备案信息</h2>
           <div className="mt-3 space-y-2 text-sm text-neo-mid">
             <p>应用名称：爱看盘</p>
-            <p>网站备案：浙ICP备2026014729号-2A（已备案）</p>
+            <p>网站名称：每日复盘</p>
+            <p>网站域名：aikanpan.top</p>
+            <p>ICP 备案：渝ICP备2026014729号-1（已备案）</p>
           </div>
         </section>
 
