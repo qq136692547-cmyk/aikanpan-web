@@ -1,7 +1,8 @@
 import { Navbar } from "@/components/layout/navbar";
+import { AutoRefresh } from "@/components/system/auto-refresh";
 import { Footer } from "@/components/layout/footer";
 import { SortableSectorTable } from "@/components/market/sortable-sector-table";
-import { api, type Dashboard, type Insights, type Sector } from "@/lib/api";
+import { api, type Dashboard, type Insights, type LimitStock, type Sector } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import type { Metadata } from "next";
 
@@ -67,6 +68,7 @@ export default async function MarketPage() {
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
+      <AutoRefresh />
         {/* Header */}
         <section className="relative overflow-hidden rounded-xl">
           {/* 市场热力图装饰背景 */}
@@ -184,7 +186,7 @@ export default async function MarketPage() {
   );
 }
 
-function LimitTable({ title, stocks = [], type }: { title: string; stocks?: any[]; type: "up" | "down" }) {
+function LimitTable({ title, stocks = [], type }: { title: string; stocks?: LimitStock[]; type: "up" | "down" }) {
   const headerColor = type === "up" ? "text-neo-up" : "text-neo-down";
 
   return (

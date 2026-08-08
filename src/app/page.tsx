@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/layout/navbar";
+import { AutoRefresh } from "@/components/system/auto-refresh";
 import { Footer } from "@/components/layout/footer";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
 import { NewsRadarCard } from "@/components/ai/news-radar";
@@ -92,6 +93,7 @@ export default async function HomePage() {
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
+      <AutoRefresh />
         {/* 工作台头部 */}
         <section className="neo-fade-up relative min-h-[190px] overflow-hidden rounded-2xl sm:min-h-[230px]">
           <TechCanvasBackground className="pointer-events-none absolute inset-0 h-full w-full" />

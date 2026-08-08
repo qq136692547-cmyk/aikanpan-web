@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/layout/navbar";
+import { AutoRefresh } from "@/components/system/auto-refresh";
 import { Footer } from "@/components/layout/footer";
 import { LimitListWithScore } from "@/components/ai/limit-list-with-score";
 import { LimitStatsPersonalized } from "@/components/ai/limit-stats-personalized";
@@ -74,6 +75,7 @@ export default async function DashboardPage() {
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+      <AutoRefresh />
         {/* Hero — 主指数 */}
         <section className="neo-fade-up">
           <div className="relative overflow-hidden rounded-2xl">

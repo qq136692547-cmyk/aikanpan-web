@@ -526,10 +526,10 @@ export interface KlineData {
 export interface StockIndicators {
   code: string;
   name: string;
-  macd?: { dif: number; dea: number; macd: number };
-  kdj?: { k: number; d: number; j: number };
-  rsi?: { rsi6: number; rsi12: number; rsi24: number };
-  boll?: { upper: number; mid: number; lower: number };
+  macd?: { dif: number | number[]; dea: number | number[]; macd: number | number[] };
+  kdj?: { k: number | number[]; d: number | number[]; j: number | number[] };
+  rsi?: number | number[];
+  boll?: { upper: number | number[]; mid: number | number[]; lower: number | number[] };
 }
 
 /** 个股资金流 — 匹配后端实际返回结构 */

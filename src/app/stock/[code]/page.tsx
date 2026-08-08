@@ -19,6 +19,16 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
 }
 
 
+function latestValue(value: number | number[] | null | undefined): number {
+  if (value == null) return 0;
+  if (Array.isArray(value)) {
+    const vals = value.filter((v) => typeof v === "number" && Number.isFinite(v));
+    return vals.length ? vals[vals.length - 1] : 0;
+  }
+  return Number.isFinite(value) ? value : 0;
+}
+
+
 export default async function StockPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = await params;
   // 将路由参数 sh600519 转换为后端格式 sh.600519
@@ -61,7 +71,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
                 { label: "最低", value: quote.low, fmt: formatPrice, color: "text-neo-down" },
                 { label: "昨收", value: quote.prev_close, fmt: formatPrice },
                 { label: "成交量", value: quote.volume, fmt: formatVolume },
-                { label: "成交额", value: quote.amount, fmt: formatAmount },
+                { label: "成交额", value: quote.amount || quote.volume * quote.last, fmt: formatAmount },
               ].map((item) => (
                 <div key={item.label} className="neo-inset-sm px-3 py-2.5">
                   <div className="text-[10px] uppercase tracking-wider text-neo-dim">{item.label}</div>
@@ -104,9 +114,9 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
                 <div className="neo-inset-sm px-3 py-2.5">
                   <div className="text-[10px] uppercase tracking-wider text-neo-dim">MACD</div>
                   <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">DIF</span><span className="text-neo-ink">{Number(indicators.macd.dif || 0).toFixed(3)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">DEA</span><span className="text-neo-ink">{Number(indicators.macd.dea || 0).toFixed(3)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">MACD</span><span className={Number(indicators.macd.macd) >= 0 ? "text-neo-up" : "text-neo-down"}>{Number(indicators.macd.macd || 0).toFixed(3)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">DIF</span><span className="text-neo-ink">{latestValue(indicators.macd.dif).toFixed(3)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">DEA</span><span className="text-neo-ink">{latestValue(indicators.macd.dea).toFixed(3)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">MACD</span><span className={latestValue(indicators.macd.macd) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.macd.macd).toFixed(3)}</span></div>
                   </div>
                 </div>
               )}
@@ -114,9 +124,9 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
                 <div className="neo-inset-sm px-3 py-2.5">
                   <div className="text-[10px] uppercase tracking-wider text-neo-dim">KDJ</div>
                   <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">K</span><span className="text-neo-ink">{Number(indicators.kdj.k || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">D</span><span className="text-neo-ink">{Number(indicators.kdj.d || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">J</span><span className={Number(indicators.kdj.j) >= 0 ? "text-neo-up" : "text-neo-down"}>{Number(indicators.kdj.j || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">K</span><span className="text-neo-ink">{latestValue(indicators.kdj.k).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">D</span><span className="text-neo-ink">{latestValue(indicators.kdj.d).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">J</span><span className={latestValue(indicators.kdj.j) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.kdj.j).toFixed(2)}</span></div>
                   </div>
                 </div>
               )}
@@ -124,9 +134,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
                 <div className="neo-inset-sm px-3 py-2.5">
                   <div className="text-[10px] uppercase tracking-wider text-neo-dim">RSI</div>
                   <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">RSI6</span><span className="text-neo-ink">{Number(indicators.rsi.rsi6 || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">RSI12</span><span className="text-neo-ink">{Number(indicators.rsi.rsi12 || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">RSI24</span><span className="text-neo-ink">{Number(indicators.rsi.rsi24 || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">RSI</span><span className="text-neo-ink">{latestValue(indicators.rsi).toFixed(2)}</span></div>
                   </div>
                 </div>
               )}
@@ -134,9 +142,9 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
                 <div className="neo-inset-sm px-3 py-2.5">
                   <div className="text-[10px] uppercase tracking-wider text-neo-dim">BOLL</div>
                   <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">UP</span><span className="text-neo-ink">{Number(indicators.boll.upper || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">MID</span><span className="text-neo-ink">{Number(indicators.boll.mid || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">LOW</span><span className="text-neo-ink">{Number(indicators.boll.lower || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">UP</span><span className="text-neo-ink">{latestValue(indicators.boll.upper).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">MID</span><span className="text-neo-ink">{latestValue(indicators.boll.mid).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">LOW</span><span className="text-neo-ink">{latestValue(indicators.boll.lower).toFixed(2)}</span></div>
                   </div>
                 </div>
               )}

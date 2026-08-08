@@ -125,6 +125,9 @@ export function StockTitleBar({ code, initial }: { code: string; initial: StockQ
           ))}
         </svg>
       )}
+      <span className="pointer-events-none absolute bottom-3 left-3 z-10 rounded bg-[var(--neo-surface-inset)]/80 px-1.5 py-0.5 text-[10px] text-neo-dim">
+        示例走势
+      </span>
       <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
