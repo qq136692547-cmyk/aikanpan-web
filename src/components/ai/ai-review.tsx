@@ -30,7 +30,7 @@ const scoreColor = (score: number) => {
 
 type LoadState = "loading" | "done" | "error";
 
-export function AIReview() {
+export function AIReview({ date }: { date?: string }) {
   const [state, setState] = useState<LoadState>("loading");
   const [data, setData] = useState<AIReview | null>(null);
   const [error, setError] = useState<string>("");
@@ -48,7 +48,7 @@ export function AIReview() {
     }, 60_000);
 
     try {
-      const result = await api.getAIReview();
+      const result = await api.getAIReview(date);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setData(result);
       setState("done");
@@ -57,7 +57,7 @@ export function AIReview() {
       setError(e instanceof Error ? e.message : "AI 复盘请求失败");
       setState("error");
     }
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     fetchReview();

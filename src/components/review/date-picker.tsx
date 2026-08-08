@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 export function DatePicker({ initialDate }: { initialDate?: string }) {
   const router = useRouter();
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("sv");
   const [date, setDate] = useState(initialDate || today);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

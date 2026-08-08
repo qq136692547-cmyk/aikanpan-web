@@ -9,6 +9,10 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
+function todayLocal(): string {
+  return new Date().toLocaleDateString("sv");
+}
+
 export const metadata: Metadata = {
   title: "每日复盘",
   description: "AI驱动的A股每日复盘报告，包含市场概览、强势行业、资讯新闻和研报精选。",
@@ -44,21 +48,36 @@ export default async function ReviewPage({
 }) {
   const params = await searchParams;
   const selectedDate = params?.date;
-  const isCustomDate = selectedDate && selectedDate !== new Date().toISOString().split("T")[0];
+  const isCustomDate = selectedDate && selectedDate !== todayLocal();
 
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;
 
   try {
-    [dashboard, insights] = await Promise.all([
-      api.getDashboard(),
-      api.getInsights(),
-    ]);
+    const dailyReview = await api.getDailyReview(selectedDate);
+    dashboard = dailyReview?.dashboard ?? null;
+    if (!isCustomDate) {
+      insights = await api.getInsights();
+    }
   } catch (e) {
     console.error("Failed to fetch review data:", e);
   }
 
   if (!dashboard) {
+    if (isCustomDate) {
+      return (
+        <div className="neo-page">
+          <Navbar />
+          <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6">
+            <section className="neo-card p-6">
+              <div className="text-sm font-medium text-neo-ink">{selectedDate} 暂无历史复盘</div>
+              <p className="mt-1 text-xs text-neo-mid">该日期没有已归档的复盘数据。</p>
+            </section>
+          </main>
+          <Footer />
+        </div>
+      );
+    }
     return (
       <div className="neo-page">
         <Navbar />
@@ -123,14 +142,14 @@ export default async function ReviewPage({
         {isCustomDate && (
           <section className="mt-3">
             <div className="neo-inset px-3 py-2 text-[12px] text-neo-mid">
-              {selectedDate} 复盘数据加载中…
+              {selectedDate} 历史复盘
             </div>
           </section>
         )}
 
         {/* AI 复盘报告 */}
         <section className="mt-3">
-          <AIReview />
+          <AIReview date={selectedDate} />
         </section>
 
         {/* 市场概览 */}

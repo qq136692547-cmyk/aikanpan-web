@@ -62,8 +62,8 @@ export class ApiClient {
   }
 
   /** 每日复盘 */
-  getDailyReview() {
-    return this.request<DailyReview>("/workbench/daily-review", {
+  getDailyReview(date?: string) {
+    return this.request<DailyReview>(`/workbench/daily-review${date ? `?date=${encodeURIComponent(date)}` : ""}`, {
       next: { revalidate: 60 },
     });
   }
@@ -243,10 +243,10 @@ export class ApiClient {
   }
 
   /** AI 每日复盘 — LLM 生成市场复盘报告 */
-  getAIReview() {
+  getAIReview(date?: string) {
     return this.request<AIReview>("/ai/daily-review", {
       method: "POST",
-      body: JSON.stringify({}),
+      body: JSON.stringify({ trade_date: date || undefined }),
     });
   }
 
@@ -414,6 +414,8 @@ export interface Sector {
 export interface DailyReview {
   date: string;
   dashboard: Dashboard;
+  cached?: boolean;
+  historical?: boolean;
 }
 
 /** 市场洞察 */
