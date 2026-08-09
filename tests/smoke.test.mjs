@@ -104,6 +104,52 @@ test("alert settings read and update browser toggle", { timeout: 30000 }, async 
   assert.equal(after.browser_enabled, true);
 });
 
+test("US alerts create/filter/delete", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const created = await request("/alerts", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ code: "aapl", condition: "above", threshold: 0.01, market: "us", note: "smoke us alert" }),
+  });
+  assert.equal(created.market, "us");
+  assert.equal(created.code, "AAPL");
+  const list = await request("/alerts?market=us", { headers });
+  assert.ok(list.alerts.some((a) => a.id === created.id));
+  const cn = await request("/alerts?market=cn", { headers });
+  assert.ok(!cn.alerts.some((a) => a.id === created.id));
+  const removed = await request(`/alerts/${created.id}`, { method: "DELETE", headers });
+  assert.equal(removed.deleted, true);
+});
+
+test("multi-condition alert roundtrip", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const headers = { Authorization: `Bearer ${login.token}` };
+  const created = await request("/alerts", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      code: "sh.600519",
+      market: "cn",
+      conditions: [
+        { field: "price", op: "below", threshold: 1500 },
+        { field: "change_pct", op: "above", threshold: 2 },
+      ],
+    }),
+  });
+  assert.equal(created.conditions.length, 2);
+  await request(`/alerts/${created.id}`, { method: "DELETE", headers });
+});
+
+test("US alert NLP parse returns market", { timeout: 45000 }, async () => {
+  const data = await request("/alerts/parse", {
+    method: "POST",
+    body: JSON.stringify({ text: "苹果跌到180提醒我", market: "us" }),
+  });
+  assert.equal(data.market, "us");
+  assert.ok(data.code && /^[A-Z][A-Z0-9.-]{0,9}$/.test(data.code));
+});
+
 test("review status exposes task fields", { timeout: 30000 }, async () => {
   const data = await request("/workbench/review-status");
   assert.equal(typeof data.next_run, "string");

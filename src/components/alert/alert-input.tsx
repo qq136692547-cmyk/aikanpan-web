@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import { api, type AlertCondition, type AlertParseResult } from "@/lib/api";
+import { type MarketScope } from "@/lib/market";
 
 const EXAMPLES = [
   "帮我盯着茅台跌破1500",
   "宁德时代涨到250提醒我",
   "比亚迪涨幅超过5%通知我",
   "腾讯跌破300",
+];
+
+const US_EXAMPLES = [
+  "苹果跌到180提醒我",
+  "英伟达涨到150通知我",
+  "特斯拉涨幅超过3%提醒我",
+  "微软跌破400",
 ];
 
 const FIELD_OPTIONS = [
@@ -50,7 +58,8 @@ function opLabel(op: string): string {
   return OP_OPTIONS.find((o) => o.value === op)?.label || op;
 }
 
-export function AlertInput({ onCreated }: { onCreated?: () => void }) {
+export function AlertInput({ market = "all", onCreated }: { market?: MarketScope; onCreated?: () => void }) {
+  const activeMarket: "cn" | "us" = market === "us" ? "us" : "cn";
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [parsed, setParsed] = useState<AlertParseResult | null>(null);
@@ -68,7 +77,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
     setParsed(null);
     setSuccess(null);
     try {
-      const result = await api.parseAlert(text);
+      const result = await api.parseAlert(text, activeMarket);
       const conds = result.conditions?.length
         ? result.conditions
         : result.condition && result.threshold !== undefined
@@ -118,6 +127,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
       await api.createAlert({
         code,
         conditions: valid,
+        market: activeMarket,
         note: parsed?.raw_text || text || undefined,
       });
       setSuccess(`已创建盯盘任务：${code}（${valid.length} 个条件）`);
@@ -148,7 +158,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleParse()}
-          placeholder="输入盯盘条件，如「茅台跌破1500且涨幅超2%」"
+          placeholder={market === "us" ? "输入盯盘条件，如「苹果跌到180提醒我」" : "输入盯盘条件，如「茅台跌破1500且涨幅超2%」"}
           className="neo-input flex-1 rounded-md bg-transparent px-3 py-2 text-sm text-neo-ink placeholder:text-neo-dim focus:outline-none"
         />
         <button
@@ -161,7 +171,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        {EXAMPLES.map((ex) => (
+        {(market === "us" ? US_EXAMPLES : EXAMPLES).map((ex) => (
           <button
             key={ex}
             onClick={() => setText(ex)}
@@ -196,6 +206,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
         <div className="mt-4 neo-inset rounded-md p-4">
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <span className="text-xs font-medium text-neo-ink">创建盯盘任务</span>
+            <span className="rounded bg-neo-primary-soft px-1.5 py-0.5 text-[10px] font-medium text-neo-primary">{activeMarket === "us" ? "美股" : "A股"}</span>
             {parsed && (
               <span className="text-[11px] text-neo-dim">
                 解析置信度 {(parsed.confidence * 100).toFixed(0)}% · 模型 {parsed.model}
@@ -210,7 +221,7 @@ export function AlertInput({ onCreated }: { onCreated?: () => void }) {
                 type="text"
                 value={codeInput}
                 onChange={(e) => setCodeInput(e.target.value)}
-                placeholder="如 sh.600519"
+                placeholder={market === "us" ? "如 AAPL" : "如 sh.600519"}
                 className="neo-input mt-1 w-full rounded-md px-3 py-2 text-sm"
               />
             </div>

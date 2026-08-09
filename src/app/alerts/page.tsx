@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/footer";
 import { AlertInput } from "@/components/alert/alert-input";
 import { AlertManager } from "@/components/alert/alert-manager";
 import { AlertSettings } from "@/components/alert/alert-settings";
+import { marketFromSearchParams } from "@/lib/market";
 import type { Metadata } from "next";
 
 export const revalidate = 15;
@@ -22,7 +23,10 @@ const alertsJsonLd = {
   offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" },
 };
 
-export default function AlertsPage() {
+export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
+  const { market } = await searchParams;
+  const scope = marketFromSearchParams(market);
+  const isUs = scope === "us";
   return (
     <div className="neo-page">
       <Navbar />
@@ -37,16 +41,16 @@ export default function AlertsPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/70 via-[var(--neo-bg)]/50 to-[var(--neo-bg)]/70" />
             <div className="relative">
-            <h1 className="text-[14px] font-medium text-neo-ink">智能盯盘</h1>
+            <h1 className="text-[14px] font-medium text-neo-ink">{isUs ? "智能盯盘 · 美股" : "智能盯盘"}</h1>
             <p className="mt-0.5 text-[12px] text-neo-mid">
-              用自然语言描述盯盘条件，AI 自动解析并持续监控
+              {isUs ? "用自然语言描述美股盯盘条件，AI 自动解析并持续监控" : "用自然语言描述盯盘条件，AI 自动解析并持续监控"}
             </p>
             </div>
           </div>
         </section>
 
         <section className="mt-3">
-          <AlertInput />
+          <AlertInput market={scope} />
         </section>
 
         <section className="mt-4">
@@ -54,7 +58,7 @@ export default function AlertsPage() {
         </section>
 
         <section className="mt-4">
-          <AlertManager />
+          <AlertManager market={scope} />
         </section>
 
       </main>

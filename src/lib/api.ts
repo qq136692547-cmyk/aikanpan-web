@@ -389,16 +389,17 @@ export class ApiClient {
   // ============================================
 
   /** NLP 解析盯盘条件 — 自然语言 → 结构化条件 */
-  parseAlert(text: string) {
+  parseAlert(text: string, market: "cn" | "us" = "cn") {
     return this.request<AlertParseResult>("/alerts/parse", {
       method: "POST",
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, market }),
     });
   }
 
   /** 获取盯盘任务列表 */
-  getAlerts() {
-    return this.request<{ alerts: AlertItem[]; count: number }>("/alerts", {
+  getAlerts(market?: "cn" | "us") {
+    const qs = market ? `?market=${market}` : "";
+    return this.request<{ alerts: AlertItem[]; count: number }>(`/alerts${qs}`, {
       cache: "no-store" as RequestCache,
     });
   }
@@ -410,9 +411,11 @@ export class ApiClient {
     condition?: string;
     threshold?: number;
     conditions?: AlertCondition[];
+    market?: "cn" | "us";
     note?: string;
   }) {
     const body: Record<string, unknown> = { code: data.code, note: data.note };
+    if (data.market) body.market = data.market;
     if (data.conditions && data.conditions.length > 0) {
       body.conditions = data.conditions;
     } else {
@@ -433,8 +436,9 @@ export class ApiClient {
   }
 
   /** 获取盯盘触发历史 */
-  getAlertHistory() {
-    return this.request<{ alerts: AlertHistoryItem[]; count: number }>("/alerts/triggered", {
+  getAlertHistory(market?: "cn" | "us") {
+    const qs = market ? `?market=${market}` : "";
+    return this.request<{ alerts: AlertHistoryItem[]; count: number }>(`/alerts/triggered${qs}`, {
       cache: "no-store" as RequestCache,
     });
   }
@@ -963,6 +967,7 @@ export interface AlertCondition {
 export interface AlertParseResult {
   code: string;
   name: string;
+  market?: "cn" | "us";
   condition?: string;
   threshold: number;
   conditions?: AlertCondition[];
@@ -978,6 +983,7 @@ export interface AlertItem {
   id: string;
   code: string;
   name: string;
+  market?: "cn" | "us";
   condition: string;
   threshold: number;
   conditions?: AlertCondition[];
@@ -995,6 +1001,7 @@ export interface AlertHistoryItem {
   alert_id?: string;
   code: string;
   name: string;
+  market?: "cn" | "us";
   condition: string;
   threshold: number;
   conditions?: AlertCondition[];

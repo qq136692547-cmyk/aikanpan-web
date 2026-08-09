@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { api, type AlertItem } from "@/lib/api";
+import { type MarketScope } from "@/lib/market";
 import { EmptyState, ErrorState } from "@/components/ui/state";
 
 function fieldLabel(field: string): string {
@@ -33,11 +34,16 @@ function conditionLabel(cond: string): string {
   return map[cond] || cond;
 }
 
-export function AlertManager() {
+function stockHrefFor(item: { code: string; market?: string }): string {
+  return item.market === "us" ? `/stock/${item.code}/` : `/stock/${item.code.replace(/\./, "")}/`;
+}
+
+export function AlertManager({ market = "all" }: { market?: MarketScope }) {
+  const activeMarket: "cn" | "us" | undefined = market === "us" ? "us" : market === "cn" ? "cn" : undefined;
   const [deleting, setDeleting] = useState<string | null>(null);
-  const { data: alertData, error, isLoading, mutate } = useSWR("alerts", () => api.getAlerts(), { refreshInterval: 15000 });
-  const { data: historyData, mutate: mutateHistory } = useSWR("alert-history", () =>
-    api.getAlertHistory().catch(() => ({ alerts: [], count: 0 })),
+  const { data: alertData, error, isLoading, mutate } = useSWR(["alerts", market], () => api.getAlerts(activeMarket), { refreshInterval: 15000 });
+  const { data: historyData, mutate: mutateHistory } = useSWR(["alert-history", market], () =>
+    api.getAlertHistory(activeMarket).catch(() => ({ alerts: [], count: 0 })),
     { refreshInterval: 15000 }
   );
   const { data: settings } = useSWR("alert-settings", () => api.getAlertSettings(), { refreshInterval: 30000 });
@@ -68,7 +74,7 @@ export function AlertManager() {
       seenHistory.current.add(h.id);
       if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
         new Notification(`盯盘提醒：${h.name}`, {
-          body: `${h.code} ${h.conditions?.length ? "多条件" : h.condition} ${h.threshold}，最新价 ${h.last_value ?? h.price_at_trigger ?? "-"}`, 
+          body: `${h.code} ${h.conditions?.length ? "多条件" : h.condition} ${h.threshold}，最新价 ${h.last_value ?? h.price_at_trigger ?? "-"}${h.market === "us" ? " USD" : ""}`, 
         });
       }
     }
@@ -107,7 +113,7 @@ export function AlertManager() {
       <div>
         <div className="mb-3 flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-neo-primary pulse-dot" />
-          <h3 className="text-sm font-semibold text-neo-ink">盯盘任务</h3>
+          <h3 className="text-sm font-semibold text-neo-ink">盯盘任务{market === "us" ? " · 美股" : ""}</h3>
           {alerts.length > 0 && <span className="text-xs text-neo-dim">({alerts.length})</span>}
         </div>
         {alerts.length === 0 ? (
@@ -118,7 +124,7 @@ export function AlertManager() {
               {alerts.map((alert) => {
                 const isActive = alert.active !== false && !alert.triggered_at;
                 const isTriggered = !!alert.triggered_at;
-                const stockHref = `/stock/${alert.code.replace(/\./, "")}/`;
+                const stockHref = stockHrefFor(alert);
                 return (
                   <div key={alert.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
                     <div className={`h-2 w-2 shrink-0 rounded-full ${isTriggered ? "bg-neo-down" : isActive ? "bg-neo-up pulse-dot" : "bg-neo-dim"}`} />
@@ -128,6 +134,7 @@ export function AlertManager() {
                           {alert.name}
                         </a>
                         <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{alert.code}</span>
+                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{alert.market === "us" ? "美股" : "A股"}</span>}
                         <StatusBadge active={isActive} triggered={isTriggered} />
                       </div>
                       <div className="mt-0.5 text-xs text-neo-mid">
@@ -159,13 +166,13 @@ export function AlertManager() {
         <div>
           <div className="mb-3 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-neo-down" />
-            <h3 className="text-sm font-semibold text-neo-ink">触发历史</h3>
+            <h3 className="text-sm font-semibold text-neo-ink">触发历史{market === "us" ? " · 美股" : ""}</h3>
             <span className="text-xs text-neo-dim">({history.length})</span>
           </div>
           <div className="neo-card-sm overflow-hidden">
             <div className="divide-y divide-[var(--neo-edge)]">
               {history.map((h) => {
-                const stockHref = `/stock/${h.code.replace(/\./, "")}/`;
+                const stockHref = stockHrefFor(h);
                 return (
                   <div key={h.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
                     <div className="h-2 w-2 shrink-0 rounded-full bg-neo-down" />
@@ -175,6 +182,7 @@ export function AlertManager() {
                           {h.name}
                         </a>
                         <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{h.code}</span>
+                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{h.market === "us" ? "美股" : "A股"}</span>}
                       </div>
                       <div className="mt-0.5 text-xs text-neo-mid">
                         {h.conditions?.length
