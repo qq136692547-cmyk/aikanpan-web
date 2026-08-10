@@ -6,13 +6,14 @@ import ReactMarkdown from "react-markdown";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
-import { formatPct, formatPrice } from "@/lib/format";
-import { api, type AIComment, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
+import { formatMarketCap, formatPct, formatPrice } from "@/lib/format";
+import { api, type AIComment, type UsEarnings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
 
 export function UsStockDetail({ symbol }: { symbol: string }) {
   const [quote, setQuote] = useState<UsQuote | null>(null);
   const [history, setHistory] = useState<UsHistory | null>(null);
   const [financials, setFinancials] = useState<UsFinancials | null>(null);
+  const [earnings, setEarnings] = useState<UsEarnings | null>(null);
   const [news, setNews] = useState<UsNewsItem[]>([]);
   const [ai, setAi] = useState<AIComment | null>(null);
   const [aiLoading, setAiLoading] = useState(true);
@@ -26,13 +27,15 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       api.getUsFinancials(symbol),
       api.getUsNews(symbol, 8),
       api.getUsAI(symbol),
-    ]).then(([q, h, f, n, a]) => {
+      api.getUsEarnings(symbol),
+    ]).then(([q, h, f, n, a, e]) => {
       if (cancelled) return;
       if (q.status === "fulfilled") setQuote(q.value);
       if (h.status === "fulfilled") setHistory(h.value);
       if (f.status === "fulfilled") setFinancials(f.value);
       if (n.status === "fulfilled") setNews(n.value.news);
       if (a.status === "fulfilled") setAi(a.value);
+      if (e.status === "fulfilled") setEarnings(e.value);
       setAiLoading(false);
     });
     return () => {
@@ -95,6 +98,33 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
           </div>
         </section>
       )}
+
+      {(earnings?.earnings?.length ?? 0) > 0 || earnings?.upcoming ? (
+        <section className="neo-card p-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-[14px] font-semibold text-neo-ink">财报与盈利</h2>
+            {quote?.market_cap != null && <span className="text-[10px] text-neo-dim">市值 {formatMarketCap(quote.market_cap)}</span>}
+          </div>
+          <div className="mt-3 space-y-2">
+            {(earnings?.earnings || []).slice(0, 4).map((e) => (
+              <div key={e.period} className="neo-card-sm flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-2">
+                <span className="text-[11px] font-medium text-neo-ink">{e.period}</span>
+                <span className="text-[10px] text-neo-dim">实际 EPS <b className="text-neo-ink">{e.actual ?? "--"}</b></span>
+                <span className="text-[10px] text-neo-dim">预期 EPS <b className="text-neo-ink">{e.estimate ?? "--"}</b></span>
+                <span className={`text-[10px] ${(e.surprise_percent ?? 0) >= 0 ? "text-neo-up" : "text-neo-down"}`}>超预期 {(e.surprise_percent ?? 0).toFixed(1)}%</span>
+              </div>
+            ))}
+            {earnings?.upcoming && (
+              <div className="neo-inset px-3 py-2 text-[11px] text-neo-mid">
+                下次财报：{earnings.upcoming.date}（{earnings.upcoming.quarter}Q{earnings.upcoming.year ?? ""}）EPS 预期 {earnings.upcoming.eps_estimate ?? "--"}
+              </div>
+            )}
+            {!financials?.available && (
+              <p className="text-[10px] text-neo-dim">财务指标免费档暂不可用，盈利数据来自 Finnhub 免费档</p>
+            )}
+          </div>
+        </section>
+      ) : null}
 
       {news.length > 0 && (
         <section className="neo-card p-5">

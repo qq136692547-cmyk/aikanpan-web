@@ -237,6 +237,13 @@ test("US search returns list", { timeout: 30000 }, async () => {
   assert.ok(Array.isArray(data.list));
 });
 
+test("US earnings endpoint returns free-tier data", { timeout: 30000 }, async () => {
+  const data = await request("/us/stocks/AAPL/earnings");
+  assert.ok(Array.isArray(data.earnings));
+  assert.ok(data.upcoming === null || typeof data.upcoming === "object");
+  if (data.earnings.length > 0) assert.ok(data.earnings[0].period);
+});
+
 test("US watchlist roundtrip", { timeout: 30000 }, async () => {
   const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
   const headers = { Authorization: `Bearer ${login.token}` };

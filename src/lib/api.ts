@@ -206,6 +206,10 @@ export class ApiClient {
     return this.request<UsFinancials>(`/us/stocks/${encodeURIComponent(symbol)}/financials`, { next: { revalidate: 3600 } });
   }
 
+  getUsEarnings(symbol: string) {
+    return this.request<UsEarnings>(`/us/stocks/${encodeURIComponent(symbol)}/earnings`, { next: { revalidate: 3600 } });
+  }
+
   getUsNews(symbol: string, limit = 8) {
     return this.request<{ news: UsNewsItem[]; count: number }>(`/us/stocks/${encodeURIComponent(symbol)}/news?limit=${limit}`, { next: { revalidate: 900 } });
   }
@@ -817,6 +821,32 @@ export interface UsFinancials {
     gross_margin_pct?: number;
     market_cap?: number;
   };
+}
+
+export interface UsEarningsItem {
+  period: string;
+  year?: number;
+  quarter?: number;
+  estimate?: number;
+  actual?: number;
+  surprise?: number;
+  surprise_percent?: number;
+}
+
+export interface UsEarningsUpcoming {
+  date: string;
+  hour?: string;
+  quarter?: number;
+  year?: number;
+  eps_estimate?: number;
+  revenue_estimate?: number;
+}
+
+export interface UsEarnings {
+  earnings: UsEarningsItem[];
+  upcoming?: UsEarningsUpcoming | null;
+  count: number;
+  source?: string;
 }
 
 export interface UsDashboard {

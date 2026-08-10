@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSync } from "@/lib/use-sync";
-import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type UsDashboard, type UsFinancials, type UsNewsItem, type WatchlistItem } from "@/lib/api";
+import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type UsDashboard, type UsEarnings, type UsFinancials, type UsNewsItem, type WatchlistItem } from "@/lib/api";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 import { type MarketScope } from "@/lib/market";
 import { formatPct, formatPrice } from "@/lib/format";
@@ -42,6 +42,7 @@ interface ProfileExtra {
   events?: StockEvents;
   usFinancials?: UsFinancials;
   usNews?: UsNewsItem[];
+  usEarnings?: UsEarnings;
   ai?: AIComment;
   loading?: boolean;
   error?: string;
@@ -309,6 +310,7 @@ export function ResearchWorkspace({
         api.getUsFinancials(code),
         api.getUsNews(code, 5),
         api.getUsAI(code),
+        api.getUsEarnings(code),
       ]);
       setProfileData((prev) => ({
         ...prev,
@@ -316,6 +318,7 @@ export function ResearchWorkspace({
           loading: false,
           usFinancials: settled[2].status === "fulfilled" ? settled[2].value : undefined,
           usNews: settled[3].status === "fulfilled" ? settled[3].value.news : undefined,
+          usEarnings: settled[5].status === "fulfilled" ? settled[5].value : undefined,
           ai: settled[4].status === "fulfilled" ? settled[4].value : undefined,
           error: settled[0].status === "rejected" && settled[2].status === "rejected" && settled[4].status === "rejected" ? "档案加载失败" : undefined,
         },
@@ -665,6 +668,20 @@ export function ResearchWorkspace({
                       <p key={n.id} className="line-clamp-2 text-[11px] leading-relaxed text-neo-mid">{n.title}</p>
                     ))}
                   </div>
+                )}
+                {isUs && (profileData[s.code]?.usEarnings?.earnings?.length ?? 0) > 0 && (
+                  <div className="mt-2 space-y-1">
+                    <div className="text-[10px] text-neo-dim">最近盈利</div>
+                    {(profileData[s.code]?.usEarnings?.earnings || []).slice(0, 3).map((e) => (
+                      <div key={e.period} className="flex justify-between text-[11px]">
+                        <span className="text-neo-dim">{e.period}</span>
+                        <span className="text-neo-ink">实际 {e.actual ?? "--"} / 预期 {e.estimate ?? "--"}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {isUs && profileData[s.code]?.usEarnings?.upcoming && (
+                  <p className="mt-2 text-[11px] text-neo-mid">下次财报：{profileData[s.code]?.usEarnings?.upcoming?.date}</p>
                 )}
                 {!isUs && profileData[s.code]?.events?.summary && (
                   <p className="mt-2 line-clamp-3 text-[11px] leading-relaxed text-neo-mid">{profileData[s.code]?.events?.summary}</p>
