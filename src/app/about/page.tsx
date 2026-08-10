@@ -95,6 +95,24 @@ export default function AboutPage() {
           </div>
         </section>
 
+        <section className="neo-fade-up mt-8" style={{ animationDelay: "230ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-neo-mid">常见问题</h2>
+          <div className="neo-card divide-y divide-[var(--neo-edge)]">
+            {[
+              { q: "爱看盘是什么？", a: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" },
+              { q: "爱看盘的数据来源是什么？", a: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，AI 内容由大语言模型生成。" },
+              { q: "爱看盘是否收费？", a: "当前为免费测试期，网站不收费；后续如有会员或数据增值服务会提前公示。" },
+              { q: "美股支持哪些功能？", a: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" },
+              { q: "盯盘提醒如何工作？", a: "用户用自然语言或手动条件创建盯盘任务，后端定期轮询行情，满足条件后触发浏览器通知并记录触发历史。" },
+            ].map((item) => (
+              <div key={item.q} className="px-4 py-3">
+                <div className="text-sm font-medium text-neo-ink">{item.q}</div>
+                <p className="mt-1 text-xs leading-relaxed text-neo-mid">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="neo-fade-up mt-8" style={{ animationDelay: "240ms" }}>
           <h2 className="mb-3 text-sm font-semibold text-neo-mid">免责声明</h2>
           <div className="neo-card p-4">
@@ -132,6 +150,37 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              { "@type": "Question", name: "爱看盘是什么？", acceptedAnswer: { "@type": "Answer", text: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" } },
+              { "@type": "Question", name: "爱看盘的数据来源是什么？", acceptedAnswer: { "@type": "Answer", text: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，AI 内容由大语言模型生成。" } },
+              { "@type": "Question", name: "爱看盘是否收费？", acceptedAnswer: { "@type": "Answer", text: "当前为免费测试期，网站不收费；后续如有会员或数据增值服务会提前公示。" } },
+              { "@type": "Question", name: "美股支持哪些功能？", acceptedAnswer: { "@type": "Answer", text: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
+              { "@type": "Question", name: "盯盘提醒如何工作？", acceptedAnswer: { "@type": "Answer", text: "用户用自然语言或手动条件创建盯盘任务，后端定期轮询行情，满足条件后触发浏览器通知并记录触发历史。" } },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "爱看盘团队",
+            url: "https://aikanpan.top/about/",
+            jobTitle: "开源投资决策工具团队",
+            knowsAbout: ["A股", "美股", "AI 投资分析", "开源软件"],
+            hasCredential: { "@type": "EducationalOccupationalCredential", credentialCategory: "开源软件与投资分析", name: "开源投资工具团队" },
+            sameAs: ["https://github.com/qq136692547-cmyk/aikanpan-web"],
+          }),
+        }}
+      />
       <Footer />
     </div>
   );

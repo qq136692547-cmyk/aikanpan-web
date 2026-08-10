@@ -325,8 +325,137 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {scope === "all" && usDashboard && (
           <UsDashboardSection dashboard={usDashboard} />
         )}
+
+        <section className="mt-4 neo-fade-up">
+          <div className="neo-card p-5">
+            <h2 className="text-[14px] font-semibold text-neo-ink">数据与能力</h2>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              数据更新说明：A 股行情在交易时段实时更新，历史 K 线默认提供 120 日窗口；美股报价与 K 线来自 Finnhub、EODHD 免费接口，
+              非交易时段展示最近收盘价。每日复盘由 AI 在收盘后自动生成，并结合指数、涨跌停、行业与市场新闻形成摘要。
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              使用场景：研究台支持自选、盘前计划、公司档案、投资论点和 AI 评分；盯盘任务每 30 秒轮询一次，价格、涨跌幅和成交量条件可组合使用，
+              触发后通过浏览器通知提醒并记录历史。美股研究台覆盖报价、K 线、新闻、财报盈利、自选、持仓与交易流水，帮助用户在同一页面完成跟踪。
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              项目以 MIT 许可证开源，代码托管在 GitHub，接口说明见 API 文档。网站当前处于免费测试期，功能与数据源会持续调整，
+              商用前将补充数据授权与来源说明。所有行情、AI 内容与提醒均仅供参考，不构成投资建议。
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              爱看盘覆盖 A 股沪深京三地市场与美股主流交易标的，提供实时行情、AI 复盘摘要、个股诊断、智能盯盘和研究台。
+              行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口；AI 内容由大语言模型生成，仅作研究参考。
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              网站目前处于免费测试期：A 股支持指数、涨跌停池、行业板块、资金流向、AI 复盘与批量评分；美股支持真实报价、K 线、
+              新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。用户可通过自然语言创建盯盘任务，
+              满足价格、涨跌幅或成交量条件后自动触发浏览器通知并记录历史。
+            </p>
+            <div className="mt-4">
+              <div className="text-[12px] font-semibold text-neo-ink">使用方式</div>
+              <ol className="mt-2 list-decimal space-y-1 pl-5 text-[12px] text-neo-mid">
+                <li>在首页或搜索页输入 A 股代码、美股代码或公司名称，查看实时行情与 AI 诊断。</li>
+                <li>在盯盘页用自然语言创建条件任务，如「苹果跌到180提醒我」，系统会自动解析并持续轮询。</li>
+                <li>在研究台维护自选、盘前计划、公司档案与投资论点，并用 AI 评分和关注要点辅助复盘。</li>
+              </ol>
+            </div>
+            <div className="mt-4">
+              <div className="text-[12px] font-semibold text-neo-ink">覆盖范围</div>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-[12px] text-neo-mid">
+                <li>A 股：三大指数、涨跌停池、行业板块、资金流向、AI 复盘、批量评分。</li>
+                <li>美股：真实报价、K 线、新闻、AI 解读、财报盈利、自选、持仓与交易流水。</li>
+                <li>通用：自然语言盯盘、研究台、API 文档、浏览器与短信通知。</li>
+              </ul>
+            </div>
+            <div className="mt-4">
+              <div className="text-[12px] font-semibold text-neo-ink">常见问题</div>
+            <div className="mt-4">
+              <div className="text-[12px] font-semibold text-neo-ink">功能矩阵</div>
+              <div className="mt-2 overflow-x-auto">
+                <table className="neo-input w-full min-w-[560px] text-left text-[12px]">
+                  <thead>
+                    <tr className="text-neo-dim"><th className="px-3 py-2">能力</th><th className="px-3 py-2">A 股</th><th className="px-3 py-2">美股</th></tr>
+                  </thead>
+                  <tbody className="text-neo-mid">
+                    <tr><td className="px-3 py-2">实时行情</td><td className="px-3 py-2">指数、涨跌停、行业板块</td><td className="px-3 py-2">个股与 ETF 报价</td></tr>
+                    <tr><td className="px-3 py-2">AI 分析</td><td className="px-3 py-2">复盘、诊断、批量评分</td><td className="px-3 py-2">解读、盈利、研究台</td></tr>
+                    <tr><td className="px-3 py-2">盯盘提醒</td><td className="px-3 py-2">价格、涨跌幅、成交量</td><td className="px-3 py-2">价格、涨跌幅、成交量</td></tr>
+                    <tr><td className="px-3 py-2">持仓管理</td><td className="px-3 py-2">人民币计价</td><td className="px-3 py-2">美元计价并折算人民币</td></tr>
+                    <tr><td className="px-3 py-2">数据来源</td><td className="px-3 py-2">东方财富、新浪财经</td><td className="px-3 py-2">Finnhub、EODHD</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p className="mt-4 text-[12px] leading-relaxed text-neo-mid">
+              分析口径：A 股复盘以沪深京三大指数、涨跌停数量和强势行业为基础，结合资金流向与市场新闻生成中文摘要；美股复盘以标普 500、纳指 100、道琼斯 ETF 为锚，覆盖热门个股、财报盈利与公司新闻。
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">
+              AI 评分采用 0-10 分制，输出状态与风险提示，仅作为研究参考。盯盘任务支持价格、涨跌幅和成交量条件，满足条件后触发浏览器通知并保留触发历史；研究台允许用户沉淀自选、计划、档案与论点，形成个人复盘闭环。
+            </p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-[12px] text-neo-mid">
+                <li><b>爱看盘是什么？</b> 开源投资决策辅助工具，覆盖 A 股与美股。</li>
+                <li><b>数据来源是什么？</b> 东方财富、新浪财经、Finnhub、EODHD 等公开接口。</li>
+                <li><b>是否收费？</b> 当前免费测试期，后续增值服务会提前公示。</li>
+                <li><b>美股支持哪些功能？</b> 行情、K 线、新闻、AI、盯盘、持仓、财报与研究台。</li>
+                <li><b>盯盘提醒如何工作？</b> 后端轮询行情，条件满足后触发通知并记录历史。</li>
+              </ul>
+            </div>
+            <p className="mt-4 text-[11px] text-neo-dim">
+              维护：<a rel="author" href="/about/" className="text-neo-primary hover:underline">爱看盘团队</a>
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2 text-[11px]">
+              <a href="https://github.com/qq136692547-cmyk/aikanpan-web" target="_blank" rel="noopener noreferrer" className="neo-chip px-2.5 py-1 text-neo-primary">GitHub 开源仓库</a>
+              <a href="/api-docs/" className="neo-chip px-2.5 py-1 text-neo-primary">API 文档</a>
+              <a href="/about/" className="neo-chip px-2.5 py-1 text-neo-primary">关于与数据来源</a>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: "爱看盘使用指南：A 股与美股 AI 复盘、诊断与盯盘",
+            author: { "@type": "Person", name: "爱看盘团队", url: "https://aikanpan.top/about/" },
+            datePublished: "2026-08-10",
+            dateModified: "2026-08-10",
+            publisher: { "@type": "Organization", name: "爱看盘", url: "https://aikanpan.top" },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              { "@type": "Question", name: "爱看盘是什么？", acceptedAnswer: { "@type": "Answer", text: "开源投资决策辅助工具，覆盖 A 股与美股。" } },
+              { "@type": "Question", name: "数据来源是什么？", acceptedAnswer: { "@type": "Answer", text: "东方财富、新浪财经、Finnhub、EODHD 等公开接口。" } },
+              { "@type": "Question", name: "是否收费？", acceptedAnswer: { "@type": "Answer", text: "当前免费测试期，后续增值服务会提前公示。" } },
+              { "@type": "Question", name: "美股支持哪些功能？", acceptedAnswer: { "@type": "Answer", text: "行情、K 线、新闻、AI、盯盘、持仓、财报与研究台。" } },
+              { "@type": "Question", name: "盯盘提醒如何工作？", acceptedAnswer: { "@type": "Answer", text: "后端轮询行情，条件满足后触发通知并记录历史。" } },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "如何使用爱看盘",
+            step: [
+              { "@type": "HowToStep", position: 1, name: "搜索股票", text: "输入 A 股代码、美股代码或公司名称，查看行情与 AI 诊断。" },
+              { "@type": "HowToStep", position: 2, name: "创建盯盘", text: "用自然语言创建条件任务，系统自动解析并持续轮询。" },
+              { "@type": "HowToStep", position: 3, name: "研究复盘", text: "在研究台维护自选、计划、档案与论点，并使用 AI 评分。" },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

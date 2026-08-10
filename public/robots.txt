@@ -18,4 +18,10 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
 Sitemap: https://aikanpan.top/sitemap.xml

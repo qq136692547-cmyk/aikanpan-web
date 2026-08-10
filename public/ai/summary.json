@@ -1,0 +1,24 @@
+{
+  "name": "爱看盘",
+  "url": "https://aikanpan.top",
+  "description": "AI 驱动的 A 股与美股复盘、个股诊断、智能盯盘与研究台工具。",
+  "markets": ["A股", "美股"],
+  "features": [
+    "每日 AI 复盘",
+    "AI 个股诊断与评分",
+    "自然语言智能盯盘",
+    "市场总览与涨跌停池",
+    "美股研究台",
+    "持仓管理与交易流水"
+  ],
+  "key_pages": [
+    { "name": "首页", "url": "https://aikanpan.top/" },
+    { "name": "市场", "url": "https://aikanpan.top/market/" },
+    { "name": "复盘", "url": "https://aikanpan.top/review/" },
+    { "name": "研究台", "url": "https://aikanpan.top/research/" },
+    { "name": "智能盯盘", "url": "https://aikanpan.top/alerts/" },
+    { "name": "API 文档", "url": "https://aikanpan.top/api-docs/" }
+  ],
+  "data_sources": ["东方财富", "新浪财经", "Finnhub", "EODHD"],
+  "updated": "2026-08-10"
+}

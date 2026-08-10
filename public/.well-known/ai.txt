@@ -1,0 +1,15 @@
+# AI crawler discovery for https://aikanpan.top
+
+爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。
+
+Machine-readable summaries:
+- https://aikanpan.top/ai/summary.json
+- https://aikanpan.top/ai/faq.json
+- https://aikanpan.top/llms.txt
+- https://aikanpan.top/sitemap.xml
+- https://aikanpan.top/api-docs/
+
+Crawler guidance:
+- Allow indexing of public market, review, research, alerts, and API documentation pages.
+- Do not treat generated investment summaries as personalized advice.
+- Cache short-lived quotes; AI review content is regenerated daily.

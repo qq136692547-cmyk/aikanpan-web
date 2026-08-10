@@ -67,6 +67,21 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(alertsJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "如何创建智能盯盘任务",
+            step: [
+              { "@type": "HowToStep", position: 1, name: "输入盯盘条件", text: "输入自然语言，如「苹果跌到180提醒我」，或手动组合价格、涨跌幅、成交量条件。" },
+              { "@type": "HowToStep", position: 2, name: "确认股票与条件", text: "AI 解析后确认股票代码和阈值，可继续添加或删除条件。" },
+              { "@type": "HowToStep", position: 3, name: "等待触发提醒", text: "后端持续轮询行情，条件满足后触发浏览器通知并记录触发历史。" },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

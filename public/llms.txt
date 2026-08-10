@@ -1,0 +1,33 @@
+# 爱看盘 (Aikanpan)
+
+> AI 驱动的 A 股与美股复盘、个股诊断、智能盯盘与研究台工具。面向普通个人投资者，提供实时行情、AI 摘要、结构化诊断和可追踪的盯盘提醒。
+
+## 站点简介
+
+爱看盘是一款开源的投资决策辅助工具，覆盖 A 股沪深京市场与美股主流标的。Web 端基于 Next.js 构建，后端使用 FastAPI，AI 解读由大语言模型生成。所有行情与资讯数据仅供研究参考，不构成投资建议。
+
+## 核心功能
+
+- [每日复盘](https://aikanpan.top/review/)：AI 自动生成三大指数、涨跌停、行业板块与市场资讯摘要
+- [智能盯盘](https://aikanpan.top/alerts/)：自然语言创建 A 股与美股盯盘任务，价格、涨跌幅、成交量条件组合
+- [个股诊断](https://aikanpan.top/search)：输入股票代码，AI 生成结构化评分、状态与风险提示
+- [市场总览](https://aikanpan.top/market/)：指数、涨跌停池、强势行业与市场新闻
+- [美股研究台](https://aikanpan.top/research/?market=us)：美股自选、盘前计划、公司档案、投资论点与 AI 评分
+- [API 文档](https://aikanpan.top/api-docs/)：公开行情、AI 与用户数据接口
+
+## 关键页面
+
+- [首页](https://aikanpan.top/)：市场快照、AI 复盘摘要与功能入口
+- [市场](https://aikanpan.top/market/)：A 股与美股市场总览
+- [复盘](https://aikanpan.top/review/)：每日 AI 复盘报告
+- [研究台](https://aikanpan.top/research/)：计划、档案、论点与研究工具
+- [持仓](https://aikanpan.top/portfolio/)：A 股与美股持仓管理
+- [关于](https://aikanpan.top/about/)：项目介绍、技术栈与数据来源
+- [隐私](https://aikanpan.top/privacy/)：隐私说明
+- [协议](https://aikanpan.top/terms/)：服务协议
+
+## 数据与许可
+
+- 数据来源：东方财富、新浪财经、Finnhub、EODHD 等公开行情接口
+- 项目源码：[aikanpan-web](https://github.com/qq136692547-cmyk/aikanpan-web)
+- 免责声明：本站数据与 AI 内容仅供参考，不构成投资建议，投资有风险，入市需谨慎
