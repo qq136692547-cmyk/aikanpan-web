@@ -5,6 +5,7 @@ import { BottomNav } from "@/components/layout/bottom-nav";
 import { GlobalSearch } from "@/components/layout/global-search";
 import { ErrorReporter } from "@/components/system/error-reporter";
 import { AnalyticsReporter } from "@/components/system/analytics-reporter";
+import { BaiduTongji } from "@/components/system/baidu-tongji";
 import "./globals.css";
 
 
@@ -76,6 +77,7 @@ export default function RootLayout({
           {children}
           <BottomNav />
           <AnalyticsReporter />
+          <BaiduTongji />
         </AuthProvider>
         <GlobalSearch />
         <ErrorReporter />

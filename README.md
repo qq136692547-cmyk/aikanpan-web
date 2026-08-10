@@ -116,6 +116,12 @@ unzip -o standalone.zip -d .
 pm2 restart aikanpan-web --update-env
 ```
 
+## 流量统计
+
+- 站内来源报表：`npm run monitor:sources`，或 `curl https://aikanpan.top/api/v1/analytics/sources?days=30`
+- 访客与留存汇总：`npm run monitor:retention`
+- 百度统计：注册百度统计后，在 `.env.local` 设置 `NEXT_PUBLIC_BAIDU_TONGJI_ID=<站点ID>`，重新构建部署即可自动注入统计脚本
+
 ## License
 
 [MIT](./LICENSE)

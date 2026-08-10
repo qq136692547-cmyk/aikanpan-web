@@ -10,6 +10,11 @@ function localDay(): string {
   return new Date().toLocaleDateString("sv");
 }
 
+function utmParam(key: string): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  return new URLSearchParams(window.location.search).get(key) || undefined;
+}
+
 async function sendEvent(event: string, path: string, label: string | undefined, token: string | null) {
   try {
     await fetch(`${API_BASE}/analytics/events`, {
@@ -18,7 +23,15 @@ async function sendEvent(event: string, path: string, label: string | undefined,
         "Content-Type": "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
-      body: JSON.stringify({ event, path, label }),
+      body: JSON.stringify({
+        event,
+        path,
+        label,
+        referrer: typeof document !== "undefined" ? document.referrer.slice(0, 200) : "",
+        source: utmParam("utm_source"),
+        medium: utmParam("utm_medium"),
+        campaign: utmParam("utm_campaign"),
+      }),
     });
   } catch {
     // Analytics must never break the app.

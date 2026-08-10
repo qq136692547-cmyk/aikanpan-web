@@ -219,6 +219,13 @@ test("analytics retention returns cohorts and totals", { timeout: 30000 }, async
   assert.equal(typeof data.totals.page_views, "number");
 });
 
+test("analytics sources returns source buckets", { timeout: 30000 }, async () => {
+  const data = await request("/analytics/sources?days=7");
+  assert.ok(Array.isArray(data.sources));
+  assert.equal(typeof data.totals.page_views, "number");
+  assert.ok(Array.isArray(data.top_paths));
+});
+
 test("US dashboard returns indices", { timeout: 30000 }, async () => {
   const data = await request("/us/dashboard");
   assert.ok(Array.isArray(data.indices) && data.indices.length === 3);
