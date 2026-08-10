@@ -5,6 +5,7 @@ import { Bot, RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
+import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { formatPct, formatPrice } from "@/lib/format";
 import { api, type AIComment, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
 
@@ -108,6 +109,8 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
           </div>
         </section>
       )}
+
+      <StockThesisPanel code={symbol} market="us" />
 
       <section className="neo-card p-5">
         <div className="flex items-center justify-between gap-2">

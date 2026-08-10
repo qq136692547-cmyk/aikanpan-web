@@ -333,10 +333,10 @@ export class ApiClient {
   }
 
   /** AI 批量评分 — 并发评分 */
-  getAIScoreBatch(codes: string[]) {
+  getAIScoreBatch(codes: string[], market: "cn" | "us" = "cn") {
     return this.request<AIScoreBatch>("/ai/score-batch", {
       method: "POST",
-      body: JSON.stringify({ codes }),
+      body: JSON.stringify({ codes, market }),
     });
   }
 
@@ -357,10 +357,10 @@ export class ApiClient {
   }
 
   /** AI 盘前计划关注要点 */
-  getPlanFocus(plans: Array<Record<string, unknown>>) {
+  getPlanFocus(plans: Array<Record<string, unknown>>, market: "cn" | "us" = "cn") {
     return this.request<PlanFocus>("/ai/plan-focus", {
       method: "POST",
-      body: JSON.stringify({ plans }),
+      body: JSON.stringify({ plans, market }),
     });
   }
 

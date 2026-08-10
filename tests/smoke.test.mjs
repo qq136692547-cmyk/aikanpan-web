@@ -150,6 +150,28 @@ test("US alert NLP parse returns market", { timeout: 45000 }, async () => {
   assert.ok(data.code && /^[A-Z][A-Z0-9.-]{0,9}$/.test(data.code));
 });
 
+test("US AI score-batch returns items", { timeout: 60000 }, async () => {
+  const data = await request("/ai/score-batch", {
+    method: "POST",
+    body: JSON.stringify({ codes: ["AAPL"], market: "us" }),
+  });
+  assert.ok(Array.isArray(data.items));
+  assert.ok(data.items.some((i) => i.code === "AAPL"));
+});
+
+test("US plan-focus generates content", { timeout: 60000 }, async () => {
+  const data = await request("/ai/plan-focus", {
+    method: "POST",
+    body: JSON.stringify({ market: "us", plans: [{ date: "2026-08-10", name: "苹果", code: "AAPL", action: "观察", note: "测试" }] }),
+  });
+  assert.ok(data.content && data.content.length > 0);
+});
+
+test("research US page is reachable", { timeout: 30000 }, async () => {
+  const res = await fetch("https://aikanpan.top/research/?market=us");
+  assert.ok(res.ok, `research us -> ${res.status}`);
+});
+
 test("review status exposes task fields", { timeout: 30000 }, async () => {
   const data = await request("/workbench/review-status");
   assert.equal(typeof data.next_run, "string");

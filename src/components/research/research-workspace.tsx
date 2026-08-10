@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSync } from "@/lib/use-sync";
-import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type WatchlistItem } from "@/lib/api";
+import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type UsDashboard, type UsFinancials, type UsNewsItem, type WatchlistItem } from "@/lib/api";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
+import { type MarketScope } from "@/lib/market";
 import { formatPct, formatPrice } from "@/lib/format";
 import { useWatchlist } from "@/lib/use-watchlist";
 
@@ -15,6 +16,7 @@ interface PlanItem {
   date: string;
   name: string;
   code: string;
+  market?: "cn" | "us";
   action: string;
   note: string;
   done: boolean;
@@ -25,6 +27,7 @@ interface ThesisItem {
   id: string;
   name: string;
   code: string;
+  market?: "cn" | "us";
   reason: string;
   trigger: string;
   status: "active" | "watching" | "closed";
@@ -37,6 +40,8 @@ type ProfileNotes = Record<string, string>;
 interface ProfileExtra {
   financials?: StockFinancials;
   events?: StockEvents;
+  usFinancials?: UsFinancials;
+  usNews?: UsNewsItem[];
   ai?: AIComment;
   loading?: boolean;
   error?: string;
@@ -94,15 +99,28 @@ function fmtRoe(v?: number) {
   return v == null ? "—" : `${v.toFixed(2)}%`;
 }
 
+function fmtUsPct(v?: number) {
+  return v == null ? "—" : `${(v * 100).toFixed(2)}%`;
+}
+
+function stockHrefFor(code: string, market?: string): string {
+  return market === "us" || /^[A-Z][A-Z0-9.-]{0,9}$/.test(code) ? `/stock/${code}/` : `/stock/${code.replace(/\./, "")}/`;
+}
+
 export function ResearchWorkspace({
   watchlist: serverWatchlist,
   dashboard,
+  market = "all",
 }: {
   watchlist: WatchlistItem[];
-  dashboard: Dashboard | null;
+  dashboard: Dashboard | UsDashboard | null;
+  market?: MarketScope;
 }) {
+  const activeMarket: "cn" | "us" = market === "us" ? "us" : "cn";
+  const isUs = activeMarket === "us";
   const { watchlist: liveWatchlist, toggle: toggleWatchlist } = useWatchlist();
-  const watchlist = liveWatchlist.length > 0 ? liveWatchlist : serverWatchlist;
+  const [usWatchlist, setUsWatchlist] = useState<WatchlistItem[]>([]);
+  const watchlist = isUs ? usWatchlist : liveWatchlist.length > 0 ? liveWatchlist : serverWatchlist;
   const { pushData, pullData } = useSync();
   const syncedOnce = useRef(false);
   const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -193,14 +211,36 @@ export function ResearchWorkspace({
   }, [plans, theses, profileNotes, hydrated, pushData]);
 
   const idx0 = dashboard?.indices?.[0];
-  const activePlans = useMemo(() => plans.filter((p) => !p.done && !p.archived), [plans]);
-  const activeTheses = useMemo(() => theses.filter((t) => t.status !== "closed"), [theses]);
-  const visiblePlans = useMemo(() => plans.filter((p) => (showArchivedPlans ? !!p.archived : !p.archived)), [plans, showArchivedPlans]);
+  const scopedPlans = useMemo(() => plans.filter((p) => (p.market || "cn") === activeMarket), [plans, activeMarket]);
+  const scopedTheses = useMemo(() => theses.filter((t) => (t.market || "cn") === activeMarket), [theses, activeMarket]);
+  const activePlans = useMemo(() => scopedPlans.filter((p) => !p.done && !p.archived), [scopedPlans]);
+  const activeTheses = useMemo(() => scopedTheses.filter((t) => t.status !== "closed"), [scopedTheses]);
+  const visiblePlans = useMemo(() => scopedPlans.filter((p) => (showArchivedPlans ? !!p.archived : !p.archived)), [scopedPlans, showArchivedPlans]);
+
+  async function loadUsWatchlist() {
+    try {
+      const data = await api.getUsWatchlist();
+      setUsWatchlist((data.watchlist || []).map((q) => ({ code: q.code, name: q.name || q.code, price: q.last || 0, change_pct: q.change_pct || 0 })));
+    } catch {
+      setUsWatchlist([]);
+    }
+  }
+
+  useEffect(() => {
+    if (isUs) loadUsWatchlist();
+  }, [isUs]);
+
+  async function toggleUsWatchlist(code: string, name?: string) {
+    const exists = usWatchlist.some((s) => s.code === code);
+    if (exists) await api.removeUsWatchlist(code);
+    else await api.addUsWatchlist(code, name);
+    await loadUsWatchlist();
+  }
 
   function addPlan() {
     if (!planName.trim() || !planCode.trim()) return;
     setPlans((prev) => [
-      { id: newId(), date: planDate || new Date().toISOString().slice(0, 10), name: planName.trim(), code: planCode.trim(), action: planAction, note: planNote.trim(), done: false },
+      { id: newId(), date: planDate || new Date().toISOString().slice(0, 10), name: planName.trim(), code: planCode.trim(), market: activeMarket, action: planAction, note: planNote.trim(), done: false },
       ...prev,
     ]);
     setPlanName("");
@@ -223,12 +263,12 @@ export function ResearchWorkspace({
   function addPlanFromStock(s: WatchlistItem) {
     const today = new Date().toISOString().slice(0, 10);
     if (plans.some((p) => p.code === s.code && !p.done && !p.archived)) return;
-    setPlans((prev) => [{ id: newId(), date: today, name: s.name, code: s.code, action: "观察", note: "", done: false }, ...prev]);
+    setPlans((prev) => [{ id: newId(), date: today, name: s.name, code: s.code, market: activeMarket, action: "观察", note: "", done: false }, ...prev]);
   }
 
   function addThesisFromStock(s: WatchlistItem) {
     if (theses.some((t) => t.code === s.code && t.status !== "closed")) return;
-    setTheses((prev) => [{ id: newId(), name: s.name, code: s.code, reason: profileData[s.code]?.events?.summary || "", trigger: "", status: "active" }, ...prev]);
+    setTheses((prev) => [{ id: newId(), name: s.name, code: s.code, market: activeMarket, reason: profileData[s.code]?.events?.summary || "", trigger: "", status: "active" }, ...prev]);
   }
 
   function addReviewToThesis(id: string, note: string) {
@@ -243,7 +283,7 @@ export function ResearchWorkspace({
   function addThesis() {
     if (!thesisName.trim() || !thesisCode.trim() || !thesisReason.trim()) return;
     setTheses((prev) => [
-      { id: newId(), name: thesisName.trim(), code: thesisCode.trim(), reason: thesisReason.trim(), trigger: thesisTrigger.trim(), status: thesisStatus },
+      { id: newId(), name: thesisName.trim(), code: thesisCode.trim(), market: activeMarket, reason: thesisReason.trim(), trigger: thesisTrigger.trim(), status: thesisStatus },
       ...prev,
     ]);
     setThesisName("");
@@ -262,6 +302,26 @@ export function ResearchWorkspace({
 
   async function loadProfile(code: string) {
     setProfileData((prev) => ({ ...prev, [code]: { ...(prev[code] || {}), loading: true, error: undefined } }));
+    if (isUs) {
+      const settled = await Promise.allSettled([
+        api.getUsQuote(code),
+        api.getUsHistory(code, 60),
+        api.getUsFinancials(code),
+        api.getUsNews(code, 5),
+        api.getUsAI(code),
+      ]);
+      setProfileData((prev) => ({
+        ...prev,
+        [code]: {
+          loading: false,
+          usFinancials: settled[2].status === "fulfilled" ? settled[2].value : undefined,
+          usNews: settled[3].status === "fulfilled" ? settled[3].value.news : undefined,
+          ai: settled[4].status === "fulfilled" ? settled[4].value : undefined,
+          error: settled[0].status === "rejected" && settled[2].status === "rejected" && settled[4].status === "rejected" ? "档案加载失败" : undefined,
+        },
+      }));
+      return;
+    }
     const [financials, events, ai] = await Promise.allSettled([
       api.getStockFinancials(code),
       api.getStockEvents(code),
@@ -282,17 +342,18 @@ export function ResearchWorkspace({
   function addPlansFromWatchlist() {
     if (watchlist.length === 0) return;
     const today = new Date().toISOString().slice(0, 10);
-    const existing = new Set(plans.map((p) => p.code));
+    const existing = new Set(scopedPlans.map((p) => p.code));
     const added = watchlist
       .filter((s) => !existing.has(s.code))
-      .map((s) => ({ id: newId(), date: today, name: s.name, code: s.code, action: "观察", note: "", done: false }));
+      .map((s) => ({ id: newId(), date: today, name: s.name, code: s.code, market: activeMarket, action: "观察", note: "", done: false }));
     if (added.length > 0) setPlans((prev) => [...added, ...prev]);
   }
 
   async function addWatchlistItem() {
     const code = watchCode.trim();
     if (!code) return;
-    await toggleWatchlist(code, watchName.trim() || code);
+    if (isUs) await toggleUsWatchlist(code, watchName.trim() || code);
+    else await toggleWatchlist(code, watchName.trim() || code);
     setWatchCode("");
     setWatchName("");
   }
@@ -301,7 +362,7 @@ export function ResearchWorkspace({
     if (watchlist.length === 0) return;
     setAiScoresLoading(true);
     try {
-      const result = await api.getAIScoreBatch(watchlist.map((s) => s.code));
+      const result = await api.getAIScoreBatch(watchlist.map((s) => s.code), activeMarket);
       const map: Record<string, AIScoreItem> = {};
       for (const item of result.items) {
         if (item.code) map[item.code] = { ...item, updated_at: new Date().toISOString() };
@@ -315,11 +376,11 @@ export function ResearchWorkspace({
   }
 
   async function loadPlanFocus() {
-    const active = plans.filter((p) => !p.done && !p.archived);
+    const active = scopedPlans.filter((p) => !p.done && !p.archived);
     if (active.length === 0) return;
     setPlanFocusLoading(true);
     try {
-      const result = await api.getPlanFocus(active.map((p) => ({ date: p.date, name: p.name, code: p.code, action: p.action, note: p.note })));
+      const result = await api.getPlanFocus(active.map((p) => ({ date: p.date, name: p.name, code: p.code, action: p.action, note: p.note })), activeMarket);
       setPlanFocus(result);
     } catch (err) {
       setPlanFocusLoading(false);
@@ -330,7 +391,7 @@ export function ResearchWorkspace({
 
   function exportMarkdown() {
     const lines: string[] = [];
-    lines.push("# 爱看盘研究台导出");
+    lines.push(isUs ? "# 美股研究台导出" : "# 爱看盘研究台导出");
     lines.push("");
     lines.push(`导出时间：${new Date().toLocaleString("zh-CN")}`);
     lines.push("");
@@ -388,14 +449,14 @@ export function ResearchWorkspace({
       <section className="neo-card relative overflow-hidden p-5">
         <div className="relative flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">研究台</h1>
+            <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">{isUs ? "美股研究台" : "研究台"}</h1>
             <p className="mt-1 text-[12px] text-neo-dim">
               {new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}
               {idx0 && <span className="ml-2 text-neo-mid">{idx0.name} {formatPct(idx0.change_pct)}</span>}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <a href="/portfolio/" className="neo-btn px-3 py-2 text-[12px]">持仓工具</a>
+            <a href={isUs ? "/portfolio?market=us" : "/portfolio/"} className="neo-btn px-3 py-2 text-[12px]">持仓工具</a>
             <button onClick={exportMarkdown} className="neo-btn-primary px-4 py-2 text-[13px] font-medium">导出 Markdown</button>
           </div>
         </div>
@@ -420,7 +481,7 @@ export function ResearchWorkspace({
             <h2 className="text-[14px] font-semibold text-neo-ink">自选股</h2>
             <div className="flex items-center gap-2">
               <div className="flex flex-wrap items-center gap-1.5">
-                <input value={watchCode} onChange={(e) => setWatchCode(e.target.value)} placeholder="代码，如 sh.600519" className="neo-input w-32 rounded-md px-2.5 py-1.5 text-[11px]" />
+                <input value={watchCode} onChange={(e) => setWatchCode(e.target.value)} placeholder={isUs ? "代码，如 AAPL" : "代码，如 sh.600519"} className="neo-input w-32 rounded-md px-2.5 py-1.5 text-[11px]" />
                 <input value={watchName} onChange={(e) => setWatchName(e.target.value)} placeholder="名称（可选）" className="neo-input w-24 rounded-md px-2.5 py-1.5 text-[11px]" />
                 <button onClick={addWatchlistItem} className="neo-chip px-2.5 py-1.5 text-[11px] text-neo-primary">添加</button>
               </div>
@@ -446,7 +507,7 @@ export function ResearchWorkspace({
                   key={s.code}
                   className="grid grid-cols-[1fr_80px_80px_64px] items-center gap-2 px-5 py-2.5 text-[13px] transition-colors hover-neo-inset"
                 >
-                  <a href={`/stock/${s.code.replace(/\./, "")}/`} className="min-w-0">
+                  <a href={stockHrefFor(s.code)} className="min-w-0">
                     <span className="block truncate font-medium text-neo-ink">{s.name}</span>
                     <span className="block text-[10px] text-neo-dim">{s.code}</span>
                     {aiScores[s.code] && (
@@ -461,8 +522,8 @@ export function ResearchWorkspace({
                     {formatPct(s.change_pct)}
                   </span>
                   <span className="flex items-center justify-end gap-2">
-                    <a href={`/stock/${s.code.replace(/\./, "")}/`} className="text-[11px] text-neo-primary" aria-label={`进入 ${s.name}`}>进入</a>
-                    <button onClick={() => toggleWatchlist(s.code, s.name)} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down" aria-label={`从自选移除 ${s.name}`}>移除</button>
+                    <a href={stockHrefFor(s.code)} className="text-[11px] text-neo-primary" aria-label={`进入 ${s.name}`}>进入</a>
+                    <button onClick={() => (isUs ? toggleUsWatchlist(s.code, s.name) : toggleWatchlist(s.code, s.name))} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down" aria-label={`从自选移除 ${s.name}`}>移除</button>
                   </span>
                 </div>
               ))}
@@ -491,11 +552,11 @@ export function ResearchWorkspace({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <div className="text-[10px] text-neo-dim">名称</div>
-                  <input value={planName} onChange={(e) => setPlanName(e.target.value)} placeholder="如 贵州茅台" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={planName} onChange={(e) => setPlanName(e.target.value)} placeholder={isUs ? "如 苹果" : "如 贵州茅台"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
                 <div>
                   <div className="text-[10px] text-neo-dim">代码</div>
-                  <input value={planCode} onChange={(e) => setPlanCode(e.target.value)} placeholder="如 sh.600519" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={planCode} onChange={(e) => setPlanCode(e.target.value)} placeholder={isUs ? "如 AAPL" : "如 sh.600519"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
               </div>
               <div>
@@ -516,7 +577,7 @@ export function ResearchWorkspace({
                 <span className="text-[11px] text-neo-dim">{visiblePlans.length} 条</span>
               </div>
             </div>
-            {plans.length === 0 ? (
+            {scopedPlans.length === 0 ? (
               <div className="px-5 py-8 text-center text-[12px] text-neo-dim">暂无盘前计划</div>
             ) : (
               <div className="divide-y divide-[var(--neo-edge)]">
@@ -577,7 +638,7 @@ export function ResearchWorkspace({
                 </div>
                 <div className="mt-2 text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPrice(s.price)}</div>
                 <button onClick={() => loadProfile(s.code)} className="neo-chip mt-3 w-full px-2 py-1.5 text-[11px] text-neo-primary">
-                  {profileData[s.code]?.loading ? "加载中…" : "加载财报 / 事件 / AI"}
+                  {profileData[s.code]?.loading ? "加载中…" : (isUs ? "加载行情 / 新闻 / AI" : "加载财报 / 事件 / AI")}
                 </button>
                 {profileData[s.code]?.financials?.metrics && (
                   <div className="neo-inset mt-2 space-y-1 px-3 py-2 text-[11px]">
@@ -586,7 +647,26 @@ export function ResearchWorkspace({
                     <div className="flex justify-between"><span className="text-neo-dim">ROE</span><span className="text-neo-ink">{fmtRoe(profileData[s.code]?.financials?.metrics?.roe_pct)}</span></div>
                   </div>
                 )}
-                {profileData[s.code]?.events?.summary && (
+                {isUs && profileData[s.code]?.usFinancials && !profileData[s.code]?.usFinancials?.available && (
+                  <p className="mt-2 text-[11px] text-neo-dim">财报免费档暂不可用</p>
+                )}
+                {isUs && profileData[s.code]?.usFinancials?.metrics && (
+                  <div className="neo-inset mt-2 space-y-1 px-3 py-2 text-[11px]">
+                    <div className="flex justify-between"><span className="text-neo-dim">PE</span><span className="text-neo-ink">{profileData[s.code]?.usFinancials?.metrics?.pe_ratio ?? "--"}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">PB</span><span className="text-neo-ink">{profileData[s.code]?.usFinancials?.metrics?.pb_ratio ?? "--"}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">ROE</span><span className="text-neo-ink">{fmtUsPct(profileData[s.code]?.usFinancials?.metrics?.roe_pct)}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">毛利率</span><span className="text-neo-ink">{fmtUsPct(profileData[s.code]?.usFinancials?.metrics?.gross_margin_pct)}</span></div>
+                  </div>
+                )}
+                {isUs && (profileData[s.code]?.usNews?.length ?? 0) > 0 && (
+                  <div className="mt-2 space-y-1">
+                    <div className="text-[10px] text-neo-dim">相关新闻</div>
+                    {(profileData[s.code]?.usNews || []).slice(0, 3).map((n) => (
+                      <p key={n.id} className="line-clamp-2 text-[11px] leading-relaxed text-neo-mid">{n.title}</p>
+                    ))}
+                  </div>
+                )}
+                {!isUs && profileData[s.code]?.events?.summary && (
                   <p className="mt-2 line-clamp-3 text-[11px] leading-relaxed text-neo-mid">{profileData[s.code]?.events?.summary}</p>
                 )}
                 {profileData[s.code]?.ai?.content && (
@@ -617,11 +697,11 @@ export function ResearchWorkspace({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <div className="text-[10px] text-neo-dim">名称</div>
-                  <input value={thesisName} onChange={(e) => setThesisName(e.target.value)} placeholder="如 贵州茅台" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={thesisName} onChange={(e) => setThesisName(e.target.value)} placeholder={isUs ? "如 苹果" : "如 贵州茅台"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
                 <div>
                   <div className="text-[10px] text-neo-dim">代码</div>
-                  <input value={thesisCode} onChange={(e) => setThesisCode(e.target.value)} placeholder="sh.600519" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={thesisCode} onChange={(e) => setThesisCode(e.target.value)} placeholder={isUs ? "如 AAPL" : "sh.600519"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
               </div>
               <div>
@@ -646,13 +726,13 @@ export function ResearchWorkspace({
           <div className="neo-card-sm overflow-hidden lg:col-span-3">
             <div className="flex items-center justify-between px-5 py-3">
               <h2 className="text-[14px] font-semibold text-neo-ink">论点清单</h2>
-              <span className="text-[11px] text-neo-dim">{theses.length} 条</span>
+              <span className="text-[11px] text-neo-dim">{scopedTheses.length} 条</span>
             </div>
-            {theses.length === 0 ? (
+            {scopedTheses.length === 0 ? (
               <div className="px-5 py-8 text-center text-[12px] text-neo-dim">暂无投资论点</div>
             ) : (
               <div className="divide-y divide-[var(--neo-edge)]">
-                {theses.map((t) => (
+                {scopedTheses.map((t) => (
                   <div key={t.id} className="px-5 py-3">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[13px] font-medium text-neo-ink">{t.name}</span>
@@ -678,7 +758,7 @@ export function ResearchWorkspace({
                       <button onClick={() => setThesisReviewOpen((prev) => ({ ...prev, [t.id]: true }))} className="mt-1 text-[11px] text-neo-primary">记录复盘</button>
                     )}
                     <div className="mt-1 flex items-center gap-3">
-                      <a href={`/stock/${t.code.replace(/\./, "")}/`} className="text-[11px] text-neo-primary hover:underline">个股页 →</a>
+                      <a href={stockHrefFor(t.code, t.market)} className="text-[11px] text-neo-primary hover:underline">个股页 →</a>
                       <button onClick={() => deleteThesis(t.id)} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down">删除</button>
                     </div>
                   </div>

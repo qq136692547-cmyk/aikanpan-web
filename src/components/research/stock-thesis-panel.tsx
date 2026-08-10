@@ -6,6 +6,7 @@ interface ThesisItem {
   id: string;
   name: string;
   code: string;
+  market?: "cn" | "us";
   reason: string;
   trigger: string;
   status: "active" | "watching" | "closed";
@@ -27,7 +28,7 @@ function statusClass(status: ThesisItem["status"]) {
   return "bg-[var(--neo-surface-inset)] text-neo-dim";
 }
 
-export function StockThesisPanel({ code }: { code: string }) {
+export function StockThesisPanel({ code, market }: { code: string; market?: string }) {
   const [items, setItems] = useState<ThesisItem[]>([]);
 
   useEffect(() => {
@@ -39,15 +40,16 @@ export function StockThesisPanel({ code }: { code: string }) {
       setItems(
         all.filter(
           (t) =>
-            normalize(t.code) === target ||
-            normalize(t.code).endsWith(target) ||
-            target.endsWith(normalize(t.code))
+            (market ? (t.market || "cn") === market : true) &&
+            (normalize(t.code) === target ||
+              normalize(t.code).endsWith(target) ||
+              target.endsWith(normalize(t.code)))
         )
       );
     } catch {
       setItems([]);
     }
-  }, [code]);
+  }, [code, market]);
 
   if (items.length === 0) return null;
 
