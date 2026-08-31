@@ -187,6 +187,32 @@ export class ApiClient {
     return this.request<MembershipStatus>("/membership/activate", { method: "POST", body: JSON.stringify({ code }) });
   }
 
+  /** 管理员：激活码列表 */
+  adminListMembershipCodes(adminToken: string) {
+    return this.request<AdminMembershipCodesResp>("/admin/membership/codes", {
+      headers: { "X-Admin-Token": adminToken },
+      cache: "no-store" as RequestCache,
+    });
+  }
+
+  /** 管理员：生成激活码 */
+  adminCreateMembershipCodes(adminToken: string, body: AdminMembershipCodeCreateReq) {
+    return this.request<AdminMembershipCodesResp>("/admin/membership/codes", {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: { "X-Admin-Token": adminToken },
+    });
+  }
+
+  /** 管理员：作废未使用激活码 */
+  adminRevokeMembershipCode(adminToken: string, code: string) {
+    return this.request<AdminMembershipCode>("/admin/membership/codes/revoke", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+      headers: { "X-Admin-Token": adminToken },
+    });
+  }
+
   /** 持仓列表 */
   getPositions() {
     return this.request<{ positions: Position[]; count: number }>("/portfolio/positions");
@@ -802,6 +828,29 @@ export interface MembershipStatus {
   ai_remaining: number;
   last_ai_call_at?: string;
   features?: string[];
+}
+
+export interface AdminMembershipCode {
+  code: string;
+  status: "active" | "used" | "revoked";
+  days: number;
+  note: string;
+  created_at: string;
+  used_by: string;
+  used_at: string;
+  revoked_at: string;
+}
+
+export interface AdminMembershipCodeCreateReq {
+  count: number;
+  days: number;
+  note?: string;
+}
+
+export interface AdminMembershipCodesResp {
+  codes: AdminMembershipCode[];
+  count: number;
+  total: number;
 }
 
 /** 持仓汇总 */
