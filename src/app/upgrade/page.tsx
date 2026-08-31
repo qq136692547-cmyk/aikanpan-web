@@ -1,12 +1,23 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { BadgeCheck, Crown, KeyRound, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import {
+  BadgeCheck,
+  BookOpenCheck,
+  Crown,
+  Gauge,
+  GraduationCap,
+  KeyRound,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
+import { reportConversionEvent, type UpgradeProfile } from "@/lib/analytics";
 
 const FREE_FEATURES = [
   "基础行情与市场结构",
@@ -21,12 +32,58 @@ const PRO_FEATURES = [
   "更高每日 AI 额度",
 ];
 
+const USER_PROFILES = [
+  {
+    id: "intraday" as UpgradeProfile,
+    title: "短线盯盘",
+    icon: Gauge,
+    summary: "聚焦盘面结构、涨跌停变化和盯盘提醒。",
+    free: ["涨跌停与市场结构", "盯盘提醒管理", "自选股联动"],
+    pro: ["AI 批量评分", "盘前计划诊断", "更高 AI 复盘额度"],
+    href: "/alerts",
+    action: "进入盯盘",
+  },
+  {
+    id: "longterm" as UpgradeProfile,
+    title: "中长线研究",
+    icon: BookOpenCheck,
+    summary: "围绕财务、事件、论点和组合做连续研究。",
+    free: ["基础财务与历史行情", "研究论点记录", "组合持仓管理"],
+    pro: ["个股 AI 深度解读", "组合 AI 复盘", "研究计划 AI 梳理"],
+    href: "/research/",
+    action: "进入研究",
+  },
+  {
+    id: "beginner" as UpgradeProfile,
+    title: "新手学习",
+    icon: GraduationCap,
+    summary: "从每日结构和复盘框架开始，降低理解门槛。",
+    free: ["每日复盘结构", "市场温度概览", "基础行情检索"],
+    pro: ["AI 复盘通俗解读", "个股 AI 诊断示例", "更多学习式分析"],
+    href: "/review/",
+    action: "进入复盘",
+  },
+];
+
 export default function UpgradePage() {
   const { membership, loading, refresh } = useMembership();
+  const [profile, setProfile] = useState<UpgradeProfile>("intraday");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"ok" | "error">("ok");
   const [busy, setBusy] = useState(false);
+  const exposureReported = useRef(false);
+
+  useEffect(() => {
+    if (exposureReported.current) return;
+    exposureReported.current = true;
+    reportConversionEvent("upgrade_exposure", { profile });
+  }, [profile]);
+
+  function selectProfile(next: UpgradeProfile) {
+    setProfile(next);
+    reportConversionEvent("upgrade_profile_select", { profile: next });
+  }
 
   async function activate(e: FormEvent) {
     e.preventDefault();
@@ -35,14 +92,21 @@ export default function UpgradePage() {
       setMessageType("error");
       return;
     }
+    reportConversionEvent("upgrade_click", { profile });
     setBusy(true);
     setMessage("");
     try {
       const result = await api.activateMembership(code.trim());
       await refresh(result, { revalidate: false });
-      setMessage(result.plan === "pro" ? "Pro 已开通/续费成功" : "激活结果异常，请刷新后重试");
-      setMessageType("ok");
-      setCode("");
+      if (result.plan === "pro") {
+        reportConversionEvent("activation_success", { profile });
+        setMessage("Pro 已开通/续费成功");
+        setMessageType("ok");
+        setCode("");
+      } else {
+        setMessage("激活结果异常，请刷新后重试");
+        setMessageType("error");
+      }
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "激活码无效");
       setMessageType("error");
@@ -78,6 +142,69 @@ export default function UpgradePage() {
                 </div>
               )}
             </div>
+          </div>
+        </section>
+
+        <section aria-label="用户画像" className="mt-4">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {USER_PROFILES.map((item) => {
+              const selected = profile === item.id;
+              const Icon = item.icon;
+              return (
+                <article
+                  key={item.id}
+                  className="neo-card flex h-full flex-col p-5"
+                  style={selected ? { borderColor: "var(--neo-primary)" } : undefined}
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon size={17} style={{ color: selected ? "var(--neo-primary)" : "var(--neo-dim)" }} />
+                    <h2 className="text-[17px] font-semibold text-neo-ink">{item.title}</h2>
+                  </div>
+                  <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">{item.summary}</p>
+
+                  <div className="mt-4">
+                    <div className="text-[11px] font-medium text-neo-dim">免费可用</div>
+                    <ul className="mt-2 space-y-1.5">
+                      {item.free.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-[12px] text-neo-ink">
+                          <BadgeCheck size={13} className="mt-0.5 shrink-0" style={{ color: "var(--neo-dim)" }} />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-4">
+                    <div className="text-[11px] font-medium text-neo-primary">Pro 加值</div>
+                    <ul className="mt-2 space-y-1.5">
+                      {item.pro.map((feature) => (
+                        <li key={feature} className="flex items-start gap-2 text-[12px] text-neo-ink">
+                          <BadgeCheck size={13} className="mt-0.5 shrink-0" style={{ color: "var(--neo-primary)" }} />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-5 flex items-center gap-2 border-t border-[var(--neo-border)] pt-4">
+                    <button
+                      type="button"
+                      onClick={() => selectProfile(item.id)}
+                      className={`rounded-md px-3 py-2 text-[12px] font-medium transition-all ${selected ? "neo-chip-active" : "neo-chip"}`}
+                    >
+                      {selected ? "当前画像" : "选择画像"}
+                    </button>
+                    <Link
+                      href={item.href}
+                      onClick={() => reportConversionEvent("upgrade_click", { profile: item.id })}
+                      className="neo-btn-primary ml-auto rounded-md px-3 py-2 text-[12px] font-medium"
+                    >
+                      {item.action}
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 

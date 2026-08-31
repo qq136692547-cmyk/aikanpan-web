@@ -5,6 +5,7 @@
  */
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
+import { reportConversionEvent } from "./analytics";
 
 /** 获取认证 token（客户端侧，从 localStorage） */
 function getAuthToken(): string | null {
@@ -17,6 +18,15 @@ function getAuthToken(): string | null {
   } catch {
     return null;
   }
+}
+
+const AI_QUOTA_PATHS = [
+  "/ai/", "/us/daily-review", "/portfolio-review", "/plan-focus", "/news-radar", "/alerts/parse"
+];
+
+function isAiQuotaPath(path: string): boolean {
+  const normalized = path.toLowerCase();
+  return AI_QUOTA_PATHS.some((prefix) => normalized.includes(prefix)) || (normalized.startsWith("/workbench/temperature") && normalized.includes("ai=true"));
 }
 
 export class ApiClient {
@@ -48,6 +58,9 @@ export class ApiClient {
     });
 
     if (!res.ok) {
+      if (res.status === 429 && isAiQuotaPath(path)) {
+        reportConversionEvent("ai_quota_hit", { source: path.split("?")[0] });
+      }
       throw new Error(`API ${res.status}: ${res.statusText} — ${url}`);
     }
 
