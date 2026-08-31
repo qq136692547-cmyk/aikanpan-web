@@ -7,6 +7,7 @@ import { HomeLimitCard } from "@/components/ai/home-limit-card";
 import { HomeLimitTopList } from "@/components/ai/home-limit-top-list";
 import { TechCanvasBackground } from "@/components/landing/tech-canvas-background";
 import { AIReview } from "@/components/ai/ai-review";
+import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsDashboardSection } from "@/components/us/us-dashboard-section";
 import { api, type Dashboard, type Insights, type UsDashboard } from "@/lib/api";
@@ -155,6 +156,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </section>
 
         {/* 市场快照 */}
+        <DailyWorkflow className="mt-4 neo-fade-up" />
         <section className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 neo-fade-up">
           {idx0 && (
             <div className="neo-card p-5 sm:col-span-2 lg:row-span-2">

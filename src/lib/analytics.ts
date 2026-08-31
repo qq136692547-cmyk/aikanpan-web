@@ -12,7 +12,8 @@ export type UpgradeFunnelEvent =
   | "upgrade_profile_select"
   | "upgrade_click"
   | "activation_success"
-  | "ai_quota_hit";
+  | "ai_quota_hit"
+  | "daily_workflow_click";
 
 function localDay(): string {
   return new Date().toLocaleDateString("sv");

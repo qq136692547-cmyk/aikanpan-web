@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/footer";
 import { AIReview } from "@/components/ai/ai-review";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
+import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { UsDailyReview } from "@/components/us/us-daily-review";
 import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
@@ -153,6 +154,7 @@ export default async function ReviewPage({
         <section className="mt-3">
           <ReviewStatusBar />
         </section>
+        <DailyWorkflow className="mt-3" />
 
         {/* 日期提示 */}
         {isCustomDate && (
