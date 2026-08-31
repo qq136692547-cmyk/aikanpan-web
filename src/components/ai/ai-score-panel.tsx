@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import { api, type AIScoreItem } from "@/lib/api";
 import { AIScoreBadge, AIScoreBadgeSkeleton, AIScoreBadgeEmpty } from "./ai-score-badge";
 
@@ -44,7 +45,7 @@ export function AIScorePanel({ codes }: { codes: string[] }) {
           "🤖 一键 AI 评分"
         )}
       </button>
-      {error && <span className="text-xs text-neo-down">{error}</span>}
+      {error && (<span className="text-xs text-neo-down">{error}{error.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</span>)}
       {/* invisible spacer to maintain layout */}
       <span className="invisible">.</span>
     </div>

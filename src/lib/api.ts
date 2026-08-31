@@ -177,6 +177,15 @@ export class ApiClient {
   getMe() {
     return this.request<AuthMe>("/auth/me");
   }
+  /** 会员状态与当日 AI 额度 */
+  getMembershipStatus() {
+    return this.request<MembershipStatus>("/membership/status", { cache: "no-store" as RequestCache });
+  }
+
+  /** 人工收款后使用激活码开通/续费 Pro */
+  activateMembership(code: string) {
+    return this.request<MembershipStatus>("/membership/activate", { method: "POST", body: JSON.stringify({ code }) });
+  }
 
   /** 持仓列表 */
   getPositions() {
@@ -782,6 +791,17 @@ export interface AuthMe {
   user_id: string;
   phone_verified: boolean;
   phone_masked: string;
+}
+
+export interface MembershipStatus {
+  user_id: string;
+  plan: "free" | "pro";
+  expires_at: string;
+  ai_daily_limit: number;
+  ai_used_today: number;
+  ai_remaining: number;
+  last_ai_call_at?: string;
+  features?: string[];
 }
 
 /** 持仓汇总 */

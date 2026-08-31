@@ -3,7 +3,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Link from "next/link";
 import { api, type AIReview } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
@@ -31,6 +33,7 @@ const scoreColor = (score: number) => {
 type LoadState = "loading" | "done" | "error";
 
 export function AIReview({ date }: { date?: string }) {
+  const { isAuthenticated } = useAuth();
   const [state, setState] = useState<LoadState>("loading");
   const [data, setData] = useState<AIReview | null>(null);
   const [error, setError] = useState<string>("");
@@ -60,13 +63,14 @@ export function AIReview({ date }: { date?: string }) {
   }, [date]);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     // The review is fetched when the requested date changes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchReview();
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [fetchReview]);
+  }, [fetchReview, isAuthenticated]);
 
   if (state === "loading") {
     return (
@@ -95,7 +99,7 @@ export function AIReview({ date }: { date?: string }) {
           <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
           <button onClick={fetchReview} className="rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
         </div>
-        <p className="mt-3 text-[13px] text-neo-down">{error}</p>
+        <p className="mt-3 text-[13px] text-neo-down">{error}{error.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</p>
       </div>
     );
   }

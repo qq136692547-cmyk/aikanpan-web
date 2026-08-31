@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { KeyRound, LogOut, ShieldCheck, Smartphone, UserRound } from "lucide-react";
+import { Crown, KeyRound, LogOut, RefreshCw, ShieldCheck, Smartphone, UserRound } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { useAuth } from "@/lib/auth";
+import Link from "next/link";
 import { api, type AuthMe } from "@/lib/api";
+import { useMembership } from "@/lib/membership";
 
 export default function AccountPage() {
   const { user, loading, bindUser, loginAsGuest } = useAuth();
@@ -17,6 +19,7 @@ export default function AccountPage() {
   const [busy, setBusy] = useState(false);
   const [me, setMe] = useState<AuthMe | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { membership, loading: membershipLoading, error: membershipError, refresh } = useMembership();
 
   useEffect(() => {
     if (!user) return;
@@ -111,7 +114,7 @@ export default function AccountPage() {
           <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">账户</h1>
           <p className="mt-1 text-[12px] text-neo-dim">手机号绑定后，自选、持仓、计划会在设备间同步</p>
 
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="neo-inset-sm flex items-center gap-3 px-4 py-3">
               <div className="neo-card-sm flex h-10 w-10 shrink-0 items-center justify-center" style={{ borderRadius: 10 }}>
                 {phoneVerified ? <ShieldCheck size={18} style={{ color: "var(--neo-primary)" }} /> : <UserRound size={18} style={{ color: "var(--neo-dim)" }} />}
@@ -132,7 +135,33 @@ export default function AccountPage() {
                 </div>
               </div>
             </div>
+            <div className="neo-inset-sm flex items-center gap-3 px-4 py-3">
+              <div className="neo-card-sm flex h-10 w-10 shrink-0 items-center justify-center" style={{ borderRadius: 10 }}>
+                <Crown size={18} style={{ color: membership?.plan === "pro" ? "var(--neo-primary)" : "var(--neo-dim)" }} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[11px] text-neo-dim">会员 / AI 额度</div>
+                {membershipLoading && !membership ? (
+                  <div className="text-[12px] font-medium text-neo-ink">加载中…</div>
+                ) : membership ? (
+                  <div className="text-[12px] font-medium text-neo-ink">
+                    {membership.plan === "pro" ? "Pro · 剩余 " : "免费版 · 剩余 "}{membership.ai_remaining}/{membership.ai_daily_limit}
+                  </div>
+                ) : (
+                  <div className="text-[12px] text-neo-down">{membershipError || "额度信息暂不可用"}</div>
+                )}
+              </div>
+              <div className="flex shrink-0 items-center gap-1.5">
+                <button onClick={() => refresh()} className="neo-card-sm p-2" aria-label="刷新额度">
+                  <RefreshCw size={13} style={{ color: "var(--neo-dim)" }} />
+                </button>
+                <Link href="/upgrade" className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">
+                  {membership?.plan === "pro" ? "续费" : "升级"}
+                </Link>
+              </div>
+            </div>
           </div>
+
 
           {!phoneVerified && (
             <form onSubmit={verify} className="mt-5">

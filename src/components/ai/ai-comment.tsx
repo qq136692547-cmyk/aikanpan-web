@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Link from "next/link";
 import { api, type AIComment } from "@/lib/api";
 
 /** 从 content 末尾提取评分和状态 */
@@ -134,7 +135,7 @@ export function AIComment({ code }: { code: string }) {
             重试
           </button>
         </div>
-        <p className="mt-3 text-sm text-neo-down">{error}</p>
+        <p className="mt-3 text-sm text-neo-down">{error}{error.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</p>
       </div>
     );
   }

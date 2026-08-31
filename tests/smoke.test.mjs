@@ -3,6 +3,11 @@ import assert from "node:assert/strict";
 
 const API_BASE = process.env.API_BASE || "https://aikanpan.top/api/v1";
 
+async function authHeaders() {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  return { Authorization: `Bearer ${login.token}` };
+}
+
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
@@ -43,12 +48,14 @@ test("portfolio endpoints respond", { timeout: 30000 }, async () => {
 
 test("daily review is cached", { timeout: 60000 }, async () => {
   let data = await request("/ai/daily-review", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({}),
   });
   assert.ok(data.content && data.content.length > 0);
   if (!data.cached) {
     data = await request("/ai/daily-review", {
+    headers: await authHeaders(),
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -58,6 +65,7 @@ test("daily review is cached", { timeout: 60000 }, async () => {
 
 test("portfolio AI review generates content", { timeout: 90000 }, async () => {
   const data = await request("/ai/portfolio-review", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({}),
   });
@@ -66,6 +74,7 @@ test("portfolio AI review generates content", { timeout: 90000 }, async () => {
 
 test("plan focus generates content", { timeout: 60000 }, async () => {
   const data = await request("/ai/plan-focus", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({
       plans: [
@@ -143,6 +152,7 @@ test("multi-condition alert roundtrip", { timeout: 30000 }, async () => {
 
 test("US alert NLP parse returns market", { timeout: 45000 }, async () => {
   const data = await request("/alerts/parse", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({ text: "苹果跌到180提醒我", market: "us" }),
   });
@@ -152,6 +162,7 @@ test("US alert NLP parse returns market", { timeout: 45000 }, async () => {
 
 test("US AI score-batch returns items", { timeout: 60000 }, async () => {
   const data = await request("/ai/score-batch", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({ codes: ["AAPL"], market: "us" }),
   });
@@ -161,6 +172,7 @@ test("US AI score-batch returns items", { timeout: 60000 }, async () => {
 
 test("US plan-focus generates content", { timeout: 60000 }, async () => {
   const data = await request("/ai/plan-focus", {
+  headers: await authHeaders(),
     method: "POST",
     body: JSON.stringify({ market: "us", plans: [{ date: "2026-08-10", name: "苹果", code: "AAPL", action: "观察", note: "测试" }] }),
   });
@@ -289,4 +301,12 @@ test("US portfolio transactions roundtrip", { timeout: 30000 }, async () => {
   assert.ok(positions.positions.some((p) => p.code === "AAPL"));
   const removed = await request(`/us/portfolio/transactions/${tx.id}`, { method: "DELETE", headers });
   assert.equal(removed.deleted, true);
+});
+
+
+test("membership status is available for authenticated guest", { timeout: 30000 }, async () => {
+  const data = await request("/membership/status", { headers: await authHeaders() });
+  assert.equal(data.plan, "free");
+  assert.equal(data.ai_daily_limit, 3);
+  assert.equal(data.ai_remaining, Math.max(0, data.ai_daily_limit - data.ai_used_today));
 });

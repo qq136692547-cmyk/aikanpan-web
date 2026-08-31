@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Radio, RefreshCw } from "lucide-react";
 import { api, type NewsRadar } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 
 export function NewsRadarCard() {
+  const { isAuthenticated } = useAuth();
   const [data, setData] = useState<NewsRadar | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -24,10 +26,11 @@ export function NewsRadarCard() {
   }, []);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     // This effect starts the remote radar request on mount.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
-  }, [load]);
+  }, [load, isAuthenticated]);
 
   return (
     <div className="neo-card-sm flex h-full flex-col p-4">

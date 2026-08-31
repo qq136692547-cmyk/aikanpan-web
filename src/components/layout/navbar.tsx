@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
-import { BarChart3, Search, UserRound } from "lucide-react";
+import { BarChart3, Crown, Search, UserRound } from "lucide-react";
 import { MarketSwitcher } from "@/components/layout/market-switcher";
 
 const navItems = [
@@ -62,6 +62,10 @@ export function Navbar() {
         {/* Right side: market switcher + search + user badge */}
         <div className="hidden items-center gap-2 md:flex">
           <Suspense fallback={null}><MarketSwitcher /></Suspense>
+          <Link href="/upgrade" className="neo-chip flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-neo-ink-mid">
+            <Crown size={13} />
+            会员
+          </Link>
           <form action="/search" className="flex items-center">
             <input
               type="text"
@@ -123,6 +127,15 @@ export function Navbar() {
                 </Link>
               );
             })}
+            <Link
+              href="/upgrade"
+              className={`rounded-full px-4 py-2 text-[13px] ${
+                pathname === "/upgrade" ? "neo-chip-active" : "neo-chip"
+              }`}
+              onClick={() => setMobileOpen(false)}
+            >
+              会员
+            </Link>
             <Link
               href="/account"
               className={`rounded-full px-4 py-2 text-[13px] ${
