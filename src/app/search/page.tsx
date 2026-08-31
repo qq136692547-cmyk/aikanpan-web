@@ -33,10 +33,10 @@ const HOT_STOCKS = [
 ];
 
 // Batch hot quotes via a single watchlist request
-async function fetchHotStockQuotes(): Promise<Record<string, { last: number; change_pct: number }>> {
+async function fetchHotStockQuotes(signal?: AbortSignal): Promise<Record<string, { last: number; change_pct: number }>> {
   const quotes: Record<string, { last: number; change_pct: number }> = {};
   try {
-    const res = await api.getWatchlistByCodes(HOT_STOCKS.map((s) => s.code));
+    const res = await api.getWatchlistByCodes(HOT_STOCKS.map((s) => s.code), { signal });
     for (const item of res.watchlist) {
       quotes[item.code] = { last: item.price, change_pct: item.change_pct };
     }
@@ -90,33 +90,35 @@ export default async function SearchPage({
   let error: string | null = null;
   let dashboard: Dashboard | null = null;
   let usDashboard: UsDashboard | null = null;
+  let hotQuotes: Record<string, { last: number; change_pct: number }> = {};
 
-  // 同时获取 dashboard 用于展示涨停板热门
-  if (!isUs) {
-    try {
-      dashboard = await api.getDashboard();
-    } catch {}
-  } else {
-    try {
-      usDashboard = await api.getUsDashboard();
-    } catch {}
-  }
-
-  // 批量获取热门股票实时报价
-  const hotQuotes: Record<string, { last: number; change_pct: number }> = isUs ? {} : await fetchHotStockQuotes();
-
-  if (q && q.trim()) {
+  const query = q?.trim();
+  if (query) {
     try {
       if (isUs) {
-        const data = await api.searchUsStocks(q.trim());
+        const data = await api.searchUsStocks(query);
         usResults = data.list || [];
       } else {
-        const data = await api.searchStocks(q.trim());
+        const data = await api.searchStocks(query);
         results = data.list || [];
       }
     } catch {
       error = isUs ? "美股搜索接口暂时不可用" : "搜索接口暂时不可用";
     }
+  } else if (isUs) {
+    try {
+      usDashboard = await api.getUsDashboard();
+    } catch {}
+  } else {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+    const [dashboardResult, hotQuotesResult] = await Promise.allSettled([
+      api.getDashboard({ signal: controller.signal }),
+      fetchHotStockQuotes(controller.signal),
+    ]);
+    clearTimeout(timeout);
+    if (dashboardResult.status === "fulfilled") dashboard = dashboardResult.value;
+    if (hotQuotesResult.status === "fulfilled") hotQuotes = hotQuotesResult.value;
   }
 
   // 从涨停板提取热门股票

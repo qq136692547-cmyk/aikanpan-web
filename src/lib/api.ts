@@ -55,8 +55,9 @@ export class ApiClient {
   }
 
   /** 工作台 Dashboard — 指数 + 涨停跌停 + 强势行业 */
-  getDashboard() {
+  getDashboard(options?: Pick<RequestInit, "signal">) {
     return this.request<Dashboard>("/workbench/dashboard", {
+      ...options,
       next: { revalidate: 30 },
     });
   }
@@ -150,9 +151,10 @@ export class ApiClient {
     return this.request<{ watchlist: WatchlistItem[]; count: number }>("/stocks/watchlist");
   }
 
-  getWatchlistByCodes(codes: string[]) {
+  getWatchlistByCodes(codes: string[], options?: Pick<RequestInit, "signal">) {
     return this.request<{ watchlist: WatchlistItem[]; count: number }>(
-      `/stocks/watchlist?codes=${encodeURIComponent(codes.join(","))}`
+      `/stocks/watchlist?codes=${encodeURIComponent(codes.join(","))}`,
+      { ...options, next: { revalidate: 30 } }
     );
   }
 

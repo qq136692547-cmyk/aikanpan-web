@@ -60,6 +60,8 @@ export function AIReview({ date }: { date?: string }) {
   }, [date]);
 
   useEffect(() => {
+    // The review is fetched when the requested date changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchReview();
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);

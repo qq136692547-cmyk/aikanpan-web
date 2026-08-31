@@ -6,6 +6,36 @@ import { formatPct, formatPrice } from "@/lib/format";
 type SortKey = "name" | "price" | "change_pct" | "change" | "turnover_rate";
 type SortDir = "asc" | "desc";
 
+function SortHeader({
+  label,
+  keyName,
+  align = "left",
+  sortKey,
+  sortDir,
+  onSort,
+}: {
+  label: string;
+  keyName: SortKey;
+  align?: "left" | "right";
+  sortKey: SortKey;
+  sortDir: SortDir;
+  onSort: (key: SortKey) => void;
+}) {
+  return (
+    <th
+      className={`px-4 py-3 text-[11px] uppercase tracking-wide font-medium cursor-pointer select-none transition-colors hover:text-neo-primary ${
+        align === "right" ? "text-right" : "text-left"
+      } ${sortKey === keyName ? "text-neo-primary" : "text-neo-dim"}`}
+      onClick={() => onSort(keyName)}
+    >
+      <span className="inline-flex items-center gap-1">
+        {label}
+        {sortKey === keyName && <span className="text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>}
+      </span>
+    </th>
+  );
+}
+
 export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
   const [sortKey, setSortKey] = useState<SortKey>("change_pct");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
@@ -13,8 +43,8 @@ export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
   const sorted = useMemo(() => {
     const arr = [...sectors];
     arr.sort((a, b) => {
-      let av: string | number = a[sortKey];
-      let bv: string | number = b[sortKey];
+      const av: string | number = a[sortKey];
+      const bv: string | number = b[sortKey];
       if (typeof av === "string" && typeof bv === "string") {
         return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
       }
@@ -32,31 +62,17 @@ export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
     }
   };
 
-  const SortHeader = ({ label, keyName, align = "left" }: { label: string; keyName: SortKey; align?: "left" | "right" }) => (
-    <th
-      className={`px-4 py-3 text-[11px] uppercase tracking-wide font-medium cursor-pointer select-none transition-colors hover:text-neo-primary ${
-        align === "right" ? "text-right" : "text-left"
-      } ${sortKey === keyName ? "text-neo-primary" : "text-neo-dim"}`}
-      onClick={() => toggleSort(keyName)}
-    >
-      <span className="inline-flex items-center gap-1">
-        {label}
-        {sortKey === keyName && <span className="text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>}
-      </span>
-    </th>
-  );
-
   return (
     <div className="neo-card-sm overflow-hidden">
       <div className="overflow-x-auto neo-scrollbar">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--neo-surface-active)]">
-              <SortHeader label="板块名称" keyName="name" />
-              <SortHeader label="最新价" keyName="price" align="right" />
-              <SortHeader label="涨跌幅" keyName="change_pct" align="right" />
-              <SortHeader label="涨跌额" keyName="change" align="right" />
-              <SortHeader label="换手率" keyName="turnover_rate" align="right" />
+              <SortHeader label="板块名称" keyName="name" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              <SortHeader label="最新价" keyName="price" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              <SortHeader label="涨跌幅" keyName="change_pct" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              <SortHeader label="涨跌额" keyName="change" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              <SortHeader label="换手率" keyName="turnover_rate" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
             </tr>
           </thead>
           <tbody>

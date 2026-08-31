@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Globe3D } from "@/components/landing/globe-3d";
 
 const easeOutStrong = [0.215, 0.61, 0.355, 1] as const;
@@ -27,8 +28,8 @@ function useInView(threshold: number) {
 }
 
 export function LandingHero() {
-  const text = useInView(0.35);
-  const globe = useInView(0.2);
+  const { ref: textRef, inView: textInView } = useInView(0.35);
+  const { ref: globeRef, inView: globeInView } = useInView(0.2);
 
   return (
     <div className="relative min-h-screen bg-[#08080c] font-inter">
@@ -44,26 +45,26 @@ export function LandingHero() {
 
       <header className="fixed top-0 z-50 w-full">
         <nav className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <span className="h-4 w-4 rounded bg-white" />
             <span className="text-[15px] font-semibold tracking-tight text-white">爱看盘</span>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/dashboard/"
             className="rounded-lg border border-[#2a2a30] bg-black px-4 py-1.5 text-[13px] font-medium text-white transition-all hover:border-[#3a3a44] hover:bg-[#0a0a0e]"
           >
             进入仪表盘 →
-          </a>
+          </Link>
         </nav>
       </header>
 
       <section className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center px-6 pb-8 pt-28 sm:pt-36 md:pt-40 text-center">
         <div
-          ref={text.ref}
+          ref={textRef}
           className="transition-all duration-1000 will-change-transform"
           style={{
-            opacity: text.inView ? 1 : 0,
-            transform: text.inView ? "translateY(0)" : "translateY(30px)",
+            opacity: textInView ? 1 : 0,
+            transform: textInView ? "translateY(0)" : "translateY(30px)",
             transitionTimingFunction: `cubic-bezier(${easeOutStrong.join(",")})`,
           }}
         >
@@ -89,12 +90,12 @@ export function LandingHero() {
             一站式 A 股投资决策辅助工具
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
-            <a
+            <Link
               href="/dashboard/"
               className="inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
             >
               免费使用 →
-            </a>
+            </Link>
             <p className="text-[12px] text-white/30">无需注册 · 游客即可访问</p>
           </div>
         </div>
@@ -102,11 +103,11 @@ export function LandingHero() {
 
       <section className="relative -mt-40 flex h-[800px] items-center justify-center overflow-hidden">
         <div
-          ref={globe.ref}
+          ref={globeRef}
           className="absolute inset-0 pointer-events-none transition-all duration-1000 will-change-transform [transition-delay:150ms]"
           style={{
-            opacity: globe.inView ? 1 : 0,
-            transform: globe.inView ? "scale(1)" : "scale(0.5)",
+            opacity: globeInView ? 1 : 0,
+            transform: globeInView ? "scale(1)" : "scale(0.5)",
             transitionTimingFunction: `cubic-bezier(${easeOutStrong.join(",")})`,
           }}
         >
@@ -159,12 +160,12 @@ export function LandingHero() {
           <div className="flex-1 text-left">
             <h2 className="text-[42px] font-semibold tracking-tight text-white">开始你的 AI 复盘</h2>
             <p className="mt-3 text-[16px] text-[#6a6a72]">免费使用 · 无需注册 · 数据实时</p>
-            <a
+            <Link
               href="/dashboard/"
               className="mt-8 inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[16px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
             >
               免费使用 →
-            </a>
+            </Link>
           </div>
           <div className="hidden flex-1 md:block">
             <img loading="lazy"

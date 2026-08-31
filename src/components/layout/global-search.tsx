@@ -16,11 +16,21 @@ export function GlobalSearch() {
     function onKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((v) => !v);
+        setOpen((v) => {
+          if (!v) {
+            setQuery("");
+            setResults([]);
+          }
+          return !v;
+        });
       }
       if (e.key === "Escape") setOpen(false);
     }
-    function onOpen() { setOpen(true); }
+    function onOpen() {
+      setQuery("");
+      setResults([]);
+      setOpen(true);
+    }
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("open-global-search", onOpen);
     return () => {
@@ -30,20 +40,17 @@ export function GlobalSearch() {
   }, []);
 
   useEffect(() => {
-    if (open) {
-      setQuery("");
-      setResults([]);
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
+    if (!open) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 50);
+    return () => clearTimeout(timer);
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
     const q = query.trim();
-    if (!q) {
-      setResults([]);
-      return;
-    }
+    if (!q) return;
+    // Loading state tracks the debounced remote search started by this effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     const timer = setTimeout(async () => {
       try {

@@ -7,7 +7,7 @@ export function Footer() {
             <div className="neo-card-sm flex h-6 w-6 items-center justify-center" style={{ borderRadius: 8 }}>
               <span className="text-[11px]">📊</span>
             </div>
-            <span className="text-[12px] text-neo-mid">爱看盘 · AI 复盘工具</span>
+            <span className="text-[12px] text-neo-mid">爱看盘 · 每日复盘工具</span>
           </div>
           <div className="flex items-center gap-4 text-[12px] text-neo-dim">
             <a href="/about/" className="transition-colors hover:text-neo-primary">关于</a>

@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { useAuth } from "@/lib/auth";
 import { BarChart3, Search, UserRound } from "lucide-react";
 import { MarketSwitcher } from "@/components/layout/market-switcher";
@@ -23,30 +24,27 @@ function isActive(pathname: string, href: string): boolean {
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const { user, loading } = useAuth();
-
-  useEffect(() => setMounted(true), []);
+  const { user } = useAuth();
 
   // Neomorphism navbar for sub-pages
   return (
     <header className="neo-navbar sticky top-0 z-50">
       <nav className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between px-6">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="neo-card-sm flex h-7 w-7 items-center justify-center" style={{ borderRadius: 8 }}>
             <BarChart3 size={15} style={{ color: "var(--neo-primary)" }} />
           </div>
           <span className="text-[15px] font-bold tracking-tight text-neo-ink">爱看盘</span>
-        </a>
+        </Link>
 
         {/* Desktop nav — neo chips */}
         <div className="hidden items-center gap-1.5 md:flex">
           {navItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
@@ -56,7 +54,7 @@ export function Navbar() {
                 }`}
               >
                 {item.label}
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -73,16 +71,14 @@ export function Navbar() {
             />
           </form>
           {/* User badge */}
-          {mounted && user && (
-            <a
-              href="/account"
-              className="neo-chip flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-neo-ink-mid"
-              title={user.user_id}
-            >
-              <UserRound size={13} />
-              {user.type === "guest" ? "登录" : "已登录"}
-            </a>
-          )}
+          <Link
+            href="/account"
+            className="neo-chip flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-neo-ink-mid"
+            title={user?.user_id ?? "登录"}
+          >
+            <UserRound size={13} />
+            {user?.type === "phone" ? "已登录" : "登录"}
+          </Link>
         </div>
 
         {/* Mobile search + toggle */}
@@ -115,7 +111,7 @@ export function Navbar() {
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   className={`rounded-full px-4 py-2 text-[13px] ${
@@ -124,10 +120,10 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                 >
                   {item.label}
-                </a>
+                </Link>
               );
             })}
-            <a
+            <Link
               href="/account"
               className={`rounded-full px-4 py-2 text-[13px] ${
                 pathname === "/account" ? "neo-chip-active" : "neo-chip"
@@ -135,7 +131,7 @@ export function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               账户
-            </a>
+            </Link>
           </div>
           <div className="mb-3">
             <Suspense fallback={null}><MarketSwitcher /></Suspense>

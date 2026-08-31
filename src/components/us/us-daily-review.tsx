@@ -22,6 +22,8 @@ export function UsDailyReview() {
   }, []);
 
   useEffect(() => {
+    // This effect starts the remote daily review request on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 

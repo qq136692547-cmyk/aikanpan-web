@@ -25,6 +25,8 @@ export function AIHistoryPanel({ code }: { code: string }) {
   }, [code]);
 
   useEffect(() => {
+    // This effect starts the remote history request when the stock code changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 

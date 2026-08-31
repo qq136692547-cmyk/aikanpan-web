@@ -37,6 +37,8 @@ export function StockThesisPanel({ code, market }: { code: string; market?: stri
       if (!raw) return;
       const all = JSON.parse(raw) as ThesisItem[];
       const target = normalize(code);
+      // Local storage is read after mount to keep the server-rendered shell stable.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(
         all.filter(
           (t) =>

@@ -20,6 +20,8 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
 
   useEffect(() => {
     let cancelled = false;
+    // Reset the loading state when the requested symbol changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAiLoading(true);
     Promise.allSettled([
       api.getUsQuote(symbol),

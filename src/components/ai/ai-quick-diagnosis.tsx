@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { api } from "@/lib/api";
 
 export function AIQuickDiagnosis() {
   const [code, setCode] = useState("");
@@ -13,13 +14,10 @@ export function AIQuickDiagnosis() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`https://aikanpan.top/api/v1/stocks/search?keyword=${encodeURIComponent(code.trim())}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.list && data.list.length > 0) {
-          window.location.href = `/stock/${data.list[0].code.replace(/\./, "")}/`;
-          return;
-        }
+      const data = await api.searchStocks(code.trim());
+      if (data.list && data.list.length > 0) {
+        window.location.href = `/stock/${data.list[0].code.replace(/\./, "")}/`;
+        return;
       }
       const trimmed = code.trim();
       if (/^\d{6}$/.test(trimmed)) {

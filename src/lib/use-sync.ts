@@ -2,7 +2,6 @@
 
 import { useCallback } from "react";
 import { useAuth } from "./auth";
-import { api } from "./api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 

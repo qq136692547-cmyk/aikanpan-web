@@ -41,6 +41,8 @@ export function CountUp({
   useEffect(() => {
     if (!visible) return;
     if (typeof target === "string") {
+      // The string target is applied only after the element enters the viewport.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDisplay(target);
       return;
     }

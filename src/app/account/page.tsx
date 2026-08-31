@@ -90,9 +90,14 @@ export default function AccountPage() {
   }
 
   async function resetGuest() {
-    await loginAsGuest();
-    setMe(null);
-    setMessage("");
+    try {
+      await loginAsGuest();
+      setMe(null);
+      setMessage("");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "游客身份暂不可用");
+      setMessageType("error");
+    }
   }
 
   const phoneVerified = user?.type === "phone" || me?.phone_verified;
@@ -131,7 +136,7 @@ export default function AccountPage() {
 
           {!phoneVerified && (
             <form onSubmit={verify} className="mt-5">
-              <div className="text-[13px] font-semibold text-neo-ink">绑定手机号</div>
+              <div className="text-[13px] font-semibold text-neo-ink">{user ? "绑定手机号" : "手机号登录 / 注册"}</div>
               <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_140px]">
                 <div className="relative">
                   <Smartphone size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--neo-dim)" }} />
@@ -163,8 +168,8 @@ export default function AccountPage() {
                   </button>
                 </div>
               </div>
-              <button type="submit" disabled={busy || !user} className="neo-btn-primary mt-3 rounded-md px-5 py-2.5 text-[13px] font-medium disabled:opacity-60">
-                {busy ? "处理中…" : "绑定并登录"}
+              <button type="submit" disabled={busy} className="neo-btn-primary mt-3 rounded-md px-5 py-2.5 text-[13px] font-medium disabled:opacity-60">
+                {busy ? "处理中…" : user ? "绑定并登录" : "登录 / 注册"}
               </button>
             </form>
           )}

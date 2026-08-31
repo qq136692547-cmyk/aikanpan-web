@@ -98,6 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const existing = loadFromStorage();
     if (existing) {
+      // Auth state is restored after mount so localStorage is never read during SSR.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(existing);
       setLoading(false);
       return;

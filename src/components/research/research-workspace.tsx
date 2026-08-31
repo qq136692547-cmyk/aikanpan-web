@@ -109,11 +109,9 @@ function stockHrefFor(code: string, market?: string): string {
 }
 
 export function ResearchWorkspace({
-  watchlist: serverWatchlist,
   dashboard,
   market = "all",
 }: {
-  watchlist: WatchlistItem[];
   dashboard: Dashboard | UsDashboard | null;
   market?: MarketScope;
 }) {
@@ -121,7 +119,7 @@ export function ResearchWorkspace({
   const isUs = activeMarket === "us";
   const { watchlist: liveWatchlist, toggle: toggleWatchlist } = useWatchlist();
   const [usWatchlist, setUsWatchlist] = useState<WatchlistItem[]>([]);
-  const watchlist = isUs ? usWatchlist : liveWatchlist.length > 0 ? liveWatchlist : serverWatchlist;
+  const watchlist = isUs ? usWatchlist : liveWatchlist;
   const { pushData, pullData } = useSync();
   const syncedOnce = useRef(false);
   const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -155,6 +153,8 @@ export function ResearchWorkspace({
   const [watchName, setWatchName] = useState("");
 
   useEffect(() => {
+    // Local storage is read after hydration to avoid server/client markup drift.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlans(load<PlanItem[]>(PLANS_KEY, []));
     setTheses(load<ThesisItem[]>(THESES_KEY, []));
     setProfileNotes(load<ProfileNotes>(PROFILES_KEY, {}));
@@ -209,7 +209,7 @@ export function ResearchWorkspace({
     return () => {
       if (pushTimer.current) clearTimeout(pushTimer.current);
     };
-  }, [plans, theses, profileNotes, hydrated, pushData]);
+  }, [plans, theses, profileNotes, aiScores, hydrated, pushData]);
 
   const idx0 = dashboard?.indices?.[0];
   const scopedPlans = useMemo(() => plans.filter((p) => (p.market || "cn") === activeMarket), [plans, activeMarket]);
@@ -228,7 +228,11 @@ export function ResearchWorkspace({
   }
 
   useEffect(() => {
-    if (isUs) loadUsWatchlist();
+    if (isUs) {
+      // The US list is refreshed when the market scope changes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadUsWatchlist();
+    }
   }, [isUs]);
 
   async function toggleUsWatchlist(code: string, name?: string) {

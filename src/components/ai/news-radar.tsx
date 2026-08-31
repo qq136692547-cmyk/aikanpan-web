@@ -24,6 +24,8 @@ export function NewsRadarCard() {
   }, []);
 
   useEffect(() => {
+    // This effect starts the remote radar request on mount.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
   }, [load]);
 

@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { FeatureCollection, MultiPolygon, Polygon, Position } from "geojson";
+import type { GeometryCollection, Topology } from "topojson-specification";
+
+type LandCollection = FeatureCollection<Polygon | MultiPolygon>;
+type CountriesTopology = Topology<{ countries: GeometryCollection }>;
 
 /**
  * 3D 点阵地球 — Three.js + world-atlas 陆地数据
@@ -40,10 +45,8 @@ export function Globe3D() {
       mount.appendChild(renderer.domElement);
 
       // 陆地数据
-      const land = topojson.feature(
-        topo as any,
-        (topo as any).objects.countries
-      ) as any;
+      const topology = topo as unknown as CountriesTopology;
+      const land = topojson.feature(topology, topology.objects.countries) as unknown as LandCollection;
 
       const R = 4;
       const positions: number[] = [];
@@ -153,7 +156,7 @@ export function Globe3D() {
 }
 
 // 判断经纬度是否在陆地（射线法 / d3 geoContains 近似）
-function isLand(land: any, lng: number, lat: number): boolean {
+function isLand(land: LandCollection, lng: number, lat: number): boolean {
   // 简化：用 bounding 判断 + 点在多边形内
   for (const feature of land.features) {
     const geom = feature.geometry;
@@ -169,7 +172,7 @@ function isLand(land: any, lng: number, lat: number): boolean {
   return false;
 }
 
-function pointInPolygon(point: number[], polygon: number[][]): boolean {
+function pointInPolygon(point: Position, polygon: Position[]): boolean {
   const [x, y] = point;
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
