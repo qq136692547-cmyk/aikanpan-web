@@ -5,43 +5,47 @@ import Link from "next/link";
 import { BellRing, BookOpenCheck, ClipboardList, Search, Sparkles } from "lucide-react";
 import { reportConversionEvent } from "@/lib/analytics";
 
-const STEPS = [
-  {
-    id: "review",
-    title: "看今日复盘",
-    desc: "先看市场结构和 AI 结论",
-    href: "/review/",
-    icon: ClipboardList,
-  },
-  {
-    id: "stocks",
-    title: "选 3 只重点股",
-    desc: "从市场页挑出跟踪对象",
-    href: "/market/",
-    icon: Search,
-  },
-  {
-    id: "research",
-    title: "写入自选/计划",
-    desc: "记录观察点和操作预期",
-    href: "/research/",
-    icon: BookOpenCheck,
-  },
-  {
-    id: "alerts",
-    title: "设置盯盘提醒",
-    desc: "条件触发时自动提醒",
-    href: "/alerts",
-    icon: BellRing,
-  },
-  {
-    id: "ai",
-    title: "AI 复盘归档",
-    desc: "收盘后生成连续记录",
-    href: "/review/",
-    icon: Sparkles,
-  },
-];
+function getSteps(market: "cn" | "us") {
+  const query = market === "us" ? "?market=us" : "?market=cn";
+
+  return [
+    {
+      id: "review",
+      title: "看今日复盘",
+      desc: "先看市场结构和 AI 结论",
+      href: `/review/${query}`,
+      icon: ClipboardList,
+    },
+    {
+      id: "stocks",
+      title: "选 3 只重点股",
+      desc: "从市场页挑出跟踪对象",
+      href: `/market/${query}`,
+      icon: Search,
+    },
+    {
+      id: "research",
+      title: "写入自选/计划",
+      desc: "记录观察点和操作预期",
+      href: `/research/${query}`,
+      icon: BookOpenCheck,
+    },
+    {
+      id: "alerts",
+      title: "设置盯盘提醒",
+      desc: "条件触发时自动提醒",
+      href: `/alerts${query}`,
+      icon: BellRing,
+    },
+    {
+      id: "ai",
+      title: "AI 复盘归档",
+      desc: "收盘后生成连续记录",
+      href: `/review/${query}`,
+      icon: Sparkles,
+    },
+  ];
+}
 
 const WORKFLOW_EVENT = "aikanpan_workflow_changed";
 
@@ -75,9 +79,10 @@ function parseWorkflow(raw: string): string[] {
   }
 }
 
-export function DailyWorkflow({ className = "" }: { className?: string }) {
+export function DailyWorkflow({ className = "", market = "cn" }: { className?: string; market?: "cn" | "us" }) {
   const raw = useSyncExternalStore(subscribeWorkflow, getWorkflowSnapshot, getServerWorkflowSnapshot);
   const completed = useMemo(() => parseWorkflow(raw), [raw]);
+  const steps = getSteps(market);
 
   function markCompleted(id: string) {
     if (completed.includes(id)) return;
@@ -103,7 +108,7 @@ export function DailyWorkflow({ className = "" }: { className?: string }) {
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-5">
-        {STEPS.map((step, index) => {
+        {steps.map((step, index) => {
           const done = completed.includes(step.id);
           const Icon = step.icon;
           return (

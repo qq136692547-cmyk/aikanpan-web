@@ -26,12 +26,12 @@ const allSubnav = [
   { path: "/about/", label: "关于", icon: Info },
 ];
 
-const marketPaths = new Set(marketSubnav.map((item) => item.path));
-
 function normalizePath(pathname: string): string {
   if (pathname !== "/" && pathname.endsWith("/")) return pathname.slice(0, -1);
   return pathname;
 }
+
+const marketPaths = new Set(marketSubnav.map((item) => normalizePath(item.path)));
 
 function isActive(pathname: string, href: string): boolean {
   const current = normalizePath(pathname);
@@ -48,6 +48,12 @@ function BottomNavContent() {
   const subnav = mode === "all" ? allSubnav : marketSubnav;
   const marketQuery = mode === "us" ? "?market=us" : "?market=cn";
 
+  function mainHref(mode: MarketMode): string {
+    if (mode === "all") return "/";
+    if (isMarketPage) return `${normalizePath(pathname)}${marketQuery}`;
+    return `/market/${marketQuery}`;
+  }
+
   return (
     <nav className="neo-navbar fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ borderRadius: "20px 20px 0 0", boxShadow: "0 -4px 16px rgba(0,0,0,0.45)" }}>
       <div className="px-2 pt-1.5">
@@ -55,7 +61,7 @@ function BottomNavContent() {
           {mainTabs.map((tab) => (
             <Link
               key={tab.value}
-              href={tab.value === "all" ? "/" : `/market/${tab.value === "us" ? "?market=us" : "?market=cn"}`}
+              href={mainHref(tab.value)}
               aria-label={tab.label}
               className={`rounded-xl px-2 py-1 text-center text-[10px] font-semibold ${
                 mode === tab.value ? "neo-chip-active" : "text-neo-dim"
