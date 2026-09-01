@@ -1,5 +1,4 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { AIReview } from "@/components/ai/ai-review";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
@@ -9,6 +8,7 @@ import { api, type Dashboard, type Insights } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { marketFromSearchParams } from "@/lib/market";
 import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -53,17 +53,17 @@ export default async function ReviewPage({
   const params = await searchParams;
   const selectedDate = params?.date;
   const scope = marketFromSearchParams(params?.market);
+  if (scope === "all") {
+    redirect("/review/?market=cn");
+  }
   const isCustomDate = selectedDate && selectedDate !== todayLocal();
 
   if (scope === "us") {
     return (
-      <div className="neo-page">
-        <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
+      <MarketPageFrame>
+        <MarketPageHeader market="us" title="每日复盘" image="/images/ai-art/review-decoration-v2.png" />
           <UsDailyReview />
-        </main>
-        <Footer />
-      </div>
+      </MarketPageFrame>
     );
   }
 
@@ -83,33 +83,25 @@ export default async function ReviewPage({
   if (!dashboard) {
     if (isCustomDate) {
       return (
-        <div className="neo-page">
-          <Navbar />
-          <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6">
-            <section className="neo-card p-6">
-              <div className="text-sm font-medium text-neo-ink">{selectedDate} 暂无历史复盘</div>
-              <p className="mt-1 text-xs text-neo-mid">该日期没有已归档的复盘数据。</p>
-            </section>
-          </main>
-          <Footer />
-        </div>
+        <MarketPageFrame>
+          <section className="neo-card p-6">
+            <div className="text-sm font-medium text-neo-ink">{selectedDate} 暂无历史复盘</div>
+            <p className="mt-1 text-xs text-neo-mid">该日期没有已归档的复盘数据。</p>
+          </section>
+        </MarketPageFrame>
       );
     }
     return (
-      <div className="neo-page">
-        <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6">
-          <div className="neo-skeleton mb-4 h-6 w-40" />
-          <div className="neo-skeleton h-32" />
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <div className="neo-skeleton h-20" />
-            <div className="neo-skeleton h-20" />
-            <div className="neo-skeleton h-20" />
-            <div className="neo-skeleton h-20" />
-          </div>
-        </main>
-        <Footer />
-      </div>
+      <MarketPageFrame>
+        <div className="neo-skeleton mb-4 h-6 w-40" />
+        <div className="neo-skeleton h-32" />
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="neo-skeleton h-20" />
+          <div className="neo-skeleton h-20" />
+          <div className="neo-skeleton h-20" />
+          <div className="neo-skeleton h-20" />
+        </div>
+      </MarketPageFrame>
     );
   }
 
@@ -123,33 +115,28 @@ export default async function ReviewPage({
     : "多空均衡";
 
   return (
-    <div className="neo-page">
-      <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
-        {/* Header */}
-        <section>
-          <div className="relative overflow-hidden rounded-2xl">
-            <img loading="lazy"
-              src="/images/ai-art/review-decoration-v2.png"
-              alt=""
-              aria-hidden
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/70 via-[var(--neo-bg)]/50 to-[var(--neo-bg)]/70" />
-            <div className="relative flex items-center justify-between">
-            <div>
-              <h1 className="text-[14px] font-medium text-neo-ink">每日复盘</h1>
-              <p className="mt-0.5 text-[11px] text-neo-dim">{dashboard.index.date} · {dashboard.market_updated_at}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <DatePicker initialDate={selectedDate} />
-              <span className={`px-2 py-0.5 text-[11px] ${marketPhaseLive(dashboard.market_phase) ? "neo-up-soft text-neo-up" : "neo-inset text-neo-dim"}`}>
-                {marketPhaseText(dashboard.market_phase)}
-              </span>
-            </div>
-          </div>
-          </div>
-        </section>
+    <MarketPageFrame
+      scripts={
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
+        />
+      }
+    >
+      <MarketPageHeader
+        market={scope}
+        title="每日复盘"
+        subtitle={`${dashboard.index.date} · ${dashboard.market_updated_at}`}
+        image="/images/ai-art/review-decoration-v2.png"
+        meta={
+          <>
+            <DatePicker initialDate={selectedDate} />
+            <span className={`px-2 py-0.5 text-[11px] ${marketPhaseLive(dashboard.market_phase) ? "neo-up-soft text-neo-up" : "neo-inset text-neo-dim"}`}>
+              {marketPhaseText(dashboard.market_phase)}
+            </span>
+          </>
+        }
+      />
 
         <section className="mt-3">
           <ReviewStatusBar />
@@ -331,12 +318,6 @@ export default async function ReviewPage({
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewJsonLd) }}
-      />
-    </div>
+    </MarketPageFrame>
   );
 }

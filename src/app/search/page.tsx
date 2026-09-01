@@ -1,12 +1,11 @@
-import { Navbar } from "@/components/layout/navbar";
+import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { EmptyState } from "@/components/ui/state";
-import { Footer } from "@/components/layout/footer";
 import { api, type Dashboard, type StockSearchResult, type UsDashboard, type UsSearchResult } from "@/lib/api";
 import { formatPrice, formatPct } from "@/lib/format";
-import Image from "next/image";
 import Link from "next/link";
 import { SearchBox } from "@/components/search/search-box";
 import { marketFromSearchParams } from "@/lib/market";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -84,6 +83,9 @@ export default async function SearchPage({
 }) {
   const { q, market } = await searchParams;
   const scope = marketFromSearchParams(market);
+  if (scope === "all") {
+    redirect("/search/?market=cn");
+  }
   const isUs = scope === "us";
   let results: StockSearchResult[] = [];
   let usResults: UsSearchResult[] = [];
@@ -126,22 +128,13 @@ export default async function SearchPage({
   const searchResults = isUs ? usResults : results;
 
   return (
-    <div className="neo-page">
-      <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-6">
-        {/* Header with decorative background */}
-        <div className="relative overflow-hidden rounded-2xl">
-          <Image
-            src="/images/ai-art/search-decoration.png"
-            alt=""
-            aria-hidden
-            fill
-            className="pointer-events-none object-cover opacity-20"
-          />
-          <div className="relative py-2">
-            <h1 className="text-xl font-bold text-neo-ink">搜索股票</h1>
-          </div>
-        </div>
+    <MarketPageFrame>
+      <MarketPageHeader
+        market={scope}
+        title="搜索"
+        subtitle="按代码、名称或拼音查找股票"
+        image="/images/ai-art/search-decoration.png"
+      />
 
         <div className="mt-4">
           <SearchBox initialQuery={q || ""} market={scope} />
@@ -310,8 +303,6 @@ export default async function SearchPage({
             )}
           </>
         )}
-      </main>
-      <Footer />
-    </div>
+    </MarketPageFrame>
   );
 }

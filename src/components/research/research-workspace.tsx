@@ -455,13 +455,6 @@ export function ResearchWorkspace({
     <div className="neo-fade-up space-y-4">
       <section className="neo-card relative overflow-hidden p-5">
         <div className="relative flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">{isUs ? "美股研究台" : "研究台"}</h1>
-            <p className="mt-1 text-[12px] text-neo-dim">
-              {new Date().toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric", weekday: "long" })}
-              {idx0 && <span className="ml-2 text-neo-mid">{idx0.name} {formatPct(idx0.change_pct)}</span>}
-            </p>
-          </div>
           <div className="flex flex-wrap items-center gap-2">
             <a href={isUs ? "/portfolio?market=us" : "/portfolio/"} className="neo-btn px-3 py-2 text-[12px]">持仓工具</a>
             <button onClick={exportMarkdown} className="neo-btn-primary px-4 py-2 text-[13px] font-medium">导出 Markdown</button>

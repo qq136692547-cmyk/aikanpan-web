@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { AlertInput } from "@/components/alert/alert-input";
 import { AlertManager } from "@/components/alert/alert-manager";
 import { AlertSettings } from "@/components/alert/alert-settings";
 import { marketFromSearchParams } from "@/lib/market";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const revalidate = 15;
@@ -26,28 +26,17 @@ const alertsJsonLd = {
 export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
   const { market } = await searchParams;
   const scope = marketFromSearchParams(market);
-  const isUs = scope === "us";
+  if (scope === "all") {
+    redirect("/alerts/?market=cn");
+  }
   return (
-    <div className="neo-page">
-      <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">
-        <section>
-          <div className="relative overflow-hidden rounded-2xl">
-            <img loading="lazy"
-              src="/images/ai-art/alerts-robot-v2.png"
-              alt=""
-              aria-hidden
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[var(--neo-bg)]/70 via-[var(--neo-bg)]/50 to-[var(--neo-bg)]/70" />
-            <div className="relative">
-            <h1 className="text-[14px] font-medium text-neo-ink">{isUs ? "智能盯盘 · 美股" : "智能盯盘"}</h1>
-            <p className="mt-0.5 text-[12px] text-neo-mid">
-              {isUs ? "用自然语言描述美股盯盘条件，AI 自动解析并持续监控" : "用自然语言描述盯盘条件，AI 自动解析并持续监控"}
-            </p>
-            </div>
-          </div>
-        </section>
+    <MarketPageFrame>
+      <MarketPageHeader
+        market={scope}
+        title="盯盘"
+        subtitle="用自然语言创建盯盘条件，AI 自动解析并持续监控"
+        image="/images/ai-art/alerts-robot-v2.png"
+      />
 
         <section className="mt-3">
           <AlertInput market={scope} />
@@ -61,8 +50,6 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
           <AlertManager market={scope} />
         </section>
 
-      </main>
-      <Footer />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(alertsJsonLd) }}
@@ -82,6 +69,6 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
           }),
         }}
       />
-    </div>
+    </MarketPageFrame>
   );
 }

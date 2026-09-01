@@ -266,6 +266,9 @@ export class ApiClient {
     return this.request<UsFinancials>(`/us/stocks/${encodeURIComponent(symbol)}/financials`, { next: { revalidate: 3600 } });
   }
 
+  getUsEarningsCalendar() {
+    return this.request<{ calendar: UsEarningsCalendarItem[]; generated_at: string }>("/us/earnings-calendar", { next: { revalidate: 3600 } });
+  }
   getUsEarnings(symbol: string) {
     return this.request<UsEarnings>(`/us/stocks/${encodeURIComponent(symbol)}/earnings`, { next: { revalidate: 3600 } });
   }
@@ -957,15 +960,26 @@ export interface UsEarnings {
 export interface UsDashboard {
   indices: UsQuote[];
   stocks: UsQuote[];
+  sectors?: UsQuote[];
+  sentiment?: UsQuote[];
+  market_news?: UsNewsItem[];
+  market_news_zh?: UsNewsItem[];
+  temperature?: { score: number; label: string; up_ratio: number; index_momentum?: number; vix_change?: number; sectors_up?: number; sectors_total?: number };
   generated_at: string;
   source?: string;
   usd_cny?: number;
   market?: string;
 }
 
+export interface UsEarningsCalendarItem {
+  symbol: string;
+  upcoming: { date?: string; eps_estimate?: number; revenue_estimate?: number } | null;
+}
+
 export interface UsNewsItem {
   id: string;
   title: string;
+  title_zh?: string;
   summary?: string;
   source?: string;
   time?: string;
@@ -1154,3 +1168,4 @@ export interface AlertSettings {
   phone_masked: string;
   phone_verified: boolean;
 }
+

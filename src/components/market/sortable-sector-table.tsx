@@ -1,7 +1,16 @@
 "use client";
-import { useState, useMemo } from "react";
-import type { Sector } from "@/lib/api";
+
+import { useMemo, useState } from "react";
 import { formatPct, formatPrice } from "@/lib/format";
+
+export type MarketSectorRow = {
+  code: string;
+  name?: string;
+  price: number;
+  change: number;
+  change_pct: number;
+  turnover_rate?: number;
+};
 
 type SortKey = "name" | "price" | "change_pct" | "change" | "turnover_rate";
 type SortDir = "asc" | "desc";
@@ -36,15 +45,22 @@ function SortHeader({
   );
 }
 
-export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
+export function SortableSectorTable({
+  sectors,
+  showTurnover = true,
+}: {
+  sectors: MarketSectorRow[];
+  showTurnover?: boolean;
+}) {
   const [sortKey, setSortKey] = useState<SortKey>("change_pct");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
+  const hasTurnover = showTurnover && sectors.some((s) => typeof s.turnover_rate === "number");
 
   const sorted = useMemo(() => {
     const arr = [...sectors];
     arr.sort((a, b) => {
-      const av: string | number = a[sortKey];
-      const bv: string | number = b[sortKey];
+      const av = a[sortKey] ?? (sortKey === "name" ? "" : 0);
+      const bv = b[sortKey] ?? (sortKey === "name" ? "" : 0);
       if (typeof av === "string" && typeof bv === "string") {
         return sortDir === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
       }
@@ -72,7 +88,9 @@ export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
               <SortHeader label="最新价" keyName="price" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortHeader label="涨跌幅" keyName="change_pct" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortHeader label="涨跌额" keyName="change" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
-              <SortHeader label="换手率" keyName="turnover_rate" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              {hasTurnover && (
+                <SortHeader label="换手率" keyName="turnover_rate" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              )}
             </tr>
           </thead>
           <tbody>
@@ -82,21 +100,36 @@ export function SortableSectorTable({ sectors }: { sectors: Sector[] }) {
                 className={`transition-colors hover-neo-inset ${i < sorted.length - 1 ? "border-b border-[var(--neo-surface-inset)]" : ""}`}
               >
                 <td className="px-4 py-2.5">
-                  <span className="text-[13px] font-medium text-neo-ink">{s.name}</span>
-<span className="ml-2 text-[10px] text-neo-mid" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{s.code}</span>
+                  <span className="text-[13px] font-medium text-neo-ink">{s.name ?? s.code}</span>
+                  <span className="ml-2 text-[10px] text-neo-mid" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                    {s.code}
+                  </span>
                 </td>
-                <td className="px-4 py-2.5 text-right text-[13px] text-neo-mid" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
+                <td className="px-4 py-2.5 text-right text-[13px] text-neo-mid" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {formatPrice(s.price)}
                 </td>
-                <td className={`px-4 py-2.5 text-right text-[13px] font-semibold ${s.change_pct > 0 ? "text-neo-up" : s.change_pct < 0 ? "text-neo-down" : "text-neo-mid"}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
+                <td
+                  className={`px-4 py-2.5 text-right text-[13px] font-semibold ${
+                    s.change_pct > 0 ? "text-neo-up" : s.change_pct < 0 ? "text-neo-down" : "text-neo-mid"
+                  }`}
+                  style={{ fontFamily: "var(--font-inter), system-ui" }}
+                >
                   {formatPct(s.change_pct)}
                 </td>
-                <td className={`px-4 py-2.5 text-right text-[12px] ${s.change > 0 ? "text-neo-up" : s.change < 0 ? "text-neo-down" : "text-neo-mid"}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                  {s.change > 0 ? "+" : ""}{s.change.toFixed(2)}
+                <td
+                  className={`px-4 py-2.5 text-right text-[12px] ${
+                    s.change > 0 ? "text-neo-up" : s.change < 0 ? "text-neo-down" : "text-neo-mid"
+                  }`}
+                  style={{ fontFamily: "var(--font-inter), system-ui" }}
+                >
+                  {s.change > 0 ? "+" : ""}
+                  {s.change.toFixed(2)}
                 </td>
-                <td className="px-4 py-2.5 text-right text-[12px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                  {s.turnover_rate.toFixed(2)}%
-                </td>
+                {hasTurnover && (
+                  <td className="px-4 py-2.5 text-right text-[12px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                    {(s.turnover_rate ?? 0).toFixed(2)}%
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

@@ -1,8 +1,8 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { ResearchWorkspace } from "@/components/research/research-workspace";
 import { marketFromSearchParams } from "@/lib/market";
 import { api, type Dashboard, type UsDashboard } from "@/lib/api";
+import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
@@ -15,6 +15,9 @@ export const metadata: Metadata = {
 export default async function ResearchPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
   const { market } = await searchParams;
   const scope = marketFromSearchParams(market);
+  if (scope === "all") {
+    redirect("/research/?market=cn");
+  }
   const isUs = scope === "us";
   let dashboard: Dashboard | UsDashboard | null = null;
 
@@ -29,12 +32,14 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
   }
 
   return (
-    <div className="neo-page">
-      <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
-        <ResearchWorkspace dashboard={dashboard} market={scope} />
-      </main>
-      <Footer />
-    </div>
+    <MarketPageFrame>
+      <MarketPageHeader
+        market={scope}
+        title="研究"
+        subtitle="自选股、盘前计划、公司档案与投资论点"
+        image="/images/ai-art/market-overview-decoration.png"
+      />
+      <ResearchWorkspace dashboard={dashboard} market={scope} />
+    </MarketPageFrame>
   );
 }
