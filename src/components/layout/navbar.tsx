@@ -81,7 +81,7 @@ export function Navbar() {
             title={user?.user_id ?? "登录"}
           >
             <UserRound size={13} />
-            {user?.type === "phone" ? "已登录" : "登录"}
+            {user?.type === "phone" || user?.type === "email" ? "已登录" : "登录 / 注册"}
           </Link>
         </div>
 
@@ -143,7 +143,7 @@ export function Navbar() {
               }`}
               onClick={() => setMobileOpen(false)}
             >
-              账户
+              登录 / 注册
             </Link>
           </div>
           <div className="mb-3">

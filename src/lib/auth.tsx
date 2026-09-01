@@ -9,7 +9,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 interface AuthUser {
   user_id: string;
   token: string;
-  type: "guest" | "hw" | "wx" | "phone";
+  type: "guest" | "hw" | "wx" | "phone" | "email";
   created_at?: string;
 }
 

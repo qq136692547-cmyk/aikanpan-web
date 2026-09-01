@@ -186,6 +186,16 @@ export class ApiClient {
     return this.request<SmsVerifyResp>("/auth/sms-verify", { method: "POST", body: JSON.stringify({ phone, code, guest_token: guestToken || undefined }) });
   }
 
+  /** 发送邮箱验证码 */
+  sendEmailCode(email: string) {
+    return this.request<{ ok: boolean; expires_in: number }>("/auth/email-send", { method: "POST", body: JSON.stringify({ email }) });
+  }
+
+  /** 校验邮箱验证码并登录/注册 */
+  verifyEmail(email: string, code: string, guestToken?: string | null) {
+    return this.request<EmailVerifyResp>("/auth/email-verify", { method: "POST", body: JSON.stringify({ email, code, guest_token: guestToken || undefined }) });
+  }
+
   /** 当前账号信息 */
   getMe() {
     return this.request<AuthMe>("/auth/me");
@@ -830,6 +840,17 @@ export interface AuthMe {
   user_id: string;
   phone_verified: boolean;
   phone_masked: string;
+  email_verified: boolean;
+  email_masked: string;
+}
+
+/** 邮箱登录/注册响应 */
+export interface EmailVerifyResp {
+  user_id: string;
+  token: string;
+  created: boolean;
+  email_verified: boolean;
+  email_masked: string;
 }
 
 export interface MembershipStatus {
