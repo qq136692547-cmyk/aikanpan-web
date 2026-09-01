@@ -9,6 +9,7 @@ import {
   Gauge,
   GraduationCap,
   KeyRound,
+  ListChecks,
   ShieldCheck,
   Sparkles,
   Zap,
@@ -30,6 +31,13 @@ const PRO_FEATURES = [
   "个股、组合与盘前计划 AI 诊断",
   "AI 批量评分与历史归档",
   "更高每日 AI 额度",
+];
+const COMPARE_ROWS = [
+  { label: "每日有效 AI 调用", free: "3 次", pro: "500 次" },
+  { label: "每日 AI 复盘", free: "缓存可用时", pro: "每日更新" },
+  { label: "个股 / 组合 / 盘前计划 AI 诊断", free: "—", pro: "✓" },
+  { label: "AI 批量评分与历史归档", free: "—", pro: "✓" },
+  { label: "有效期", free: "—", pro: "30 天 / 365 天，可叠加" },
 ];
 
 const USER_PROFILES = [
@@ -146,6 +154,16 @@ export default function UpgradePage() {
         </section>
 
         <section aria-label="用户画像" className="mt-4">
+        {!isPro && membership && membership.ai_used_today >= membership.ai_daily_limit && (
+          <section className="neo-card mt-4 flex flex-wrap items-center gap-3 p-4" style={{ borderColor: "var(--neo-primary)" }}>
+            <Zap size={16} style={{ color: "var(--neo-primary)" }} />
+            <span className="text-[13px] text-neo-ink">
+              今日免费额度已用完（{membership.ai_used_today}/{membership.ai_daily_limit}），升级 Pro 解锁每日 500 次 AI 调用。
+            </span>
+            <a href="#plans" className="neo-btn-primary ml-auto rounded-md px-3 py-1.5 text-[12px] font-medium">查看方案</a>
+          </section>
+        )}
+
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {USER_PROFILES.map((item) => {
               const selected = profile === item.id;
@@ -250,6 +268,77 @@ export default function UpgradePage() {
             </p>
           </div>
         </section>
+        <section id="plans" className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="neo-card p-6">
+            <div className="flex items-center gap-2">
+              <Sparkles size={17} style={{ color: "var(--neo-dim)" }} />
+              <h2 className="text-[17px] font-semibold text-neo-ink">免费版</h2>
+            </div>
+            <div className="mt-4 flex items-baseline gap-1.5">
+              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>0</span>
+              <span className="text-[13px] text-neo-dim">元</span>
+            </div>
+            <p className="mt-3 text-[13px] text-neo-mid">适合先体验看盘与复盘结构。</p>
+          </div>
+
+          <div className="neo-card relative overflow-hidden p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Zap size={17} style={{ color: "var(--neo-primary)" }} />
+                <h2 className="text-[17px] font-semibold text-neo-ink">Pro 月卡</h2>
+              </div>
+              <span className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">订阅制</span>
+            </div>
+            <div className="mt-4 flex items-baseline gap-1.5">
+              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>29</span>
+              <span className="text-[13px] text-neo-dim">元 / 30 天</span>
+            </div>
+            <p className="mt-3 text-[13px] text-neo-mid">短线盯盘与日常复盘的主力选择。</p>
+          </div>
+
+          <div className="neo-card relative overflow-hidden p-6" style={{ borderColor: "var(--neo-primary)" }}>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Crown size={17} style={{ color: "var(--neo-primary)" }} />
+                <h2 className="text-[17px] font-semibold text-neo-ink">Pro 年卡</h2>
+              </div>
+              <span className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">主推</span>
+            </div>
+            <div className="mt-4 flex items-baseline gap-1.5">
+              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>299</span>
+              <span className="text-[13px] text-neo-dim">元 / 365 天</span>
+            </div>
+            <p className="mt-1.5 text-[12px] text-neo-dim">≈ ¥24.9/月 · 较月卡立省 ¥149</p>
+            <p className="mt-3 text-[13px] text-neo-mid">中长线研究与连续学习的首选。</p>
+          </div>
+        </section>
+
+        <section className="neo-card mt-4 p-6">
+          <div className="flex items-center gap-2">
+            <ListChecks size={17} style={{ color: "var(--neo-primary)" }} />
+            <h2 className="text-[17px] font-semibold text-neo-ink">权益对照</h2>
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-[13px]">
+              <thead>
+                <tr className="text-left text-[12px] text-neo-dim">
+                  <th className="py-2 pr-4 font-medium">权益</th>
+                  <th className="py-2 pr-4 font-medium">免费版</th>
+                  <th className="py-2 font-medium text-neo-primary">Pro</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE_ROWS.map((row) => (
+                  <tr key={row.label} className="border-t border-[var(--neo-border)]">
+                    <td className="py-2.5 pr-4 text-neo-ink">{row.label}</td>
+                    <td className="py-2.5 pr-4 text-neo-dim">{row.free}</td>
+                    <td className="py-2.5 text-neo-ink">{row.pro}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
 
         <section className="neo-card mt-4 p-6">
           <div className="flex items-center gap-2">
@@ -275,6 +364,9 @@ export default function UpgradePage() {
           {message && (
             <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-up" : "text-neo-down"}`}>{message}</p>
           )}
+          <p className="mt-3 text-[12px] text-neo-dim">
+            支付入口接入前，可先通过人工渠道获取 30 天或 365 天激活码；开通后立即生效，时长自动叠加。
+          </p>
           {!isPro && (
             <p className="mt-3 text-[12px] text-neo-dim">
               还没有绑定手机号？先到 <Link href="/account" className="text-neo-primary">账户页</Link> 绑定，便于跨设备保留会员状态。
