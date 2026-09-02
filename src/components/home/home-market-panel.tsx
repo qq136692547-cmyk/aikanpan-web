@@ -97,8 +97,8 @@ function CnEarningsCalendar() {
     <SectionShell title="近期财报">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-2">
         {items.slice(0, 6).map((item) => (
-          <a key={item.symbol} href={`/stock/${item.symbol}/`} className="neo-card-sm p-3">
-            <div className="truncate text-[12px] font-semibold text-neo-ink">{item.symbol}</div>
+          <a key={item.symbol} href={`/stock/${item.symbol.replace(/\./, "")}/`} className="neo-card-sm p-3">
+            <div className="truncate text-[12px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
             <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
           </a>
         ))}
@@ -192,11 +192,11 @@ export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
             <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
           ))}
           <a href="/market/?market=us" className="neo-card-sm p-3">
-            <div className="text-[10px] uppercase tracking-wider text-neo-dim">市场温度</div>
-            <div className="mt-1 text-[18px] font-bold" style={{ fontFamily: "var(--font-inter), system-ui" }}>
-              {dashboard.temperature?.score ?? "-"}
+            <div className="text-[10px] uppercase tracking-wider text-neo-dim">VIX 变动</div>
+            <div className="mt-1 text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+              {dashboard.temperature?.vix_change != null ? formatPct(dashboard.temperature.vix_change) : "-"}
             </div>
-            <div className="text-[10px] text-neo-dim">{dashboard.temperature?.label || "综合情绪"}</div>
+            <div className="text-[10px] text-neo-dim">风险情绪</div>
           </a>
         </section>
 

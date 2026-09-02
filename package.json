@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs",
     "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs tests/navigation.test.mjs",
     "monitor:perf": "node monitor/perf-baseline.mjs",
     "test:unit": "node --experimental-strip-types --test tests/format.test.mjs",

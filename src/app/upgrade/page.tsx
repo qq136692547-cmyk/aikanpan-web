@@ -23,7 +23,7 @@ import { reportConversionEvent, type UpgradeProfile } from "@/lib/analytics";
 const FREE_FEATURES = [
   "基础行情与市场结构",
   "每日 AI 复盘（缓存可用时）",
-  "每天 3 次有效 AI 调用",
+  "每天 5 次有效 AI 调用",
 ];
 
 const PRO_FEATURES = [
@@ -33,7 +33,7 @@ const PRO_FEATURES = [
   "更高每日 AI 额度",
 ];
 const COMPARE_ROWS = [
-  { label: "每日有效 AI 调用", free: "3 次", pro: "500 次" },
+  { label: "每日有效 AI 调用", free: "5 次", pro: "500 次" },
   { label: "每日 AI 复盘", free: "缓存可用时", pro: "每日更新" },
   { label: "个股 / 组合 / 盘前计划 AI 诊断", free: "—", pro: "✓" },
   { label: "AI 批量评分与历史归档", free: "—", pro: "✓" },

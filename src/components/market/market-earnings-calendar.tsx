@@ -63,7 +63,7 @@ export function MarketEarningsCalendar({ market }: { market: "cn" | "us" }) {
               href={market === "cn" ? `/stock/${item.symbol.replace(/\./, "")}/` : `/stock/${item.symbol}/`}
               className="neo-card-sm p-3 transition-all duration-200 hover:-translate-y-0.5"
             >
-              <div className="truncate text-[13px] font-semibold text-neo-ink">{item.symbol}</div>
+              <div className="truncate text-[13px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
               <div className="mt-0.5 text-[11px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
               {item.upcoming?.label && <div className="text-[10px] text-neo-dim">{item.upcoming.label}</div>}
               {item.upcoming?.eps_estimate != null && (

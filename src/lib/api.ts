@@ -973,6 +973,7 @@ export interface UsDashboard {
 
 export interface UsEarningsCalendarItem {
   symbol: string;
+  name?: string;
   upcoming: { date?: string; eps_estimate?: number; revenue_estimate?: number } | null;
 }
 

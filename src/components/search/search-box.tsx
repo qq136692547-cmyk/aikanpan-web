@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import useSWR from "swr";
-import { api, type UsSearchResult } from "@/lib/api";
+import { api, type StockSearchResult, type UsSearchResult } from "@/lib/api";
 
 function useDebounced<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
@@ -80,14 +80,14 @@ export function SearchBox({ initialQuery = "", market = "cn" }: { initialQuery?:
               {results.map((s) => (
                 <a
                   key={s.code}
-                  href={`/stock/${s.code.replace(/\./, "")}/`}
+                  href={isUs ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm transition-colors hover-neo-inset"
                 >
                   <span className="truncate font-medium text-neo-ink">{s.name}</span>
                   <span className="flex shrink-0 items-center gap-2 text-[11px] text-neo-dim">
                     <span style={{ fontFamily: "var(--font-inter), system-ui" }}>{s.code}</span>
-                    <span>{isUs ? ((s as UsSearchResult).type || "??") : (s.pinyin || s.initials || "-")}</span>
+                    <span>{isUs ? ((s as UsSearchResult).type || "美股") : ((s as StockSearchResult).pinyin || (s as StockSearchResult).initials || "-")}</span>
                   </span>
                 </a>
               ))}

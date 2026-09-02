@@ -38,6 +38,7 @@ export function Navbar() {
               isPro ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isPro ? "Pro 会员" : "升级 Pro"}
+            aria-label={isPro ? "Pro 会员" : "升级 Pro"}
           >
             <Crown size={13} />
             <span className="hidden sm:inline">{isPro ? "Pro" : "会员"}</span>
@@ -49,6 +50,7 @@ export function Navbar() {
               pathname === "/account" ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isVerified ? "我的账户" : "登录 / 注册"}
+            aria-label={isVerified ? "我的账户" : "登录 / 注册"}
           >
             <UserRound size={13} />
             <span className="hidden md:inline">{isVerified ? "我的账户" : "登录 / 注册"}</span>

@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "搜索股票",
-  description: "搜索A股股票，按代码或名称查找个股行情数据。",
+  description: "搜索A股与美股股票，按代码、名称或拼音查找个股行情数据。",
 };
 
 // 热门股票快捷入口
@@ -166,43 +166,17 @@ export default async function SearchPage({
               </div>
             )}
 
-            {!isUs && searchResults.length > 0 && (
-              <div className="neo-card-sm mt-4 overflow-hidden">
-                <table className="w-full">
-                  <thead>
-                    <tr className="text-[11px] uppercase tracking-wide text-neo-dim">
-                      <th className="px-4 py-2 text-left font-medium">名称</th>
-                      <th className="px-4 py-2 text-left font-medium">代码</th>
-                      <th className="px-4 py-2 text-left font-medium">拼音</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {results.map((s) => (
-                      <tr key={s.code} className="transition-colors hover-neo-inset last:border-b-0">
-                        <td className="px-4 py-2.5 text-sm">
-                          <a href={`/stock/${s.code.replace(/\./, "")}/`} className="font-medium text-neo-ink transition-colors hover:text-brand">
-                            {s.name}
-                          </a>
-                        </td>
-                        <td style={{ fontFamily: 'var(--font-inter), system-ui' }} className="px-4 py-2.5 text-sm text-neo-mid">{s.code}</td>
-                        <td className="px-4 py-2.5 text-xs text-neo-dim">{s.pinyin || "-"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
 
-            {isUs && searchResults.length > 0 && (
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {searchResults.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {searchResults.map((s) => (
-                  <a key={s.code} href={`/stock/${s.code}/`} className="neo-card-sm p-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-sm font-medium text-neo-ink">{s.name}</span>
-                      <span className="shrink-0 rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-mid">{(s as UsSearchResult).type || "美股"}</span>
-                    </div>
-                    <div style={{ fontFamily: 'var(--font-inter), system-ui' }} className="mt-1 text-[11px] text-neo-dim">{s.code}</div>
-                  </a>
+                  <SearchStockCard
+                    key={s.code}
+                    name={s.name}
+                    code={s.code}
+                    tag={isUs ? (s as UsSearchResult).type || "美股" : (s as StockSearchResult).pinyin || "A股"}
+                    href={isUs ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
+                  />
                 ))}
               </div>
             )}
@@ -254,6 +228,7 @@ export default async function SearchPage({
             )}
 
             {/* 热门股票 */}
+            {!isUs && (
             <section className="neo-fade-up mt-6" style={{ animationDelay: "60ms" }}>
               <div className="mb-3 flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-neo-mid">热门股票</h2>
@@ -275,6 +250,7 @@ export default async function SearchPage({
                 })}
               </div>
             </section>
+            )}
 
             {/* 搜索提示 */}
             {!isUs && (
