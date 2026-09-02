@@ -6,6 +6,28 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api, type AIReview } from "@/lib/api";
 
+const US_DAILY_REVIEW_KEY = "us-daily-review";
+
+async function fetchUsDailyReview() {
+  return api.getUsDailyReview();
+}
+
+export function useUsDailyReview() {
+  return useSWR<AIReview>(US_DAILY_REVIEW_KEY, fetchUsDailyReview, {
+    keepPreviousData: true,
+    revalidateOnFocus: false,
+    dedupingInterval: 60_000,
+  });
+}
+
+export function getUsDailyReviewExcerpt(content: string) {
+  const paragraph = stripTrailingMeta(content)
+    .split(/\n{2,}/)
+    .map((part) => part.replace(/[\n#*>]/g, " ").replace(/\s+/g, " ").trim())
+    .find((part) => part && !part.startsWith("状态") && !part.startsWith("评分"));
+  return paragraph || "";
+}
+
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
   const statusMatch = content.match(/\*\*状态\*\*[:：]\s*(.+)/);
@@ -30,11 +52,7 @@ const scoreColor = (score: number) => {
 };
 
 export function UsDailyReview() {
-  const { data, error, isLoading, mutate } = useSWR<AIReview>(
-    "us-daily-review",
-    () => api.getUsDailyReview(),
-    { keepPreviousData: true, revalidateOnFocus: false, dedupingInterval: 60_000 }
-  );
+  const { data, error, isLoading, mutate } = useUsDailyReview();
 
   if (isLoading && !data) {
     return (

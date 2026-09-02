@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { formatPct, formatPrice } from "@/lib/format";
 import { api, type Dashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
-import { UsDailyReview } from "@/components/us/us-daily-review";
+import { getUsDailyReviewExcerpt, useUsDailyReview } from "@/components/us/us-daily-review";
 
 type MarketScope = "all" | "cn" | "us";
 type EarningsCalendarItem = UsEarningsCalendarItem;
@@ -180,11 +180,13 @@ export function CnMarketPanel({ dashboard, insights }: { dashboard: Dashboard; i
 }
 
 export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
+  const { data: review } = useUsDailyReview();
+
   return (
     <div>
       <PanelLabel label="美股市场" color="var(--neo-amber)" />
       <div className="space-y-3">
-        <UsDailyReview />
+        <AiConclusion market="us" focus={review ? getUsDailyReviewExcerpt(review.content) : ""} />
         <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {dashboard.indices.slice(0, 3).map((idx) => (
             <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
