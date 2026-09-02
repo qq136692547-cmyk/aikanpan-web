@@ -1,9 +1,10 @@
-import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
+import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { AIReview } from "@/components/ai/ai-review";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { DailyLoopCard } from "@/components/workflow/daily-loop-card";
+import { MarketEarningsCalendar } from "@/components/market/market-earnings-calendar";
 import { UsDashboardSection } from "@/components/us/us-dashboard-section";
 import { api, type Dashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
@@ -172,6 +173,9 @@ export default async function ReviewPage({
       <section className="mt-3">
         <ReviewStatusBar />
       </section>
+      <MarketPageSection title="近期财报">
+        <MarketEarningsCalendar market="cn" />
+      </MarketPageSection>
       <DailyWorkflow className="mt-3" market="cn" />
       <DailyLoopCard
         market="cn"
