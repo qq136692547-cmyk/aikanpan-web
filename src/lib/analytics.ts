@@ -62,7 +62,8 @@ export function reportConversionEvent(
   options?: { profile?: UpgradeProfile; source?: string }
 ) {
   if (typeof window === "undefined") return;
-  const parts = [options?.profile, options?.source].filter(Boolean);
+  const market = new URLSearchParams(window.location.search).get("market");
+  const parts = [options?.profile, options?.source, market ? `market:${market}` : undefined].filter(Boolean);
   void sendEvent(event, window.location.pathname, parts.length ? parts.join(":").slice(0, 80) : undefined, readAuthToken());
 }
 

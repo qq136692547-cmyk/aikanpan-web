@@ -61,7 +61,13 @@ export class ApiClient {
       if (res.status === 429 && isAiQuotaPath(path)) {
         reportConversionEvent("ai_quota_hit", { source: path.split("?")[0] });
       }
-      throw new Error(`API ${res.status}: ${res.statusText} — ${url}`);
+      const errorText = await res.text();
+      let detail = "";
+      try {
+        const errorJson = JSON.parse(errorText);
+        detail = errorJson?.detail || errorJson?.message || "";
+      } catch {}
+      throw new Error(detail || `API ${res.status}: ${res.statusText} — ${url}`);
     }
 
     return res.json() as Promise<T>;
