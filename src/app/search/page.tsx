@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-pa
 import { EmptyState } from "@/components/ui/state";
 import { api, type Dashboard, type StockSearchResult, type UsDashboard, type UsSearchResult } from "@/lib/api";
 import { formatPrice, formatPct } from "@/lib/format";
+import { usNameZh, usTypeZh } from "@/lib/us-stock-names";
 import Link from "next/link";
 import { SearchBox } from "@/components/search/search-box";
 import { marketFromSearchParams } from "@/lib/market";
@@ -101,6 +102,17 @@ export default async function SearchPage({
       if (isUs) {
         const data = await api.searchUsStocks(query);
         usResults = (data.list || []).filter((item) => !item.code.includes(".") || /^[A-Z]+\.[A-Z]$/i.test(item.code));
+
+      if (usResults.length > 0) {
+        const quoteResults = await Promise.allSettled(usResults.slice(0, 8).map((item) => api.getUsQuote(item.code)));
+        quoteResults.forEach((result, index) => {
+          if (result.status === "fulfilled") {
+            const quote = result.value;
+            const code = usResults[index].code;
+            resultQuotes[code] = { last: quote.last, change_pct: quote.change_pct ?? 0 };
+          }
+        });
+        }
       } else {
         const data = await api.searchStocks(query);
         results = data.list || [];
@@ -183,11 +195,11 @@ export default async function SearchPage({
                 {searchResults.map((s) => (
                   <SearchStockCard
                     key={s.code}
-                    name={s.name}
+                    name={isUs ? usNameZh((s as UsSearchResult).name, s.code) : s.name}
                     code={s.code}
-                    tag={isUs ? (s as UsSearchResult).type || "美股" : (s as StockSearchResult).pinyin || "A股"}
-                    price={!isUs ? resultQuotes[s.code]?.last : undefined}
-                    pct={!isUs ? resultQuotes[s.code]?.change_pct : undefined}
+                    tag={isUs ? usTypeZh((s as UsSearchResult).type) : (s as StockSearchResult).pinyin || "A股"}
+                    price={resultQuotes[s.code]?.last}
+                    pct={resultQuotes[s.code]?.change_pct}
                     href={isUs ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
                   />
                 ))}
@@ -211,7 +223,7 @@ export default async function SearchPage({
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {usDashboard.stocks.map((s) => (
-                    <SearchStockCard key={s.code} name={s.name ?? s.code} code={s.code} price={s.last} pct={s.change_pct} tag="美股" href={`/stock/${s.code}/`} />
+                    <SearchStockCard key={s.code} name={usNameZh(s.name, s.code)} code={s.code} price={s.last} pct={s.change_pct} tag="美股" href={`/stock/${s.code}/`} />
                   ))}
                 </div>
               </section>

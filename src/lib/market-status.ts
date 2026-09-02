@@ -11,7 +11,7 @@ export function marketPhaseText(phase?: string): string {
     case "closed":
       return "已收盘";
     default:
-      return "状态未知";
+      return "数据待更新";
   }
 }
 

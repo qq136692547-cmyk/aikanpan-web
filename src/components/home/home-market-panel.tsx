@@ -5,6 +5,7 @@ import { formatPct, formatPrice } from "@/lib/format";
 import { api, type Dashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
 import { getUsDailyReviewExcerpt, useUsDailyReview } from "@/components/us/us-daily-review";
+import { usNameZh } from "@/lib/us-stock-names";
 
 type MarketScope = "all" | "cn" | "us";
 type EarningsCalendarItem = UsEarningsCalendarItem;
@@ -251,6 +252,7 @@ function UsEarningsCalendar() {
         {items.slice(0, 6).map((item) => (
           <a key={item.symbol} href={`/stock/${item.symbol}/`} className="neo-card-sm p-3">
             <div className="truncate text-[12px] font-semibold text-neo-ink">{item.symbol}</div>
+            <div className="truncate text-[12px] font-semibold text-neo-ink">{usNameZh(item.name, item.symbol)}</div>
             <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
           </a>
         ))}

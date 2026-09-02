@@ -6,6 +6,7 @@ import { UsDailyReview } from "@/components/us/us-daily-review";
 import { UsWatchlistButton } from "@/components/us/us-watchlist-button";
 import { api, type Dashboard, type Insights, type LimitStock, type Sector, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
+import { usNameZh } from "@/lib/us-stock-names";
 import { marketPhaseText } from "@/lib/market-status";
 import { marketFromSearchParams } from "@/lib/market";
 import { redirect } from "next/navigation";
@@ -336,12 +337,12 @@ function UsHotStocksCard({ dashboard }: { dashboard: UsDashboard | null }) {
           <div key={stock.code} className="neo-card-sm p-3">
             <div className="flex items-center justify-between gap-2">
               <a href={`/stock/${stock.code}/`} className="min-w-0">
-                <span className="block truncate text-[13px] font-medium text-neo-ink">{stock.name ?? stock.code}</span>
+                <span className="block truncate text-[13px] font-medium text-neo-ink">{usNameZh(stock.name, stock.code)}</span>
                 <span className="block text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {stock.code}
                 </span>
               </a>
-              <UsWatchlistButton code={stock.code} name={stock.name} />
+              <UsWatchlistButton code={stock.code} name={usNameZh(stock.name, stock.code)} />
             </div>
             <div className="mt-2 flex items-baseline justify-between gap-2">
               <span className="text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>

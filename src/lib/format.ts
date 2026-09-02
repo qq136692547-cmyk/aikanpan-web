@@ -3,7 +3,8 @@
  */
 
 /** 格式化价格 — 保留 2 位小数 */
-export function formatPrice(n: number): string {
+export function formatPrice(n?: number | null): string {
+  if (n == null || !Number.isFinite(n) || n <= 0) return "--";
   return n.toFixed(2);
 }
 

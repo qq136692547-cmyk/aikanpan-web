@@ -7,6 +7,7 @@ import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { formatPct, formatPrice } from "@/lib/format";
+import { usNameZh } from "@/lib/us-stock-names";
 import { useAuth } from "@/lib/auth";
 import { api, type AIComment, type UsEarnings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
 
@@ -74,7 +75,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">{quote?.name ?? symbol}</h1>
+              <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">{usNameZh(quote?.name, symbol)}</h1>
               <span className="text-[11px] text-neo-dim">{symbol} · USD</span>
             </div>
             <div className="mt-2 flex flex-wrap items-baseline gap-3">
@@ -89,7 +90,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
               {quote?.source === "unavailable" ? "数据暂不可用" : `${quote?.source ?? ""} · ${quote?.date ?? ""}`}
             </div>
           </div>
-          <UsWatchlistButton code={symbol} name={quote?.name} />
+          <UsWatchlistButton code={symbol} name={usNameZh(quote?.name, symbol)} />
         </div>
         <Sparkline data={history?.closes ?? []} trend={trend} height={48} className="mt-3 w-full" />
       </section>

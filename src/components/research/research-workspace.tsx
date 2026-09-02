@@ -6,6 +6,7 @@ import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, 
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 import { type MarketScope } from "@/lib/market";
 import { formatPct, formatPrice } from "@/lib/format";
+import { usNameZh } from "@/lib/us-stock-names";
 import { useWatchlist } from "@/lib/use-watchlist";
 import { useAuth } from "@/lib/auth";
 
@@ -224,7 +225,7 @@ export function ResearchWorkspace({
     if (!dashboard) return [];
     if (isUs) {
       const usData = dashboard as UsDashboard;
-      return (usData.stocks || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name || s.code, price: s.last || 0, change_pct: s.change_pct || 0 }));
+      return (usData.stocks || []).slice(0, 6).map((s) => ({ code: s.code, name: usNameZh(s.name, s.code), price: s.last || 0, change_pct: s.change_pct || 0 }));
     }
     const cnData = dashboard as Dashboard;
     return (cnData.limit_up || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name, price: s.price, change_pct: s.pct }));
@@ -237,7 +238,7 @@ export function ResearchWorkspace({
     }
     try {
       const data = await api.getUsWatchlist();
-      setUsWatchlist((data.watchlist || []).map((q) => ({ code: q.code, name: q.name || q.code, price: q.last || 0, change_pct: q.change_pct || 0 })));
+      setUsWatchlist((data.watchlist || []).map((q) => ({ code: q.code, name: usNameZh(q.name, q.code), price: q.last || 0, change_pct: q.change_pct || 0 })));
     } catch {
       setUsWatchlist([]);
     }

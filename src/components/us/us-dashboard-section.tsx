@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { formatPct, formatPrice } from "@/lib/format";
 import { MarketPageSection } from "@/components/market/market-page-shell";
 import { api, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
+import { usNameZh } from "@/lib/us-stock-names";
 import { UsDailyReview } from "./us-daily-review";
 import { UsWatchlistButton } from "./us-watchlist-button";
 
@@ -58,7 +59,7 @@ function UsEarningsCalendar() {
         {data.slice(0, 8).map((item) => (
           <a key={item.symbol} href={`/stock/${item.symbol}/`} className="neo-card-sm p-3 transition-all duration-200 hover:-translate-y-0.5">
             <div className="text-[13px] font-semibold text-neo-ink">{item.symbol}</div>
-            <div className="mt-0.5 text-[11px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
+            <div className="mt-0.5 text-[11px] text-neo-mid">{usNameZh(item.name, item.symbol)} · {item.upcoming?.date || "待定"}</div>
             {item.upcoming?.eps_estimate != null && (
               <div className="text-[10px] text-neo-dim">EPS 预估 ${item.upcoming.eps_estimate.toFixed(2)}</div>
             )}
@@ -136,10 +137,10 @@ export function UsDashboardSection({ dashboard, showReview = true }: { dashboard
             <div key={s.code} className="neo-card-sm p-3">
               <div className="flex items-center justify-between gap-2">
                 <a href={`/stock/${s.code}/`} className="min-w-0">
-                  <span className="block truncate text-[13px] font-medium text-neo-ink">{s.name}</span>
+                  <span className="block truncate text-[13px] font-medium text-neo-ink">{usNameZh(s.name, s.code)}</span>
                   <span className="block text-[10px] text-neo-dim">{s.code}</span>
                 </a>
-                <UsWatchlistButton code={s.code} name={s.name} />
+                <UsWatchlistButton code={s.code} name={usNameZh(s.name, s.code)} />
               </div>
               <div className="mt-2 flex items-baseline justify-between gap-2">
                 <span className="text-[18px] font-bold text-neo-ink">{formatPrice(s.last)}</span>
