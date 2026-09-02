@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { useMembership } from "@/lib/membership";
 import { BarChart3, Crown, Search, UserRound } from "lucide-react";
 import { MobileNavigation, PrimaryNavigation } from "@/components/layout/primary-navigation";
+import { NavigationBreadcrumb } from "@/components/layout/navigation-breadcrumb";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -75,6 +76,8 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+
+      <NavigationBreadcrumb />
 
       {mobileOpen && (
         <div className="neo-page border-t border-[var(--neo-surface-inset)] px-4 py-3 lg:hidden">
