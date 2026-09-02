@@ -3,6 +3,7 @@ import { AIReview } from "@/components/ai/ai-review";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
+import { DailyLoopCard } from "@/components/workflow/daily-loop-card";
 import { UsDashboardSection } from "@/components/us/us-dashboard-section";
 import { api, type Dashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
@@ -66,6 +67,11 @@ export default async function ReviewPage({
       console.error("Failed to fetch US review data:", e);
     }
 
+    const usTemp = usDashboard?.temperature;
+    const usFocus = (usDashboard?.sectors ?? []).slice(0, 3).map((s) => s.name ?? s.code);
+    const usRisk = usTemp?.vix_change != null ? `VIX ${usTemp.vix_change > 0 ? "+" : ""}${usTemp.vix_change.toFixed(1)}%` : undefined;
+    const usConclusion = usTemp ? `市场温度 ${usTemp.score}（${usTemp.label}）` : undefined;
+
     return (
       <MarketPageFrame>
         <MarketPageHeader
@@ -74,6 +80,12 @@ export default async function ReviewPage({
           image="/images/ai-art/review-decoration-v2.png"
         />
         <DailyWorkflow className="mt-3" market="us" />
+        <DailyLoopCard
+          market="us"
+          conclusion={usConclusion}
+          focus={usFocus}
+          risk={usRisk}
+        />
         {usDashboard ? (
           <UsDashboardSection dashboard={usDashboard} showReview />
         ) : (
@@ -130,6 +142,9 @@ export default async function ReviewPage({
     : downCount > upCount ? "偏空"
     : "多空均衡";
 
+  const cnFocus = (insights?.hot_sectors ?? []).slice(0, 3).map((item) => item.name);
+  const cnRisk = sentiment.includes("空") ? "市场情绪偏空，注意控制回撤。" : undefined;
+
   return (
     <MarketPageFrame
       scripts={
@@ -158,6 +173,12 @@ export default async function ReviewPage({
         <ReviewStatusBar />
       </section>
       <DailyWorkflow className="mt-3" market="cn" />
+      <DailyLoopCard
+        market="cn"
+        conclusion={insights?.focus}
+        focus={cnFocus}
+        risk={cnRisk}
+      />
 
       {/* 日期提示 */}
       {isCustomDate && (

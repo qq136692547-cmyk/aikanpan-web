@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatPct, formatPrice } from "@/lib/format";
+import { MarketPageSection } from "@/components/market/market-page-shell";
 import { api, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { UsDailyReview } from "./us-daily-review";
 import { UsWatchlistButton } from "./us-watchlist-button";
@@ -76,7 +77,8 @@ export function UsDashboardSection({ dashboard, showReview = true }: { dashboard
       {showReview && <div className="neo-fade-up"><UsDailyReview /></div>}
 
       {/* 核心数字 — 和 A 股一致的独立网格 */}
-      <section className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4 neo-fade-up">
+      <MarketPageSection title="市场概览" className="mt-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 neo-fade-up">
         {dashboard.indices.map((idx) => (
           <a key={idx.code} href={`/stock/${idx.code}/`} className="neo-card-sm p-4">
             <div className="text-[10px] uppercase tracking-wider text-neo-dim">{idx.name}</div>
@@ -104,17 +106,16 @@ export function UsDashboardSection({ dashboard, showReview = true }: { dashboard
             </div>
           </div>
         )}
-      </section>
+        </div>
+      </MarketPageSection>
 
       {/* 板块表现 — 和 A 股强势行业同款 */}
       {dashboard.sectors && dashboard.sectors.length > 0 && (
-        <section className="mt-4 neo-card p-5 neo-fade-up">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-[14px] font-semibold text-neo-ink">板块表现</h2>
-            <span className="text-[10px] uppercase tracking-wider text-neo-dim">Sector ETF</span>
+        <MarketPageSection title="行业/板块表现">
+          <div className="neo-card p-5 neo-fade-up">
+            <UsSectorBar sectors={dashboard.sectors} />
           </div>
-          <UsSectorBar sectors={dashboard.sectors} />
-        </section>
+        </MarketPageSection>
       )}
 
       {/* 近期财报 */}
