@@ -12,6 +12,13 @@ type EarningsCalendarItem = UsEarningsCalendarItem & {
   } | null;
 };
 
+function cnStockRoute(symbol: string) {
+  const normalized = symbol.trim().toLowerCase();
+  const match = normalized.match(/^(\d{6})\.(sh|sz|bj)$/);
+  if (match) return `${match[2]}${match[1]}`;
+  return normalized.replace(/\./g, "");
+}
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 
 export function MarketEarningsCalendar({ market }: { market: "cn" | "us" }) {
@@ -60,7 +67,7 @@ export function MarketEarningsCalendar({ market }: { market: "cn" | "us" }) {
           {items.slice(0, 8).map((item) => (
             <a
               key={item.symbol}
-              href={market === "cn" ? `/stock/${item.symbol.replace(/\./, "")}/` : `/stock/${item.symbol}/`}
+              href={market === "cn" ? `/stock/${cnStockRoute(item.symbol)}/` : `/stock/${item.symbol}/`}
               className="neo-card-sm p-3 transition-all duration-200 hover:-translate-y-0.5"
             >
               <div className="truncate text-[13px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
