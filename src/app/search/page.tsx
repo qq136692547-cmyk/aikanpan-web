@@ -99,7 +99,7 @@ export default async function SearchPage({
     try {
       if (isUs) {
         const data = await api.searchUsStocks(query);
-        usResults = data.list || [];
+        usResults = (data.list || []).filter((item) => !item.code.includes(".") || /^[A-Z]+\.[A-Z]$/i.test(item.code));
       } else {
         const data = await api.searchStocks(query);
         results = data.list || [];

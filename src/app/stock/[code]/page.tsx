@@ -42,7 +42,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <UsStockDetail symbol={rawCode.toUpperCase()} />
         </main>
-        <Footer />
+        <Footer dataSource="Finnhub" />
       </div>
     );
   }

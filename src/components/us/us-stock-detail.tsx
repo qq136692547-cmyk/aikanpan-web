@@ -6,8 +6,16 @@ import ReactMarkdown from "react-markdown";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
-import { formatMarketCap, formatPct, formatPrice } from "@/lib/format";
+import { formatPct, formatPrice } from "@/lib/format";
 import { api, type AIComment, type UsEarnings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
+
+function formatUsMarketCap(millions?: number) {
+  if (millions == null) return "";
+  const usd = millions * 1_000_000;
+  if (usd >= 1_000_000_000_000) return `${(usd / 1_000_000_000_000).toFixed(2)}万亿美元`;
+  if (usd >= 100_000_000) return `${(usd / 100_000_000).toFixed(2)}亿美元`;
+  return `$${Math.round(usd).toLocaleString()}`;
+}
 
 export function UsStockDetail({ symbol }: { symbol: string }) {
   const [quote, setQuote] = useState<UsQuote | null>(null);
@@ -105,7 +113,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
         <section className="neo-card p-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-[14px] font-semibold text-neo-ink">财报与盈利</h2>
-            {quote?.market_cap != null && <span className="text-[10px] text-neo-dim">市值 {formatMarketCap(quote.market_cap)}</span>}
+            {quote?.market_cap != null && <span className="text-[10px] text-neo-dim">市值 {formatUsMarketCap(quote.market_cap)}</span>}
           </div>
           <div className="mt-3 space-y-2">
             {(earnings?.earnings || []).slice(0, 4).map((e) => (

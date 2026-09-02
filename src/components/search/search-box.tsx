@@ -16,6 +16,7 @@ function useDebounced<T>(value: T, delay: number): T {
 
 export function SearchBox({ initialQuery = "", market = "cn" }: { initialQuery?: string; market?: "all" | "cn" | "us" }) {
   const isUs = market === "us";
+  const marketParam = isUs ? "us" : "cn";
   const router = useRouter();
   const boxRef = useRef<HTMLFormElement>(null);
   const [value, setValue] = useState(initialQuery);
@@ -29,7 +30,9 @@ export function SearchBox({ initialQuery = "", market = "cn" }: { initialQuery?:
     { revalidateOnFocus: false, dedupingInterval: 30_000 }
   );
 
-  const results = (data?.list || []).slice(0, 8);
+  const results = (data?.list || [])
+    .filter((s) => !isUs || !s.code.includes(".") || /^[A-Z]+\.[A-Z]$/i.test(s.code))
+    .slice(0, 8);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -46,13 +49,13 @@ export function SearchBox({ initialQuery = "", market = "cn" }: { initialQuery?:
     const q = value.trim();
     if (!q) return;
     setOpen(false);
-    router.push(`/search?q=${encodeURIComponent(q)}${isUs ? "&market=us" : ""}`);
+    router.push(`/search?q=${encodeURIComponent(q)}&market=${marketParam}`);
   }
 
   return (
     <form ref={boxRef} action="/search" onSubmit={handleSubmit} className="relative">
       <div className="flex gap-2">
-        {isUs && <input type="hidden" name="market" value="us" />}
+        <input type="hidden" name="market" value={marketParam} />
         <input
           type="text"
           name="q"

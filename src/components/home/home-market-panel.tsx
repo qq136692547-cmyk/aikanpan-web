@@ -72,6 +72,13 @@ function AiConclusion({ market, focus }: { market: "cn" | "us"; focus: string })
   );
 }
 
+function cnStockRoute(symbol: string) {
+  const normalized = symbol.trim().toLowerCase();
+  const match = normalized.match(/^(\d{6})\.(sh|sz|bj)$/);
+  if (match) return `${match[2]}${match[1]}`;
+  return normalized.replace(/\./g, "");
+}
+
 function CnEarningsCalendar() {
   const [items, setItems] = useState<EarningsCalendarItem[] | null>(null);
 
@@ -97,7 +104,7 @@ function CnEarningsCalendar() {
     <SectionShell title="近期财报">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-2">
         {items.slice(0, 6).map((item) => (
-          <a key={item.symbol} href={`/stock/${item.symbol.replace(/\./, "")}/`} className="neo-card-sm p-3">
+          <a key={item.symbol} href={`/stock/${cnStockRoute(item.symbol)}/`} className="neo-card-sm p-3">
             <div className="truncate text-[12px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
             <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
           </a>

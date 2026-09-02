@@ -200,7 +200,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
       <section className="neo-card mt-4 grid grid-cols-1 gap-2 p-4 sm:grid-cols-3">
         <div className="neo-inset p-4">
           <h3 className="text-[12px] font-medium text-neo-ink">自然语言创建</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值</p>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">{market === "us" ? "输入「苹果跌到180」，AI 自动解析股票代码、条件和阈值" : "输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值"}</p>
         </div>
         <div className="neo-inset p-4">
           <h3 className="text-[12px] font-medium text-neo-ink">实时监控</h3>
