@@ -7,6 +7,7 @@ import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 import { type MarketScope } from "@/lib/market";
 import { formatPct, formatPrice } from "@/lib/format";
 import { useWatchlist } from "@/lib/use-watchlist";
+import { useAuth } from "@/lib/auth";
 
 type TabKey = "watchlist" | "plans" | "profiles" | "theses";
 
@@ -118,6 +119,7 @@ export function ResearchWorkspace({
   const activeMarket: "cn" | "us" = market === "us" ? "us" : "cn";
   const isUs = activeMarket === "us";
   const { watchlist: liveWatchlist, toggle: toggleWatchlist } = useWatchlist();
+  const { isAuthenticated } = useAuth();
   const [usWatchlist, setUsWatchlist] = useState<WatchlistItem[]>([]);
   const watchlist = isUs ? usWatchlist : liveWatchlist;
   const { pushData, pullData } = useSync();
@@ -229,6 +231,10 @@ export function ResearchWorkspace({
   }, [dashboard, isUs]);
 
   async function loadUsWatchlist() {
+    if (!isAuthenticated) {
+      setUsWatchlist([]);
+      return;
+    }
     try {
       const data = await api.getUsWatchlist();
       setUsWatchlist((data.watchlist || []).map((q) => ({ code: q.code, name: q.name || q.code, price: q.last || 0, change_pct: q.change_pct || 0 })));
@@ -243,7 +249,7 @@ export function ResearchWorkspace({
       // eslint-disable-next-line react-hooks/set-state-in-effect
       loadUsWatchlist();
     }
-  }, [isUs]);
+  }, [isUs, isAuthenticated]);
 
   async function toggleUsWatchlist(code: string, name?: string) {
     const exists = usWatchlist.some((s) => s.code === code);

@@ -2,17 +2,23 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 
 export function UsWatchlistButton({ code, name }: { code: string; name?: string }) {
   const [state, setState] = useState<"loading" | "in" | "out">("loading");
   const [busy, setBusy] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   const load = useCallback(() => {
+    if (!isAuthenticated) {
+      setState("out");
+      return;
+    }
     api
       .getUsWatchlist()
       .then((d) => setState(d.watchlist.some((w) => w.code === code) ? "in" : "out"))
       .catch(() => setState("out"));
-  }, [code]);
+  }, [code, isAuthenticated]);
 
   useEffect(() => {
     load();

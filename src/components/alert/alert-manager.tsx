@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { api, type AlertItem } from "@/lib/api";
 import { type MarketScope } from "@/lib/market";
+import { useAuth } from "@/lib/auth";
 import { EmptyState, ErrorState } from "@/components/ui/state";
 
 function fieldLabel(field: string): string {
@@ -40,13 +41,14 @@ function stockHrefFor(item: { code: string; market?: string }): string {
 
 export function AlertManager({ market = "all" }: { market?: MarketScope }) {
   const activeMarket: "cn" | "us" | undefined = market === "us" ? "us" : market === "cn" ? "cn" : undefined;
+  const { isAuthenticated } = useAuth();
   const [deleting, setDeleting] = useState<string | null>(null);
   const { data: alertData, error, isLoading, mutate } = useSWR(["alerts", market], () => api.getAlerts(activeMarket), { refreshInterval: 15000 });
   const { data: historyData, mutate: mutateHistory } = useSWR(["alert-history", market], () =>
     api.getAlertHistory(activeMarket).catch(() => ({ alerts: [], count: 0 })),
     { refreshInterval: 15000 }
   );
-  const { data: settings } = useSWR("alert-settings", () => api.getAlertSettings(), { refreshInterval: 30000 });
+  const { data: settings } = useSWR(isAuthenticated ? "alert-settings" : null, () => api.getAlertSettings(), { refreshInterval: 30000 });
 
   const alerts = alertData?.alerts || [];
   const history = historyData?.alerts || [];

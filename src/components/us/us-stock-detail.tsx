@@ -139,6 +139,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       {news.length > 0 && (
         <section className="neo-card p-5">
           <h2 className="text-[14px] font-semibold text-neo-ink">相关新闻</h2>
+          {news.slice(0, 6).some((n) => !n.title_zh) && <p className="mt-1 text-[10px] text-neo-dim">AI 中文标题生成中，稍后刷新后显示中文。</p>}
           <div className="mt-3 space-y-2">
             {news.slice(0, 6).map((n) => (
               <a key={n.id} href={n.url} target="_blank" rel="noopener noreferrer" className="block neo-card-sm p-3 transition-colors hover-neo-inset">

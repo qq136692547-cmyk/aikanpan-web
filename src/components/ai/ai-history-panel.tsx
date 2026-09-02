@@ -3,16 +3,23 @@
 import { useCallback, useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { api, type AIHistoryItem } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export function AIHistoryPanel({ code }: { code: string }) {
   const [history, setHistory] = useState<AIHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    if (!isAuthenticated) {
+      setHistory([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const data = await api.getAIHistory(code);
@@ -22,7 +29,7 @@ export function AIHistoryPanel({ code }: { code: string }) {
     } finally {
       setLoading(false);
     }
-  }, [code]);
+  }, [code, isAuthenticated]);
 
   useEffect(() => {
     // This effect starts the remote history request when the stock code changes.
