@@ -30,6 +30,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
 
   useEffect(() => {
     let cancelled = false;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
     // Reset the loading state when the requested symbol changes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setAiLoading(true);
@@ -45,12 +46,22 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       if (q.status === "fulfilled") setQuote(q.value);
       if (h.status === "fulfilled") setHistory(h.value);
       if (f.status === "fulfilled") setFinancials(f.value);
-      if (n.status === "fulfilled") setNews(n.value.news);
+      if (n.status === "fulfilled") {
+        setNews(n.value.news);
+        if (n.value.news.slice(0, 6).some((item) => !item.title_zh)) {
+          retryTimer = setTimeout(() => {
+            api.getUsNews(symbol, 8).then((retry) => {
+              if (!cancelled) setNews(retry.news);
+            }).catch(() => {});
+          }, 8000);
+        }
+      }
       if (a.status === "fulfilled") setAi(a.value);
       if (e.status === "fulfilled") setEarnings(e.value);
       setAiLoading(false);
     });
     return () => {
+      clearTimeout(retryTimer);
       cancelled = true;
     };
   }, [symbol, isAuthenticated]);

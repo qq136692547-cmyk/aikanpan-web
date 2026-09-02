@@ -50,7 +50,7 @@ export function LandingHero() {
             <span className="text-[15px] font-semibold tracking-tight text-white">爱看盘</span>
           </Link>
           <Link
-            href="/dashboard/"
+            href="/market/?market=cn"
             className="rounded-lg border border-[#2a2a30] bg-black px-4 py-1.5 text-[13px] font-medium text-white transition-all hover:border-[#3a3a44] hover:bg-[#0a0a0e]"
           >
             进入仪表盘 →
@@ -91,7 +91,7 @@ export function LandingHero() {
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
             <Link
-              href="/dashboard/"
+              href="/market/?market=cn"
               className="inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
             >
               免费使用 →
@@ -161,7 +161,7 @@ export function LandingHero() {
             <h2 className="text-[42px] font-semibold tracking-tight text-white">开始你的 AI 复盘</h2>
             <p className="mt-3 text-[16px] text-[#6a6a72]">免费使用 · 无需注册 · 数据实时</p>
             <Link
-              href="/dashboard/"
+              href="/market/?market=cn"
               className="mt-8 inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[16px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
             >
               免费使用 →

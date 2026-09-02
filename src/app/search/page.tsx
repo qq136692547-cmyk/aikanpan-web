@@ -31,11 +31,11 @@ const HOT_STOCKS = [
   { code: "sz.002475", name: "立讯精密", tag: "消费电子" },
 ];
 
-// Batch hot quotes via a single watchlist request
-async function fetchHotStockQuotes(signal?: AbortSignal): Promise<Record<string, { last: number; change_pct: number }>> {
+// Batch A-share quotes via a single watchlist request
+async function fetchQuotes(codes: string[], signal?: AbortSignal): Promise<Record<string, { last: number; change_pct: number }>> {
   const quotes: Record<string, { last: number; change_pct: number }> = {};
   try {
-    const res = await api.getWatchlistByCodes(HOT_STOCKS.map((s) => s.code), { signal });
+    const res = await api.getWatchlistByCodes(codes, { signal });
     for (const item of res.watchlist) {
       quotes[item.code] = { last: item.price, change_pct: item.change_pct };
     }
@@ -65,7 +65,7 @@ function SearchStockCard({
     <a href={href} className="neo-card-sm group p-3">
       <div className="flex items-start justify-between gap-2">
         <div className="truncate text-sm font-medium text-neo-ink transition-colors group-hover:text-brand">{name}</div>
-{tag && <span className="shrink-0 rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-mid">{tag}</span>}
+        {tag && <span className="shrink-0 rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-mid">{tag}</span>}
       </div>
       <div style={{ fontFamily: 'var(--font-inter), system-ui' }} className="mt-0.5 text-[10px] text-neo-dim">{code}</div>
       <div className="mt-1.5 flex items-baseline gap-1.5">
@@ -93,6 +93,7 @@ export default async function SearchPage({
   let dashboard: Dashboard | null = null;
   let usDashboard: UsDashboard | null = null;
   let hotQuotes: Record<string, { last: number; change_pct: number }> = {};
+  let resultQuotes: Record<string, { last: number; change_pct: number }> = {};
 
   const query = q?.trim();
   if (query) {
@@ -107,6 +108,16 @@ export default async function SearchPage({
     } catch {
       error = isUs ? "美股搜索接口暂时不可用" : "搜索接口暂时不可用";
     }
+
+    if (!isUs && results.length > 0) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 2500);
+      const [resultQuotesResult] = await Promise.allSettled([
+        fetchQuotes(results.map((s) => s.code), controller.signal),
+      ]);
+      clearTimeout(timeout);
+      if (resultQuotesResult.status === "fulfilled") resultQuotes = resultQuotesResult.value;
+    }
   } else if (isUs) {
     try {
       usDashboard = await api.getUsDashboard();
@@ -116,7 +127,7 @@ export default async function SearchPage({
     const timeout = setTimeout(() => controller.abort(), 2500);
     const [dashboardResult, hotQuotesResult] = await Promise.allSettled([
       api.getDashboard({ signal: controller.signal }),
-      fetchHotStockQuotes(controller.signal),
+      fetchQuotes(HOT_STOCKS.map((s) => s.code), controller.signal),
     ]);
     clearTimeout(timeout);
     if (dashboardResult.status === "fulfilled") dashboard = dashboardResult.value;
@@ -175,6 +186,8 @@ export default async function SearchPage({
                     name={s.name}
                     code={s.code}
                     tag={isUs ? (s as UsSearchResult).type || "美股" : (s as StockSearchResult).pinyin || "A股"}
+                    price={!isUs ? resultQuotes[s.code]?.last : undefined}
+                    pct={!isUs ? resultQuotes[s.code]?.change_pct : undefined}
                     href={isUs ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
                   />
                 ))}
