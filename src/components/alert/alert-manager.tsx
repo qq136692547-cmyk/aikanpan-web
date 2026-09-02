@@ -112,8 +112,8 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     <div className="space-y-4">
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-neo-primary pulse-dot" />
           <h3 className="text-sm font-semibold text-neo-ink">盯盘任务{market === "us" ? " · 美股" : ""}</h3>
+          <span className="text-[10px] font-medium text-neo-dim">实时</span>
           {alerts.length > 0 && <span className="text-xs text-neo-dim">({alerts.length})</span>}
         </div>
         {alerts.length === 0 ? (
@@ -127,7 +127,6 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
                 const stockHref = stockHrefFor(alert);
                 return (
                   <div key={alert.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
-                    <div className={`h-2 w-2 shrink-0 rounded-full ${isTriggered ? "bg-neo-down" : isActive ? "bg-neo-up pulse-dot" : "bg-neo-dim"}`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <a href={stockHref} className="truncate text-sm font-medium text-neo-ink hover:text-neo-primary">
@@ -165,7 +164,6 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
       {history.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-neo-down" />
             <h3 className="text-sm font-semibold text-neo-ink">触发历史{market === "us" ? " · 美股" : ""}</h3>
             <span className="text-xs text-neo-dim">({history.length})</span>
           </div>
@@ -175,7 +173,6 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
                 const stockHref = stockHrefFor(h);
                 return (
                   <div key={h.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
-                    <div className="h-2 w-2 shrink-0 rounded-full bg-neo-down" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <a href={stockHref} className="truncate text-sm font-medium text-neo-ink hover:text-neo-primary">

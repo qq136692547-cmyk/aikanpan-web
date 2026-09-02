@@ -68,7 +68,7 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
 
   if (!hasData) {
     return (
-      <MarketPageFrame>
+      <MarketPageFrame market={scope}>
           <div className="neo-skeleton mb-4 h-6 w-32" />
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             <div className="neo-skeleton h-28" />
@@ -166,6 +166,7 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
 
   return (
     <MarketPageFrame
+      market={scope}
       scripts={
         <script
           type="application/ld+json"

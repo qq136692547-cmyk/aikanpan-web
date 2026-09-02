@@ -74,7 +74,7 @@ export default async function ReviewPage({
     const usConclusion = usTemp ? `市场温度 ${usTemp.score}（${usTemp.label}）` : undefined;
 
     return (
-      <MarketPageFrame>
+      <MarketPageFrame market="us">
         <MarketPageHeader
           market="us"
           title="每日复盘"
@@ -148,6 +148,7 @@ export default async function ReviewPage({
 
   return (
     <MarketPageFrame
+      market={scope}
       scripts={
         <script
           type="application/ld+json"
@@ -173,9 +174,6 @@ export default async function ReviewPage({
       <section className="mt-3">
         <ReviewStatusBar />
       </section>
-      <MarketPageSection title="近期财报">
-        <MarketEarningsCalendar market="cn" />
-      </MarketPageSection>
       <DailyWorkflow className="mt-3" market="cn" />
       <DailyLoopCard
         market="cn"
@@ -200,7 +198,7 @@ export default async function ReviewPage({
 
       {/* 市场概览 */}
       <section className="mt-4">
-        <h2 className="mb-2 text-[12px] text-neo-mid">市场概览</h2>
+        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">市场概览</h2>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <div className="neo-card-sm p-3">
             <div className="text-[11px] text-neo-mid">涨停</div>
@@ -228,7 +226,7 @@ export default async function ReviewPage({
 
       {/* 指数表现 */}
       <section className="mt-4">
-        <h2 className="mb-2 text-[12px] text-neo-mid">指数表现</h2>
+        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">指数表现</h2>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           {dashboard.indices.map((idx) => {
             const t = neoTrendClass(idx.change_pct);
@@ -249,7 +247,7 @@ export default async function ReviewPage({
 
       {/* 强势行业 */}
       <section className="mt-4">
-        <h2 className="mb-2 text-[12px] text-neo-mid">强势行业</h2>
+        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">强势行业</h2>
         <div className="neo-card p-4">
           <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:grid-cols-3">
             {dashboard.strong_industries.map((ind, i) => {
@@ -266,10 +264,13 @@ export default async function ReviewPage({
         </div>
       </section>
 
+      <MarketPageSection title="近期财报">
+        <MarketEarningsCalendar market="cn" />
+      </MarketPageSection>
       {/* 资讯 */}
       {insights && insights.news.length > 0 && (
         <section className="mt-4">
-          <h2 className="mb-2 text-[12px] text-neo-mid">资讯 ({insights.news.length})</h2>
+          <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">资讯 ({insights.news.length})</h2>
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {insights.news.map((n) => (
               <a
@@ -295,7 +296,7 @@ export default async function ReviewPage({
       {/* 研报 */}
       {insights && insights.reports && insights.reports.length > 0 && (
         <section className="mt-4">
-          <h2 className="mb-2 text-[12px] text-neo-mid">研报 ({insights.reports.length})</h2>
+          <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">研报 ({insights.reports.length})</h2>
           <div className="space-y-1">
             {insights.reports.map((r) => (
               <a

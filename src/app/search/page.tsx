@@ -128,7 +128,7 @@ export default async function SearchPage({
   const searchResults = isUs ? usResults : results;
 
   return (
-    <MarketPageFrame>
+    <MarketPageFrame market={scope}>
       <MarketPageHeader
         market={scope}
         title="搜索"
@@ -207,7 +207,6 @@ export default async function SearchPage({
             {hotFromMarket.length > 0 && (
               <section className="neo-fade-up mt-6">
                 <div className="mb-3 flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-neo-up pulse-dot" />
                   <h2 className="text-sm font-semibold text-neo-mid">今日涨停</h2>
                   <span className="text-xs text-neo-dim">从涨停板进入个股详情</span>
                 </div>

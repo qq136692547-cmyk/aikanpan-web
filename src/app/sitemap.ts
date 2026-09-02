@@ -13,12 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: SITE_URL + "/dashboard",
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.95,
-    },
-    {
       url: SITE_URL + "/market/",
       lastModified: now,
       changeFrequency: "daily",
@@ -53,18 +47,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.5,
-    },
-    {
-      url: SITE_URL + "/etf/",
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: SITE_URL + "/fund/",
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.3,
     },
     {
       url: SITE_URL + "/about/",

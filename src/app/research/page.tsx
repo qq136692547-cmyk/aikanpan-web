@@ -32,7 +32,7 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
   }
 
   return (
-    <MarketPageFrame>
+    <MarketPageFrame market={scope}>
       <MarketPageHeader
         market={scope}
         title="研究"

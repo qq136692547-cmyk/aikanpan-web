@@ -37,7 +37,6 @@ export function ErrorState({
   return (
     <div className="neo-card-sm border border-[var(--neo-down-soft)] p-5">
       <div className="flex items-center gap-2">
-        <span className="h-2 w-2 shrink-0 rounded-full bg-neo-down pulse-dot" />
         <div className="text-sm font-semibold text-neo-ink">{title || "数据加载失败"}</div>
       </div>
       {description && <p className="mt-2 text-xs leading-relaxed text-neo-mid">{description}</p>}

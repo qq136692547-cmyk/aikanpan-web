@@ -1,4 +1,4 @@
-export function Footer() {
+export function Footer({ dataSource = "东方财富" }: { dataSource?: string }) {
   return (
     <footer className="neo-page border-t border-[var(--neo-surface-inset)]">
       <div className="mx-auto w-full max-w-[1440px] px-6 py-5">
@@ -15,7 +15,7 @@ export function Footer() {
             <a href="/privacy/" className="transition-colors hover:text-neo-primary">隐私</a>
             <a href="/terms/" className="transition-colors hover:text-neo-primary">协议</a>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neo-primary">渝ICP备2026014729号-1</a>
-            <span>数据：东方财富</span>
+            <span>数据：{dataSource}</span>
           </div>
         </div>
         <p className="mt-2 text-[11px] text-neo-mid opacity-70">

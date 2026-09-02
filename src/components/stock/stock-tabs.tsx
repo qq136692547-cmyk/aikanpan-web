@@ -58,7 +58,6 @@ export function StockTabs({
           {(events?.signals?.length || 0) > 0 ? (
             events!.signals.map((s, i) => (
               <div key={`${s.type}-${i}`} className="flex gap-3 rounded-lg px-1 py-1.5">
-                <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${s.tone === "up" ? "bg-neo-up" : s.tone === "down" ? "bg-neo-down" : "bg-neo-ink-faint"}`} />
                 <div>
                   <div className={`text-[13px] font-medium ${toneClass(s.tone)}`}>{s.title}</div>
                   <div className="mt-0.5 text-[12px] leading-relaxed text-neo-mid">{s.desc}</div>

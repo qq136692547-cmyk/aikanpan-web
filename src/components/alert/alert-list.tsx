@@ -68,8 +68,8 @@ export function AlertList({ refreshKey }: { refreshKey?: number }) {
     <div className="neo-card-sm overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-neo-primary pulse-dot" />
           <h3 className="text-sm font-semibold text-neo-ink">盯盘任务</h3>
+          <span className="text-[10px] font-medium text-neo-dim">实时</span>
         </div>
         <span className="text-xs text-neo-dim">共 {alerts.length} 个</span>
       </div>
@@ -80,7 +80,6 @@ export function AlertList({ refreshKey }: { refreshKey?: number }) {
           const stockHref = `/stock/${alert.code.replace(/\./, "")}/`;
           return (
             <div key={alert.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
-              <div className={`h-2 w-2 shrink-0 rounded-full ${isTriggered ? "bg-neo-down" : isActive ? "bg-neo-up pulse-dot" : "bg-neo-dim"}`} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <a href={stockHref} className="truncate text-sm font-medium text-neo-ink hover:text-neo-primary">{alert.name}</a>

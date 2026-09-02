@@ -34,7 +34,6 @@ export function AboutBrandBanner() {
       <div className="relative z-10 flex h-full flex-col justify-between p-6 sm:p-8">
         <div>
           <div className="flex items-center gap-2">
-            <span className="pulse-dot h-2 w-2 rounded-full bg-[var(--neo-up)]" />
             <span className="text-[11px] font-medium uppercase tracking-wider text-neo-dim">
               爱看盘 · AI 复盘工具
             </span>

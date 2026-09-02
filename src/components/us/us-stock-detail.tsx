@@ -134,7 +134,8 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
           <div className="mt-3 space-y-2">
             {news.slice(0, 6).map((n) => (
               <a key={n.id} href={n.url} target="_blank" rel="noopener noreferrer" className="block neo-card-sm p-3 transition-colors hover-neo-inset">
-                <div className="text-[12px] font-medium text-neo-ink">{n.title}</div>
+                <div className="text-[12px] font-medium text-neo-ink">{n.title_zh || n.title}</div>
+                {n.title_zh && n.title !== n.title_zh && <div className="mt-0.5 text-[10px] text-neo-dim">{n.title}</div>}
                 <div className="mt-1 text-[10px] text-neo-dim">{n.source} · {n.time}</div>
               </a>
             ))}

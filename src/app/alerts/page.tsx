@@ -30,7 +30,7 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
     redirect("/alerts/?market=cn");
   }
   return (
-    <MarketPageFrame>
+    <MarketPageFrame market={scope}>
       <MarketPageHeader
         market={scope}
         title="盯盘"

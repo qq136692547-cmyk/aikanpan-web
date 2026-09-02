@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
-export function MarketPageFrame({ children, scripts }: { children: ReactNode; scripts?: ReactNode }) {
+export function MarketPageFrame({ children, scripts, market }: { children: ReactNode; scripts?: ReactNode; market?: "cn" | "us" }) {
   return (
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">{children}</main>
-      <Footer />
+      <Footer dataSource={market === "us" ? "Finnhub" : "东方财富"} />
       {scripts}
     </div>
   );
@@ -42,7 +42,7 @@ export function MarketPageHeader({
       <div className="relative flex flex-wrap items-center justify-between gap-3 py-1">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-[14px] font-medium text-neo-ink">{title}</h1>
+            <h1 className="text-[20px] font-bold text-neo-ink">{title}</h1>
             <span className="neo-chip px-2 py-0.5 text-[10px] font-semibold text-neo-ink-mid">{marketLabel}</span>
           </div>
           {subtitle && <p className="mt-0.5 truncate text-[11px] text-neo-dim">{subtitle}</p>}
@@ -72,7 +72,7 @@ export function MarketPageSection({
   return (
     <section className={className}>
       <div className="mb-2 flex items-center justify-between gap-3">
-        <h2 className="text-[12px] text-neo-mid">{title}</h2>
+        <h2 className="text-[15px] font-semibold text-neo-ink">{title}</h2>
         {action}
       </div>
       {children}

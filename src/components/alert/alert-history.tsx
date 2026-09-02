@@ -34,7 +34,6 @@ export function AlertHistory() {
     <div className="neo-card-sm overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-neo-down" />
           <h3 className="text-sm font-semibold text-neo-ink">触发历史</h3>
         </div>
         <span className="text-xs text-neo-dim">共 {history.length} 条</span>
@@ -44,7 +43,6 @@ export function AlertHistory() {
           const stockHref = `/stock/${h.code.replace(/\./, "")}/`;
           return (
             <div key={h.id} className="transition-colors hover-neo-inset flex items-center gap-4 px-4 py-3">
-              <div className="h-2 w-2 shrink-0 rounded-full bg-neo-down" />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <a href={stockHref} className="truncate text-sm font-medium text-neo-ink hover:text-neo-primary">{h.name}</a>

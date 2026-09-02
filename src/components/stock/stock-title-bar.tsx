@@ -132,7 +132,6 @@ export function StockTitleBar({ code, initial }: { code: string; initial: StockQ
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-[20px] font-bold text-neo-ink">{quote?.name || code}</h1>
-            {quote && <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-[var(--neo-up)]" />}
           </div>
           <p className="mt-0.5 text-[12px] text-neo-dim">{code}</p>
         </div>
