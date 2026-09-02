@@ -424,11 +424,24 @@ export class ApiClient {
   }
 
   /** AI 盘前计划关注要点 */
-  getPlanFocus(plans: Array<Record<string, unknown>>, market: "cn" | "us" = "cn") {
-    return this.request<PlanFocus>("/ai/plan-focus", {
-      method: "POST",
-      body: JSON.stringify({ plans, market }),
-    });
+  async getPlanFocus(plans: Array<Record<string, unknown>>, market: "cn" | "us" = "cn") {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 55_000);
+
+    try {
+      return await this.request<PlanFocus>("/ai/plan-focus", {
+        method: "POST",
+        body: JSON.stringify({ plans, market }),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error("生成超时，请稍后重试");
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   /** AI 诊断历史列表 */

@@ -399,7 +399,13 @@ export function ResearchWorkspace({
       const result = await api.getPlanFocus(active.map((p) => ({ date: p.date, name: p.name, code: p.code, action: p.action, note: p.note })), activeMarket);
       setPlanFocus(result);
     } catch (err) {
-      setPlanFocusLoading(false);
+      const message = err instanceof Error && err.message ? err.message : "生成失败，请稍后重试。";
+      setPlanFocus({
+        content: message,
+        model: "error",
+        generated_at: new Date().toISOString(),
+        cached: false,
+      });
     } finally {
       setPlanFocusLoading(false);
     }
