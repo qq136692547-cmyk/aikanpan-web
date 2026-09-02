@@ -217,6 +217,15 @@ export function ResearchWorkspace({
   const activePlans = useMemo(() => scopedPlans.filter((p) => !p.done && !p.archived), [scopedPlans]);
   const activeTheses = useMemo(() => scopedTheses.filter((t) => t.status !== "closed"), [scopedTheses]);
   const visiblePlans = useMemo(() => scopedPlans.filter((p) => (showArchivedPlans ? !!p.archived : !p.archived)), [scopedPlans, showArchivedPlans]);
+  const suggestedStocks = useMemo<WatchlistItem[]>(() => {
+    if (!dashboard) return [];
+    if (isUs) {
+      const usData = dashboard as UsDashboard;
+      return (usData.stocks || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name || s.code, price: s.last || 0, change_pct: s.change_pct || 0 }));
+    }
+    const cnData = dashboard as Dashboard;
+    return (cnData.limit_up || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name, price: s.price, change_pct: s.pct }));
+  }, [dashboard, isUs]);
 
   async function loadUsWatchlist() {
     try {
@@ -493,7 +502,29 @@ export function ResearchWorkspace({
             </div>
           </div>
           {watchlist.length === 0 ? (
-            <div className="px-5 py-8 text-center text-[12px] text-neo-dim">暂无自选股</div>
+            <div className="space-y-3 px-5 py-6">
+              <p className="text-center text-[12px] text-neo-dim">
+                {suggestedStocks.length === 0 ? "暂无自选股" : "从热门股票开始，或直接输入代码添加"}
+              </p>
+              {suggestedStocks.length > 0 && (
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {suggestedStocks.map((s) => (
+                    <div key={s.code} className="flex items-center justify-between gap-2 rounded-lg border border-[var(--neo-border)] px-3 py-2">
+                      <a href={stockHrefFor(s.code, activeMarket)} className="min-w-0">
+                        <span className="block truncate text-[12px] font-medium text-neo-ink">{s.name}</span>
+                        <span className="text-[10px] text-neo-dim">{s.code} · {formatPrice(s.price)} · {formatPct(s.change_pct)}</span>
+                      </a>
+                      <button
+                        onClick={() => (isUs ? toggleUsWatchlist(s.code, s.name) : toggleWatchlist(s.code, s.name))}
+                        className="neo-chip px-2 py-1 text-[11px] text-neo-primary"
+                      >
+                        加入
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ) : (
             <div>
               <div className="grid grid-cols-[1fr_80px_80px_64px] gap-2 px-5 py-2 text-[10px] uppercase tracking-wider text-neo-dim">

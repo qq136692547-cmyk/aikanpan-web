@@ -456,11 +456,24 @@ export class ApiClient {
   // ============================================
 
   /** NLP 解析盯盘条件 — 自然语言 → 结构化条件 */
-  parseAlert(text: string, market: "cn" | "us" = "cn") {
-    return this.request<AlertParseResult>("/alerts/parse", {
-      method: "POST",
-      body: JSON.stringify({ text, market }),
-    });
+  async parseAlert(text: string, market: "cn" | "us" = "cn") {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20_000);
+
+    try {
+      return await this.request<AlertParseResult>("/alerts/parse", {
+        method: "POST",
+        body: JSON.stringify({ text, market }),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error("解析超时，请稍后重试或改用手动组合条件");
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   /** 获取盯盘任务列表 */
