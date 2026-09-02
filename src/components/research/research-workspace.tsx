@@ -147,6 +147,7 @@ export function ResearchWorkspace({
   const [thesisReviewOpen, setThesisReviewOpen] = useState<Record<string, boolean>>({});
   const [aiScores, setAiScores] = useState<Record<string, AIScoreItem>>({});
   const [aiScoresLoading, setAiScoresLoading] = useState(false);
+  const [aiScoresError, setAiScoresError] = useState<string | null>(null);
   const [planFocus, setPlanFocus] = useState<PlanFocus | null>(null);
   const [planFocusLoading, setPlanFocusLoading] = useState(false);
   const [watchCode, setWatchCode] = useState("");
@@ -377,6 +378,7 @@ export function ResearchWorkspace({
   async function scoreWatchlist() {
     if (watchlist.length === 0) return;
     setAiScoresLoading(true);
+    setAiScoresError(null);
     try {
       const result = await api.getAIScoreBatch(watchlist.map((s) => s.code), activeMarket);
       const map: Record<string, AIScoreItem> = {};
@@ -385,7 +387,7 @@ export function ResearchWorkspace({
       }
       setAiScores(map);
     } catch (err) {
-      setPlanFocusLoading(false);
+      setAiScoresError(err instanceof Error && err.message ? err.message : "评分失败，请稍后重试");
     } finally {
       setAiScoresLoading(false);
     }
@@ -504,6 +506,7 @@ export function ResearchWorkspace({
               <button onClick={scoreWatchlist} disabled={aiScoresLoading} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary disabled:opacity-60">
                 {aiScoresLoading ? "AI 评分中…" : "AI 评分"}
               </button>
+              {aiScoresError && <span className="text-[11px] text-neo-down">{aiScoresError}</span>}
               <span className="text-[11px] text-neo-dim">{watchlist.length} 只</span>
             </div>
           </div>

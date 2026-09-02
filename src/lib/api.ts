@@ -400,11 +400,24 @@ export class ApiClient {
   }
 
   /** AI 批量评分 — 并发评分 */
-  getAIScoreBatch(codes: string[], market: "cn" | "us" = "cn") {
-    return this.request<AIScoreBatch>("/ai/score-batch", {
-      method: "POST",
-      body: JSON.stringify({ codes, market }),
-    });
+  async getAIScoreBatch(codes: string[], market: "cn" | "us" = "cn") {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 40_000);
+
+    try {
+      return await this.request<AIScoreBatch>("/ai/score-batch", {
+        method: "POST",
+        body: JSON.stringify({ codes, market }),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error("评分超时，请稍后重试");
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   /** AI 每日复盘 — LLM 生成市场复盘报告 */
