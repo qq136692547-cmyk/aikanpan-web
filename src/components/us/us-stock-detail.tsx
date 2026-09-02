@@ -7,6 +7,7 @@ import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { formatPct, formatPrice } from "@/lib/format";
+import { useAuth } from "@/lib/auth";
 import { api, type AIComment, type UsEarnings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
 
 function formatUsMarketCap(millions?: number) {
@@ -25,6 +26,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
   const [news, setNews] = useState<UsNewsItem[]>([]);
   const [ai, setAi] = useState<AIComment | null>(null);
   const [aiLoading, setAiLoading] = useState(true);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     let cancelled = false;
@@ -36,7 +38,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       api.getUsHistory(symbol, 120),
       api.getUsFinancials(symbol),
       api.getUsNews(symbol, 8),
-      api.getUsAI(symbol),
+      isAuthenticated ? api.getUsAI(symbol) : Promise.resolve(null),
       api.getUsEarnings(symbol),
     ]).then(([q, h, f, n, a, e]) => {
       if (cancelled) return;
@@ -51,7 +53,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
     return () => {
       cancelled = true;
     };
-  }, [symbol]);
+  }, [symbol, isAuthenticated]);
 
   const trend = (quote?.change_pct ?? 0) > 0 ? 1 : (quote?.change_pct ?? 0) < 0 ? -1 : 0;
 
@@ -178,14 +180,18 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
           </div>
         ) : (
           <div className="mt-3 flex items-center justify-between gap-2">
-            <p className="text-[11px] text-neo-dim">AI 解读暂不可用</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="neo-chip flex items-center gap-1 px-2 py-1 text-[10px] text-neo-mid"
-            >
-              <RefreshCw size={11} />
-              重试
-            </button>
+            <p className="text-[11px] text-neo-dim">{isAuthenticated ? "AI 解读暂不可用" : "登录后可查看 AI 解读"}</p>
+            {isAuthenticated ? (
+              <button
+                onClick={() => window.location.reload()}
+                className="neo-chip flex items-center gap-1 px-2 py-1 text-[10px] text-neo-mid"
+              >
+                <RefreshCw size={11} />
+                重试
+              </button>
+            ) : (
+              <a href="/account/" className="neo-chip px-2 py-1 text-[10px] text-neo-mid">去登录</a>
+            )}
           </div>
         )}
       </section>
