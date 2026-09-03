@@ -18,7 +18,11 @@ export function Footer({ dataSource = "东方财富" }: { dataSource?: string })
             <span>数据：{dataSource}</span>
           </div>
         </div>
-        <p className="mt-2 text-[11px] text-neo-mid opacity-70">
+        <div className="mt-2 flex items-center gap-4 text-[11px] text-neo-dim">
+            <span>微信：denglio0</span>
+            <a href="mailto:qq136692547@gmail.com" className="transition-colors hover:text-neo-primary">qq136692547@gmail.com</a>
+          </div>
+          <p className="mt-2 text-[11px] text-neo-mid opacity-70">
           ⚠ 本站数据仅供参考，不构成投资建议
         </p>
       </div>

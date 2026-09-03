@@ -264,7 +264,7 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
               ))}
             </ul>
             <p className="mt-4 rounded-md bg-[var(--neo-surface-inset)] px-3 py-2.5 text-[12px] leading-relaxed text-neo-dim">
-              支付入口接入前，可先通过人工渠道获取 30 天激活码；开通后立即生效。
+              可在闲鱼搜索"爱看盘激活码"购买，或加微信 denglio0 获取。开通后立即生效。
             </p>
           </div>
         </section>
@@ -365,7 +365,7 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
             <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-up" : "text-neo-down"}`}>{message}</p>
           )}
           <p className="mt-3 text-[12px] text-neo-dim">
-            支付入口接入前，可先通过人工渠道获取 30 天或 365 天激活码；开通后立即生效，时长自动叠加。
+            可在闲鱼搜索"爱看盘激活码"购买，或加微信 denglio0 获取。开通后立即生效，时长自动叠加。
           </p>
           {!isPro && (
             <p className="mt-3 text-[12px] text-neo-dim">

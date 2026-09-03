@@ -135,7 +135,13 @@ export default function AboutPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--neo-bg)]/60 via-[var(--neo-bg)]/40 to-[var(--neo-bg)]/80" />
             <div className="relative p-6">
-              <h2 className="mb-3 text-sm font-semibold text-neo-mid">链接</h2>
+              <h2 className="mb-3 text-sm font-semibold text-neo-mid">联系我们</h2>
+              <div className="space-y-2 text-sm text-neo-mid">
+                <p>微信号：<span className="font-medium text-neo-ink">denglio0</span></p>
+                <p>邮箱：<a href="mailto:qq136692547@gmail.com" className="text-brand hover:opacity-80">qq136692547@gmail.com</a></p>
+                <p className="text-xs text-neo-dim">AI 会员激活码可在闲鱼搜索"爱看盘"购买，或通过微信/邮箱联系我们。</p>
+              </div>
+              <h2 className="mb-3 mt-6 text-sm font-semibold text-neo-mid">链接</h2>
               <div className="flex flex-wrap gap-4 text-sm">
                 <a href="https://github.com/qq136692547-cmyk/aikanpan-web" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
                   GitHub 仓库 →
