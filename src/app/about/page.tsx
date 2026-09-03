@@ -20,6 +20,7 @@ export default function AboutPage() {
 
         <section className="neo-fade-up">
           <h1 className="text-xl font-bold text-neo-ink">关于爱看盘</h1>
+        <div className="mt-2 text-xs text-neo-dim">作者：爱看盘团队 &middot; <a href="https://github.com/qq136692547-cmyk/aikanpan-web" target="_blank" rel="noopener noreferrer" className="text-brand hover:opacity-80">GitHub</a></div>
         </section>
 
         <section className="neo-card neo-fade-up mt-6 max-w-2xl p-6" style={{ animationDelay: "60ms" }}>
@@ -138,6 +139,18 @@ export default function AboutPage() {
               <div className="flex flex-wrap gap-4 text-sm">
                 <a href="https://github.com/qq136692547-cmyk/aikanpan-web" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
                   GitHub 仓库 →
+                </a>
+                <a href="https://www.sse.com.cn" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
+                上海证券交易所 →
+                </a>
+                <a href="https://www.szse.cn" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
+                深圳证券交易所 →
+                </a>
+                <a href="https://www.csrc.gov.cn" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
+                中国证监会 →
+                </a>
+                <a href="https://www.eastmoney.com" target="_blank" rel="noopener noreferrer" className="text-brand transition-colors hover:opacity-80">
+                东方财富 →
                 </a>
                 <a href="/api-docs/" className="text-brand transition-colors hover:opacity-80">
                   API 文档 →
