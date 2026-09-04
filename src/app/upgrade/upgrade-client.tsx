@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sparkles,
+  X,
   Zap,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
@@ -34,6 +35,10 @@ const PRO_FEATURES = [
   "个股、组合与盘前计划 AI 诊断",
   "AI 批量评分与历史归档",
   "更高每日 AI 额度",
+];
+const QR_CARDS = [
+  { key: "monthly" as const, src: "/images/xianyu-qr-monthly.png", alt: "闲鱼月卡商品二维码", title: "月卡 ¥29 · 扫码直达闲鱼" },
+  { key: "annual" as const, src: "/images/xianyu-qr-annual.png", alt: "闲鱼年卡商品二维码", title: "年卡 ¥299 · 扫码直达闲鱼" },
 ];
 const COMPARE_ROWS = [
   { label: "每日有效 AI 调用", free: "5 次", pro: "500 次" },
@@ -84,6 +89,7 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"ok" | "error">("ok");
   const [busy, setBusy] = useState(false);
+  const [qrPreview, setQrPreview] = useState<"monthly" | "annual" | null>(null);
   const exposureReported = useRef(false);
 
   useEffect(() => {
@@ -375,20 +381,23 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
           </div>
           <p className="mt-3 text-[12px] text-neo-dim">激活码不区分大小写；兑换前请先登录，会员状态与账号绑定。</p>
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
-              <img loading="lazy" src="/images/xianyu-qr-monthly.png" alt="闲鱼月卡商品二维码" className="w-24 shrink-0 rounded-md" />
-              <div>
-                <div className="text-[13px] font-semibold text-neo-ink">月卡 ¥29 · 扫码直达闲鱼</div>
-                <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
+            {QR_CARDS.map((card) => (
+              <div key={card.key} className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
+                <button
+                  type="button"
+                  onClick={() => setQrPreview(card.key)}
+                  className="shrink-0 cursor-zoom-in"
+                  aria-label={`放大${card.alt}`}
+                >
+                  <img loading="lazy" src={card.src} alt={card.alt} className="w-24 rounded-md" />
+                </button>
+                <div>
+                  <div className="text-[13px] font-semibold text-neo-ink">{card.title}</div>
+                  <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
+                  <p className="mt-1 text-[11px] text-neo-dim">点击图片可放大</p>
+                </div>
               </div>
-            </div>
-            <div className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
-              <img loading="lazy" src="/images/xianyu-qr-annual.png" alt="闲鱼年卡商品二维码" className="w-24 shrink-0 rounded-md" />
-              <div>
-                <div className="text-[13px] font-semibold text-neo-ink">年卡 ¥299 · 扫码直达闲鱼</div>
-                <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
@@ -441,6 +450,30 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
         </section>
       </main>
       <Footer />
+      {qrPreview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setQrPreview(null)}
+        >
+          <div className="relative" onClick={(event) => event.stopPropagation()}>
+            <img
+              src={qrPreview === "monthly" ? "/images/xianyu-qr-monthly.png" : "/images/xianyu-qr-annual.png"}
+              alt={qrPreview === "monthly" ? "闲鱼月卡商品二维码" : "闲鱼年卡商品二维码"}
+              className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+            />
+            <button
+              type="button"
+              onClick={() => setQrPreview(null)}
+              aria-label="关闭"
+              className="absolute -right-2 -top-2 rounded-full bg-white p-1.5 shadow"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
