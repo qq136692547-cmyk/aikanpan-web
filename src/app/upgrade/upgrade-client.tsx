@@ -10,7 +10,9 @@ import {
   GraduationCap,
   KeyRound,
   ListChecks,
+  MessageCircle,
   ShieldCheck,
+  ShoppingBag,
   Sparkles,
   Zap,
 } from "lucide-react";
@@ -18,6 +20,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
+import { useAuth } from "@/lib/auth";
 import { reportConversionEvent, type UpgradeProfile } from "@/lib/analytics";
 
 const FREE_FEATURES = [
@@ -75,6 +78,7 @@ const USER_PROFILES = [
 
 export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
   const { membership, loading, refresh } = useMembership();
+  const { user } = useAuth();
   const [profile, setProfile] = useState<UpgradeProfile>("intraday");
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
@@ -108,7 +112,8 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
       await refresh(result, { revalidate: false });
       if (result.plan === "pro") {
         reportConversionEvent("activation_success", { profile });
-        setMessage("Pro 已开通/续费成功");
+        const expiry = result.expires_at ? `，${result.expires_at.slice(0, 10)} 到期` : "";
+        setMessage(`Pro 已开通/续费成功${expiry}，时长自动叠加`);
         setMessageType("ok");
         setCode("");
       } else {
@@ -116,7 +121,12 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
         setMessageType("error");
       }
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "激活码无效");
+      const raw = err instanceof Error ? err.message : "";
+      if (/401|authorization|token/i.test(raw)) {
+        setMessage("请先登录后再激活，登录后重新输入激活码即可");
+      } else {
+        setMessage(raw || "激活码无效");
+      }
       setMessageType("error");
     } finally {
       setBusy(false);
@@ -342,6 +352,32 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
 
         <section className="neo-card mt-4 p-6">
           <div className="flex items-center gap-2">
+            <ShoppingBag size={17} style={{ color: "var(--neo-primary)" }} />
+            <h2 className="text-[17px] font-semibold text-neo-ink">如何购买</h2>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {[
+              { icon: ShoppingBag, title: "闲鱼拍下", desc: "搜索「爱看盘激活码」，按需选择月卡 ¥29/30天 或 年卡 ¥299/365天。" },
+              { icon: MessageCircle, title: "获取激活码", desc: "付款后在闲鱼聊天或微信（denglio0）收到激活码。" },
+              { icon: KeyRound, title: "本页兑换", desc: "在下方输入激活码立即开通，时长自动叠加。" },
+            ].map((step) => {
+              const StepIcon = step.icon;
+              return (
+                <div key={step.title} className="neo-inset-sm rounded-md p-4">
+                  <div className="flex items-center gap-2">
+                    <StepIcon size={15} style={{ color: "var(--neo-primary)" }} />
+                    <span className="text-[13px] font-semibold text-neo-ink">{step.title}</span>
+                  </div>
+                  <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">{step.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-[12px] text-neo-dim">激活码不区分大小写；兑换前请先登录，会员状态与账号绑定。</p>
+        </section>
+
+        <section className="neo-card mt-4 p-6">
+          <div className="flex items-center gap-2">
             <KeyRound size={17} style={{ color: "var(--neo-primary)" }} />
             <h2 className="text-[17px] font-semibold text-neo-ink">激活码开通</h2>
           </div>
@@ -363,6 +399,9 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
           </form>
           {message && (
             <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-up" : "text-neo-down"}`}>{message}</p>
+          )}
+          {!user && (
+            <p className="mt-3 text-[12px] text-neo-down">激活前请先登录，登录后重新输入激活码即可。</p>
           )}
           <p className="mt-3 text-[12px] text-neo-dim">
             可在闲鱼搜索"爱看盘激活码"购买，或加微信 denglio0 获取。开通后立即生效，时长自动叠加。
