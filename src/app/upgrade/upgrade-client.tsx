@@ -374,6 +374,22 @@ export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
             })}
           </div>
           <p className="mt-3 text-[12px] text-neo-dim">激活码不区分大小写；兑换前请先登录，会员状态与账号绑定。</p>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
+              <img loading="lazy" src="/images/xianyu-qr-monthly.png" alt="闲鱼月卡商品二维码" className="w-24 shrink-0 rounded-md" />
+              <div>
+                <div className="text-[13px] font-semibold text-neo-ink">月卡 ¥29 · 扫码直达闲鱼</div>
+                <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
+              </div>
+            </div>
+            <div className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
+              <img loading="lazy" src="/images/xianyu-qr-annual.png" alt="闲鱼年卡商品二维码" className="w-24 shrink-0 rounded-md" />
+              <div>
+                <div className="text-[13px] font-semibold text-neo-ink">年卡 ¥299 · 扫码直达闲鱼</div>
+                <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="neo-card mt-4 p-6">
