@@ -1380,6 +1380,12 @@ export interface StockReport {
   holders_advice: string | null;
   watchers_advice: string | null;
   disclaimer: string | null;
+  bias?: string | null;
+  confidence?: string | null;
+  money_flow?: string | null;
+  holder_advice?: string[] | null;
+  watcher_advice?: string[] | null;
+  operation_advice?: string | null;
 }
 
 /** AI 个股诊断响应 */
