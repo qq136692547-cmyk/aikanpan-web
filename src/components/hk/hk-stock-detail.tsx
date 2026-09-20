@@ -8,6 +8,7 @@ import { HkWatchlistButton } from "./hk-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
+import { AIComment as StockAIComment } from "@/components/ai/ai-comment";
 import { formatPct, formatPrice, formatVolume } from "@/lib/format";
 import { useAuth } from "@/lib/auth";
 import { api, type AIComment, type HkFinancials, type HkHistory, type HkNewsItem, type HkQuote } from "@/lib/api";
@@ -154,48 +155,7 @@ export function HkStockDetail({ symbol, initialData }: { symbol: string; initial
 
       <StockThesisPanel code={symbol} market="hk" />
 
-      <section className="neo-card p-5">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="text-[14px] font-semibold text-neo-ink">AI 解读</h2>
-          {ai && (
-            <span className="flex items-center gap-1 text-[10px] text-neo-dim">
-              <Bot size={12} />
-              {ai.model}
-            </span>
-          )}
-        </div>
-        {aiLoading && !ai ? (
-          <div className="mt-3 space-y-2">
-            <div className="neo-skeleton h-3 w-full rounded" />
-            <div className="neo-skeleton h-3 w-5/6 rounded" />
-            <div className="neo-skeleton h-3 w-3/4 rounded" />
-          </div>
-        ) : ai ? (
-          <>
-            <div className="neo-inset mt-3 rounded-lg px-3 py-3">
-              <div className="whitespace-pre-wrap text-[12px] leading-relaxed text-neo-ink">
-                <ReactMarkdown>{ai.content}</ReactMarkdown>
-              </div>
-            </div>
-            <AIEvidencePanel evidence={ai.evidence} />
-          </>
-        ) : (
-          <div className="mt-3 flex items-center justify-between gap-2">
-            <p className="text-[11px] text-neo-dim">{isAuthenticated ? "AI 解读暂不可用" : "登录后可查看 AI 解读"}</p>
-            {isAuthenticated ? (
-              <button
-                onClick={() => window.location.reload()}
-                className="neo-chip flex items-center gap-1 px-2 py-1 text-[10px] text-neo-mid"
-              >
-                <RefreshCw size={11} />
-                重试
-              </button>
-            ) : (
-              <a href="/account/" className="neo-chip px-2 py-1 text-[10px] text-neo-mid">去登录</a>
-            )}
-          </div>
-        )}
-      </section>
+      <StockAIComment code={symbol} market="hk" initialData={ai} />
 
       <AIHistoryPanel code={symbol} kind="hk_stock_ai" />
     </div>

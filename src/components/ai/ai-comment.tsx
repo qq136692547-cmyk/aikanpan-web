@@ -104,9 +104,22 @@ const getBiasBadge = (bias: string | null | undefined, score: number | null) => 
 
 type LoadState = "idle" | "loading" | "done" | "error";
 
-export function AIComment({ code }: { code: string }) {
-  const [state, setState] = useState<LoadState>("idle");
-  const [data, setData] = useState<AIComment | null>(null);
+export interface AICommentProps {
+  code: string;
+  market?: "cn" | "hk" | "us";
+  initialData?: AIComment | null;
+}
+
+export function AIComment({ code, market = "cn", initialData }: AICommentProps) {
+  const [state, setState] = useState<LoadState>(initialData ? "done" : "idle");
+  const [data, setData] = useState<AIComment | null>(initialData ?? null);
+
+  useEffect(() => {
+    if (initialData) {
+      setData(initialData);
+      setState("done");
+    }
+  }, [initialData]);
   const [error, setError] = useState<string>("");
   const [showRisks, setShowRisks] = useState<boolean>(true);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -122,7 +135,14 @@ export function AIComment({ code }: { code: string }) {
     }, 60_000);
 
     try {
-      const result = await api.getAIComment(code);
+      let result: AIComment;
+      if (market === "hk") {
+        result = await api.getHkAI(code);
+      } else if (market === "us") {
+        result = await api.getUsAI(code);
+      } else {
+        result = await api.getAIComment(code);
+      }
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setData(result);
       setState("done");
@@ -484,3 +504,6 @@ export function AIComment({ code }: { code: string }) {
     </div>
   );
 }
+
+
+export { AIComment as StockAIComment };
