@@ -1,4 +1,4 @@
-export type MarketMode = "all" | "cn" | "us";
+export type MarketMode = "all" | "cn" | "hk" | "us";
 
 export type NavigationCrumb = {
   label: string;
@@ -17,6 +17,7 @@ export type NavigationContext = {
 export const MAIN_MODES: { value: MarketMode; label: string }[] = [
   { value: "all", label: "全部" },
   { value: "cn", label: "A股" },
+  { value: "hk", label: "港股" },
   { value: "us", label: "美股" },
 ];
 
@@ -42,16 +43,22 @@ function isCnStockCode(code: string): boolean {
   return /^(sh|sz|bj)\d{6}$/i.test(code) || /^\d{6}$/.test(code);
 }
 
-function marketQuery(scope: MarketMode): string {
-  return scope === "us" ? "market=us" : "market=cn";
+function isHkStockCode(code: string): boolean {
+  return /^\d{4,5}$/.test(code);
 }
 
-export function marketHref(scope: "cn" | "us"): string {
+function marketQuery(scope: MarketMode): string {
+  if (scope === "us") return "market=us";
+  if (scope === "hk") return "market=hk";
+  return "market=cn";
+}
+
+export function marketHref(scope: "cn" | "hk" | "us"): string {
   return `/market/?${marketQuery(scope)}`;
 }
 
-function marketScopeFromParam(raw?: string | null): "cn" | "us" {
-  return raw === "us" || raw === "cn" ? raw : "cn";
+function marketScopeFromParam(raw?: string | null): "cn" | "hk" | "us" {
+  return raw === "us" || raw === "hk" || raw === "cn" ? raw : "cn";
 }
 
 export function resolveNavigationContext(pathname: string, search = ""): NavigationContext {
@@ -83,12 +90,13 @@ export function resolveNavigationContext(pathname: string, search = ""): Navigat
 
   if (first === "stock") {
     const code = decodeURIComponent(segments[1] || "").toUpperCase();
-    const scope: "cn" | "us" = isCnStockCode(code) ? "cn" : "us";
+    const scope: "cn" | "hk" | "us" = isCnStockCode(code) ? "cn" : isHkStockCode(code) ? "hk" : "us";
+    const scopeLabel = scope === "cn" ? "A股" : scope === "hk" ? "港股" : "美股";
     return {
       scope,
       activePath: "/market",
       breadcrumb: [
-        { label: scope === "cn" ? "A股" : "美股", href: marketHref(scope) },
+        { label: scopeLabel, href: marketHref(scope) },
         { label: "市场", href: marketHref(scope) },
         { label: `个股 ${code}` },
       ],
@@ -99,12 +107,13 @@ export function resolveNavigationContext(pathname: string, search = ""): Navigat
   }
 
   if (first === "portfolio") {
-    const scope: "cn" | "us" = marketScope;
+    const scope: "cn" | "hk" | "us" = marketScope;
+    const scopeLabel = scope === "cn" ? "A股" : scope === "hk" ? "港股" : "美股";
     return {
       scope,
       activePath: "/research",
       breadcrumb: [
-        { label: scope === "cn" ? "A股" : "美股", href: `/research/?${marketQuery(scope)}` },
+        { label: scopeLabel, href: `/research/?${marketQuery(scope)}` },
         { label: "研究", href: `/research/?${marketQuery(scope)}` },
         { label: "持仓组合" },
       ],

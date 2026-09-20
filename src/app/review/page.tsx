@@ -1,15 +1,19 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
+import { LimitAnalysisCard } from "@/components/ai/limit-analysis-card";
 import { AIReview } from "@/components/ai/ai-review";
+import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { DatePicker } from "@/components/review/date-picker";
 import { ReviewStatusBar } from "@/components/review/review-status-bar";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { DailyLoopCard } from "@/components/workflow/daily-loop-card";
 import { MarketEarningsCalendar } from "@/components/market/market-earnings-calendar";
 import { UsDashboardSection } from "@/components/us/us-dashboard-section";
-import { api, type Dashboard, type Insights, type UsDashboard } from "@/lib/api";
+import { HkDashboardSection } from "@/components/hk/hk-dashboard-section";
+import { api, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { marketFromSearchParams } from "@/lib/market";
 import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
+import { getRecentReviewDates } from "@/lib/review-seo";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -21,7 +25,8 @@ function todayLocal(): string {
 
 export const metadata: Metadata = {
   title: "每日复盘",
-  description: "AI驱动的每日复盘报告，支持A股与美股市场数据。",
+  description: "AI驱动的每日复盘报告，支持A股、港股与美股市场数据。",
+  alternates: { canonical: "/review/" },
 };
 
 const reviewJsonLd = {
@@ -31,7 +36,7 @@ const reviewJsonLd = {
   description: "AI驱动的每日复盘报告",
   author: { "@type": "Organization", name: "爱看盘" },
   publisher: { "@type": "Organization", name: "爱看盘", url: "https://aikanpan.top" },
-  about: ["A股", "美股", "AI复盘", "股票市场", "行情分析"],
+  about: ["A股", "港股", "美股", "AI复盘", "股票市场", "行情分析"],
 };
 
 /** Neomorphism trend class mapping */
@@ -56,7 +61,9 @@ export default async function ReviewPage({
   const selectedDate = params?.date;
   const scope = marketFromSearchParams(params?.market);
   if (scope === "all") {
-    redirect("/review/?market=cn");
+    const nextParams = new URLSearchParams({ market: "cn" });
+    if (selectedDate) nextParams.set("date", selectedDate);
+    redirect(`/review/?${nextParams.toString()}`);
   }
   const isCustomDate = selectedDate && selectedDate !== todayLocal();
 
@@ -78,7 +85,7 @@ export default async function ReviewPage({
         <MarketPageHeader
           market="us"
           title="每日复盘"
-          image="/images/ai-art/review-decoration-v2.png"
+          image="/images/ai-art/review-decoration-v3.png"
         />
         <DailyWorkflow className="mt-3" market="us" />
         <DailyLoopCard
@@ -92,16 +99,62 @@ export default async function ReviewPage({
         ) : (
           <div className="neo-skeleton mt-3 h-32" />
         )}
+        <section className="mt-3">
+          <AIHistoryPanel kind="us_daily_review" title="美股复盘历史" />
+        </section>
+      </MarketPageFrame>
+    );
+  }
+
+  if (scope === "hk") {
+    let hkDashboard: HkDashboard | null = null;
+    try {
+      hkDashboard = await api.getHkDashboard();
+    } catch (e) {
+      console.error("Failed to fetch HK review data:", e);
+    }
+
+    const hkIndex = hkDashboard?.indices?.[0];
+    const hkConclusion = hkIndex ? `恒生指数 ${hkIndex.last}（${hkIndex.change_pct > 0 ? "+" : ""}${hkIndex.change_pct.toFixed(2)}%）` : undefined;
+    const hkFocus = (hkDashboard?.top_gainers ?? []).slice(0, 3).map((s) => s.name ?? s.code);
+    const hkRisk = hkDashboard?.top_losers?.[0]
+      ? `领跌 ${hkDashboard.top_losers[0].name}（${hkDashboard.top_losers[0].change_pct.toFixed(2)}%）`
+      : undefined;
+
+    return (
+      <MarketPageFrame market="hk">
+        <MarketPageHeader
+          market="hk"
+          title="每日复盘"
+          image="/images/ai-art/review-decoration-v3.png"
+        />
+        <DailyWorkflow className="mt-3" market="hk" />
+        <DailyLoopCard
+          market="hk"
+          conclusion={hkConclusion}
+          focus={hkFocus}
+          risk={hkRisk}
+        />
+        {hkDashboard ? (
+          <HkDashboardSection dashboard={hkDashboard} showReview />
+        ) : (
+          <div className="neo-skeleton mt-3 h-32" />
+        )}
+        <section className="mt-3">
+          <AIHistoryPanel kind="hk_daily_review" title="港股复盘历史" />
+        </section>
       </MarketPageFrame>
     );
   }
 
   let dashboard: Dashboard | null = null;
   let insights: Insights | null = null;
+  let aiAvailable = true;
 
   try {
     const dailyReview = await api.getDailyReview(selectedDate);
     dashboard = dailyReview?.dashboard ?? null;
+    aiAvailable = dailyReview?.ai_available !== false;
     if (!isCustomDate) {
       insights = await api.getInsights();
     }
@@ -160,7 +213,7 @@ export default async function ReviewPage({
         market={scope}
         title="每日复盘"
         subtitle={`${dashboard.index.date} · ${dashboard.market_updated_at}`}
-        image="/images/ai-art/review-decoration-v2.png"
+        image="/images/ai-art/review-decoration-v3.png"
         meta={
           <>
             <DatePicker initialDate={selectedDate} />
@@ -191,9 +244,29 @@ export default async function ReviewPage({
         </section>
       )}
 
+      {/* AI 涨停题材归因与短线情绪 */}
+      <section className="mt-3">
+        <LimitAnalysisCard date={selectedDate} />
+      </section>
+
       {/* AI 复盘报告 */}
       <section className="mt-3">
-        <AIReview date={selectedDate} />
+        <AIReview date={selectedDate} available={aiAvailable} />
+      </section>
+
+      <section className="mt-3">
+        <AIHistoryPanel kind="daily_review" title="A股复盘历史" />
+      </section>
+
+      <section className="mt-3">
+        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">按日期查看复盘</h2>
+        <div className="flex flex-wrap gap-2">
+          {getRecentReviewDates(10).map((date) => (
+            <a key={date} href={`/review/${date}/`} className="neo-chip px-3 py-2 text-[11px] text-neo-mid">
+              {date}
+            </a>
+          ))}
+        </div>
       </section>
 
       {/* 市场概览 */}

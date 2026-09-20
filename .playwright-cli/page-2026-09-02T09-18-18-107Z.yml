@@ -1,0 +1,165 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - link "爱看盘" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e10]:
+        - tablist "市场范围" [ref=e11]:
+          - tab "全部" [selected] [ref=e12]
+          - tab "A股" [ref=e13]
+          - tab "美股" [ref=e14]
+        - navigation "功能导航" [ref=e16]:
+          - link "首页" [ref=e17] [cursor=pointer]:
+            - /url: /
+          - link "关于" [ref=e18] [cursor=pointer]:
+            - /url: /about/
+      - generic [ref=e19]:
+        - link "升级 Pro" [ref=e20] [cursor=pointer]:
+          - /url: /upgrade/
+          - generic [ref=e23]: 会员
+        - link "登录 / 注册" [ref=e24] [cursor=pointer]:
+          - /url: /account/
+        - button "全局搜索" [ref=e29]
+  - main [ref=e33]:
+    - generic [ref=e35]:
+      - heading "全部市场" [level=1] [ref=e36]
+      - paragraph [ref=e37]: 左右镜像呈现 A股与美股的每日决策视图
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - generic [ref=e40]: A股市场
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - generic [ref=e47]: A股 AI 结论
+              - link "完整复盘" [ref=e48] [cursor=pointer]:
+                - /url: /review/?market=cn
+            - paragraph [ref=e49]: 上证指数震荡（-0.97%），当前更活跃的方向是 地面兵装Ⅲ、地面兵装Ⅱ、化妆品制造及其他。
+          - generic [ref=e50]:
+            - link "上证指数 3941.39 -0.97%" [ref=e51] [cursor=pointer]:
+              - /url: /stock/sh.000001/
+              - generic [ref=e52]: 上证指数
+              - generic [ref=e53]: "3941.39"
+              - generic [ref=e54]: "-0.97%"
+            - link "深证成指 13611.55 -1.88%" [ref=e55] [cursor=pointer]:
+              - /url: /stock/sz.399001/
+              - generic [ref=e56]: 深证成指
+              - generic [ref=e57]: "13611.55"
+              - generic [ref=e58]: "-1.88%"
+            - link "创业板指 3312.24 -2.39%" [ref=e59] [cursor=pointer]:
+              - /url: /stock/sz.399006/
+              - generic [ref=e60]: 创业板指
+              - generic [ref=e61]: "3312.24"
+              - generic [ref=e62]: "-2.39%"
+            - link "涨停 / 跌停 64 / 13" [ref=e63] [cursor=pointer]:
+              - /url: /market/?market=cn
+              - generic [ref=e64]: 涨停 / 跌停
+              - generic [ref=e65]:
+                - generic [ref=e66]: "64"
+                - generic [ref=e67]: /
+                - generic [ref=e68]: "13"
+          - generic [ref=e69]:
+            - heading "行业强度" [level=3] [ref=e70]
+            - generic [ref=e71]:
+              - link "地面兵装Ⅲ +5.90%" [ref=e72] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e73]: 地面兵装Ⅲ
+                - generic [ref=e74]: +5.90%
+              - link "地面兵装Ⅱ +5.90%" [ref=e75] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e76]: 地面兵装Ⅱ
+                - generic [ref=e77]: +5.90%
+              - link "化妆品制造及其他 +5.27%" [ref=e78] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e79]: 化妆品制造及其他
+                - generic [ref=e80]: +5.27%
+              - link "化妆品 +2.96%" [ref=e81] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e82]: 化妆品
+                - generic [ref=e83]: +2.96%
+              - link "其他橡胶制品 +2.56%" [ref=e84] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e85]: 其他橡胶制品
+                - generic [ref=e86]: +2.56%
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - heading "市场温度" [level=2] [ref=e90]
+              - generic [ref=e91]: 亢奋
+            - generic [ref=e98]:
+              - generic [ref=e99]: "83"
+              - generic [ref=e100]: 综合温度 / 100
+            - button "AI 深度解读" [ref=e107]
+            - paragraph [ref=e111]:
+              - generic [ref=e114]: AI 生成，不构成投资建议
+      - generic [ref=e115]:
+        - generic [ref=e116]: 美股市场
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - generic [ref=e123]: 美股 AI 结论
+              - link "完整复盘" [ref=e124] [cursor=pointer]:
+                - /url: /review/?market=us
+            - paragraph [ref=e125]: AI 结论生成中，请稍后刷新。
+          - generic [ref=e126]:
+            - link "标普500 ETF 761.78 -0.69%" [ref=e127] [cursor=pointer]:
+              - /url: /stock/SPY/
+              - generic [ref=e128]: 标普500 ETF
+              - generic [ref=e129]: "761.78"
+              - generic [ref=e130]: "-0.69%"
+            - link "纳指100 ETF 707.64 -1.27%" [ref=e131] [cursor=pointer]:
+              - /url: /stock/QQQ/
+              - generic [ref=e132]: 纳指100 ETF
+              - generic [ref=e133]: "707.64"
+              - generic [ref=e134]: "-1.27%"
+            - link "道琼斯 ETF 527.75 -0.72%" [ref=e135] [cursor=pointer]:
+              - /url: /stock/DIA/
+              - generic [ref=e136]: 道琼斯 ETF
+              - generic [ref=e137]: "527.75"
+              - generic [ref=e138]: "-0.72%"
+            - link "VIX 变动 +3.01% 风险情绪" [ref=e139] [cursor=pointer]:
+              - /url: /market/?market=us
+              - generic [ref=e140]: VIX 变动
+              - generic [ref=e141]: +3.01%
+              - generic [ref=e142]: 风险情绪
+          - generic [ref=e143]:
+            - heading "板块表现" [level=3] [ref=e144]
+            - generic [ref=e145]:
+              - link "科技-1.53%" [ref=e146] [cursor=pointer]:
+                - /url: /stock/XLK/
+              - link "金融-0.88%" [ref=e147] [cursor=pointer]:
+                - /url: /stock/XLF/
+              - link "医疗+0.66%" [ref=e148] [cursor=pointer]:
+                - /url: /stock/XLV/
+              - link "能源+1.27%" [ref=e149] [cursor=pointer]:
+                - /url: /stock/XLE/
+              - link "消费-1.72%" [ref=e150] [cursor=pointer]:
+                - /url: /stock/XLY/
+              - link "工业-1.37%" [ref=e151] [cursor=pointer]:
+                - /url: /stock/XLI/
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - heading "市场温度" [level=3] [ref=e154]
+              - generic [ref=e155]: 偏空
+            - generic [ref=e156]:
+              - generic [ref=e157]: "25"
+              - generic [ref=e161]:
+                - generic [ref=e162]: 指数动量 -0.89%
+                - generic [ref=e163]: 上涨板块 2/6
+  - contentinfo [ref=e164]:
+    - generic [ref=e165]:
+      - generic [ref=e166]:
+        - generic [ref=e167]:
+          - generic [ref=e168]: 📊
+          - generic [ref=e170]: 爱看盘 · 每日复盘工具
+        - generic [ref=e171]:
+          - link "关于" [ref=e172] [cursor=pointer]:
+            - /url: /about/
+          - link "API" [ref=e173] [cursor=pointer]:
+            - /url: /api-docs/
+          - link "隐私" [ref=e174] [cursor=pointer]:
+            - /url: /privacy/
+          - link "协议" [ref=e175] [cursor=pointer]:
+            - /url: /terms/
+          - link "渝ICP备2026014729号-1" [ref=e176] [cursor=pointer]:
+            - /url: https://beian.miit.gov.cn/
+          - generic [ref=e177]: 数据：东方财富
+      - paragraph [ref=e178]: ⚠ 本站数据仅供参考，不构成投资建议

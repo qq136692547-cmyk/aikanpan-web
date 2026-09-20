@@ -128,6 +128,13 @@ export default function AccountPage() {
   }
 
   async function resetGuest() {
+    const verified = user?.type === "email" || user?.type === "phone";
+    const confirmed = window.confirm(
+      verified
+        ? "退出后当前设备会切换为新的游客身份。绑定账号的数据需要重新验证邮箱或手机号才能恢复，确认退出？"
+        : "重新生成游客身份后，当前游客数据将无法在页面内恢复，确认继续？"
+    );
+    if (!confirmed) return;
     try {
       await loginAsGuest();
       setMe(null);
@@ -155,6 +162,15 @@ export default function AccountPage() {
         <section className="neo-card relative overflow-hidden p-6 neo-fade-up">
           <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">账户</h1>
           <p className="mt-1 text-[12px] text-neo-dim">注册后，自选、持仓、计划会在设备间同步</p>
+
+          {!loading && !identityVerified && (
+            <div className="neo-inset-sm mt-4 flex items-start gap-2 rounded-md px-3 py-2.5">
+              <ShieldCheck size={14} className="mt-0.5 shrink-0" style={{ color: "var(--neo-primary)" }} />
+              <p className="text-[12px] leading-relaxed text-neo-mid">
+                购买或激活 Pro 前需绑定邮箱或手机号，游客身份无法可靠恢复会员时长。
+              </p>
+            </div>
+          )}
 
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="neo-inset-sm flex items-center gap-3 px-4 py-3">

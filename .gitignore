@@ -65,3 +65,11 @@ DESIGN.md
 NEOMORPHISM-PLAN.md
 ai-art-integration_*.md
 /audit-results/
+
+# Deploy stages and archives
+.deploy-stage*
+*.tar
+deploy_tmp/
+.ui-batch1*
+audit-ux*
+

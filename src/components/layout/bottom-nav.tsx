@@ -36,15 +36,22 @@ function BottomNavContent() {
   const subnav = getNavigationSubnav(context.scope);
 
   return (
-    <nav className="neo-navbar fixed bottom-0 left-0 right-0 z-50 md:hidden" style={{ borderRadius: "20px 20px 0 0", boxShadow: "0 -4px 16px rgba(0,0,0,0.45)" }}>
-      <div className="px-2 pt-1.5">
+    <nav
+      className="neo-navbar fixed bottom-0 left-0 right-0 z-50 md:hidden"
+      style={{
+        borderRadius: "20px 20px 0 0",
+        boxShadow: "0 -4px 16px rgba(0,0,0,0.45)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+      }}
+    >
+      <div className="px-2 pt-1">
         <div className="grid grid-cols-3 gap-1">
           {MAIN_MODES.map((tab) => (
             <Link
               key={tab.value}
               href={marketModeHref(context, tab.value)}
               aria-label={tab.label}
-              className={`rounded-xl px-2 py-1 text-center text-[10px] font-semibold ${
+              className={`flex min-h-11 items-center justify-center rounded-xl px-2 text-center text-[12px] font-semibold ${
                 context.scope === tab.value ? "neo-chip-active" : "text-neo-dim"
               }`}
             >
@@ -56,18 +63,18 @@ function BottomNavContent() {
           {subnav.map((item) => {
             const Icon = iconMap[item.path as keyof typeof iconMap] || Home;
             const href = item.path === "/" || item.path === "/about/" ? item.path : `${item.path}?market=${context.scope}`;
-            const active = isActive(pathname, context.activePath);
+            const active = isActive(pathname, item.path);
             return (
               <Link
                 key={`${context.scope}-${item.path}`}
                 href={href}
                 aria-label={item.label}
-                className={`flex min-w-[44px] flex-col items-center gap-0.5 rounded-xl px-2 py-1 ${
+                className={`flex min-h-12 min-w-[44px] flex-col items-center justify-center gap-0.5 rounded-xl px-2 ${
                   active ? "neo-chip-active" : "text-neo-dim"
                 }`}
               >
-                <Icon size={15} strokeWidth={active ? 2.3 : 1.7} />
-                <span className={`text-[9px] ${active ? "font-semibold" : "font-medium"}`}>{item.label}</span>
+                <Icon size={17} strokeWidth={active ? 2.3 : 1.7} />
+                <span className={`text-[12px] ${active ? "font-semibold" : "font-medium"}`}>{item.label}</span>
               </Link>
             );
           })}

@@ -1,0 +1,69 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - navigation [ref=f1e4]:
+        - link "爱看盘" [ref=f1e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e10]:
+          - tablist "市场范围" [ref=f1e11]:
+            - tab "全部" [ref=f1e12]
+            - tab "A股" [ref=f1e13]
+            - tab "美股" [selected] [ref=f1e14]
+          - navigation "功能导航" [ref=f1e16]:
+            - link "市场" [ref=f1e17] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=f1e18] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=f1e19] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=f1e20] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=f1e21] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=f1e22]:
+          - link "升级 Pro" [ref=f1e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=f1e26]: 会员
+          - link "登录 / 注册" [ref=f1e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f1e32]
+      - navigation "页面位置" [ref=f1e36]:
+        - generic [ref=f1e37]:
+          - link "美股" [ref=f1e39] [cursor=pointer]:
+            - /url: /market/?market=us
+          - link "市场" [ref=f1e43] [cursor=pointer]:
+            - /url: /market/?market=us
+          - generic [ref=f1e44]: 个股 AAPL
+    - main [ref=f1e48]:
+      - generic [ref=f1e49]:
+        - generic [ref=f1e51]:
+          - generic [ref=f1e52]:
+            - generic [ref=f1e53]:
+              - heading "AAPL" [level=1] [ref=f1e54]
+              - generic [ref=f1e55]: AAPL · USD
+            - generic [ref=f1e56]:
+              - generic [ref=f1e57]: "0.00"
+              - generic [ref=f1e58]: +0.00%
+            - generic [ref=f1e59]: ·
+          - button "加自选" [ref=f1e60]
+        - heading "AI 解读" [level=2] [ref=f1e63]
+    - contentinfo [ref=f1e68]:
+      - generic [ref=f1e69]:
+        - generic [ref=f1e70]:
+          - generic [ref=f1e71]:
+            - generic [ref=f1e72]: 📊
+            - generic [ref=f1e74]: 爱看盘 · 每日复盘工具
+          - generic [ref=f1e75]:
+            - link "关于" [ref=f1e76] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f1e77] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f1e78] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f1e79] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f1e80] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f1e81]: 数据：东方财富
+        - paragraph [ref=f1e82]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f1e83]

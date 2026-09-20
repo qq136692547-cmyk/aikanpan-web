@@ -2,12 +2,13 @@ import type { ReactNode } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
-export function MarketPageFrame({ children, scripts, market }: { children: ReactNode; scripts?: ReactNode; market?: "cn" | "us" }) {
+export function MarketPageFrame({ children, scripts, market }: { children: ReactNode; scripts?: ReactNode; market?: "cn" | "hk" | "us" }) {
+  const dataSource = market === "us" ? "Finnhub" : market === "hk" ? "腾讯行情 / 东方财富" : "东方财富";
   return (
     <div className="neo-page">
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">{children}</main>
-      <Footer dataSource={market === "us" ? "Finnhub" : "东方财富"} />
+      <Footer dataSource={dataSource} />
       {scripts}
     </div>
   );
@@ -21,14 +22,14 @@ export function MarketPageHeader({
   meta,
   actions,
 }: {
-  market: "cn" | "us";
+  market: "cn" | "hk" | "us";
   title: string;
   subtitle?: string;
   image: string;
   meta?: ReactNode;
   actions?: ReactNode;
 }) {
-  const marketLabel = market === "cn" ? "A股" : "美股";
+  const marketLabel = market === "cn" ? "A股" : market === "hk" ? "港股" : "美股";
 
   return (
     <section className="relative overflow-hidden rounded-xl">

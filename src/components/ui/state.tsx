@@ -41,7 +41,7 @@ export function ErrorState({
       </div>
       {description && <p className="mt-2 text-xs leading-relaxed text-neo-mid">{description}</p>}
       {onRetry && (
-        <button onClick={onRetry} className="neo-chip mt-3 px-3 py-1.5 text-xs text-neo-primary">
+        <button onClick={onRetry} className="neo-chip mt-3 min-h-11 px-3 py-1.5 text-xs text-neo-primary">
           重新加载
         </button>
       )}

@@ -21,14 +21,15 @@ export function LimitStatsPersonalized({
   downCount: number;
   sparkData?: number[];
 }) {
-  const { isAuthenticated } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
   const { data: watchData } = useSWR(
-    isAuthenticated ? "limit-stats-watchlist" : null,
+    ready && user ? ["limit-stats-watchlist", user.user_id] : null,
     () => api.getWatchlist(),
     { refreshInterval: 30000 }
   );
   const { data: positionsData } = useSWR(
-    isAuthenticated ? "limit-stats-positions" : null,
+    ready && user ? ["limit-stats-positions", user.user_id] : null,
     () => api.getPositions(),
     { refreshInterval: 30000 }
   );
@@ -153,7 +154,7 @@ export function LimitStatsPersonalized({
               ))}
             </div>
           )}
-          {isAuthenticated && myTotal === 0 && (
+          {ready && myTotal === 0 && (
             <div className="mt-2 text-[10px] text-neo-dim">暂无自选/持仓涨跌停</div>
           )}
         </div>

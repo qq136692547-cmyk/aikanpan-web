@@ -1,0 +1,201 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - navigation [ref=f1e4]:
+        - link "爱看盘" [ref=f1e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e10]:
+          - tablist "市场范围" [ref=f1e11]:
+            - tab "全部" [ref=f1e12]
+            - tab "A股" [selected] [ref=f1e13]
+            - tab "美股" [ref=f1e14]
+          - navigation "功能导航" [ref=f1e16]:
+            - link "市场" [ref=f1e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=f1e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=f1e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=f1e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=f1e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=f1e22]:
+          - link "升级 Pro" [ref=f1e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=f1e26]: 会员
+          - link "登录 / 注册" [ref=f1e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f1e32]
+      - navigation "页面位置" [ref=f1e36]:
+        - generic [ref=f1e37]:
+          - link "A股" [ref=f1e39] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - link "市场" [ref=f1e43] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - generic [ref=f1e44]: 个股 SH688584
+    - main [ref=f1e48]:
+      - generic [ref=f1e49]:
+        - generic: 示例走势
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]:
+            - heading "上海合晶" [level=1] [ref=f1e53]
+            - paragraph [ref=f1e54]: sh.688584
+          - generic [ref=f1e55]:
+            - generic [ref=f1e56]:
+              - generic [ref=f1e57]: "26.56"
+              - generic [ref=f1e58]: "-0.58 (-2.14%)"
+            - button "添加 上海合晶 到自选" [ref=f1e59]: 加自选
+      - generic [ref=f1e62]:
+        - generic [ref=f1e63]:
+          - generic [ref=f1e64]:
+            - generic [ref=f1e65]: 今开
+            - generic [ref=f1e66]: "26.75"
+          - generic [ref=f1e67]:
+            - generic [ref=f1e68]: 最高
+            - generic [ref=f1e69]: "26.82"
+          - generic [ref=f1e70]:
+            - generic [ref=f1e71]: 最低
+            - generic [ref=f1e72]: "25.93"
+          - generic [ref=f1e73]:
+            - generic [ref=f1e74]: 昨收
+            - generic [ref=f1e75]: "27.14"
+          - generic [ref=f1e76]:
+            - generic [ref=f1e77]: 成交量
+            - generic [ref=f1e78]: 10.57亿
+          - generic [ref=f1e79]:
+            - generic [ref=f1e80]: 成交额
+            - generic [ref=f1e81]: 280.84亿
+        - generic [ref=f1e83]:
+          - generic [ref=f1e84]:
+            - generic [ref=f1e85]: 主力净流入
+            - generic [ref=f1e86]: "-136.39万"
+          - generic [ref=f1e87]:
+            - generic [ref=f1e88]: 净流入占比
+            - generic [ref=f1e89]: "-0.49%"
+          - generic [ref=f1e90]:
+            - generic [ref=f1e91]: 超大单比
+            - generic [ref=f1e92]: 8.37%
+          - generic [ref=f1e93]:
+            - generic [ref=f1e94]: 大单比
+            - generic [ref=f1e95]: "-8.86%"
+      - generic [ref=f1e96]:
+        - generic [ref=f1e97]:
+          - button "新闻/事件" [ref=f1e98]
+          - button "公告/研报" [ref=f1e99]
+          - button "财务数据" [ref=f1e100]
+        - generic [ref=f1e101]:
+          - generic [ref=f1e102]: 最新价格 26.56，日内涨跌幅 -2.14% ，短线节奏偏弱。 主力资金流出约 0.01 亿，占比 0.49% 。 最近研报关注点：SOI积极布局
+          - generic [ref=f1e104]:
+            - generic [ref=f1e105]: 最新节奏
+            - generic [ref=f1e106]: 最新价格 26.56，日内涨跌幅 -2.14% ，短线节奏偏弱。
+          - generic [ref=f1e108]:
+            - generic [ref=f1e109]: 资金风向
+            - generic [ref=f1e110]: 主力资金流出约 0.01 亿，占比 0.49% 。
+      - generic [ref=f1e111]:
+        - heading "技术指标" [level=3] [ref=f1e112]
+        - generic [ref=f1e113]:
+          - generic [ref=f1e114]:
+            - generic [ref=f1e115]: MACD
+            - generic [ref=f1e116]:
+              - generic [ref=f1e117]:
+                - generic [ref=f1e118]: DIF
+                - generic [ref=f1e119]: "-0.589"
+              - generic [ref=f1e120]:
+                - generic [ref=f1e121]: DEA
+                - generic [ref=f1e122]: "-0.429"
+              - generic [ref=f1e123]:
+                - generic [ref=f1e124]: MACD
+                - generic [ref=f1e125]: "-0.320"
+          - generic [ref=f1e126]:
+            - generic [ref=f1e127]: KDJ
+            - generic [ref=f1e128]:
+              - generic [ref=f1e129]:
+                - generic [ref=f1e130]: K
+                - generic [ref=f1e131]: "56.10"
+              - generic [ref=f1e132]:
+                - generic [ref=f1e133]: D
+                - generic [ref=f1e134]: "56.07"
+              - generic [ref=f1e135]:
+                - generic [ref=f1e136]: J
+                - generic [ref=f1e137]: "56.16"
+          - generic [ref=f1e138]:
+            - generic [ref=f1e139]: RSI
+            - generic [ref=f1e141]:
+              - generic [ref=f1e142]: RSI
+              - generic [ref=f1e143]: "40.89"
+          - generic [ref=f1e144]:
+            - generic [ref=f1e145]: BOLL
+            - generic [ref=f1e146]:
+              - generic [ref=f1e147]:
+                - generic [ref=f1e148]: UP
+                - generic [ref=f1e149]: "31.15"
+              - generic [ref=f1e150]:
+                - generic [ref=f1e151]: MID
+                - generic [ref=f1e152]: "29.00"
+              - generic [ref=f1e153]:
+                - generic [ref=f1e154]: LOW
+                - generic [ref=f1e155]: "26.85"
+      - generic [ref=f1e157]:
+        - generic [ref=f1e158]:
+          - heading "K 线图" [level=3] [ref=f1e159]
+          - generic [ref=f1e160]:
+            - button "30日" [ref=f1e161]
+            - button "60日" [ref=f1e162]
+            - button "120日" [ref=f1e163]
+        - generic [ref=f1e164]:
+          - generic [ref=f1e165]:
+            - generic [ref=f1e166]: 2026-09-02 · 开 26.75 · 高 26.82 · 低 25.93 · 收 26.56
+            - generic [ref=f1e167]:
+              - generic [ref=f1e168]: 上涨
+              - generic [ref=f1e170]: 下跌
+          - img "A股日K线图" [ref=f1e172]:
+            - generic [ref=f1e173]: "49.86"
+            - generic [ref=f1e175]: "43.22"
+            - generic [ref=f1e177]: "36.58"
+            - generic [ref=f1e179]: "29.94"
+            - generic [ref=f1e181]: "23.30"
+            - generic [ref=f1e183]: 06-10
+            - generic [ref=f1e224]: 06-25
+            - generic [ref=f1e265]: 07-09
+            - generic [ref=f1e306]: 07-23
+            - generic [ref=f1e347]: 08-06
+            - generic [ref=f1e388]: 08-20
+      - generic [ref=f1e430]:
+        - generic [ref=f1e431]:
+          - generic [ref=f1e432]:
+            - generic [ref=f1e433]: 🤖 AI 诊断
+            - generic [ref=f1e434]: 深度分析资金面、技术面、估值面
+          - button "生成 AI 诊断" [ref=f1e435]
+        - generic [ref=f1e436]:
+          - paragraph [ref=f1e437]: 示例输出：
+          - list [ref=f1e438]:
+            - listitem [ref=f1e439]: • 资金面：主力资金流向分析
+            - listitem [ref=f1e440]: • 技术面：MACD/KDJ/RSI 指标解读
+            - listitem [ref=f1e441]: • 估值面：PE/PB 行业对比
+            - listitem [ref=f1e442]: • 综合评分：AI 给出 1-10 分评级
+      - generic [ref=f1e444]:
+        - generic [ref=f1e445]:
+          - heading "AI 诊断历史" [level=3] [ref=f1e446]
+          - generic [ref=f1e447]: 0 条
+        - paragraph [ref=f1e448]: 暂无历史记录，生成 AI 诊断后自动保存
+    - contentinfo [ref=f1e449]:
+      - generic [ref=f1e450]:
+        - generic [ref=f1e451]:
+          - generic [ref=f1e452]:
+            - generic [ref=f1e453]: 📊
+            - generic [ref=f1e455]: 爱看盘 · 每日复盘工具
+          - generic [ref=f1e456]:
+            - link "关于" [ref=f1e457] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f1e458] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f1e459] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f1e460] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f1e461] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f1e462]: 数据：东方财富
+        - paragraph [ref=f1e463]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f1e464]

@@ -5,6 +5,7 @@ import { Radio, RefreshCw } from "lucide-react";
 import { api, type NewsRadar } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
+import { AIEvidencePanel } from "./ai-evidence-panel";
 
 export function NewsRadarCard() {
   const { isAuthenticated } = useAuth();
@@ -76,6 +77,7 @@ export function NewsRadarCard() {
           {data.cached ? "缓存" : "实时生成"} · {data.model} · {data.generated_at.slice(5, 16).replace("T", " ")}
         </div>
       )}
+      <AIEvidencePanel evidence={data?.evidence} />
       <AiDisclaimer className="mt-2" />
     </div>
   );

@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily aikanpan.top Baidu URL submission
+
+[Timer]
+OnCalendar=*-*-* 00:10:00 Asia/Shanghai
+Persistent=true
+Unit=aikanpan-baidu-push.service
+
+[Install]
+WantedBy=timers.target

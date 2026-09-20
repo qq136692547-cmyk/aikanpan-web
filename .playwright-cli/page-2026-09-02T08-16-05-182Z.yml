@@ -1,0 +1,117 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e154]:
+          - tablist "市场范围" [ref=e155]:
+            - tab "全部" [ref=e156]
+            - tab "A股" [ref=e157]
+            - tab "美股" [selected] [ref=e158]
+          - navigation "功能导航" [ref=e160]:
+            - link "市场" [ref=e161] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=e162] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=e163] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=e164] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=e165] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=e11]:
+          - link "升级 Pro" [ref=e12] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e15]: 会员
+          - link "登录 / 注册" [ref=e16] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e21]
+    - main [ref=e25]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - heading "搜索" [level=1] [ref=e30]
+          - generic [ref=e31]: 美股
+        - paragraph [ref=e32]: 按代码、名称或拼音查找股票
+      - generic [ref=e35]:
+        - textbox "输入美股代码或名称…" [ref=e36]: AAPL
+        - button "搜索" [active] [ref=e37]
+      - generic [ref=e166]:
+        - paragraph [ref=e167]:
+          - text: "关键词: AAPL"
+          - generic [ref=e168]: (6 条结果)
+        - generic [ref=e169]:
+          - link "APPLE INC Common Stock AAPL - -" [ref=e170] [cursor=pointer]:
+            - /url: /stock/AAPL/
+            - generic [ref=e171]:
+              - generic [ref=e172]: APPLE INC
+              - generic [ref=e173]: Common Stock
+            - generic [ref=e174]: AAPL
+            - generic [ref=e175]:
+              - generic [ref=e176]: "-"
+              - generic [ref=e177]: "-"
+          - link "APPLE INC Common Stock AAPL.MX - -" [ref=e178] [cursor=pointer]:
+            - /url: /stock/AAPL.MX/
+            - generic [ref=e179]:
+              - generic [ref=e180]: APPLE INC
+              - generic [ref=e181]: Common Stock
+            - generic [ref=e182]: AAPL.MX
+            - generic [ref=e183]:
+              - generic [ref=e184]: "-"
+              - generic [ref=e185]: "-"
+          - link "APPLE INC Common Stock AAPL.RO - -" [ref=e186] [cursor=pointer]:
+            - /url: /stock/AAPL.RO/
+            - generic [ref=e187]:
+              - generic [ref=e188]: APPLE INC
+              - generic [ref=e189]: Common Stock
+            - generic [ref=e190]: AAPL.RO
+            - generic [ref=e191]:
+              - generic [ref=e192]: "-"
+              - generic [ref=e193]: "-"
+          - link "APPLE INC Common Stock AAPL.SW - -" [ref=e194] [cursor=pointer]:
+            - /url: /stock/AAPL.SW/
+            - generic [ref=e195]:
+              - generic [ref=e196]: APPLE INC
+              - generic [ref=e197]: Common Stock
+            - generic [ref=e198]: AAPL.SW
+            - generic [ref=e199]:
+              - generic [ref=e200]: "-"
+              - generic [ref=e201]: "-"
+          - link "APPLE INC Common Stock AAPL.VI - -" [ref=e202] [cursor=pointer]:
+            - /url: /stock/AAPL.VI/
+            - generic [ref=e203]:
+              - generic [ref=e204]: APPLE INC
+              - generic [ref=e205]: Common Stock
+            - generic [ref=e206]: AAPL.VI
+            - generic [ref=e207]:
+              - generic [ref=e208]: "-"
+              - generic [ref=e209]: "-"
+          - link "APPLE INC Common Stock AAPL.WA - -" [ref=e210] [cursor=pointer]:
+            - /url: /stock/AAPL.WA/
+            - generic [ref=e211]:
+              - generic [ref=e212]: APPLE INC
+              - generic [ref=e213]: Common Stock
+            - generic [ref=e214]: AAPL.WA
+            - generic [ref=e215]:
+              - generic [ref=e216]: "-"
+              - generic [ref=e217]: "-"
+    - contentinfo [ref=e138]:
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - generic [ref=e142]: 📊
+            - generic [ref=e144]: 爱看盘 · 每日复盘工具
+          - generic [ref=e145]:
+            - link "关于" [ref=e146] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e147] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e148] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e149] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e150] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e151]: 数据：Finnhub
+        - paragraph [ref=e152]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e153]

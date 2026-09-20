@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [selected] [ref=e13]
+            - tab "美股" [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e22]:
+          - link "升级 Pro" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e26]: 会员
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "研究" [level=1] [ref=e41]
+          - generic [ref=e42]: A股
+        - paragraph [ref=e43]: 自选股、盘前计划、公司档案与投资论点
+      - generic [ref=e44]:
+        - generic [ref=e65]:
+          - generic [ref=e67]:
+            - link "持仓工具" [ref=e68] [cursor=pointer]:
+              - /url: /portfolio/
+            - button "导出 Markdown" [ref=e69]
+          - generic [ref=e70]:
+            - button "自选" [ref=e71]
+            - button "盘前计划" [ref=e72]
+            - button "公司档案" [ref=e73]
+            - button "投资论点" [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "自选股" [level=2] [ref=e77]
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - textbox "代码，如 sh.600519" [ref=e80]
+                - textbox "名称（可选）" [ref=e81]
+                - button "添加" [ref=e82]
+              - button "自选加入计划" [ref=e83]
+              - button "AI 评分" [ref=e84]
+              - generic [ref=e85]: 1 只
+          - generic [ref=e86]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: 名称 / 代码
+              - generic [ref=e121]: 价格
+              - generic [ref=e122]: 涨跌幅
+            - generic [ref=e124]:
+              - link "维琪科技 bj.920176" [ref=e125] [cursor=pointer]:
+                - /url: /stock/bj920176/
+                - generic [ref=e126]: 维琪科技
+                - generic [ref=e127]: bj.920176
+              - generic [ref=e128]: "70.66"
+              - generic [ref=e129]: +29.99%
+              - generic [ref=e130]:
+                - link "进入 维琪科技" [ref=e131] [cursor=pointer]:
+                  - /url: /stock/bj920176/
+                  - text: 进入
+                - button "从自选移除 维琪科技" [ref=e132]: 移除
+    - contentinfo [ref=e49]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: 📊
+            - generic [ref=e55]: 爱看盘 · 每日复盘工具
+          - generic [ref=e56]:
+            - link "关于" [ref=e57] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e58] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e59] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e60] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e61] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e62]: 数据：东方财富
+        - paragraph [ref=e63]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e64]

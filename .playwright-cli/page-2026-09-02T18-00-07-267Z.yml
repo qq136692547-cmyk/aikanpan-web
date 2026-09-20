@@ -1,0 +1,875 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - link "爱看盘" [ref=e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e10]:
+        - tablist "市场范围" [ref=e11]:
+          - tab "全部" [ref=e12]
+          - tab "A股" [selected] [ref=e13]
+          - tab "美股" [ref=e14]
+        - navigation "功能导航" [ref=e16]:
+          - link "市场" [ref=e17] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - link "复盘" [ref=e18] [cursor=pointer]:
+            - /url: /review/?market=cn
+          - link "研究" [ref=e19] [cursor=pointer]:
+            - /url: /research/?market=cn
+          - link "搜索" [ref=e20] [cursor=pointer]:
+            - /url: /search/?market=cn
+          - link "盯盘" [ref=e21] [cursor=pointer]:
+            - /url: /alerts/?market=cn
+      - generic [ref=e22]:
+        - link "升级 Pro" [ref=e23] [cursor=pointer]:
+          - /url: /upgrade/
+          - generic [ref=e26]: 会员
+        - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+          - /url: /account/
+        - button "全局搜索" [ref=e32]
+  - main [ref=e36]:
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "每日复盘" [level=1] [ref=e41]
+          - generic [ref=e42]: A股
+        - paragraph [ref=e43]: 2026-09-03 · 02:00
+      - generic [ref=e44]:
+        - textbox [ref=e46]: 2026-09-03
+        - generic [ref=e47]: 数据待更新
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e55]: 下次运行
+        - generic [ref=e56]: —
+      - generic [ref=e57]:
+        - generic [ref=e61]: 最近成功
+        - generic [ref=e62]: —
+      - generic [ref=e63]: 未缓存
+      - button "立即刷新" [ref=e65]
+    - region "今日工作流" [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - heading "今日工作流" [level=2] [ref=e74]
+          - paragraph [ref=e75]: 5 步完成当日看盘闭环，进度按天保存。
+        - generic [ref=e76]: 0/5 已完成
+      - generic [ref=e77]:
+        - link "第 1 步 看今日复盘 先看市场结构和 AI 结论" [ref=e78] [cursor=pointer]:
+          - /url: /review/?market=cn
+          - generic [ref=e79]: 第 1 步
+          - generic [ref=e84]: 看今日复盘
+          - paragraph [ref=e85]: 先看市场结构和 AI 结论
+        - link "第 2 步 选 3 只重点股 从市场页挑出跟踪对象" [ref=e86] [cursor=pointer]:
+          - /url: /market/?market=cn
+          - generic [ref=e87]: 第 2 步
+          - generic [ref=e92]: 选 3 只重点股
+          - paragraph [ref=e93]: 从市场页挑出跟踪对象
+        - link "第 3 步 写入自选/计划 记录观察点和操作预期" [ref=e94] [cursor=pointer]:
+          - /url: /research/?market=cn
+          - generic [ref=e95]: 第 3 步
+          - generic [ref=e100]: 写入自选/计划
+          - paragraph [ref=e101]: 记录观察点和操作预期
+        - link "第 4 步 设置盯盘提醒 条件触发时自动提醒" [ref=e102] [cursor=pointer]:
+          - /url: /alerts/?market=cn
+          - generic [ref=e103]: 第 4 步
+          - generic [ref=e110]: 设置盯盘提醒
+          - paragraph [ref=e111]: 条件触发时自动提醒
+        - link "第 5 步 AI 复盘归档 收盘后生成连续记录" [ref=e112] [cursor=pointer]:
+          - /url: /review/?market=cn
+          - generic [ref=e113]: 第 5 步
+          - generic [ref=e118]: AI 复盘归档
+          - paragraph [ref=e119]: 收盘后生成连续记录
+    - region "今日决策闭环" [ref=e120]:
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - heading "今日决策闭环" [level=2] [ref=e123]
+          - paragraph [ref=e124]: 先看结论，再定关注，最后落到一条提醒。
+        - link "设置提醒" [ref=e125] [cursor=pointer]:
+          - /url: /alerts/?market=cn
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]: 今日结论
+          - paragraph [ref=e138]: 上证指数震荡（-0.97%），当前更活跃的方向是 地面兵装Ⅲ、地面兵装Ⅱ、化妆品制造及其他。
+        - generic [ref=e139]:
+          - generic [ref=e140]: 今日关注
+          - generic [ref=e141]:
+            - generic [ref=e142]: 地面兵装Ⅲ
+            - generic [ref=e143]: 地面兵装Ⅱ
+            - generic [ref=e144]: 化妆品制造及其他
+        - generic [ref=e145]:
+          - generic [ref=e146]: 风险提醒
+          - paragraph [ref=e150]: 暂无额外风险提示
+    - generic [ref=e153]:
+      - generic [ref=e154]: AI 复盘
+      - generic [ref=e155]: 生成中…
+      - generic [ref=e156]: 通常需要 10-30 秒
+    - generic [ref=e162]:
+      - heading "市场概览" [level=2] [ref=e163]
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - generic [ref=e166]: 涨停
+          - generic [ref=e167]: "64"
+          - generic [ref=e168]: 占比 83.1%
+        - generic [ref=e169]:
+          - generic [ref=e170]: 跌停
+          - generic [ref=e171]: "13"
+          - generic [ref=e172]: 占比 16.9%
+        - generic [ref=e173]:
+          - generic [ref=e174]: 涨跌比
+          - generic [ref=e175]: "4.92"
+          - generic [ref=e176]: 多头占优
+        - generic [ref=e177]:
+          - generic [ref=e178]: 市场情绪
+          - generic [ref=e179]: 多头主导
+    - generic [ref=e180]:
+      - heading "指数表现" [level=2] [ref=e181]
+      - generic [ref=e182]:
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - generic [ref=e185]: 上证指数
+            - generic [ref=e186]: "-0.97%"
+          - generic [ref=e187]: "3941.39"
+          - generic [ref=e188]: "-38.50"
+        - generic [ref=e189]:
+          - generic [ref=e190]:
+            - generic [ref=e191]: 深证成指
+            - generic [ref=e192]: "-1.88%"
+          - generic [ref=e193]: "13611.55"
+          - generic [ref=e194]: "-260.83"
+        - generic [ref=e195]:
+          - generic [ref=e196]:
+            - generic [ref=e197]: 创业板指
+            - generic [ref=e198]: "-2.39%"
+          - generic [ref=e199]: "3312.24"
+          - generic [ref=e200]: "-81.19"
+    - generic [ref=e201]:
+      - heading "强势行业" [level=2] [ref=e202]
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - generic [ref=e206]: "1"
+          - generic [ref=e207]: 地面兵装Ⅲ
+          - generic [ref=e208]: +5.90%
+        - generic [ref=e209]:
+          - generic [ref=e210]: "2"
+          - generic [ref=e211]: 地面兵装Ⅱ
+          - generic [ref=e212]: +5.90%
+        - generic [ref=e213]:
+          - generic [ref=e214]: "3"
+          - generic [ref=e215]: 化妆品制造及其他
+          - generic [ref=e216]: +5.27%
+        - generic [ref=e217]:
+          - generic [ref=e218]: "4"
+          - generic [ref=e219]: 化妆品
+          - generic [ref=e220]: +2.96%
+        - generic [ref=e221]:
+          - generic [ref=e222]: "5"
+          - generic [ref=e223]: 其他橡胶制品
+          - generic [ref=e224]: +2.56%
+        - generic [ref=e225]:
+          - generic [ref=e226]: "6"
+          - generic [ref=e227]: 玻纤制造
+          - generic [ref=e228]: +2.41%
+        - generic [ref=e229]:
+          - generic [ref=e230]: "7"
+          - generic [ref=e231]: 鞋帽及其他
+          - generic [ref=e232]: +2.40%
+        - generic [ref=e233]:
+          - generic [ref=e234]: "8"
+          - generic [ref=e235]: 品牌消费电子
+          - generic [ref=e236]: +2.25%
+        - generic [ref=e237]:
+          - generic [ref=e238]: "9"
+          - generic [ref=e239]: 人工景区
+          - generic [ref=e240]: +1.96%
+        - generic [ref=e241]:
+          - generic [ref=e242]: "10"
+          - generic [ref=e243]: 宠物食品
+          - generic [ref=e244]: +1.94%
+        - generic [ref=e245]:
+          - generic [ref=e246]: "11"
+          - generic [ref=e247]: 线缆部件及其他
+          - generic [ref=e248]: +1.62%
+        - generic [ref=e249]:
+          - generic [ref=e250]: "12"
+          - generic [ref=e251]: 橡胶
+          - generic [ref=e252]: +1.56%
+    - heading "近期财报" [level=2] [ref=e255]
+    - generic [ref=e262]:
+      - heading "资讯 (8)" [level=2] [ref=e263]
+      - generic [ref=e264]:
+        - link "澎湃新闻 · 09-02 15:39 中俄领导人讨论了中美俄三方在APEC会晤可能性？外交部回应 【中俄领导人讨论了中美俄三方在APEC会晤可能性？外交部：目前无可提供的信息】9月2日，外交部发言人郭嘉昆主持例行记者会。彭博社记者提问，据报道，俄罗斯总统普京在与中方领导人会谈期间，讨论了中俄美在今年中国主办亚太经合组织（APEC）峰会期间举行三方会晤的可能性。请问外交部对此有何评论？“关于你提到的问题，我目前没有可以提供的信息。”郭嘉昆表示，作为今年亚太经合组织东道主，中方愿同各方一道，共同推动APEC中国年圆满成功，为促进亚太和世界经济增长作出新贡献。" [ref=e265] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023862745477.html
+          - generic [ref=e266]:
+            - generic [ref=e267]: 澎湃新闻
+            - generic [ref=e268]: ·
+            - generic [ref=e269]: 09-02 15:39
+          - heading "中俄领导人讨论了中美俄三方在APEC会晤可能性？外交部回应" [level=4] [ref=e270]
+          - paragraph [ref=e271]: 【中俄领导人讨论了中美俄三方在APEC会晤可能性？外交部：目前无可提供的信息】9月2日，外交部发言人郭嘉昆主持例行记者会。彭博社记者提问，据报道，俄罗斯总统普京在与中方领导人会谈期间，讨论了中俄美在今年中国主办亚太经合组织（APEC）峰会期间举行三方会晤的可能性。请问外交部对此有何评论？“关于你提到的问题，我目前没有可以提供的信息。”郭嘉昆表示，作为今年亚太经合组织东道主，中方愿同各方一道，共同推动APEC中国年圆满成功，为促进亚太和世界经济增长作出新贡献。
+        - link "财联社 · 09-02 20:27 美联储“三把手”威廉姆斯：通胀呈缓慢下行趋势 利率处于良好水平 【纽约联储主席威廉姆斯：通胀呈缓慢下行趋势 利率处于良好水平】纽约联储主席威廉姆斯称，近期美国通胀数据令人鼓舞，通胀呈缓慢下行趋势，利率处于良好水平。" [ref=e272] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023862961071.html
+          - generic [ref=e273]:
+            - generic [ref=e274]: 财联社
+            - generic [ref=e275]: ·
+            - generic [ref=e276]: 09-02 20:27
+          - heading "美联储“三把手”威廉姆斯：通胀呈缓慢下行趋势 利率处于良好水平" [level=4] [ref=e277]
+          - paragraph [ref=e278]: 【纽约联储主席威廉姆斯：通胀呈缓慢下行趋势 利率处于良好水平】纽约联储主席威廉姆斯称，近期美国通胀数据令人鼓舞，通胀呈缓慢下行趋势，利率处于良好水平。
+        - link "东方财富Choice数据 · 09-03 01:13 “小非农”低于预期 美股三大指数集体上涨 国际金银价格走高 美东时间周三，美股三大指数集体上涨。截至发稿，道指涨0.46%，纳指涨0.32%，标普500指数涨0.43%。" [ref=e279] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023863022630.html
+          - generic [ref=e280]:
+            - generic [ref=e281]: 东方财富Choice数据
+            - generic [ref=e282]: ·
+            - generic [ref=e283]: 09-03 01:13
+          - heading "“小非农”低于预期 美股三大指数集体上涨 国际金银价格走高" [level=4] [ref=e284]
+          - paragraph [ref=e285]: 美东时间周三，美股三大指数集体上涨。截至发稿，道指涨0.46%，纳指涨0.32%，标普500指数涨0.43%。
+        - link "财联社 · 09-02 16:15 “词元通缩”发酵！Token支出指数创下历史新低 自峰值已腰斩 【“词元通缩”发酵！Token支出指数创下历史新低 自峰值已腰斩】数据显示，由情报公司Silicon Data编制的LLM Token支出指数——该指数衡量全市场每百万LLM Token的平均支付价格，在周一跌至了97美分。这是该指数自去年年底推出以来的最低读数，较今年夏季早些时候创下的高点已下跌超过一半。" [ref=e286] [cursor=pointer]:
+          - /url: http://stock.eastmoney.com/a/202609023862772039.html
+          - generic [ref=e287]:
+            - generic [ref=e288]: 财联社
+            - generic [ref=e289]: ·
+            - generic [ref=e290]: 09-02 16:15
+          - heading "“词元通缩”发酵！Token支出指数创下历史新低 自峰值已腰斩" [level=4] [ref=e291]
+          - paragraph [ref=e292]: 【“词元通缩”发酵！Token支出指数创下历史新低 自峰值已腰斩】数据显示，由情报公司Silicon Data编制的LLM Token支出指数——该指数衡量全市场每百万LLM Token的平均支付价格，在周一跌至了97美分。这是该指数自去年年底推出以来的最低读数，较今年夏季早些时候创下的高点已下跌超过一半。
+        - link "央行网站 · 09-02 18:05 潘功胜出席G20财长和央行行长会议：继续实施好适度宽松的货币政策 【央行行长潘功胜出席二十国集团财长和央行行长会议】2026年8月31日至9月1日，二十国集团（G20）在美国阿什维尔召开今年第二次财长和央行行长会议。会议讨论了全球经济形势与前景、促进经济增长、全球失衡、发展中国家主权债务等议题。中国人民银行行长潘功胜出席会议并发言。" [ref=e293] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023862861277.html
+          - generic [ref=e294]:
+            - generic [ref=e295]: 央行网站
+            - generic [ref=e296]: ·
+            - generic [ref=e297]: 09-02 18:05
+          - heading "潘功胜出席G20财长和央行行长会议：继续实施好适度宽松的货币政策" [level=4] [ref=e298]
+          - paragraph [ref=e299]: 【央行行长潘功胜出席二十国集团财长和央行行长会议】2026年8月31日至9月1日，二十国集团（G20）在美国阿什维尔召开今年第二次财长和央行行长会议。会议讨论了全球经济形势与前景、促进经济增长、全球失衡、发展中国家主权债务等议题。中国人民银行行长潘功胜出席会议并发言。
+        - link "中国证券报 · 09-02 21:21 单周新发基金数量创历史纪录 新增资金要来了 【单周新发基金数量创历史纪录 新增资金要来了】数据显示，本周共有82只新基金启动发行，创下单周新发基金数量历史新高，较前两周各三十余只的发行数量明显扩容。" [ref=e300] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023863019532.html
+          - generic [ref=e301]:
+            - generic [ref=e302]: 中国证券报
+            - generic [ref=e303]: ·
+            - generic [ref=e304]: 09-02 21:21
+          - heading "单周新发基金数量创历史纪录 新增资金要来了" [level=4] [ref=e305]
+          - paragraph [ref=e306]: 【单周新发基金数量创历史纪录 新增资金要来了】数据显示，本周共有82只新基金启动发行，创下单周新发基金数量历史新高，较前两周各三十余只的发行数量明显扩容。
+        - link "界面新闻 · 09-02 20:15 美国8月ADP就业人数增加3.8万人 低于市场预期和前值 ADP称美国8月份就业人口增加3.8万人，市场预期为增加4.7万人，前值为增加4.4万人。" [ref=e307] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023862951655.html
+          - generic [ref=e308]:
+            - generic [ref=e309]: 界面新闻
+            - generic [ref=e310]: ·
+            - generic [ref=e311]: 09-02 20:15
+          - heading "美国8月ADP就业人数增加3.8万人 低于市场预期和前值" [level=4] [ref=e312]
+          - paragraph [ref=e313]: ADP称美国8月份就业人口增加3.8万人，市场预期为增加4.7万人，前值为增加4.4万人。
+        - link "中国基金报 · 09-02 20:07 大反转！全球股市深“V”拉升 美国国债收益率跳水 美国2-30年期国债收益率均大幅走低，美国30年期国债收益率从日内高点下跌5个基点，现报5.25%。" [ref=e314] [cursor=pointer]:
+          - /url: http://finance.eastmoney.com/a/202609023862949218.html
+          - generic [ref=e315]:
+            - generic [ref=e316]: 中国基金报
+            - generic [ref=e317]: ·
+            - generic [ref=e318]: 09-02 20:07
+          - heading "大反转！全球股市深“V”拉升 美国国债收益率跳水" [level=4] [ref=e319]
+          - paragraph [ref=e320]: 美国2-30年期国债收益率均大幅走低，美国30年期国债收益率从日内高点下跌5个基点，现报5.25%。
+    - generic [ref=e321]:
+      - heading "研报 (6)" [level=2] [ref=e322]
+      - generic [ref=e323]:
+        - link "· 2026-09-02 2026年半年报点评：26Q2盈利环比有所改善，收购商都种业增强核心竞争力" [ref=e324] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e325]:
+            - generic [ref=e326]:
+              - generic [ref=e327]: ·
+              - generic [ref=e328]: 2026-09-02
+            - heading "2026年半年报点评：26Q2盈利环比有所改善，收购商都种业增强核心竞争力" [level=4] [ref=e329]
+        - link "· 2026-09-02 业绩稳中有增，半导体真空泵持续突破" [ref=e330] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e331]:
+            - generic [ref=e332]:
+              - generic [ref=e333]: ·
+              - generic [ref=e334]: 2026-09-02
+            - heading "业绩稳中有增，半导体真空泵持续突破" [level=4] [ref=e335]
+        - link "· 2026-09-02 2026年中报点评：单Q2业绩环比改善，海外配电订单维持较快增长" [ref=e336] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e337]:
+            - generic [ref=e338]:
+              - generic [ref=e339]: ·
+              - generic [ref=e340]: 2026-09-02
+            - heading "2026年中报点评：单Q2业绩环比改善，海外配电订单维持较快增长" [level=4] [ref=e341]
+        - link "· 2026-09-02 2026年半年报点评：汽车主业竞争加剧，积极布局轴承+机器人新材料产业" [ref=e342] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - generic [ref=e345]: ·
+              - generic [ref=e346]: 2026-09-02
+            - heading "2026年半年报点评：汽车主业竞争加剧，积极布局轴承+机器人新材料产业" [level=4] [ref=e347]
+        - link "· 2026-09-02 2026年半年报点评：上网电量下滑电价略增，火电机组质量领先" [ref=e348] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e349]:
+            - generic [ref=e350]:
+              - generic [ref=e351]: ·
+              - generic [ref=e352]: 2026-09-02
+            - heading "2026年半年报点评：上网电量下滑电价略增，火电机组质量领先" [level=4] [ref=e353]
+        - link "· 2026-09-02 公司简评报告：息差边际趋稳，财富管理修复延续" [ref=e354] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e355]:
+            - generic [ref=e356]:
+              - generic [ref=e357]: ·
+              - generic [ref=e358]: 2026-09-02
+            - heading "公司简评报告：息差边际趋稳，财富管理修复延续" [level=4] [ref=e359]
+    - generic [ref=e360]:
+      - generic [ref=e361]:
+        - generic [ref=e362]:
+          - heading "涨停板" [level=3] [ref=e363]
+          - generic [ref=e364]: 64 只
+        - generic [ref=e365]:
+          - link "维琪科技 bj.920176 70.66 +29.98%" [ref=e366] [cursor=pointer]:
+            - /url: /stock/bj920176/
+            - generic [ref=e367]:
+              - generic [ref=e368]: 维琪科技
+              - generic [ref=e369]: bj.920176
+            - generic [ref=e370]: "70.66"
+            - generic [ref=e371]: +29.98%
+          - link "晟楠科技 bj.920006 22.21 +29.96%" [ref=e372] [cursor=pointer]:
+            - /url: /stock/bj920006/
+            - generic [ref=e373]:
+              - generic [ref=e374]: 晟楠科技
+              - generic [ref=e375]: bj.920006
+            - generic [ref=e376]: "22.21"
+            - generic [ref=e377]: +29.96%
+          - link "智新电子 bj.920212 14.10 +29.95%" [ref=e378] [cursor=pointer]:
+            - /url: /stock/bj920212/
+            - generic [ref=e379]:
+              - generic [ref=e380]: 智新电子
+              - generic [ref=e381]: bj.920212
+            - generic [ref=e382]: "14.10"
+            - generic [ref=e383]: +29.95%
+          - link "*ST宝馨 sz.002514 2.27 +10.19%" [ref=e384] [cursor=pointer]:
+            - /url: /stock/sz002514/
+            - generic [ref=e385]:
+              - generic [ref=e386]: "*ST宝馨"
+              - generic [ref=e387]: sz.002514
+            - generic [ref=e388]: "2.27"
+            - generic [ref=e389]: +10.19%
+          - link "信达地产 sh.600657 3.05 +10.11%" [ref=e390] [cursor=pointer]:
+            - /url: /stock/sh600657/
+            - generic [ref=e391]:
+              - generic [ref=e392]: 信达地产
+              - generic [ref=e393]: sh.600657
+            - generic [ref=e394]: "3.05"
+            - generic [ref=e395]: +10.11%
+          - link "大晟文化 sh.600892 5.35 +10.08%" [ref=e396] [cursor=pointer]:
+            - /url: /stock/sh600892/
+            - generic [ref=e397]:
+              - generic [ref=e398]: 大晟文化
+              - generic [ref=e399]: sh.600892
+            - generic [ref=e400]: "5.35"
+            - generic [ref=e401]: +10.08%
+          - link "茂业商业 sh.600828 4.81 +10.07%" [ref=e402] [cursor=pointer]:
+            - /url: /stock/sh600828/
+            - generic [ref=e403]:
+              - generic [ref=e404]: 茂业商业
+              - generic [ref=e405]: sh.600828
+            - generic [ref=e406]: "4.81"
+            - generic [ref=e407]: +10.07%
+          - link "云南旅游 sz.002059 5.25 +10.06%" [ref=e408] [cursor=pointer]:
+            - /url: /stock/sz002059/
+            - generic [ref=e409]:
+              - generic [ref=e410]: 云南旅游
+              - generic [ref=e411]: sz.002059
+            - generic [ref=e412]: "5.25"
+            - generic [ref=e413]: +10.06%
+          - link "天禾股份 sz.002999 7.33 +10.06%" [ref=e414] [cursor=pointer]:
+            - /url: /stock/sz002999/
+            - generic [ref=e415]:
+              - generic [ref=e416]: 天禾股份
+              - generic [ref=e417]: sz.002999
+            - generic [ref=e418]: "7.33"
+            - generic [ref=e419]: +10.06%
+          - link "京能热力 sz.002893 11.17 +10.05%" [ref=e420] [cursor=pointer]:
+            - /url: /stock/sz002893/
+            - generic [ref=e421]:
+              - generic [ref=e422]: 京能热力
+              - generic [ref=e423]: sz.002893
+            - generic [ref=e424]: "11.17"
+            - generic [ref=e425]: +10.05%
+          - link "华昌化工 sz.002274 7.12 +10.05%" [ref=e426] [cursor=pointer]:
+            - /url: /stock/sz002274/
+            - generic [ref=e427]:
+              - generic [ref=e428]: 华昌化工
+              - generic [ref=e429]: sz.002274
+            - generic [ref=e430]: "7.12"
+            - generic [ref=e431]: +10.05%
+          - link "雪人集团 sz.002639 13.27 +10.03%" [ref=e432] [cursor=pointer]:
+            - /url: /stock/sz002639/
+            - generic [ref=e433]:
+              - generic [ref=e434]: 雪人集团
+              - generic [ref=e435]: sz.002639
+            - generic [ref=e436]: "13.27"
+            - generic [ref=e437]: +10.03%
+          - link "国晟科技 sh.603778 10.75 +10.03%" [ref=e438] [cursor=pointer]:
+            - /url: /stock/sh603778/
+            - generic [ref=e439]:
+              - generic [ref=e440]: 国晟科技
+              - generic [ref=e441]: sh.603778
+            - generic [ref=e442]: "10.75"
+            - generic [ref=e443]: +10.03%
+          - link "深圳新星 sh.603978 22.61 +10.02%" [ref=e444] [cursor=pointer]:
+            - /url: /stock/sh603978/
+            - generic [ref=e445]:
+              - generic [ref=e446]: 深圳新星
+              - generic [ref=e447]: sh.603978
+            - generic [ref=e448]: "22.61"
+            - generic [ref=e449]: +10.02%
+          - link "一彬科技 sz.001278 18.22 +10.02%" [ref=e450] [cursor=pointer]:
+            - /url: /stock/sz001278/
+            - generic [ref=e451]:
+              - generic [ref=e452]: 一彬科技
+              - generic [ref=e453]: sz.001278
+            - generic [ref=e454]: "18.22"
+            - generic [ref=e455]: +10.02%
+          - link "九鼎新材 sz.002201 9.22 +10.02%" [ref=e456] [cursor=pointer]:
+            - /url: /stock/sz002201/
+            - generic [ref=e457]:
+              - generic [ref=e458]: 九鼎新材
+              - generic [ref=e459]: sz.002201
+            - generic [ref=e460]: "9.22"
+            - generic [ref=e461]: +10.02%
+          - link "光洋股份 sz.002708 14.16 +10.02%" [ref=e462] [cursor=pointer]:
+            - /url: /stock/sz002708/
+            - generic [ref=e463]:
+              - generic [ref=e464]: 光洋股份
+              - generic [ref=e465]: sz.002708
+            - generic [ref=e466]: "14.16"
+            - generic [ref=e467]: +10.02%
+          - link "道明光学 sz.002632 9.88 +10.02%" [ref=e468] [cursor=pointer]:
+            - /url: /stock/sz002632/
+            - generic [ref=e469]:
+              - generic [ref=e470]: 道明光学
+              - generic [ref=e471]: sz.002632
+            - generic [ref=e472]: "9.88"
+            - generic [ref=e473]: +10.02%
+          - link "龙版传媒 sh.605577 12.85 +10.02%" [ref=e474] [cursor=pointer]:
+            - /url: /stock/sh605577/
+            - generic [ref=e475]:
+              - generic [ref=e476]: 龙版传媒
+              - generic [ref=e477]: sh.605577
+            - generic [ref=e478]: "12.85"
+            - generic [ref=e479]: +10.02%
+          - link "恒宝股份 sz.002104 13.51 +10.02%" [ref=e480] [cursor=pointer]:
+            - /url: /stock/sz002104/
+            - generic [ref=e481]:
+              - generic [ref=e482]: 恒宝股份
+              - generic [ref=e483]: sz.002104
+            - generic [ref=e484]: "13.51"
+            - generic [ref=e485]: +10.02%
+          - link "播恩集团 sz.001366 14.50 +10.02%" [ref=e486] [cursor=pointer]:
+            - /url: /stock/sz001366/
+            - generic [ref=e487]:
+              - generic [ref=e488]: 播恩集团
+              - generic [ref=e489]: sz.001366
+            - generic [ref=e490]: "14.50"
+            - generic [ref=e491]: +10.02%
+          - link "大位科技 sh.600589 8.68 +10.01%" [ref=e492] [cursor=pointer]:
+            - /url: /stock/sh600589/
+            - generic [ref=e493]:
+              - generic [ref=e494]: 大位科技
+              - generic [ref=e495]: sh.600589
+            - generic [ref=e496]: "8.68"
+            - generic [ref=e497]: +10.01%
+          - link "博云新材 sz.002297 20.00 +10.01%" [ref=e498] [cursor=pointer]:
+            - /url: /stock/sz002297/
+            - generic [ref=e499]:
+              - generic [ref=e500]: 博云新材
+              - generic [ref=e501]: sz.002297
+            - generic [ref=e502]: "20.00"
+            - generic [ref=e503]: +10.01%
+          - link "竞业达 sz.003005 20.00 +10.01%" [ref=e504] [cursor=pointer]:
+            - /url: /stock/sz003005/
+            - generic [ref=e505]:
+              - generic [ref=e506]: 竞业达
+              - generic [ref=e507]: sz.003005
+            - generic [ref=e508]: "20.00"
+            - generic [ref=e509]: +10.01%
+          - link "国芳集团 sh.601086 11.10 +10.01%" [ref=e510] [cursor=pointer]:
+            - /url: /stock/sh601086/
+            - generic [ref=e511]:
+              - generic [ref=e512]: 国芳集团
+              - generic [ref=e513]: sh.601086
+            - generic [ref=e514]: "11.10"
+            - generic [ref=e515]: +10.01%
+          - link "哈森股份 sh.603958 23.85 +10.01%" [ref=e516] [cursor=pointer]:
+            - /url: /stock/sh603958/
+            - generic [ref=e517]:
+              - generic [ref=e518]: 哈森股份
+              - generic [ref=e519]: sh.603958
+            - generic [ref=e520]: "23.85"
+            - generic [ref=e521]: +10.01%
+          - link "内蒙一机 sh.600967 13.41 +10.01%" [ref=e522] [cursor=pointer]:
+            - /url: /stock/sh600967/
+            - generic [ref=e523]:
+              - generic [ref=e524]: 内蒙一机
+              - generic [ref=e525]: sh.600967
+            - generic [ref=e526]: "13.41"
+            - generic [ref=e527]: +10.01%
+          - link "金帝股份 sh.603270 31.77 +10.01%" [ref=e528] [cursor=pointer]:
+            - /url: /stock/sh603270/
+            - generic [ref=e529]:
+              - generic [ref=e530]: 金帝股份
+              - generic [ref=e531]: sh.603270
+            - generic [ref=e532]: "31.77"
+            - generic [ref=e533]: +10.01%
+          - link "建设工业 sz.002265 21.44 +10.01%" [ref=e534] [cursor=pointer]:
+            - /url: /stock/sz002265/
+            - generic [ref=e535]:
+              - generic [ref=e536]: 建设工业
+              - generic [ref=e537]: sz.002265
+            - generic [ref=e538]: "21.44"
+            - generic [ref=e539]: +10.01%
+          - link "ST东尼 sh.603595 30.24 +10.00%" [ref=e540] [cursor=pointer]:
+            - /url: /stock/sh603595/
+            - generic [ref=e541]:
+              - generic [ref=e542]: ST东尼
+              - generic [ref=e543]: sh.603595
+            - generic [ref=e544]: "30.24"
+            - generic [ref=e545]: +10.00%
+          - link "长城军工 sh.601606 36.62 +10.00%" [ref=e546] [cursor=pointer]:
+            - /url: /stock/sh601606/
+            - generic [ref=e547]:
+              - generic [ref=e548]: 长城军工
+              - generic [ref=e549]: sh.601606
+            - generic [ref=e550]: "36.62"
+            - generic [ref=e551]: +10.00%
+          - link "盛景微 sh.603375 43.33 +10.00%" [ref=e552] [cursor=pointer]:
+            - /url: /stock/sh603375/
+            - generic [ref=e553]:
+              - generic [ref=e554]: 盛景微
+              - generic [ref=e555]: sh.603375
+            - generic [ref=e556]: "43.33"
+            - generic [ref=e557]: +10.00%
+          - link "飞龙股份 sz.002536 58.07 +10.00%" [ref=e558] [cursor=pointer]:
+            - /url: /stock/sz002536/
+            - generic [ref=e559]:
+              - generic [ref=e560]: 飞龙股份
+              - generic [ref=e561]: sz.002536
+            - generic [ref=e562]: "58.07"
+            - generic [ref=e563]: +10.00%
+          - link "小方制药 sh.603207 27.94 +10.00%" [ref=e564] [cursor=pointer]:
+            - /url: /stock/sh603207/
+            - generic [ref=e565]:
+              - generic [ref=e566]: 小方制药
+              - generic [ref=e567]: sh.603207
+            - generic [ref=e568]: "27.94"
+            - generic [ref=e569]: +10.00%
+          - link "梦天家居 sh.603216 24.09 +10.00%" [ref=e570] [cursor=pointer]:
+            - /url: /stock/sh603216/
+            - generic [ref=e571]:
+              - generic [ref=e572]: 梦天家居
+              - generic [ref=e573]: sh.603216
+            - generic [ref=e574]: "24.09"
+            - generic [ref=e575]: +10.00%
+          - link "德宏股份 sh.603701 21.23 +10.00%" [ref=e576] [cursor=pointer]:
+            - /url: /stock/sh603701/
+            - generic [ref=e577]:
+              - generic [ref=e578]: 德宏股份
+              - generic [ref=e579]: sh.603701
+            - generic [ref=e580]: "21.23"
+            - generic [ref=e581]: +10.00%
+          - link "神马电力 sh.603530 50.39 +10.00%" [ref=e582] [cursor=pointer]:
+            - /url: /stock/sh603530/
+            - generic [ref=e583]:
+              - generic [ref=e584]: 神马电力
+              - generic [ref=e585]: sh.603530
+            - generic [ref=e586]: "50.39"
+            - generic [ref=e587]: +10.00%
+          - link "高新发展 sz.000628 54.79 +10.00%" [ref=e588] [cursor=pointer]:
+            - /url: /stock/sz000628/
+            - generic [ref=e589]:
+              - generic [ref=e590]: 高新发展
+              - generic [ref=e591]: sz.000628
+            - generic [ref=e592]: "54.79"
+            - generic [ref=e593]: +10.00%
+          - link "力鼎光电 sh.605118 34.44 +10.00%" [ref=e594] [cursor=pointer]:
+            - /url: /stock/sh605118/
+            - generic [ref=e595]:
+              - generic [ref=e596]: 力鼎光电
+              - generic [ref=e597]: sh.605118
+            - generic [ref=e598]: "34.44"
+            - generic [ref=e599]: +10.00%
+          - link "联域股份 sz.001326 73.40 +10.00%" [ref=e600] [cursor=pointer]:
+            - /url: /stock/sz001326/
+            - generic [ref=e601]:
+              - generic [ref=e602]: 联域股份
+              - generic [ref=e603]: sz.001326
+            - generic [ref=e604]: "73.40"
+            - generic [ref=e605]: +10.00%
+          - link "康隆达 sh.603665 22.56 +9.99%" [ref=e606] [cursor=pointer]:
+            - /url: /stock/sh603665/
+            - generic [ref=e607]:
+              - generic [ref=e608]: 康隆达
+              - generic [ref=e609]: sh.603665
+            - generic [ref=e610]: "22.56"
+            - generic [ref=e611]: +9.99%
+          - link "山东玻纤 sh.605006 15.96 +9.99%" [ref=e612] [cursor=pointer]:
+            - /url: /stock/sh605006/
+            - generic [ref=e613]:
+              - generic [ref=e614]: 山东玻纤
+              - generic [ref=e615]: sh.605006
+            - generic [ref=e616]: "15.96"
+            - generic [ref=e617]: +9.99%
+          - link "杭电股份 sh.603618 37.22 +9.99%" [ref=e618] [cursor=pointer]:
+            - /url: /stock/sh603618/
+            - generic [ref=e619]:
+              - generic [ref=e620]: 杭电股份
+              - generic [ref=e621]: sh.603618
+            - generic [ref=e622]: "37.22"
+            - generic [ref=e623]: +9.99%
+          - link "沃特股份 sz.002886 30.84 +9.99%" [ref=e624] [cursor=pointer]:
+            - /url: /stock/sz002886/
+            - generic [ref=e625]:
+              - generic [ref=e626]: 沃特股份
+              - generic [ref=e627]: sz.002886
+            - generic [ref=e628]: "30.84"
+            - generic [ref=e629]: +9.99%
+          - link "顺控发展 sz.003039 13.77 +9.98%" [ref=e630] [cursor=pointer]:
+            - /url: /stock/sz003039/
+            - generic [ref=e631]:
+              - generic [ref=e632]: 顺控发展
+              - generic [ref=e633]: sz.003039
+            - generic [ref=e634]: "13.77"
+            - generic [ref=e635]: +9.98%
+          - link "远东股份 sh.600869 19.50 +9.98%" [ref=e636] [cursor=pointer]:
+            - /url: /stock/sh600869/
+            - generic [ref=e637]:
+              - generic [ref=e638]: 远东股份
+              - generic [ref=e639]: sh.600869
+            - generic [ref=e640]: "19.50"
+            - generic [ref=e641]: +9.98%
+          - link "石化机械 sz.000852 6.06 +9.98%" [ref=e642] [cursor=pointer]:
+            - /url: /stock/sz000852/
+            - generic [ref=e643]:
+              - generic [ref=e644]: 石化机械
+              - generic [ref=e645]: sz.000852
+            - generic [ref=e646]: "6.06"
+            - generic [ref=e647]: +9.98%
+          - link "九牧王 sh.601566 10.36 +9.98%" [ref=e648] [cursor=pointer]:
+            - /url: /stock/sh601566/
+            - generic [ref=e649]:
+              - generic [ref=e650]: 九牧王
+              - generic [ref=e651]: sh.601566
+            - generic [ref=e652]: "10.36"
+            - generic [ref=e653]: +9.98%
+          - link "英 力 特 sz.000635 7.94 +9.97%" [ref=e654] [cursor=pointer]:
+            - /url: /stock/sz000635/
+            - generic [ref=e655]:
+              - generic [ref=e656]: 英 力 特
+              - generic [ref=e657]: sz.000635
+            - generic [ref=e658]: "7.94"
+            - generic [ref=e659]: +9.97%
+          - link "集泰股份 sz.002909 7.28 +9.97%" [ref=e660] [cursor=pointer]:
+            - /url: /stock/sz002909/
+            - generic [ref=e661]:
+              - generic [ref=e662]: 集泰股份
+              - generic [ref=e663]: sz.002909
+            - generic [ref=e664]: "7.28"
+            - generic [ref=e665]: +9.97%
+          - link "新赛股份 sh.600540 6.73 +9.97%" [ref=e666] [cursor=pointer]:
+            - /url: /stock/sh600540/
+            - generic [ref=e667]:
+              - generic [ref=e668]: 新赛股份
+              - generic [ref=e669]: sh.600540
+            - generic [ref=e670]: "6.73"
+            - generic [ref=e671]: +9.97%
+          - link "香溢融通 sh.600830 10.15 +9.97%" [ref=e672] [cursor=pointer]:
+            - /url: /stock/sh600830/
+            - generic [ref=e673]:
+              - generic [ref=e674]: 香溢融通
+              - generic [ref=e675]: sh.600830
+            - generic [ref=e676]: "10.15"
+            - generic [ref=e677]: +9.97%
+          - link "贵州燃气 sh.600903 7.07 +9.95%" [ref=e678] [cursor=pointer]:
+            - /url: /stock/sh600903/
+            - generic [ref=e679]:
+              - generic [ref=e680]: 贵州燃气
+              - generic [ref=e681]: sh.600903
+            - generic [ref=e682]: "7.07"
+            - generic [ref=e683]: +9.95%
+          - link "太阳电缆 sz.002300 7.63 +9.94%" [ref=e684] [cursor=pointer]:
+            - /url: /stock/sz002300/
+            - generic [ref=e685]:
+              - generic [ref=e686]: 太阳电缆
+              - generic [ref=e687]: sz.002300
+            - generic [ref=e688]: "7.63"
+            - generic [ref=e689]: +9.94%
+          - link "欢瑞世纪 sz.000892 5.20 +9.94%" [ref=e690] [cursor=pointer]:
+            - /url: /stock/sz000892/
+            - generic [ref=e691]:
+              - generic [ref=e692]: 欢瑞世纪
+              - generic [ref=e693]: sz.000892
+            - generic [ref=e694]: "5.20"
+            - generic [ref=e695]: +9.94%
+          - link "ST雪浪 sz.300385 14.10 +7.63%" [ref=e696] [cursor=pointer]:
+            - /url: /stock/sz300385/
+            - generic [ref=e697]:
+              - generic [ref=e698]: ST雪浪
+              - generic [ref=e699]: sz.300385
+            - generic [ref=e700]: "14.10"
+            - generic [ref=e701]: +7.63%
+          - link "*ST高科 sh.600730 10.14 +7.08%" [ref=e702] [cursor=pointer]:
+            - /url: /stock/sh600730/
+            - generic [ref=e703]:
+              - generic [ref=e704]: "*ST高科"
+              - generic [ref=e705]: sh.600730
+            - generic [ref=e706]: "10.14"
+            - generic [ref=e707]: +7.08%
+          - link "*ST联翔 sh.603272 17.38 +7.02%" [ref=e708] [cursor=pointer]:
+            - /url: /stock/sh603272/
+            - generic [ref=e709]:
+              - generic [ref=e710]: "*ST联翔"
+              - generic [ref=e711]: sh.603272
+            - generic [ref=e712]: "17.38"
+            - generic [ref=e713]: +7.02%
+          - link "ST嘉澳 sh.603822 66.72 +6.38%" [ref=e714] [cursor=pointer]:
+            - /url: /stock/sh603822/
+            - generic [ref=e715]:
+              - generic [ref=e716]: ST嘉澳
+              - generic [ref=e717]: sh.603822
+            - generic [ref=e718]: "66.72"
+            - generic [ref=e719]: +6.38%
+          - link "ST际华 sh.601718 2.01 +5.24%" [ref=e720] [cursor=pointer]:
+            - /url: /stock/sh601718/
+            - generic [ref=e721]:
+              - generic [ref=e722]: ST际华
+              - generic [ref=e723]: sh.601718
+            - generic [ref=e724]: "2.01"
+            - generic [ref=e725]: +5.24%
+          - link "*ST皇庭 sz.000056 2.33 +4.96%" [ref=e726] [cursor=pointer]:
+            - /url: /stock/sz000056/
+            - generic [ref=e727]:
+              - generic [ref=e728]: "*ST皇庭"
+              - generic [ref=e729]: sz.000056
+            - generic [ref=e730]: "2.33"
+            - generic [ref=e731]: +4.96%
+          - link "*ST易录 sz.300212 8.33 +4.91%" [ref=e732] [cursor=pointer]:
+            - /url: /stock/sz300212/
+            - generic [ref=e733]:
+              - generic [ref=e734]: "*ST易录"
+              - generic [ref=e735]: sz.300212
+            - generic [ref=e736]: "8.33"
+            - generic [ref=e737]: +4.91%
+          - link "ST佳缘 sz.301117 15.23 +4.89%" [ref=e738] [cursor=pointer]:
+            - /url: /stock/sz301117/
+            - generic [ref=e739]:
+              - generic [ref=e740]: ST佳缘
+              - generic [ref=e741]: sz.301117
+            - generic [ref=e742]: "15.23"
+            - generic [ref=e743]: +4.89%
+          - link "*ST帅电 sh.605336 12.25 +4.88%" [ref=e744] [cursor=pointer]:
+            - /url: /stock/sh605336/
+            - generic [ref=e745]:
+              - generic [ref=e746]: "*ST帅电"
+              - generic [ref=e747]: sh.605336
+            - generic [ref=e748]: "12.25"
+            - generic [ref=e749]: +4.88%
+      - generic [ref=e750]:
+        - generic [ref=e751]:
+          - heading "跌停板" [level=3] [ref=e752]
+          - generic [ref=e753]: 13 只
+        - generic [ref=e754]:
+          - link "金浦钛业 sz.000545 2.13 -10.13%" [ref=e755] [cursor=pointer]:
+            - /url: /stock/sz000545/
+            - generic [ref=e756]:
+              - generic [ref=e757]: 金浦钛业
+              - generic [ref=e758]: sz.000545
+            - generic [ref=e759]: "2.13"
+            - generic [ref=e760]: "-10.13%"
+          - link "神奇制药 sh.600613 10.04 -10.04%" [ref=e761] [cursor=pointer]:
+            - /url: /stock/sh600613/
+            - generic [ref=e762]:
+              - generic [ref=e763]: 神奇制药
+              - generic [ref=e764]: sh.600613
+            - generic [ref=e765]: "10.04"
+            - generic [ref=e766]: "-10.04%"
+          - link "冀衡医药 sz.002742 5.03 -10.02%" [ref=e767] [cursor=pointer]:
+            - /url: /stock/sz002742/
+            - generic [ref=e768]:
+              - generic [ref=e769]: 冀衡医药
+              - generic [ref=e770]: sz.002742
+            - generic [ref=e771]: "5.03"
+            - generic [ref=e772]: "-10.02%"
+          - link "一鸣食品 sh.605179 31.20 -10.01%" [ref=e773] [cursor=pointer]:
+            - /url: /stock/sh605179/
+            - generic [ref=e774]:
+              - generic [ref=e775]: 一鸣食品
+              - generic [ref=e776]: sh.605179
+            - generic [ref=e777]: "31.20"
+            - generic [ref=e778]: "-10.01%"
+          - link "开开实业 sh.600272 18.08 -10.01%" [ref=e779] [cursor=pointer]:
+            - /url: /stock/sh600272/
+            - generic [ref=e780]:
+              - generic [ref=e781]: 开开实业
+              - generic [ref=e782]: sh.600272
+            - generic [ref=e783]: "18.08"
+            - generic [ref=e784]: "-10.01%"
+          - link "新农股份 sz.002942 19.88 -10.01%" [ref=e785] [cursor=pointer]:
+            - /url: /stock/sz002942/
+            - generic [ref=e786]:
+              - generic [ref=e787]: 新农股份
+              - generic [ref=e788]: sz.002942
+            - generic [ref=e789]: "19.88"
+            - generic [ref=e790]: "-10.01%"
+          - link "红四方 sh.603395 27.81 -10.00%" [ref=e791] [cursor=pointer]:
+            - /url: /stock/sh603395/
+            - generic [ref=e792]:
+              - generic [ref=e793]: 红四方
+              - generic [ref=e794]: sh.603395
+            - generic [ref=e795]: "27.81"
+            - generic [ref=e796]: "-10.00%"
+          - link "敦煌种业 sh.600354 8.21 -9.98%" [ref=e797] [cursor=pointer]:
+            - /url: /stock/sh600354/
+            - generic [ref=e798]:
+              - generic [ref=e799]: 敦煌种业
+              - generic [ref=e800]: sh.600354
+            - generic [ref=e801]: "8.21"
+            - generic [ref=e802]: "-9.98%"
+          - link "国投丰乐 sz.000713 6.43 -9.94%" [ref=e803] [cursor=pointer]:
+            - /url: /stock/sz000713/
+            - generic [ref=e804]:
+              - generic [ref=e805]: 国投丰乐
+              - generic [ref=e806]: sz.000713
+            - generic [ref=e807]: "6.43"
+            - generic [ref=e808]: "-9.94%"
+          - link "ST荃银 sz.300087 5.90 -6.65%" [ref=e809] [cursor=pointer]:
+            - /url: /stock/sz300087/
+            - generic [ref=e810]:
+              - generic [ref=e811]: ST荃银
+              - generic [ref=e812]: sz.300087
+            - generic [ref=e813]: "5.90"
+            - generic [ref=e814]: "-6.65%"
+          - link "*ST美芝 sz.002856 18.18 -5.75%" [ref=e815] [cursor=pointer]:
+            - /url: /stock/sz002856/
+            - generic [ref=e816]:
+              - generic [ref=e817]: "*ST美芝"
+              - generic [ref=e818]: sz.002856
+            - generic [ref=e819]: "18.18"
+            - generic [ref=e820]: "-5.75%"
+          - link "ST天际 sz.002759 15.85 -4.92%" [ref=e821] [cursor=pointer]:
+            - /url: /stock/sz002759/
+            - generic [ref=e822]:
+              - generic [ref=e823]: ST天际
+              - generic [ref=e824]: sz.002759
+            - generic [ref=e825]: "15.85"
+            - generic [ref=e826]: "-4.92%"
+          - link "ST西王 sz.000639 1.58 -4.82%" [ref=e827] [cursor=pointer]:
+            - /url: /stock/sz000639/
+            - generic [ref=e828]:
+              - generic [ref=e829]: ST西王
+              - generic [ref=e830]: sz.000639
+            - generic [ref=e831]: "1.58"
+            - generic [ref=e832]: "-4.82%"
+  - contentinfo [ref=e833]:
+    - generic [ref=e834]:
+      - generic [ref=e835]:
+        - generic [ref=e836]:
+          - generic [ref=e837]: 📊
+          - generic [ref=e839]: 爱看盘 · 每日复盘工具
+        - generic [ref=e840]:
+          - link "关于" [ref=e841] [cursor=pointer]:
+            - /url: /about/
+          - link "API" [ref=e842] [cursor=pointer]:
+            - /url: /api-docs/
+          - link "隐私" [ref=e843] [cursor=pointer]:
+            - /url: /privacy/
+          - link "协议" [ref=e844] [cursor=pointer]:
+            - /url: /terms/
+          - link "渝ICP备2026014729号-1" [ref=e845] [cursor=pointer]:
+            - /url: https://beian.miit.gov.cn/
+          - generic [ref=e846]: 数据：东方财富
+      - paragraph [ref=e847]: ⚠ 本站数据仅供参考，不构成投资建议

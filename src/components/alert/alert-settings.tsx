@@ -4,14 +4,29 @@ import { useState } from "react";
 import useSWR from "swr";
 import { Bell, MessageSquareText, Smartphone } from "lucide-react";
 import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
+import { ErrorState } from "@/components/ui/state";
 
 export function AlertSettings() {
-  const { data: settings, mutate } = useSWR("alert-settings", () => api.getAlertSettings(), { refreshInterval: 30000 });
+  const { user, loading: authLoading } = useAuth();
+  const { data: settings, mutate } = useSWR(
+    user ? ["alert-settings", user.user_id] : null,
+    () => api.getAlertSettings(),
+    { refreshInterval: 30000 }
+  );
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [permission, setPermission] = useState<NotificationPermission | "unsupported">(
     typeof window !== "undefined" && "Notification" in window ? Notification.permission : "unsupported"
   );
+
+  if (authLoading) {
+    return <div className="neo-skeleton h-28 rounded-xl" />;
+  }
+
+  if (!user) {
+    return <ErrorState title="通知设置不可用" description="账户初始化失败，请刷新页面后重试。" onRetry={() => window.location.reload()} />;
+  }
 
   async function toggleBrowser(value: boolean) {
     setSaving(true);
@@ -68,7 +83,7 @@ export function AlertSettings() {
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-[12px] font-medium text-neo-ink">浏览器通知</div>
-            <div className="text-[10px] text-neo-dim">{permission === "granted" ? "权限已开启" : "触发时在桌面弹出提醒"}</div>
+            <div className="text-[10px] text-neo-dim">{permission === "granted" ? "权限已开启，仅页面打开时提醒" : "开启后，页面打开时弹出提醒"}</div>
           </div>
           <label className="relative inline-flex shrink-0 cursor-pointer items-center">
             <input
@@ -90,7 +105,7 @@ export function AlertSettings() {
           <div className="min-w-0 flex-1">
             <div className="text-[12px] font-medium text-neo-ink">短信通知</div>
             <div className="truncate text-[10px] text-neo-dim">
-              {phoneVerified ? `绑定手机号 ${settings?.phone_masked || ""}` : "绑定手机号后可开启"}
+              {phoneVerified ? `绑定手机号 ${settings?.phone_masked || ""}，由服务端发送` : "绑定手机号后可开启"}
             </div>
           </div>
           <label className="relative inline-flex shrink-0 cursor-pointer items-center">
@@ -106,6 +121,9 @@ export function AlertSettings() {
           </label>
         </div>
       </div>
+      <p className="mt-3 text-[11px] leading-relaxed text-neo-dim">
+        浏览器通知依赖当前页面保持打开；离开页面后如需提醒，请绑定手机号并开启短信通知。
+      </p>
       {message && <p className="mt-2 text-[11px] text-neo-mid">{message}</p>}
     </section>
   );

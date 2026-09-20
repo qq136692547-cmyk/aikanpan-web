@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily aikanpan.top SEO health check
+
+[Timer]
+OnCalendar=*-*-* 08:30:00 Asia/Shanghai
+Persistent=true
+Unit=aikanpan-seo-status.service
+
+[Install]
+WantedBy=timers.target

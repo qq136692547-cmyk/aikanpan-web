@@ -40,7 +40,7 @@ export function PrimaryNavigation() {
             role="tab"
             aria-selected={context.scope === item.value}
             onClick={() => selectMode(item.value)}
-            className={`rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-all duration-200 ${
+            className={`inline-flex min-h-11 items-center rounded-full px-3.5 text-[13px] font-semibold transition-all duration-200 ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
@@ -54,12 +54,12 @@ export function PrimaryNavigation() {
       <nav className="flex items-center gap-1" aria-label="功能导航">
         {subnav.map((item) => {
           const href = item.path === "/" || item.path === "/about/" ? item.path : `${item.path}?market=${context.scope}`;
-          const active = isActive(pathname, context.activePath);
+          const active = isActive(pathname, item.path);
           return (
             <Link
               key={`${context.scope}-${item.path}`}
               href={href}
-              className={`rounded-full px-3 py-1.5 text-[13px] font-medium transition-all duration-200 ${
+              className={`inline-flex min-h-11 items-center rounded-full px-3 text-[13px] font-medium transition-all duration-200 ${
                 active ? "neo-chip-active" : "neo-chip"
               }`}
             >
@@ -94,7 +94,7 @@ export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
             type="button"
             aria-pressed={context.scope === item.value}
             onClick={() => go(item.value)}
-            className={`rounded-full px-4 py-2 text-[13px] font-semibold ${
+            className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[13px] font-semibold ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
@@ -105,13 +105,13 @@ export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
       <div className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
         {subnav.map((item) => {
           const href = item.path === "/" || item.path === "/about/" ? item.path : `${item.path}?market=${context.scope}`;
-          const active = isActive(pathname, context.activePath);
+          const active = isActive(pathname, item.path);
           return (
             <Link
               key={`${context.scope}-${item.path}-mobile`}
               href={href}
               onClick={onNavigate}
-              className={`rounded-full px-4 py-2 text-[13px] ${active ? "neo-chip-active" : "neo-chip"}`}
+              className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[13px] ${active ? "neo-chip-active" : "neo-chip"}`}
             >
               {item.label}
             </Link>

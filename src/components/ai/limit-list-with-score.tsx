@@ -21,14 +21,15 @@ export function LimitListWithScore({
   const [error, setError] = useState("");
   const [mode, setMode] = useState<"all" | "mine">("all");
 
-  const { isAuthenticated } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
   const { data: watchData } = useSWR(
-    isAuthenticated ? "dashboard-limit-watchlist" : null,
+    ready && user ? ["dashboard-limit-watchlist", user.user_id] : null,
     () => api.getWatchlist(),
     { refreshInterval: 30000 }
   );
   const { data: positionsData } = useSWR(
-    isAuthenticated ? "dashboard-limit-positions" : null,
+    ready && user ? ["dashboard-limit-positions", user.user_id] : null,
     () => api.getPositions(),
     { refreshInterval: 30000 }
   );

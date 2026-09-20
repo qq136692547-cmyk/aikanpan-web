@@ -1,0 +1,77 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [ref=e13]
+            - tab "美股" [active] [selected] [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e83] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=e84] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=e85] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=e86] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=e87] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=e22]:
+          - link "会员" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "研究" [level=1] [ref=e41]
+          - generic [ref=e42]: 美股
+        - paragraph [ref=e43]: 自选股、盘前计划、公司档案与投资论点
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e47]:
+            - link "持仓工具" [ref=e48] [cursor=pointer]:
+              - /url: /portfolio?market=us
+            - button "导出 Markdown" [ref=e49]
+          - generic [ref=e50]:
+            - button "自选" [ref=e51]
+            - button "盘前计划" [ref=e52]
+            - button "公司档案" [ref=e53]
+            - button "投资论点" [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - heading "自选股" [level=2] [ref=e57]
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - textbox "代码，如 AAPL" [ref=e88]
+                - textbox "名称（可选）" [ref=e61]
+                - button "添加" [ref=e62]
+              - button "自选加入计划" [ref=e63]
+              - button "AI 评分" [ref=e64]
+              - generic [ref=e65]: 0 只
+          - generic [ref=e66]: 暂无自选股
+    - contentinfo [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: 📊
+            - generic [ref=e73]: 爱看盘 · 每日复盘工具
+          - generic [ref=e74]:
+            - link "关于" [ref=e75] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e76] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e77] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e78] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e79] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e80]: 数据：东方财富
+        - paragraph [ref=e81]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e82]

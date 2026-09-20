@@ -1,0 +1,163 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e11]:
+          - link "升级 Pro" [ref=e12] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e15]: 会员
+          - link "登录 / 注册" [ref=e16] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e21]
+    - main [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - heading "贵州茅台" [level=1] [ref=e30]
+          - paragraph [ref=e31]: "600519"
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - generic [ref=e34]: "1260.54"
+            - generic [ref=e35]: +2.54 (+0.20%)
+          - button "添加 贵州茅台 到自选" [ref=e36]: 加自选
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - generic [ref=e42]: 今开
+            - generic [ref=e43]: "1257.98"
+          - generic [ref=e44]:
+            - generic [ref=e45]: 最高
+            - generic [ref=e46]: "1265.98"
+          - generic [ref=e47]:
+            - generic [ref=e48]: 最低
+            - generic [ref=e49]: "1254.00"
+          - generic [ref=e50]:
+            - generic [ref=e51]: 昨收
+            - generic [ref=e52]: "1258.00"
+          - generic [ref=e53]:
+            - generic [ref=e54]: 成交量
+            - generic [ref=e55]: 31.19万
+          - generic [ref=e56]:
+            - generic [ref=e57]: 成交额
+            - generic [ref=e58]: 3.93亿
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: 主力净流入
+            - generic [ref=e63]: "-2094.60万"
+          - generic [ref=e64]:
+            - generic [ref=e65]: 净流入占比
+            - generic [ref=e66]: "-5.40%"
+          - generic [ref=e67]:
+            - generic [ref=e68]: 超大单比
+            - generic [ref=e69]: "-4.50%"
+          - generic [ref=e70]:
+            - generic [ref=e71]: 大单比
+            - generic [ref=e72]: "-0.90%"
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - button "新闻/事件" [ref=e75]
+          - button "研报" [ref=e76]
+          - button "财务数据" [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e79]: 最新价格 1261.50，日内涨跌幅 0.28% ，短线节奏震荡。 主力资金流出约 0.07 亿，占比 2.02% 。 最近研报关注点：2026年中报点评：茅台酒稳健，系列酒主动调整
+          - generic [ref=e81]:
+            - generic [ref=e82]: 最新节奏
+            - generic [ref=e83]: 最新价格 1261.50，日内涨跌幅 0.28% ，短线节奏震荡。
+          - generic [ref=e85]:
+            - generic [ref=e86]: 资金风向
+            - generic [ref=e87]: 主力资金流出约 0.07 亿，占比 2.02% 。
+      - generic [ref=e88]:
+        - heading "技术指标" [level=3] [ref=e89]
+        - generic [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: MACD
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - generic [ref=e95]: DIF
+                - generic [ref=e96]: "-7.840"
+              - generic [ref=e97]:
+                - generic [ref=e98]: DEA
+                - generic [ref=e99]: "-2.657"
+              - generic [ref=e100]:
+                - generic [ref=e101]: MACD
+                - generic [ref=e102]: "-10.366"
+          - generic [ref=e103]:
+            - generic [ref=e104]: KDJ
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - generic [ref=e107]: K
+                - generic [ref=e108]: "26.54"
+              - generic [ref=e109]:
+                - generic [ref=e110]: D
+                - generic [ref=e111]: "32.13"
+              - generic [ref=e112]:
+                - generic [ref=e113]: J
+                - generic [ref=e114]: "15.36"
+          - generic [ref=e115]:
+            - generic [ref=e116]: RSI
+            - generic [ref=e118]:
+              - generic [ref=e119]: RSI
+              - generic [ref=e120]: "37.56"
+          - generic [ref=e121]:
+            - generic [ref=e122]: BOLL
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: UP
+                - generic [ref=e126]: "1326.43"
+              - generic [ref=e127]:
+                - generic [ref=e128]: MID
+                - generic [ref=e129]: "1293.81"
+              - generic [ref=e130]:
+                - generic [ref=e131]: LOW
+                - generic [ref=e132]: "1261.19"
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - heading "K 线图" [level=3] [ref=e136]
+          - generic [ref=e137]:
+            - button "30日" [ref=e138]
+            - button "60日" [ref=e139]
+            - button "120日" [ref=e140]
+        - generic [ref=e141]: 加载 K 线图...
+      - generic [ref=e144]:
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - generic [ref=e147]: 🤖 AI 诊断
+            - generic [ref=e148]: 深度分析资金面、技术面、估值面
+          - button "生成 AI 诊断" [ref=e149]
+        - generic [ref=e150]:
+          - paragraph [ref=e151]: 示例输出：
+          - list [ref=e152]:
+            - listitem [ref=e153]: • 资金面：主力资金流向分析
+            - listitem [ref=e154]: • 技术面：MACD/KDJ/RSI 指标解读
+            - listitem [ref=e155]: • 估值面：PE/PB 行业对比
+            - listitem [ref=e156]: • 综合评分：AI 给出 1-10 分评级
+      - generic [ref=e158]:
+        - generic [ref=e159]:
+          - heading "连续研究历史" [level=3] [ref=e160]
+          - generic [ref=e161]: 0 条
+        - paragraph [ref=e163]: 暂无历史记录，生成 AI 诊断后自动保存
+    - contentinfo [ref=e164]:
+      - generic [ref=e165]:
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - generic [ref=e168]: 📊
+            - generic [ref=e170]: 爱看盘 · 每日复盘工具
+          - generic [ref=e171]:
+            - link "关于" [ref=e172] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e173] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e174] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e175] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e176] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e177]: 数据：东方财富
+        - generic [ref=e178]:
+          - generic [ref=e179]: 微信：denglio0
+          - link "qq136692547@gmail.com" [ref=e180] [cursor=pointer]:
+            - /url: mailto:qq136692547@gmail.com
+        - paragraph [ref=e181]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e182]

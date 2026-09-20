@@ -1,0 +1,276 @@
+- generic [active] [ref=f1e1]:
+  - alert [ref=f1e943]: 爱看盘 · AI 复盘工作台
+  - generic [ref=f1e1156]:
+    - banner [ref=f1e1157]:
+      - navigation [ref=f1e1158]:
+        - link "爱看盘" [ref=f1e1159] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e1164]:
+          - tablist "市场范围" [ref=f1e1165]:
+            - tab "全部" [selected] [ref=f1e1166]
+            - tab "A股" [ref=f1e1167]
+            - tab "美股" [ref=f1e1168]
+          - navigation "功能导航" [ref=f1e1170]:
+            - link "首页" [ref=f1e1171] [cursor=pointer]:
+              - /url: /
+            - link "关于" [ref=f1e1172] [cursor=pointer]:
+              - /url: /about/
+        - generic [ref=f1e1173]:
+          - link "会员" [ref=f1e1174] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f1e1178] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f1e1183]
+    - main [ref=f1e1187]:
+      - generic [ref=f1e1189]:
+        - heading "全部市场" [level=1] [ref=f1e1190]
+        - paragraph [ref=f1e1191]: 左右镜像呈现 A股与美股的每日决策视图
+      - generic [ref=f1e1192]:
+        - generic [ref=f1e1193]:
+          - generic [ref=f1e1194]: A股市场
+          - generic [ref=f1e1198]:
+            - generic [ref=f1e1199]:
+              - generic [ref=f1e1200]:
+                - generic [ref=f1e1201]: A股 AI 结论
+                - link "完整复盘" [ref=f1e1202] [cursor=pointer]:
+                  - /url: /review/?market=cn
+              - paragraph [ref=f1e1203]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+            - generic [ref=f1e1204]:
+              - link "上证指数 3979.89 -0.16%" [ref=f1e1205] [cursor=pointer]:
+                - /url: /stock/sh.000001/
+                - generic [ref=f1e1206]: 上证指数
+                - generic [ref=f1e1207]: "3979.89"
+                - generic [ref=f1e1208]: "-0.16%"
+              - link "深证成指 13872.38 -1.02%" [ref=f1e1209] [cursor=pointer]:
+                - /url: /stock/sz.399001/
+                - generic [ref=f1e1210]: 深证成指
+                - generic [ref=f1e1211]: "13872.38"
+                - generic [ref=f1e1212]: "-1.02%"
+              - link "创业板指 3393.43 -1.32%" [ref=f1e1213] [cursor=pointer]:
+                - /url: /stock/sz.399006/
+                - generic [ref=f1e1214]: 创业板指
+                - generic [ref=f1e1215]: "3393.43"
+                - generic [ref=f1e1216]: "-1.32%"
+              - link "涨停 / 跌停 90 / 2" [ref=f1e1217] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=f1e1218]: 涨停 / 跌停
+                - generic [ref=f1e1219]:
+                  - generic [ref=f1e1220]: "90"
+                  - generic [ref=f1e1221]: /
+                  - generic [ref=f1e1222]: "2"
+            - generic [ref=f1e1223]:
+              - heading "行业强度" [level=3] [ref=f1e1224]
+              - generic [ref=f1e1225]:
+                - link "视频媒体 +20.02%" [ref=f1e1226] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=f1e1227]: 视频媒体
+                  - generic [ref=f1e1228]: +20.02%
+                - link "种子 +12.87%" [ref=f1e1229] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=f1e1230]: 种子
+                  - generic [ref=f1e1231]: +12.87%
+                - link "种植业 +8.88%" [ref=f1e1232] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=f1e1233]: 种植业
+                  - generic [ref=f1e1234]: +8.88%
+                - link "粮食种植 +7.42%" [ref=f1e1235] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=f1e1236]: 粮食种植
+                  - generic [ref=f1e1237]: +7.42%
+                - link "文字媒体 +6.89%" [ref=f1e1238] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=f1e1239]: 文字媒体
+                  - generic [ref=f1e1240]: +6.89%
+            - generic [ref=f1e1242]:
+              - generic [ref=f1e1243]:
+                - heading "市场温度" [level=2] [ref=f1e1244]
+                - generic [ref=f1e1245]:
+                  - generic [ref=f1e1246]: 偏热
+                  - generic [ref=f1e1247]: 22:09
+              - generic [ref=f1e1253]:
+                - generic [ref=f1e1254]: "71"
+                - generic [ref=f1e1255]: 综合温度 / 100
+              - generic [ref=f1e1256]:
+                - generic [ref=f1e1257]:
+                  - generic [ref=f1e1258]:
+                    - generic [ref=f1e1259]: 指数强度
+                    - generic [ref=f1e1260]: "36"
+                  - paragraph [ref=f1e1263]: 上证指数 -0.16%、深证成指 -1.02%、创业板指 -1.32%
+                - generic [ref=f1e1264]:
+                  - generic [ref=f1e1265]:
+                    - generic [ref=f1e1266]: 板块热度
+                    - generic [ref=f1e1267]: "100"
+                  - paragraph [ref=f1e1270]: 12 个强势行业，平均 7.83%
+                - generic [ref=f1e1271]:
+                  - generic [ref=f1e1272]:
+                    - generic [ref=f1e1273]: 涨停效应
+                    - generic [ref=f1e1274]: "98"
+                  - paragraph [ref=f1e1277]: 涨停 90 / 跌停 2，涨停占比 98%
+                - generic [ref=f1e1278]:
+                  - generic [ref=f1e1279]:
+                    - generic [ref=f1e1280]: AI 焦点
+                    - generic [ref=f1e1281]: "56"
+                  - paragraph [ref=f1e1284]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+              - generic [ref=f1e1285]:
+                - generic [ref=f1e1286]: 热点行业
+                - generic [ref=f1e1287]:
+                  - generic [ref=f1e1288]: 视频媒体 +20.02%
+                  - generic [ref=f1e1289]: 种子 +12.87%
+                  - generic [ref=f1e1290]: 种植业 +8.88%
+                  - generic [ref=f1e1291]: 粮食种植 +7.42%
+                  - generic [ref=f1e1292]: 文字媒体 +6.89%
+                  - generic [ref=f1e1293]: 农业综合Ⅲ +6.14%
+              - generic [ref=f1e1294]:
+                - generic [ref=f1e1295]: AI 焦点
+                - paragraph [ref=f1e1299]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+              - button "AI 深度解读" [ref=f1e1301]
+              - paragraph [ref=f1e1305]:
+                - generic [ref=f1e1308]: AI 生成，不构成投资建议
+            - generic [ref=f1e1309]:
+              - heading "近期财报" [level=3] [ref=f1e1310]
+              - generic [ref=f1e1311]:
+                - link "688584.SH 2026-08-31" [ref=f1e1312] [cursor=pointer]:
+                  - /url: /stock/688584.SH/
+                  - generic [ref=f1e1313]: 688584.SH
+                  - generic [ref=f1e1314]: 2026-08-31
+                - link "605268.SH 2026-08-31" [ref=f1e1315] [cursor=pointer]:
+                  - /url: /stock/605268.SH/
+                  - generic [ref=f1e1316]: 605268.SH
+                  - generic [ref=f1e1317]: 2026-08-31
+                - link "600580.SH 2026-08-31" [ref=f1e1318] [cursor=pointer]:
+                  - /url: /stock/600580.SH/
+                  - generic [ref=f1e1319]: 600580.SH
+                  - generic [ref=f1e1320]: 2026-08-31
+                - link "601872.SH 2026-08-31" [ref=f1e1321] [cursor=pointer]:
+                  - /url: /stock/601872.SH/
+                  - generic [ref=f1e1322]: 601872.SH
+                  - generic [ref=f1e1323]: 2026-08-31
+                - link "601279.SH 2026-08-31" [ref=f1e1324] [cursor=pointer]:
+                  - /url: /stock/601279.SH/
+                  - generic [ref=f1e1325]: 601279.SH
+                  - generic [ref=f1e1326]: 2026-08-31
+                - link "603048.SH 2026-08-31" [ref=f1e1327] [cursor=pointer]:
+                  - /url: /stock/603048.SH/
+                  - generic [ref=f1e1328]: 603048.SH
+                  - generic [ref=f1e1329]: 2026-08-31
+        - generic [ref=f1e1330]:
+          - generic [ref=f1e1331]: 美股市场
+          - generic [ref=f1e1335]:
+            - generic [ref=f1e1336]:
+              - generic [ref=f1e1337]:
+                - generic [ref=f1e1338]:
+                  - generic [ref=f1e1339]: 美股 AI 复盘
+                  - generic [ref=f1e1340]: 2026-09-01 21:57
+                  - generic [ref=f1e1341]: 缓存
+                - button "重新生成" [ref=f1e1342]
+              - generic [ref=f1e1348]:
+                - generic [ref=f1e1349]:
+                  - generic [ref=f1e1350]: "7"
+                  - generic [ref=f1e1351]: /10
+                - generic [ref=f1e1352]: 谨慎观望
+              - generic [ref=f1e1353]:
+                - paragraph [ref=f1e1354]: 今日美股三大指数全线收跌，科技权重股普遍承压，市场风险偏好明显回落。
+                - paragraph [ref=f1e1355]:
+                  - strong [ref=f1e1356]: 指数表现
+                  - text: 标普500跌0.69%，道指跌0.55%，纳指跌幅最大达1.29%。成长股领跌，显示资金对高估值板块的担忧加剧。
+                - paragraph [ref=f1e1357]:
+                  - strong [ref=f1e1358]: 个股分化
+                  - text: 苹果逆势上涨1.33%，成为科技巨头中唯一红盘，显示资金对部分龙头仍有配置意愿。特斯拉跌幅超2.5%居科技股首位，亚马逊、英伟达、微软均跌超1%。Netflix基本持平，防御属性相对突出。
+                - paragraph [ref=f1e1359]:
+                  - strong [ref=f1e1360]: 核心驱动
+                  - text: 10年期美债收益率升至2025年1月以来高位，对成长股估值形成压制。中东地缘冲突升级推动油价上涨，抵押贷款利率同步走高至2025年6月以来峰值，宏观环境对风险资产构成双重压力。Citadel提示当前风险收益比恶化，历史数据显示本月往往表现疲软。
+                - paragraph [ref=f1e1361]:
+                  - strong [ref=f1e1362]: 操作参考
+                  - text: 当前宏观扰动加大，建议控制仓位、避免追高，关注财报季中基本面扎实的个股。苹果今日相对强势，可观察其能否延续抗跌性。
+              - paragraph [ref=f1e1363]: ⚠ 本内容由 AI 生成，不构成投资建议
+            - generic [ref=f1e1364]:
+              - link "标普500 ETF 762.92 -0.54%" [ref=f1e1365] [cursor=pointer]:
+                - /url: /stock/SPY/
+                - generic [ref=f1e1366]: 标普500 ETF
+                - generic [ref=f1e1367]: "762.92"
+                - generic [ref=f1e1368]: "-0.54%"
+              - link "纳指100 ETF 708.42 -1.16%" [ref=f1e1369] [cursor=pointer]:
+                - /url: /stock/QQQ/
+                - generic [ref=f1e1370]: 纳指100 ETF
+                - generic [ref=f1e1371]: "708.42"
+                - generic [ref=f1e1372]: "-1.16%"
+              - link "道琼斯 ETF 529.79 -0.33%" [ref=f1e1373] [cursor=pointer]:
+                - /url: /stock/DIA/
+                - generic [ref=f1e1374]: 道琼斯 ETF
+                - generic [ref=f1e1375]: "529.79"
+                - generic [ref=f1e1376]: "-0.33%"
+              - link "市场温度 13 偏空" [ref=f1e1377] [cursor=pointer]:
+                - /url: /market/?market=us
+                - generic [ref=f1e1378]: 市场温度
+                - generic [ref=f1e1379]: "13"
+                - generic [ref=f1e1380]: 偏空
+            - generic [ref=f1e1381]:
+              - heading "板块表现" [level=3] [ref=f1e1382]
+              - generic [ref=f1e1383]:
+                - link "科技-1.45%" [ref=f1e1384] [cursor=pointer]:
+                  - /url: /stock/XLK/
+                - link "金融-0.09%" [ref=f1e1385] [cursor=pointer]:
+                  - /url: /stock/XLF/
+                - link "医疗+0.00%" [ref=f1e1386] [cursor=pointer]:
+                  - /url: /stock/XLV/
+                - link "能源+0.00%" [ref=f1e1387] [cursor=pointer]:
+                  - /url: /stock/XLE/
+                - link "消费+0.00%" [ref=f1e1388] [cursor=pointer]:
+                  - /url: /stock/XLY/
+                - link "工业+0.00%" [ref=f1e1389] [cursor=pointer]:
+                  - /url: /stock/XLI/
+            - generic [ref=f1e1390]:
+              - generic [ref=f1e1391]:
+                - heading "市场温度" [level=3] [ref=f1e1392]
+                - generic [ref=f1e1393]: 偏空
+              - generic [ref=f1e1394]:
+                - generic [ref=f1e1395]: "13"
+                - generic [ref=f1e1399]:
+                  - generic [ref=f1e1400]: 指数动量 -0.68%
+                  - generic [ref=f1e1401]: 上涨板块 0/6
+            - generic [ref=f1e1402]:
+              - heading "近期财报" [level=3] [ref=f1e1403]
+              - generic [ref=f1e1404]:
+                - link "AAPL 2027-01-27" [ref=f1e1405] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=f1e1406]: AAPL
+                  - generic [ref=f1e1407]: 2027-01-27
+                - link "NVDA 2027-02-23" [ref=f1e1408] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=f1e1409]: NVDA
+                  - generic [ref=f1e1410]: 2027-02-23
+                - link "MSFT 2027-01-26" [ref=f1e1411] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=f1e1412]: MSFT
+                  - generic [ref=f1e1413]: 2027-01-26
+                - link "GOOGL 2027-02-02" [ref=f1e1414] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=f1e1415]: GOOGL
+                  - generic [ref=f1e1416]: 2027-02-02
+                - link "AMZN 2027-02-03" [ref=f1e1417] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=f1e1418]: AMZN
+                  - generic [ref=f1e1419]: 2027-02-03
+                - link "META 2027-01-26" [ref=f1e1420] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=f1e1421]: META
+                  - generic [ref=f1e1422]: 2027-01-26
+    - contentinfo [ref=f1e1423]:
+      - generic [ref=f1e1424]:
+        - generic [ref=f1e1425]:
+          - generic [ref=f1e1426]:
+            - generic [ref=f1e1427]: 📊
+            - generic [ref=f1e1429]: 爱看盘 · 每日复盘工具
+          - generic [ref=f1e1430]:
+            - link "关于" [ref=f1e1431] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f1e1432] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f1e1433] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f1e1434] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f1e1435] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f1e1436]: 数据：东方财富
+        - paragraph [ref=f1e1437]: ⚠ 本站数据仅供参考，不构成投资建议

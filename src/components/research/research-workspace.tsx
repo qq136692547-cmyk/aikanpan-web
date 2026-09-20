@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useSync } from "@/lib/use-sync";
-import { api, type AIComment, type AIScoreItem, type Dashboard, type PlanFocus, type StockFinancials, type StockEvents, type UsDashboard, type UsEarnings, type UsFinancials, type UsNewsItem, type WatchlistItem } from "@/lib/api";
+import { api, type AIComment, type AIScoreItem, type Dashboard, type HkDashboard, type HkFinancials, type HkNewsItem, type PlanFocus, type StockFinancials, type StockEvents, type UsDashboard, type UsEarnings, type UsFinancials, type UsNewsItem, type WatchlistItem } from "@/lib/api";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
+import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
+import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { type MarketScope } from "@/lib/market";
 import { formatPct, formatPrice } from "@/lib/format";
 import { usNameZh } from "@/lib/us-stock-names";
 import { useWatchlist } from "@/lib/use-watchlist";
 import { useAuth } from "@/lib/auth";
+import { loadScopedStorage, userStorageKey } from "@/lib/research-storage";
 
 type TabKey = "watchlist" | "plans" | "profiles" | "theses";
 
@@ -18,7 +21,7 @@ interface PlanItem {
   date: string;
   name: string;
   code: string;
-  market?: "cn" | "us";
+  market?: "cn" | "hk" | "us";
   action: string;
   note: string;
   done: boolean;
@@ -29,7 +32,7 @@ interface ThesisItem {
   id: string;
   name: string;
   code: string;
-  market?: "cn" | "us";
+  market?: "cn" | "hk" | "us";
   reason: string;
   trigger: string;
   status: "active" | "watching" | "closed";
@@ -45,6 +48,8 @@ interface ProfileExtra {
   usFinancials?: UsFinancials;
   usNews?: UsNewsItem[];
   usEarnings?: UsEarnings;
+  hkFinancials?: HkFinancials;
+  hkNews?: HkNewsItem[];
   ai?: AIComment;
   loading?: boolean;
   error?: string;
@@ -56,16 +61,6 @@ const PLANS_KEY = "aikanpan_research_plans";
 const THESES_KEY = "aikanpan_research_theses";
 const PROFILES_KEY = "aikanpan_research_profiles";
 const AI_SCORES_KEY = "aikanpan_research_ai_scores";
-
-function load<T>(key: string, fallback: T): T {
-  if (typeof window === "undefined") return fallback;
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-}
 
 function save(key: string, value: unknown) {
   try {
@@ -107,34 +102,87 @@ function fmtUsPct(v?: number) {
 }
 
 function stockHrefFor(code: string, market?: string): string {
+  if (market === "hk") return `/stock/${code.replace(/\.HK$/i, "").padStart(5, "0")}/`;
   return market === "us" || /^[A-Z][A-Z0-9.-]{0,9}$/.test(code) ? `/stock/${code}/` : `/stock/${code.replace(/\./, "")}/`;
 }
 
-export function ResearchWorkspace({
+interface ResearchWorkspaceProps {
+  dashboard: Dashboard | UsDashboard | HkDashboard | null;
+  market?: MarketScope;
+}
+
+const emptySubscribe = () => () => {};
+
+function ResearchWorkspaceLoading() {
+  return (
+    <div className="space-y-3">
+      <div className="neo-skeleton h-10 w-56 rounded-lg" />
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <div className="neo-skeleton h-64 rounded-xl lg:col-span-2" />
+        <div className="neo-skeleton h-64 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+export function ResearchWorkspace(props: ResearchWorkspaceProps) {
+  const hydrated = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const { user, loading } = useAuth();
+
+  if (!hydrated || loading) return <ResearchWorkspaceLoading />;
+  const userId = user?.user_id || "local";
+  return (
+    <ResearchWorkspaceContent
+      key={userId}
+      {...props}
+      userId={userId}
+      syncEnabled={!!user}
+      isAuthenticated={!!user}
+    />
+  );
+}
+
+function ResearchWorkspaceContent({
   dashboard,
   market = "all",
-}: {
-  dashboard: Dashboard | UsDashboard | null;
-  market?: MarketScope;
+  userId,
+  syncEnabled,
+  isAuthenticated,
+}: ResearchWorkspaceProps & {
+  userId: string;
+  syncEnabled: boolean;
+  isAuthenticated: boolean;
 }) {
-  const activeMarket: "cn" | "us" = market === "us" ? "us" : "cn";
+  const activeMarket: "cn" | "hk" | "us" = market === "us" ? "us" : market === "hk" ? "hk" : "cn";
   const isUs = activeMarket === "us";
+  const isHk = activeMarket === "hk";
+  const marketLabel = isUs ? "美股" : isHk ? "港股" : "A股";
+  const namePlaceholder = isUs ? "如 苹果" : isHk ? "如 腾讯控股" : "如 贵州茅台";
+  const codePlaceholder = isUs ? "如 AAPL" : isHk ? "如 00700" : "如 sh.600519";
   const { watchlist: liveWatchlist, toggle: toggleWatchlist } = useWatchlist();
-  const { isAuthenticated } = useAuth();
   const [usWatchlist, setUsWatchlist] = useState<WatchlistItem[]>([]);
-  const watchlist = isUs ? usWatchlist : liveWatchlist;
+  const [hkWatchlist, setHkWatchlist] = useState<WatchlistItem[]>([]);
+  const watchlist = isUs ? usWatchlist : isHk ? hkWatchlist : liveWatchlist;
   const { pushData, pullData } = useSync();
   const syncedOnce = useRef(false);
   const pushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [tab, setTab] = useState<TabKey>("watchlist");
-  const [hydrated, setHydrated] = useState(false);
 
-  const [plans, setPlans] = useState<PlanItem[]>([]);
-  const [theses, setTheses] = useState<ThesisItem[]>([]);
-  const [profileNotes, setProfileNotes] = useState<ProfileNotes>({});
+  const [initialStorage] = useState(() => {
+    const storage = typeof window === "undefined" ? null : window.localStorage;
+    return {
+      plans: loadScopedStorage<PlanItem[]>(storage, PLANS_KEY, userId, []),
+      theses: loadScopedStorage<ThesisItem[]>(storage, THESES_KEY, userId, []),
+      profileNotes: loadScopedStorage<ProfileNotes>(storage, PROFILES_KEY, userId, {}),
+      aiScores: loadScopedStorage<Record<string, AIScoreItem>>(storage, AI_SCORES_KEY, userId, {}),
+    };
+  });
+  const [plans, setPlans] = useState<PlanItem[]>(initialStorage.plans.value);
+  const [theses, setTheses] = useState<ThesisItem[]>(initialStorage.theses.value);
+  const [profileNotes, setProfileNotes] = useState<ProfileNotes>(initialStorage.profileNotes.value);
   const [profileData, setProfileData] = useState<ProfileData>({});
 
-  const [planDate, setPlanDate] = useState("");
+  const [planDate, setPlanDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [planName, setPlanName] = useState("");
   const [planCode, setPlanCode] = useState("");
   const [planAction, setPlanAction] = useState(PLAN_ACTIONS[0]);
@@ -148,7 +196,7 @@ export function ResearchWorkspace({
   const [showArchivedPlans, setShowArchivedPlans] = useState(false);
   const [thesisReviewDraft, setThesisReviewDraft] = useState<Record<string, string>>({});
   const [thesisReviewOpen, setThesisReviewOpen] = useState<Record<string, boolean>>({});
-  const [aiScores, setAiScores] = useState<Record<string, AIScoreItem>>({});
+  const [aiScores, setAiScores] = useState<Record<string, AIScoreItem>>(initialStorage.aiScores.value);
   const [aiScoresLoading, setAiScoresLoading] = useState(false);
   const [aiScoresError, setAiScoresError] = useState<string | null>(null);
   const [planFocus, setPlanFocus] = useState<PlanFocus | null>(null);
@@ -157,55 +205,84 @@ export function ResearchWorkspace({
   const [watchName, setWatchName] = useState("");
 
   useEffect(() => {
-    // Local storage is read after hydration to avoid server/client markup drift.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPlans(load<PlanItem[]>(PLANS_KEY, []));
-    setTheses(load<ThesisItem[]>(THESES_KEY, []));
-    setProfileNotes(load<ProfileNotes>(PROFILES_KEY, {}));
-    setAiScores(load<Record<string, AIScoreItem>>(AI_SCORES_KEY, {}));
-    setPlanDate(new Date().toISOString().slice(0, 10));
-    setHydrated(true);
-  }, []);
+    save(userStorageKey(PLANS_KEY, userId), plans);
+  }, [plans, userId]);
 
   useEffect(() => {
-    if (hydrated) save(PLANS_KEY, plans);
-  }, [plans, hydrated]);
+    save(userStorageKey(THESES_KEY, userId), theses);
+  }, [theses, userId]);
 
   useEffect(() => {
-    if (hydrated) save(THESES_KEY, theses);
-  }, [theses, hydrated]);
+    save(userStorageKey(PROFILES_KEY, userId), profileNotes);
+  }, [profileNotes, userId]);
 
   useEffect(() => {
-    if (hydrated) save(PROFILES_KEY, profileNotes);
-  }, [profileNotes, hydrated]);
+    save(userStorageKey(AI_SCORES_KEY, userId), aiScores);
+  }, [aiScores, userId]);
 
   useEffect(() => {
-    if (hydrated) save(AI_SCORES_KEY, aiScores);
-  }, [aiScores, hydrated]);
-
-  useEffect(() => {
-    if (!hydrated) return;
+    if (!syncEnabled || !userId) return;
     let cancelled = false;
+    let shouldPushLocal = false;
+    let mergedForPush: {
+      plans: PlanItem[];
+      theses: ThesisItem[];
+      profileNotes: ProfileNotes;
+      aiScores: Record<string, AIScoreItem>;
+    } | null = null;
+    syncedOnce.current = false;
     pullData("notes")
       .then((data) => {
         if (cancelled || !data) return;
         const remote = data as { plans?: PlanItem[]; theses?: ThesisItem[]; profileNotes?: ProfileNotes; aiScores?: Record<string, AIScoreItem> };
-        if (Array.isArray(remote.plans)) setPlans(remote.plans);
-        if (Array.isArray(remote.theses)) setTheses(remote.theses);
-        if (remote.profileNotes && typeof remote.profileNotes === "object") setProfileNotes(remote.profileNotes);
-        if (remote.aiScores && typeof remote.aiScores === "object") setAiScores(remote.aiScores);
+        const remotePlans = Array.isArray(remote.plans) ? remote.plans : [];
+        const remoteTheses = Array.isArray(remote.theses) ? remote.theses : [];
+        const remoteProfiles = remote.profileNotes && typeof remote.profileNotes === "object" ? remote.profileNotes : {};
+        const remoteScores = remote.aiScores && typeof remote.aiScores === "object" ? remote.aiScores : {};
+
+        if (remotePlans.length > 0) {
+          setPlans(remotePlans);
+        } else if (initialStorage.plans.value.length > 0) {
+          shouldPushLocal = true;
+        }
+        if (remoteTheses.length > 0) {
+          setTheses(remoteTheses);
+        } else if (initialStorage.theses.value.length > 0) {
+          shouldPushLocal = true;
+        }
+        if (Object.keys(remoteProfiles).length > 0) {
+          setProfileNotes(remoteProfiles);
+        } else if (Object.keys(initialStorage.profileNotes.value).length > 0) {
+          shouldPushLocal = true;
+        }
+        if (Object.keys(remoteScores).length > 0) {
+          setAiScores(remoteScores);
+        } else if (Object.keys(initialStorage.aiScores.value).length > 0) {
+          shouldPushLocal = true;
+        }
+
+        mergedForPush = {
+          plans: remotePlans.length > 0 ? remotePlans : initialStorage.plans.value,
+          theses: remoteTheses.length > 0 ? remoteTheses : initialStorage.theses.value,
+          profileNotes: Object.keys(remoteProfiles).length > 0 ? remoteProfiles : initialStorage.profileNotes.value,
+          aiScores: Object.keys(remoteScores).length > 0 ? remoteScores : initialStorage.aiScores.value,
+        };
       })
       .catch(() => {})
       .finally(() => {
-        if (!cancelled) syncedOnce.current = true;
+        if (cancelled) return;
+        syncedOnce.current = true;
+        if (shouldPushLocal && mergedForPush) {
+          pushData("notes", mergedForPush).catch(() => {});
+        }
       });
     return () => {
       cancelled = true;
     };
-  }, [hydrated, pullData]);
+  }, [userId, syncEnabled, pullData, pushData, initialStorage]);
 
   useEffect(() => {
-    if (!hydrated || !syncedOnce.current) return;
+    if (!syncEnabled || !userId || !syncedOnce.current) return;
     if (pushTimer.current) clearTimeout(pushTimer.current);
     pushTimer.current = setTimeout(() => {
       pushData("notes", { plans, theses, profileNotes, aiScores }).catch(() => {});
@@ -213,7 +290,7 @@ export function ResearchWorkspace({
     return () => {
       if (pushTimer.current) clearTimeout(pushTimer.current);
     };
-  }, [plans, theses, profileNotes, aiScores, hydrated, pushData]);
+  }, [plans, theses, profileNotes, aiScores, userId, syncEnabled, pushData]);
 
   const idx0 = dashboard?.indices?.[0];
   const scopedPlans = useMemo(() => plans.filter((p) => (p.market || "cn") === activeMarket), [plans, activeMarket]);
@@ -227,11 +304,15 @@ export function ResearchWorkspace({
       const usData = dashboard as UsDashboard;
       return (usData.stocks || []).slice(0, 6).map((s) => ({ code: s.code, name: usNameZh(s.name, s.code), price: s.last || 0, change_pct: s.change_pct || 0 }));
     }
+    if (isHk) {
+      const hkData = dashboard as HkDashboard;
+      return (hkData.hot_stocks || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name || s.code, price: s.last || 0, change_pct: s.change_pct || 0 }));
+    }
     const cnData = dashboard as Dashboard;
     return (cnData.limit_up || []).slice(0, 6).map((s) => ({ code: s.code, name: s.name, price: s.price, change_pct: s.pct }));
-  }, [dashboard, isUs]);
+  }, [dashboard, isUs, isHk]);
 
-  async function loadUsWatchlist() {
+  const loadUsWatchlist = useCallback(async () => {
     if (!isAuthenticated) {
       setUsWatchlist([]);
       return;
@@ -242,7 +323,20 @@ export function ResearchWorkspace({
     } catch {
       setUsWatchlist([]);
     }
-  }
+  }, [isAuthenticated]);
+
+  const loadHkWatchlist = useCallback(async () => {
+    if (!isAuthenticated) {
+      setHkWatchlist([]);
+      return;
+    }
+    try {
+      const data = await api.getHkWatchlist();
+      setHkWatchlist((data.watchlist || []).map((q) => ({ code: q.code, name: q.name || q.code, price: q.last || 0, change_pct: q.change_pct || 0 })));
+    } catch {
+      setHkWatchlist([]);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (isUs) {
@@ -250,13 +344,30 @@ export function ResearchWorkspace({
       // eslint-disable-next-line react-hooks/set-state-in-effect
       loadUsWatchlist();
     }
-  }, [isUs, isAuthenticated]);
+  }, [isUs, loadUsWatchlist]);
+
+  useEffect(() => {
+    if (isHk) {
+      // The HK list is refreshed when the market scope changes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadHkWatchlist();
+    }
+  }, [isHk, loadHkWatchlist]);
 
   async function toggleUsWatchlist(code: string, name?: string) {
+    if (!isAuthenticated) return;
     const exists = usWatchlist.some((s) => s.code === code);
     if (exists) await api.removeUsWatchlist(code);
     else await api.addUsWatchlist(code, name);
     await loadUsWatchlist();
+  }
+
+  async function toggleHkWatchlist(code: string, name?: string) {
+    if (!isAuthenticated) return;
+    const exists = hkWatchlist.some((s) => s.code === code);
+    if (exists) await api.removeHkWatchlist(code);
+    else await api.addHkWatchlist(code, name);
+    await loadHkWatchlist();
   }
 
   function addPlan() {
@@ -346,6 +457,26 @@ export function ResearchWorkspace({
       }));
       return;
     }
+    if (isHk) {
+      const settled = await Promise.allSettled([
+        api.getHkQuote(code),
+        api.getHkHistory(code, 60),
+        api.getHkFinancials(code),
+        api.getHkNews(code, 5),
+        api.getHkAI(code),
+      ]);
+      setProfileData((prev) => ({
+        ...prev,
+        [code]: {
+          loading: false,
+          hkFinancials: settled[2].status === "fulfilled" ? settled[2].value : undefined,
+          hkNews: settled[3].status === "fulfilled" ? settled[3].value.news : undefined,
+          ai: settled[4].status === "fulfilled" ? settled[4].value : undefined,
+          error: settled[0].status === "rejected" && settled[2].status === "rejected" && settled[4].status === "rejected" ? "档案加载失败" : undefined,
+        },
+      }));
+      return;
+    }
     const [financials, events, ai] = await Promise.allSettled([
       api.getStockFinancials(code),
       api.getStockEvents(code),
@@ -373,11 +504,17 @@ export function ResearchWorkspace({
     if (added.length > 0) setPlans((prev) => [...added, ...prev]);
   }
 
+  async function toggleWatchlistItem(code: string, name: string) {
+    if (!isAuthenticated) return;
+    if (isUs) await toggleUsWatchlist(code, name);
+    else if (isHk) await toggleHkWatchlist(code, name);
+    else await toggleWatchlist(code, name);
+  }
+
   async function addWatchlistItem() {
     const code = watchCode.trim();
     if (!code) return;
-    if (isUs) await toggleUsWatchlist(code, watchName.trim() || code);
-    else await toggleWatchlist(code, watchName.trim() || code);
+    await toggleWatchlistItem(code, watchName.trim() || code);
     setWatchCode("");
     setWatchName("");
   }
@@ -422,7 +559,7 @@ export function ResearchWorkspace({
 
   function exportMarkdown() {
     const lines: string[] = [];
-    lines.push(isUs ? "# 美股研究台导出" : "# 爱看盘研究台导出");
+    lines.push(`# ${marketLabel}研究台导出`);
     lines.push("");
     lines.push(`导出时间：${new Date().toLocaleString("zh-CN")}`);
     lines.push("");
@@ -463,25 +600,14 @@ export function ResearchWorkspace({
     URL.revokeObjectURL(url);
   }
 
-  if (!hydrated) {
-    return (
-      <div className="space-y-3">
-        <div className="neo-skeleton h-10 w-56 rounded-lg" />
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-          <div className="neo-skeleton h-64 rounded-xl lg:col-span-2" />
-          <div className="neo-skeleton h-64 rounded-xl" />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="neo-fade-up space-y-4">
       <section className="neo-card relative overflow-hidden p-5">
         <div className="relative flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <a href={isUs ? "/portfolio?market=us" : "/portfolio/"} className="neo-btn px-3 py-2 text-[12px]">持仓工具</a>
-            <button onClick={exportMarkdown} className="neo-btn-primary px-4 py-2 text-[13px] font-medium">导出 Markdown</button>
+            <a href={isUs ? "/portfolio/?market=us" : "/portfolio/"} className="neo-btn inline-flex min-h-11 items-center px-3 py-2 text-[12px]">持仓工具</a>
+            <button onClick={exportMarkdown} className="neo-btn-primary min-h-11 px-4 py-2 text-[13px] font-medium">导出 Markdown</button>
           </div>
         </div>
         <div className="relative mt-4 flex flex-wrap gap-2">
@@ -489,7 +615,7 @@ export function ResearchWorkspace({
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200 ${
+              className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-[12px] font-medium transition-all duration-200 ${
                 tab === t.key ? "neo-chip-active" : "neo-chip"
               }`}
             >
@@ -505,12 +631,12 @@ export function ResearchWorkspace({
             <h2 className="text-[14px] font-semibold text-neo-ink">自选股</h2>
             <div className="flex items-center gap-2">
               <div className="flex flex-wrap items-center gap-1.5">
-                <input value={watchCode} onChange={(e) => setWatchCode(e.target.value)} placeholder={isUs ? "代码，如 AAPL" : "代码，如 sh.600519"} className="neo-input w-32 rounded-md px-2.5 py-1.5 text-[11px]" />
-                <input value={watchName} onChange={(e) => setWatchName(e.target.value)} placeholder="名称（可选）" className="neo-input w-24 rounded-md px-2.5 py-1.5 text-[11px]" />
-                <button onClick={addWatchlistItem} className="neo-chip px-2.5 py-1.5 text-[11px] text-neo-primary">添加</button>
+                <input value={watchCode} onChange={(e) => setWatchCode(e.target.value)} aria-label="自选股代码" placeholder={isUs ? "代码，如 AAPL" : isHk ? "代码，如 00700" : "代码，如 sh.600519"} className="neo-input min-h-11 w-32 rounded-md px-2.5 py-1.5 text-[11px]" />
+                <input value={watchName} onChange={(e) => setWatchName(e.target.value)} aria-label="自选股名称（可选）" placeholder="名称（可选）" className="neo-input min-h-11 w-24 rounded-md px-2.5 py-1.5 text-[11px]" />
+                <button onClick={addWatchlistItem} className="neo-chip inline-flex min-h-11 items-center px-3 py-1.5 text-[11px] text-neo-primary">添加</button>
               </div>
-              <button onClick={addPlansFromWatchlist} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">自选加入计划</button>
-              <button onClick={scoreWatchlist} disabled={aiScoresLoading} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary disabled:opacity-60">
+              <button onClick={addPlansFromWatchlist} className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary">自选加入计划</button>
+              <button onClick={scoreWatchlist} disabled={aiScoresLoading} className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary disabled:opacity-60">
                 {aiScoresLoading ? "AI 评分中…" : "AI 评分"}
               </button>
               {aiScoresError && <span className="text-[11px] text-neo-down">{aiScoresError}</span>}
@@ -526,13 +652,13 @@ export function ResearchWorkspace({
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {suggestedStocks.map((s) => (
                     <div key={s.code} className="flex items-center justify-between gap-2 rounded-lg border border-[var(--neo-border)] px-3 py-2">
-                      <a href={stockHrefFor(s.code, activeMarket)} className="min-w-0">
+                      <a href={stockHrefFor(s.code, activeMarket)} className="flex min-h-11 min-w-0 flex-col justify-center">
                         <span className="block truncate text-[12px] font-medium text-neo-ink">{s.name}</span>
                         <span className="text-[10px] text-neo-dim">{s.code} · {formatPrice(s.price)} · {formatPct(s.change_pct)}</span>
                       </a>
                       <button
-                        onClick={() => (isUs ? toggleUsWatchlist(s.code, s.name) : toggleWatchlist(s.code, s.name))}
-                        className="neo-chip px-2 py-1 text-[11px] text-neo-primary"
+                        onClick={() => toggleWatchlistItem(s.code, s.name)}
+                        className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary"
                       >
                         加入
                       </button>
@@ -563,14 +689,19 @@ export function ResearchWorkspace({
                         <span className="ml-1 text-neo-dim">{aiScores[s.code].status}{aiScores[s.code].note ? ` · ${aiScores[s.code].note}` : ""}</span>
                       </span>
                     )}
+                    {aiScores[s.code]?.evidence && (
+                      <span className="mt-0.5 block text-[9px] text-neo-dim">
+                        数据依据 {aiScores[s.code]?.evidence?.sources?.length ?? 0} 个来源 · {aiScores[s.code]?.evidence?.calculations?.length ?? 0} 项计算
+                      </span>
+                    )}
                   </a>
                   <span style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-right text-neo-mid">{formatPrice(s.price)}</span>
                   <span style={{ fontFamily: "var(--font-inter), system-ui" }} className={`text-right ${s.change_pct > 0 ? "text-neo-up" : s.change_pct < 0 ? "text-neo-down" : "text-neo-mid"}`}>
                     {formatPct(s.change_pct)}
                   </span>
                   <span className="flex items-center justify-end gap-2">
-                    <a href={stockHrefFor(s.code)} className="text-[11px] text-neo-primary" aria-label={`进入 ${s.name}`}>进入</a>
-                    <button onClick={() => (isUs ? toggleUsWatchlist(s.code, s.name) : toggleWatchlist(s.code, s.name))} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down" aria-label={`从自选移除 ${s.name}`}>移除</button>
+                    <a href={stockHrefFor(s.code)} className="inline-flex min-h-11 items-center text-[11px] text-neo-primary" aria-label={`进入 ${s.name}`}>进入</a>
+                    <button onClick={() => toggleWatchlistItem(s.code, s.name)} className="inline-flex min-h-11 items-center text-[11px] text-neo-dim transition-colors hover:text-neo-down" aria-label={`从自选移除 ${s.name}`}>移除</button>
                   </span>
                 </div>
               ))}
@@ -587,11 +718,11 @@ export function ResearchWorkspace({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <div className="text-[10px] text-neo-dim">日期</div>
-                  <input type="date" value={planDate} onChange={(e) => setPlanDate(e.target.value)} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input type="date" aria-label="盘前计划日期" value={planDate} onChange={(e) => setPlanDate(e.target.value)} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
                 <div>
                   <div className="text-[10px] text-neo-dim">动作</div>
-                  <select value={planAction} onChange={(e) => setPlanAction(e.target.value)} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]">
+                  <select aria-label="盘前计划动作" value={planAction} onChange={(e) => setPlanAction(e.target.value)} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]">
                     {PLAN_ACTIONS.map((a) => <option key={a} value={a}>{a}</option>)}
                   </select>
                 </div>
@@ -599,26 +730,26 @@ export function ResearchWorkspace({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <div className="text-[10px] text-neo-dim">名称</div>
-                  <input value={planName} onChange={(e) => setPlanName(e.target.value)} placeholder={isUs ? "如 苹果" : "如 贵州茅台"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={planName} onChange={(e) => setPlanName(e.target.value)} aria-label="盘前计划名称" placeholder={namePlaceholder} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
                 <div>
                   <div className="text-[10px] text-neo-dim">代码</div>
-                  <input value={planCode} onChange={(e) => setPlanCode(e.target.value)} placeholder={isUs ? "如 AAPL" : "如 sh.600519"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={planCode} onChange={(e) => setPlanCode(e.target.value)} aria-label="盘前计划代码" placeholder={codePlaceholder} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
               </div>
               <div>
                 <div className="text-[10px] text-neo-dim">备注</div>
-                <input value={planNote} onChange={(e) => setPlanNote(e.target.value)} placeholder="关注理由、价位区间…" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                <input value={planNote} onChange={(e) => setPlanNote(e.target.value)} aria-label="盘前计划备注" placeholder="关注理由、价位区间…" className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
               </div>
-              <button onClick={addPlan} className="neo-btn-primary mt-2 w-full rounded-md px-4 py-2 text-[13px] font-medium">添加计划</button>
+              <button onClick={addPlan} className="neo-btn-primary mt-2 min-h-11 w-full rounded-md px-4 py-2 text-[13px] font-medium">添加计划</button>
             </div>
           </div>
           <div className="neo-card-sm overflow-hidden lg:col-span-3">
             <div className="flex items-center justify-between px-5 py-3">
               <h2 className="text-[14px] font-semibold text-neo-ink">计划清单</h2>
               <div className="flex items-center gap-2">
-                <button onClick={() => setShowArchivedPlans((v) => !v)} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">{showArchivedPlans ? "查看进行中" : "查看归档"}</button>
-                <button onClick={loadPlanFocus} disabled={planFocusLoading} className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary disabled:opacity-60">
+                <button onClick={() => setShowArchivedPlans((v) => !v)} className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary">{showArchivedPlans ? "查看进行中" : "查看归档"}</button>
+                <button onClick={loadPlanFocus} disabled={planFocusLoading} className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary disabled:opacity-60">
                   {planFocusLoading ? "生成中…" : "AI 关注要点"}
                 </button>
                 <span className="text-[11px] text-neo-dim">{visiblePlans.length} 条</span>
@@ -630,7 +761,9 @@ export function ResearchWorkspace({
               <div className="divide-y divide-[var(--neo-edge)]">
                 {visiblePlans.map((p) => (
                   <div key={p.id} className="flex items-start gap-3 px-5 py-3">
-                    <input type="checkbox" checked={p.done} onChange={() => togglePlan(p.id)} className="mt-1 h-4 w-4 accent-[var(--neo-primary)]" />
+                    <label className="mt-1 inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center">
+                      <input type="checkbox" aria-label={`标记 ${p.name} 完成`} checked={p.done} onChange={() => togglePlan(p.id)} className="h-5 w-5 accent-[var(--neo-primary)]" />
+                    </label>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className={`text-[13px] font-medium ${p.done ? "text-neo-dim line-through" : "text-neo-ink"}`}>{p.name}</span>
@@ -645,9 +778,9 @@ export function ResearchWorkspace({
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
                       {p.done && (
-                        <button onClick={() => archivePlan(p.id, !p.archived)} className="text-[11px] text-neo-primary">{p.archived ? "恢复" : "归档"}</button>
+                        <button onClick={() => archivePlan(p.id, !p.archived)} className="inline-flex min-h-11 items-center text-[11px] text-neo-primary">{p.archived ? "恢复" : "归档"}</button>
                       )}
-                      <button onClick={() => deletePlan(p.id)} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down">删除</button>
+                      <button onClick={() => deletePlan(p.id)} className="inline-flex min-h-11 items-center text-[11px] text-neo-dim transition-colors hover:text-neo-down">删除</button>
                     </div>
                   </div>
                 ))}
@@ -660,9 +793,13 @@ export function ResearchWorkspace({
                   <span className="text-[10px] text-neo-dim">{planFocus.generated_at?.slice(0, 16).replace("T", " ")}</span>
                 </div>
                 <p className="whitespace-pre-wrap text-[12px] leading-relaxed text-neo-mid">{planFocus.content}</p>
+                <AIEvidencePanel evidence={planFocus.evidence} />
                 <AiDisclaimer className="mt-2" />
               </div>
             )}
+          </div>
+          <div className="lg:col-span-5">
+            <AIHistoryPanel kind="plan_focus" title="计划关注历史" />
           </div>
         </section>
       )}
@@ -684,8 +821,8 @@ export function ResearchWorkspace({
                   </div>
                 </div>
                 <div className="mt-2 text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPrice(s.price)}</div>
-                <button onClick={() => loadProfile(s.code)} className="neo-chip mt-3 w-full px-2 py-1.5 text-[11px] text-neo-primary">
-                  {profileData[s.code]?.loading ? "加载中…" : (isUs ? "加载行情 / 新闻 / AI" : "加载财报 / 事件 / AI")}
+                <button onClick={() => loadProfile(s.code)} className="neo-chip mt-3 min-h-11 w-full px-2 py-1.5 text-[11px] text-neo-primary">
+                  {profileData[s.code]?.loading ? "加载中…" : (isUs || isHk ? "加载行情 / 新闻 / AI" : "加载财报 / 事件 / AI")}
                 </button>
                 {profileData[s.code]?.financials?.metrics && (
                   <div className="neo-inset mt-2 space-y-1 px-3 py-2 text-[11px]">
@@ -713,6 +850,22 @@ export function ResearchWorkspace({
                     ))}
                   </div>
                 )}
+                {isHk && profileData[s.code]?.hkFinancials?.metrics && (
+                  <div className="neo-inset mt-2 space-y-1 px-3 py-2 text-[11px]">
+                    <div className="flex justify-between"><span className="text-neo-dim">PE</span><span className="text-neo-ink">{profileData[s.code]?.hkFinancials?.metrics?.pe ?? "--"}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">PB</span><span className="text-neo-ink">{profileData[s.code]?.hkFinancials?.metrics?.pb ?? "--"}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">52周高</span><span className="text-neo-ink">{profileData[s.code]?.hkFinancials?.metrics?.high_52w ?? "--"}</span></div>
+                    <div className="flex justify-between"><span className="text-neo-dim">52周低</span><span className="text-neo-ink">{profileData[s.code]?.hkFinancials?.metrics?.low_52w ?? "--"}</span></div>
+                  </div>
+                )}
+                {isHk && (profileData[s.code]?.hkNews?.length ?? 0) > 0 && (
+                  <div className="mt-2 space-y-1">
+                    <div className="text-[10px] text-neo-dim">相关新闻</div>
+                    {(profileData[s.code]?.hkNews || []).slice(0, 3).map((n) => (
+                      <p key={n.id || n.title} className="line-clamp-2 text-[11px] leading-relaxed text-neo-mid">{n.title}</p>
+                    ))}
+                  </div>
+                )}
                 {isUs && (profileData[s.code]?.usEarnings?.earnings?.length ?? 0) > 0 && (
                   <div className="mt-2 space-y-1">
                     <div className="text-[10px] text-neo-dim">最近盈利</div>
@@ -727,19 +880,20 @@ export function ResearchWorkspace({
                 {isUs && profileData[s.code]?.usEarnings?.upcoming && (
                   <p className="mt-2 text-[11px] text-neo-mid">下次财报：{profileData[s.code]?.usEarnings?.upcoming?.date}</p>
                 )}
-                {!isUs && profileData[s.code]?.events?.summary && (
+                {!isUs && !isHk && profileData[s.code]?.events?.summary && (
                   <p className="mt-2 line-clamp-3 text-[11px] leading-relaxed text-neo-mid">{profileData[s.code]?.events?.summary}</p>
                 )}
                 {profileData[s.code]?.ai?.content && (
                   <p className="mt-2 line-clamp-3 text-[11px] leading-relaxed text-neo-dim">AI：{profileData[s.code]?.ai?.content}</p>
                 )}
                 <div className="mt-2 flex gap-2">
-                  <button onClick={() => addPlanFromStock(s)} className="neo-chip flex-1 px-2 py-1.5 text-[11px] text-neo-primary">加入计划</button>
-                  <button onClick={() => addThesisFromStock(s)} className="neo-chip flex-1 px-2 py-1.5 text-[11px] text-neo-primary">新建论点</button>
+                  <button onClick={() => addPlanFromStock(s)} className="neo-chip min-h-11 flex-1 px-2 py-1.5 text-[11px] text-neo-primary">加入计划</button>
+                  <button onClick={() => addThesisFromStock(s)} className="neo-chip min-h-11 flex-1 px-2 py-1.5 text-[11px] text-neo-primary">新建论点</button>
                 </div>
                 <textarea
                   value={profileNotes[s.code] || ""}
                   onChange={(e) => updateProfileNote(s.code, e.target.value)}
+                  aria-label={`${s.name} 公司档案备注`}
                   placeholder="记录公司档案、跟踪要点…"
                   rows={4}
                   className="neo-input mt-3 w-full resize-none rounded-md px-3 py-2 text-[12px] leading-relaxed"
@@ -758,30 +912,30 @@ export function ResearchWorkspace({
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <div className="text-[10px] text-neo-dim">名称</div>
-                  <input value={thesisName} onChange={(e) => setThesisName(e.target.value)} placeholder={isUs ? "如 苹果" : "如 贵州茅台"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={thesisName} onChange={(e) => setThesisName(e.target.value)} aria-label="论点名称" placeholder={namePlaceholder} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
                 <div>
                   <div className="text-[10px] text-neo-dim">代码</div>
-                  <input value={thesisCode} onChange={(e) => setThesisCode(e.target.value)} placeholder={isUs ? "如 AAPL" : "sh.600519"} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                  <input value={thesisCode} onChange={(e) => setThesisCode(e.target.value)} aria-label="论点代码" placeholder={codePlaceholder} className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
                 </div>
               </div>
               <div>
                 <div className="text-[10px] text-neo-dim">买入理由</div>
-                <textarea value={thesisReason} onChange={(e) => setThesisReason(e.target.value)} placeholder="为什么跟踪、核心逻辑…" rows={3} className="neo-input mt-1 w-full resize-none rounded-md px-3 py-2 text-[12px]" />
+                <textarea value={thesisReason} onChange={(e) => setThesisReason(e.target.value)} aria-label="论点买入理由" placeholder="为什么跟踪、核心逻辑…" rows={3} className="neo-input mt-1 min-h-11 w-full resize-none rounded-md px-3 py-2 text-[12px]" />
               </div>
               <div>
                 <div className="text-[10px] text-neo-dim">卖出触发</div>
-                <input value={thesisTrigger} onChange={(e) => setThesisTrigger(e.target.value)} placeholder="破位、基本面恶化等" className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]" />
+                <input value={thesisTrigger} onChange={(e) => setThesisTrigger(e.target.value)} aria-label="论点卖出触发" placeholder="破位、基本面恶化等" className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]" />
               </div>
               <div>
                 <div className="text-[10px] text-neo-dim">状态</div>
-                <select value={thesisStatus} onChange={(e) => setThesisStatus(e.target.value as ThesisItem["status"])} className="neo-input mt-1 w-full rounded-md px-3 py-2 text-[12px]">
+                <select value={thesisStatus} onChange={(e) => setThesisStatus(e.target.value as ThesisItem["status"])} aria-label="论点状态" className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-[12px]">
                   <option value="active">跟踪中</option>
                   <option value="watching">观察中</option>
                   <option value="closed">已关闭</option>
                 </select>
               </div>
-              <button onClick={addThesis} className="neo-btn-primary mt-2 w-full rounded-md px-4 py-2 text-[13px] font-medium">添加论点</button>
+              <button onClick={addThesis} className="neo-btn-primary mt-2 min-h-11 w-full rounded-md px-4 py-2 text-[13px] font-medium">添加论点</button>
             </div>
           </div>
           <div className="neo-card-sm overflow-hidden lg:col-span-3">
@@ -809,18 +963,18 @@ export function ResearchWorkspace({
                     )}
                     {thesisReviewOpen[t.id] ? (
                       <div className="mt-2">
-                        <textarea value={thesisReviewDraft[t.id] || ""} onChange={(e) => setThesisReviewDraft((prev) => ({ ...prev, [t.id]: e.target.value }))} rows={2} placeholder="记录本次复盘…" className="neo-input w-full resize-none rounded-md px-3 py-2 text-[12px]" />
+                        <textarea value={thesisReviewDraft[t.id] || ""} onChange={(e) => setThesisReviewDraft((prev) => ({ ...prev, [t.id]: e.target.value }))} aria-label={`${t.name} 复盘记录`} rows={2} placeholder="记录本次复盘…" className="neo-input min-h-11 w-full resize-none rounded-md px-3 py-2 text-[12px]" />
                         <div className="mt-1 flex gap-2">
-                          <button onClick={() => addReviewToThesis(t.id, thesisReviewDraft[t.id] || "")} className="neo-btn-primary rounded-md px-3 py-1 text-[11px]">保存复盘</button>
-                          <button onClick={() => setThesisReviewOpen((prev) => ({ ...prev, [t.id]: false }))} className="neo-chip rounded-md px-3 py-1 text-[11px]">取消</button>
+                          <button onClick={() => addReviewToThesis(t.id, thesisReviewDraft[t.id] || "")} className="neo-btn-primary min-h-11 rounded-md px-3 py-1 text-[11px]">保存复盘</button>
+                          <button onClick={() => setThesisReviewOpen((prev) => ({ ...prev, [t.id]: false }))} className="neo-chip min-h-11 rounded-md px-3 py-1 text-[11px]">取消</button>
                         </div>
                       </div>
                     ) : (
-                      <button onClick={() => setThesisReviewOpen((prev) => ({ ...prev, [t.id]: true }))} className="mt-1 text-[11px] text-neo-primary">记录复盘</button>
+                      <button onClick={() => setThesisReviewOpen((prev) => ({ ...prev, [t.id]: true }))} className="mt-1 inline-flex min-h-11 items-center text-[11px] text-neo-primary">记录复盘</button>
                     )}
                     <div className="mt-1 flex items-center gap-3">
-                      <a href={stockHrefFor(t.code, t.market)} className="text-[11px] text-neo-primary hover:underline">个股页 →</a>
-                      <button onClick={() => deleteThesis(t.id)} className="text-[11px] text-neo-dim transition-colors hover:text-neo-down">删除</button>
+                      <a href={stockHrefFor(t.code, t.market)} className="inline-flex min-h-11 items-center text-[11px] text-neo-primary hover:underline">个股页 →</a>
+                      <button onClick={() => deleteThesis(t.id)} className="inline-flex min-h-11 items-center text-[11px] text-neo-dim transition-colors hover:text-neo-down">删除</button>
                     </div>
                   </div>
                 ))}

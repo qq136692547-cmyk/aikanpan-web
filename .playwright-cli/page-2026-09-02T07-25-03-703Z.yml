@@ -1,0 +1,99 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [ref=e13]
+            - tab "美股" [selected] [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e17] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=e18] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=e19] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=e20] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=e21] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=e22]:
+          - link "升级 Pro" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e26]: 会员
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "盯盘" [level=1] [ref=e41]
+          - generic [ref=e42]: 美股
+        - paragraph [ref=e43]: 用自然语言创建盯盘条件，AI 自动解析并持续监控
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 智能盯盘
+          - heading "自然语言创建或组合条件" [level=3] [ref=e48]
+        - generic [ref=e49]:
+          - textbox "输入盯盘条件，如「苹果跌到180提醒我」" [ref=e50]
+          - button "解析" [disabled] [ref=e51]
+        - generic [ref=e52]:
+          - button "苹果跌到180提醒我" [ref=e53]
+          - button "英伟达涨到150通知我" [ref=e54]
+          - button "特斯拉涨幅超过3%提醒我" [ref=e55]
+          - button "微软跌破400" [ref=e56]
+          - button "+ 手动组合条件" [ref=e57]
+      - generic [ref=e59]:
+        - heading "通知设置" [level=3] [ref=e64]
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: 浏览器通知
+              - generic [ref=e72]: 触发时在桌面弹出提醒
+            - checkbox "浏览器通知开关" [ref=e74]
+          - generic [ref=e76]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: 短信通知
+              - generic [ref=e82]: 绑定手机号后可开启
+            - checkbox "短信通知开关" [disabled] [ref=e84]
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - heading "盯盘任务 · 美股" [level=3] [ref=e90]
+            - generic [ref=e91]: 实时
+          - generic [ref=e92]:
+            - generic [ref=e93]: 暂无盯盘任务
+            - paragraph [ref=e94]: 在上方输入自然语言，或手动组合价格/涨跌幅/成交量条件
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - heading "自然语言创建" [level=3] [ref=e97]
+            - paragraph [ref=e98]: 输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值
+          - generic [ref=e99]:
+            - heading "实时监控" [level=3] [ref=e100]
+            - paragraph [ref=e101]: 后台持续轮询行情数据，条件满足时立即触发通知
+          - generic [ref=e102]:
+            - heading "多渠道提醒" [level=3] [ref=e103]
+            - paragraph [ref=e104]: 支持微信订阅消息推送，触发记录可追溯
+    - contentinfo [ref=e105]:
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - generic [ref=e109]: 📊
+            - generic [ref=e111]: 爱看盘 · 每日复盘工具
+          - generic [ref=e112]:
+            - link "关于" [ref=e113] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e114] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e115] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e116] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e117] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e118]: 数据：Finnhub
+        - paragraph [ref=e119]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e120]

@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e11]:
+          - link "升级 Pro" [ref=e12] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e15]: 会员
+          - link "登录 / 注册" [ref=e16] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e21]
+    - main [ref=e25]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - heading "搜索" [level=1] [ref=e30]
+          - generic [ref=e31]: 美股
+        - paragraph [ref=e32]: 按代码、名称或拼音查找股票
+      - generic [ref=e35]:
+        - textbox "输入美股代码或名称…" [ref=e36]: apple
+        - button "搜索" [ref=e37]
+      - generic [ref=e38]:
+        - paragraph [ref=e39]:
+          - text: "关键词: apple"
+          - generic [ref=e40]: (7 条结果)
+        - generic [ref=e41]:
+          - link "苹果 Common Stock AAPL 326.14 +0.31%" [ref=e42] [cursor=pointer]:
+            - /url: /stock/AAPL/
+            - generic [ref=e43]:
+              - generic [ref=e44]: 苹果
+              - generic [ref=e45]: Common Stock
+            - generic [ref=e46]: AAPL
+            - generic [ref=e47]:
+              - generic [ref=e48]: "326.14"
+              - generic [ref=e49]: +0.31%
+          - link "Apple Hospitality REIT Inc Common Stock APLE 15.85 +1.80%" [ref=e50] [cursor=pointer]:
+            - /url: /stock/APLE/
+            - generic [ref=e51]:
+              - generic [ref=e52]: Apple Hospitality REIT Inc
+              - generic [ref=e53]: Common Stock
+            - generic [ref=e54]: APLE
+            - generic [ref=e55]:
+              - generic [ref=e56]: "15.85"
+              - generic [ref=e57]: +1.80%
+          - link "Maui Land & Pineapple Company Inc Common Stock MLP 16.29 +1.12%" [ref=e58] [cursor=pointer]:
+            - /url: /stock/MLP/
+            - generic [ref=e59]:
+              - generic [ref=e60]: Maui Land & Pineapple Company Inc
+              - generic [ref=e61]: Common Stock
+            - generic [ref=e62]: MLP
+            - generic [ref=e63]:
+              - generic [ref=e64]: "16.29"
+              - generic [ref=e65]: +1.12%
+          - link "Pineapple Financial Inc Common Stock PAPL 0.94 -4.46%" [ref=e66] [cursor=pointer]:
+            - /url: /stock/PAPL/
+            - generic [ref=e67]:
+              - generic [ref=e68]: Pineapple Financial Inc
+              - generic [ref=e69]: Common Stock
+            - generic [ref=e70]: PAPL
+            - generic [ref=e71]:
+              - generic [ref=e72]: "0.94"
+              - generic [ref=e73]: "-4.46%"
+          - link "Apple iSports Group Inc Common Stock AAPI 0.08 +34.80%" [ref=e74] [cursor=pointer]:
+            - /url: /stock/AAPI/
+            - generic [ref=e75]:
+              - generic [ref=e76]: Apple iSports Group Inc
+              - generic [ref=e77]: Common Stock
+            - generic [ref=e78]: AAPI
+            - generic [ref=e79]:
+              - generic [ref=e80]: "0.08"
+              - generic [ref=e81]: +34.80%
+          - link "Pineapple Energy Inc Common Stock SUNE 2.36 -0.84%" [ref=e82] [cursor=pointer]:
+            - /url: /stock/SUNE/
+            - generic [ref=e83]:
+              - generic [ref=e84]: Pineapple Energy Inc
+              - generic [ref=e85]: Common Stock
+            - generic [ref=e86]: SUNE
+            - generic [ref=e87]:
+              - generic [ref=e88]: "2.36"
+              - generic [ref=e89]: "-0.84%"
+          - link "Pineapple Power Corporation PLC Common Stock PNPL.L -- +0.00%" [ref=e90] [cursor=pointer]:
+            - /url: /stock/PNPL.L/
+            - generic [ref=e91]:
+              - generic [ref=e92]: Pineapple Power Corporation PLC
+              - generic [ref=e93]: Common Stock
+            - generic [ref=e94]: PNPL.L
+            - generic [ref=e95]:
+              - generic [ref=e96]: "--"
+              - generic [ref=e97]: +0.00%
+    - contentinfo [ref=e98]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - generic [ref=e102]: 📊
+            - generic [ref=e104]: 爱看盘 · 每日复盘工具
+          - generic [ref=e105]:
+            - link "关于" [ref=e106] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e107] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e108] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e109] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e110] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e111]: 数据：Finnhub
+        - paragraph [ref=e112]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e113]

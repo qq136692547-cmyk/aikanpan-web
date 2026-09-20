@@ -1,0 +1,9 @@
+[Unit]
+Description=Record aikanpan.top SEO health status
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/aikanpan-baidu-push.env
+ExecStart=/usr/bin/python3 /opt/aikanpan-ops/bin/seo_status.py

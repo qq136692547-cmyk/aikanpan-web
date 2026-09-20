@@ -1,10 +1,13 @@
 import { MarketPageFrame } from "@/components/market/market-page-shell";
+import { LimitAnalysisCard } from "@/components/ai/limit-analysis-card";
 import { AutoRefresh } from "@/components/system/auto-refresh";
 import { MarketOverviewTemplate, type MarketOverviewIndex, type MarketOverviewSection } from "@/components/market/market-overview-template";
 import { MarketEarningsCalendar } from "@/components/market/market-earnings-calendar";
 import { UsDailyReview } from "@/components/us/us-daily-review";
 import { UsWatchlistButton } from "@/components/us/us-watchlist-button";
-import { api, type Dashboard, type Insights, type LimitStock, type Sector, type UsDashboard } from "@/lib/api";
+import { HkDailyReview } from "@/components/hk/hk-daily-review";
+import { HkWatchlistButton } from "@/components/hk/hk-watchlist-button";
+import { api, type Dashboard, type HkDashboard, type Insights, type LimitStock, type Sector, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { usNameZh } from "@/lib/us-stock-names";
 import { marketPhaseText } from "@/lib/market-status";
@@ -17,16 +20,17 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "市场总览",
-  description: "A股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报。",
+  description: "A股、港股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报。",
+  alternates: { canonical: "/market/" },
 };
 
 const marketJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "市场总览 · 爱看盘",
-  description: "A股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报",
+  description: "A股、港股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报",
   isPartOf: { "@type": "WebSite", name: "爱看盘", url: "https://aikanpan.top" },
-  about: ["A股", "美股", "股票行情", "行业板块", "AI 聚焦"],
+  about: ["A股", "港股", "美股", "股票行情", "行业板块", "AI 聚焦"],
 };
 
 function trendClass(pct: number) {
@@ -46,6 +50,7 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
   let insights: Insights | null = null;
   let sectorsData: { sectors: Sector[]; count: number } | null = null;
   let usDashboard: UsDashboard | null = null;
+  let hkDashboard: HkDashboard | null = null;
 
   if (scope === "cn") {
     try {
@@ -57,15 +62,21 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
     } catch (error) {
       console.error("Failed to fetch CN market data:", error);
     }
-  } else {
+  } else if (scope === "us") {
     try {
       usDashboard = await api.getUsDashboard();
     } catch (error) {
       console.error("Failed to fetch US market data:", error);
     }
+  } else {
+    try {
+      hkDashboard = await api.getHkDashboard();
+    } catch (error) {
+      console.error("Failed to fetch HK market data:", error);
+    }
   }
 
-  const hasData = scope === "cn" ? Boolean(dashboard) : Boolean(usDashboard);
+  const hasData = scope === "cn" ? Boolean(dashboard) : scope === "us" ? Boolean(usDashboard) : Boolean(hkDashboard);
 
   if (!hasData) {
     return (
@@ -91,13 +102,23 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
           date: idx.date,
           source: idx.source,
         }))
-      : (usDashboard?.indices ?? []).map((idx) => ({
+      : scope === "us"
+      ? (usDashboard?.indices ?? []).map((idx) => ({
           code: idx.code,
           name: idx.name,
           last: idx.last,
           change: idx.change,
           change_pct: idx.change_pct,
           date: idx.date,
+          source: idx.source,
+        }))
+      : (hkDashboard?.indices ?? []).map((idx) => ({
+          code: idx.code,
+          name: idx.name,
+          last: idx.last,
+          change: idx.change,
+          change_pct: idx.change_pct,
+          date: hkDashboard?.trade_date,
           source: idx.source,
         }));
 
@@ -111,19 +132,23 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
           change_pct: sector.change_pct,
           turnover_rate: sector.turnover_rate,
         }))
-      : (usDashboard?.sectors ?? []).map((sector) => ({
+      : scope === "us"
+      ? (usDashboard?.sectors ?? []).map((sector) => ({
           code: sector.code,
           name: sector.name,
           price: sector.last,
           change: sector.change,
           change_pct: sector.change_pct,
           turnover_rate: undefined,
-        }));
+        }))
+      : [];
 
   const subtitle =
     scope === "cn"
       ? `${dashboard?.index?.date ?? ""} · ${marketPhaseText(dashboard?.market_phase)}`
-      : `${usDashboard?.generated_at?.slice(0, 16).replace("T", " ") ?? ""}`;
+      : scope === "us"
+      ? `${usDashboard?.generated_at?.slice(0, 16).replace("T", " ") ?? ""}`
+      : `${hkDashboard?.trade_date ?? ""} · ${hkDashboard?.market_status === "open" ? "交易中" : "已收盘"}`;
 
   const sections: MarketOverviewSection[] = [
     {
@@ -133,13 +158,21 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
           {scope === "cn" ? (
             <>
+              <div className="mb-3">
+                <LimitAnalysisCard />
+              </div>
               <LimitTable title="涨停板" stocks={dashboard?.limit_up ?? []} type="up" />
               <LimitTable title="跌停板" stocks={dashboard?.limit_down ?? []} type="down" />
             </>
-          ) : (
+          ) : scope === "us" ? (
             <>
               <UsHotStocksCard dashboard={usDashboard} />
               <UsNewsCard dashboard={usDashboard} />
+            </>
+          ) : (
+            <>
+              <HkHotStocksCard dashboard={hkDashboard} />
+              <HkNewsCard dashboard={hkDashboard} />
             </>
           )}
         </div>
@@ -154,15 +187,23 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
             <StrongIndustriesCard dashboard={dashboard} />
             <MarketFocusCard insights={insights} />
           </div>
-        ) : (
+        ) : scope === "us" ? (
           <UsDailyReview />
+        ) : (
+          <HkDailyReview />
         ),
     },
-    {
-      key: "earnings",
-      title: "近期财报",
-      children: <MarketEarningsCalendar market={scope} />,
-    },
+    ...(scope === "hk"
+      ? [{
+          key: "movers",
+          title: "涨跌排行",
+          children: <HkMoversSection dashboard={hkDashboard} />,
+        }]
+      : [{
+          key: "earnings",
+          title: "近期财报",
+          children: <MarketEarningsCalendar market={scope} />,
+        }]),
   ];
 
   return (
@@ -183,6 +224,7 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
           indices={indices}
           sectors={sectors}
           sections={sections}
+          hideSectors={scope === "hk"}
         />
     </MarketPageFrame>
   );
@@ -215,7 +257,7 @@ function LimitTable({ title, stocks = [], type }: { title: string; stocks?: Limi
               return (
                 <tr key={stock.code} className="transition-colors hover-neo-inset">
                   <td className="px-3 py-1.5">
-                    <a href={`/stock/${stock.code.replace(/\./, "")}/`} className="flex flex-col">
+                    <a href={`/stock/${stock.code.replace(/\./, "")}/`} className="flex min-h-11 flex-col justify-center">
                       <span className="truncate text-[13px] font-medium text-neo-ink">{stock.name}</span>
                       <span className="text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                         {stock.code}
@@ -321,6 +363,116 @@ function MarketFocusCard({ insights }: { insights: Insights | null }) {
   );
 }
 
+function HkMoversSection({ dashboard }: { dashboard: HkDashboard | null }) {
+  const groups = [
+    { title: "领涨", rows: dashboard?.top_gainers ?? [], tone: "up" as const },
+    { title: "领跌", rows: dashboard?.top_losers ?? [], tone: "down" as const },
+  ];
+  if (groups.every((group) => group.rows.length === 0)) {
+    return <div className="neo-card p-4 text-[12px] text-neo-mid">暂无涨跌排行</div>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+      {groups.map((group) => {
+        const color = group.tone === "up" ? "text-neo-up" : "text-neo-down";
+        return (
+          <div key={group.title} className="neo-card-sm overflow-hidden">
+            <div className="flex items-center justify-between px-3 py-2">
+              <h3 className="text-[12px] font-medium text-neo-ink">{group.title}</h3>
+              <span className={`text-[11px] ${color}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                {group.rows.length} 只
+              </span>
+            </div>
+            <div className="divide-y divide-[var(--neo-edge)]">
+              {group.rows.map((stock) => (
+                <a key={stock.code} href={`/stock/${stock.code}/`} className="flex min-h-11 items-center gap-2 px-3 py-1.5 transition-colors hover-neo-inset">
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate text-[13px] font-medium text-neo-ink">{stock.name || stock.code}</span>
+                    <span className="text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>{stock.code}</span>
+                  </div>
+                  <span className={`text-[13px] ${color}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPrice(stock.last)}</span>
+                  <span className={`w-16 text-right text-[13px] ${color}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPct(stock.change_pct ?? 0)}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function HkHotStocksCard({ dashboard }: { dashboard: HkDashboard | null }) {
+  const stocks = dashboard?.hot_stocks ?? [];
+  if (!stocks.length) {
+    return <div className="neo-card p-4 text-[12px] text-neo-mid">暂无热门港股</div>;
+  }
+
+  return (
+    <div className="neo-card p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-[12px] font-medium text-neo-ink">热门港股</h3>
+      </div>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {stocks.slice(0, 8).map((stock) => (
+          <div key={stock.code} className="neo-card-sm p-3">
+            <div className="flex items-center justify-between gap-2">
+              <a href={`/stock/${stock.code}/`} className="flex min-h-11 min-w-0 flex-col justify-center">
+                <span className="block truncate text-[13px] font-medium text-neo-ink">{stock.name || stock.code}</span>
+                <span className="block text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                  {stock.code}
+                </span>
+              </a>
+              <HkWatchlistButton code={stock.code} name={stock.name || stock.code} />
+            </div>
+            <div className="mt-2 flex items-baseline justify-between gap-2">
+              <span className="text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                {formatPrice(stock.last)}
+              </span>
+              <span className={`text-[12px] font-semibold ${trendClass(stock.change_pct ?? 0)}`}>
+                {formatPct(stock.change_pct ?? 0)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HkNewsCard({ dashboard }: { dashboard: HkDashboard | null }) {
+  const news = dashboard?.market_news ?? [];
+  if (!news.length) {
+    return <div className="neo-card p-4 text-[12px] text-neo-mid">暂无市场资讯</div>;
+  }
+
+  return (
+    <div className="neo-card p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-[12px] font-medium text-neo-ink">市场资讯</h3>
+      </div>
+      <div className="space-y-2">
+        {news.slice(0, 6).map((item) => (
+          <a
+            key={item.id || item.title}
+            href={item.url || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block min-h-11 rounded-lg px-2 py-1.5 transition-colors hover:bg-[var(--neo-surface-hover)]"
+          >
+            <div className="flex items-center gap-2 text-[10px] text-neo-dim">
+              <span className="font-medium text-neo-primary">{item.source || "资讯"}</span>
+              {item.time && <span>{item.time}</span>}
+            </div>
+            <p className="mt-0.5 line-clamp-1 text-[13px] leading-snug text-neo-ink">{item.title}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function UsHotStocksCard({ dashboard }: { dashboard: UsDashboard | null }) {
   const stocks = dashboard?.stocks ?? [];
   if (!stocks.length) {
@@ -336,7 +488,7 @@ function UsHotStocksCard({ dashboard }: { dashboard: UsDashboard | null }) {
         {stocks.slice(0, 8).map((stock) => (
           <div key={stock.code} className="neo-card-sm p-3">
             <div className="flex items-center justify-between gap-2">
-              <a href={`/stock/${stock.code}/`} className="min-w-0">
+              <a href={`/stock/${stock.code}/`} className="flex min-h-11 min-w-0 flex-col justify-center">
                 <span className="block truncate text-[13px] font-medium text-neo-ink">{usNameZh(stock.name, stock.code)}</span>
                 <span className="block text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {stock.code}
@@ -377,7 +529,7 @@ function UsNewsCard({ dashboard }: { dashboard: UsDashboard | null }) {
             href={item.url || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="block rounded-lg px-2 py-1.5 transition-colors hover:bg-[var(--neo-surface-hover)]"
+            className="block min-h-11 rounded-lg px-2 py-1.5 transition-colors hover:bg-[var(--neo-surface-hover)]"
           >
             <div className="flex items-center gap-2 text-[10px] text-neo-dim">
               <span className="font-medium text-neo-primary">{item.source || "资讯"}</span>

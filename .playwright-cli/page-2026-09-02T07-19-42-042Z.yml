@@ -1,0 +1,317 @@
+- generic [ref=f7e1]:
+  - generic [ref=f7e2]:
+    - banner [ref=f7e3]:
+      - navigation [ref=f7e4]:
+        - link "爱看盘" [ref=f7e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f7e10]:
+          - link "升级 Pro" [ref=f7e11] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f7e14] [cursor=pointer]:
+            - /url: /account/
+          - button "菜单" [ref=f7e18]
+    - main [ref=f7e21]:
+      - generic [ref=f7e25]:
+        - heading "每日复盘" [level=1] [ref=f7e26]
+        - generic [ref=f7e27]: 美股
+      - region "今日工作流" [ref=f7e899]:
+        - generic [ref=f7e900]:
+          - generic [ref=f7e901]:
+            - heading "今日工作流" [level=2] [ref=f7e902]
+            - paragraph [ref=f7e903]: 5 步完成当日看盘闭环，进度按天保存。
+          - generic [ref=f7e904]: 0/5 已完成
+        - generic [ref=f7e905]:
+          - link "第 1 步 看今日复盘 先看市场结构和 AI 结论" [ref=f7e906] [cursor=pointer]:
+            - /url: /review/?market=us
+            - generic [ref=f7e907]: 第 1 步
+            - generic [ref=f7e912]: 看今日复盘
+            - paragraph [ref=f7e913]: 先看市场结构和 AI 结论
+          - link "第 2 步 选 3 只重点股 从市场页挑出跟踪对象" [ref=f7e914] [cursor=pointer]:
+            - /url: /market/?market=us
+            - generic [ref=f7e915]: 第 2 步
+            - generic [ref=f7e920]: 选 3 只重点股
+            - paragraph [ref=f7e921]: 从市场页挑出跟踪对象
+          - link "第 3 步 写入自选/计划 记录观察点和操作预期" [ref=f7e922] [cursor=pointer]:
+            - /url: /research/?market=us
+            - generic [ref=f7e923]: 第 3 步
+            - generic [ref=f7e928]: 写入自选/计划
+            - paragraph [ref=f7e929]: 记录观察点和操作预期
+          - link "第 4 步 设置盯盘提醒 条件触发时自动提醒" [ref=f7e930] [cursor=pointer]:
+            - /url: /alerts/?market=us
+            - generic [ref=f7e931]: 第 4 步
+            - generic [ref=f7e938]: 设置盯盘提醒
+            - paragraph [ref=f7e939]: 条件触发时自动提醒
+          - link "第 5 步 AI 复盘归档 收盘后生成连续记录" [ref=f7e940] [cursor=pointer]:
+            - /url: /review/?market=us
+            - generic [ref=f7e941]: 第 5 步
+            - generic [ref=f7e946]: AI 复盘归档
+            - paragraph [ref=f7e947]: 收盘后生成连续记录
+      - region "今日决策闭环" [ref=f7e948]:
+        - generic [ref=f7e949]:
+          - generic [ref=f7e950]:
+            - heading "今日决策闭环" [level=2] [ref=f7e951]
+            - paragraph [ref=f7e952]: 先看结论，再定关注，最后落到一条提醒。
+          - link "设置提醒" [ref=f7e953] [cursor=pointer]:
+            - /url: /alerts/?market=us
+        - generic [ref=f7e959]:
+          - generic [ref=f7e960]:
+            - generic [ref=f7e961]: 今日结论
+            - paragraph [ref=f7e966]: 市场温度 25（偏空）
+          - generic [ref=f7e967]:
+            - generic [ref=f7e968]: 今日关注
+            - generic [ref=f7e969]:
+              - generic [ref=f7e970]: 科技
+              - generic [ref=f7e971]: 金融
+              - generic [ref=f7e972]: 医疗
+          - generic [ref=f7e973]:
+            - generic [ref=f7e974]: 风险提醒
+            - paragraph [ref=f7e978]: VIX +3.0%
+      - generic [ref=f7e979]:
+        - generic [ref=f7e982]:
+          - generic [ref=f7e983]: 美股 AI 复盘
+          - generic [ref=f7e984]: 生成中…
+        - generic [ref=f7e990]:
+          - heading "市场概览" [level=2] [ref=f7e992]
+          - generic [ref=f7e993]:
+            - link "标普500 ETF 761.78 -0.69%" [ref=f7e994] [cursor=pointer]:
+              - /url: /stock/SPY/
+              - generic [ref=f7e995]: 标普500 ETF
+              - generic [ref=f7e996]: "761.78"
+              - generic [ref=f7e997]: "-0.69%"
+            - link "纳指100 ETF 707.64 -1.27%" [ref=f7e998] [cursor=pointer]:
+              - /url: /stock/QQQ/
+              - generic [ref=f7e999]: 纳指100 ETF
+              - generic [ref=f7e1000]: "707.64"
+              - generic [ref=f7e1001]: "-1.27%"
+            - link "道琼斯 ETF 527.75 -0.72%" [ref=f7e1002] [cursor=pointer]:
+              - /url: /stock/DIA/
+              - generic [ref=f7e1003]: 道琼斯 ETF
+              - generic [ref=f7e1004]: "527.75"
+              - generic [ref=f7e1005]: "-0.72%"
+            - generic [ref=f7e1006]:
+              - generic [ref=f7e1007]: 市场情绪
+              - generic [ref=f7e1008]: "25"
+              - generic [ref=f7e1011]:
+                - generic [ref=f7e1012]: 指数动量 -0.89%
+                - generic [ref=f7e1013]: 上涨板块 2/6
+                - generic [ref=f7e1014]: VIX +3.0%
+        - generic [ref=f7e1015]:
+          - heading "行业/板块表现" [level=2] [ref=f7e1017]
+          - generic [ref=f7e1019]:
+            - link "科技-1.53%" [ref=f7e1020] [cursor=pointer]:
+              - /url: /stock/XLK/
+            - link "金融-0.88%" [ref=f7e1021] [cursor=pointer]:
+              - /url: /stock/XLF/
+            - link "医疗+0.66%" [ref=f7e1022] [cursor=pointer]:
+              - /url: /stock/XLV/
+            - link "能源+1.27%" [ref=f7e1023] [cursor=pointer]:
+              - /url: /stock/XLE/
+            - link "消费-1.72%" [ref=f7e1024] [cursor=pointer]:
+              - /url: /stock/XLY/
+            - link "工业-1.37%" [ref=f7e1025] [cursor=pointer]:
+              - /url: /stock/XLI/
+        - generic [ref=f7e1026]:
+          - heading "近期财报" [level=2] [ref=f7e1027]
+          - generic [ref=f7e1028]:
+            - link "AAPL 2027-01-27 EPS 预估 $2.96" [ref=f7e1029] [cursor=pointer]:
+              - /url: /stock/AAPL/
+              - generic [ref=f7e1030]: AAPL
+              - generic [ref=f7e1031]: 2027-01-27
+              - generic [ref=f7e1032]: EPS 预估 $2.96
+            - link "NVDA 2027-02-23 EPS 预估 $2.77" [ref=f7e1033] [cursor=pointer]:
+              - /url: /stock/NVDA/
+              - generic [ref=f7e1034]: NVDA
+              - generic [ref=f7e1035]: 2027-02-23
+              - generic [ref=f7e1036]: EPS 预估 $2.77
+            - link "MSFT 2027-01-26 EPS 预估 $4.95" [ref=f7e1037] [cursor=pointer]:
+              - /url: /stock/MSFT/
+              - generic [ref=f7e1038]: MSFT
+              - generic [ref=f7e1039]: 2027-01-26
+              - generic [ref=f7e1040]: EPS 预估 $4.95
+            - link "GOOGL 2027-02-02 EPS 预估 $3.44" [ref=f7e1041] [cursor=pointer]:
+              - /url: /stock/GOOGL/
+              - generic [ref=f7e1042]: GOOGL
+              - generic [ref=f7e1043]: 2027-02-02
+              - generic [ref=f7e1044]: EPS 预估 $3.44
+            - link "AMZN 2027-02-03 EPS 预估 $2.49" [ref=f7e1045] [cursor=pointer]:
+              - /url: /stock/AMZN/
+              - generic [ref=f7e1046]: AMZN
+              - generic [ref=f7e1047]: 2027-02-03
+              - generic [ref=f7e1048]: EPS 预估 $2.49
+            - link "META 2027-01-26 EPS 预估 $8.40" [ref=f7e1049] [cursor=pointer]:
+              - /url: /stock/META/
+              - generic [ref=f7e1050]: META
+              - generic [ref=f7e1051]: 2027-01-26
+              - generic [ref=f7e1052]: EPS 预估 $8.40
+            - link "TSLA 2027-01-26 EPS 预估 $0.48" [ref=f7e1053] [cursor=pointer]:
+              - /url: /stock/TSLA/
+              - generic [ref=f7e1054]: TSLA
+              - generic [ref=f7e1055]: 2027-01-26
+              - generic [ref=f7e1056]: EPS 预估 $0.48
+            - link "NFLX 2027-01-18 EPS 预估 $0.75" [ref=f7e1057] [cursor=pointer]:
+              - /url: /stock/NFLX/
+              - generic [ref=f7e1058]: NFLX
+              - generic [ref=f7e1059]: 2027-01-18
+              - generic [ref=f7e1060]: EPS 预估 $0.75
+        - generic [ref=f7e1061]:
+          - heading "市场资讯" [level=2] [ref=f7e1062]
+          - generic [ref=f7e1063]:
+            - link "CNBC 2026-09-02 04:12 OpenAI称Astra AI模型是其首个跨越“关键”网络安全能力的模型" [ref=f7e1064] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/open-ai-astra-cyber-model.html
+              - generic [ref=f7e1065]:
+                - generic [ref=f7e1066]: CNBC
+                - generic [ref=f7e1067]: 2026-09-02 04:12
+              - paragraph [ref=f7e1068]: OpenAI称Astra AI模型是其首个跨越“关键”网络安全能力的模型
+            - link "CNBC 2026-09-02 03:40 斯坦·克伦克收购美国职棒大联盟洛杉矶天使队控股权" [ref=f7e1069] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/stan-kroenke-controlling-stake-los-angeles-angels.html
+              - generic [ref=f7e1070]:
+                - generic [ref=f7e1071]: CNBC
+                - generic [ref=f7e1072]: 2026-09-02 03:40
+              - paragraph [ref=f7e1073]: 斯坦·克伦克收购美国职棒大联盟洛杉矶天使队控股权
+            - link "CNBC 2026-09-02 02:02 我们手头现金创今年新高，原因如下" [ref=f7e1074] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/were-sitting-on-more-cash-than-at-any-time-this-year-heres-why.html
+              - generic [ref=f7e1075]:
+                - generic [ref=f7e1076]: CNBC
+                - generic [ref=f7e1077]: 2026-09-02 02:02
+              - paragraph [ref=f7e1078]: 我们手头现金创今年新高，原因如下
+            - link "CNBC 2026-09-02 00:19 吉姆·克莱默称因美国联邦贸易委员会新诉讼抛售亚马逊股票将“荒谬至极”" [ref=f7e1079] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/cramer-selling-amazon-shares-over-new-ftc-lawsuit-would-be-hysterical.html
+              - generic [ref=f7e1080]:
+                - generic [ref=f7e1081]: CNBC
+                - generic [ref=f7e1082]: 2026-09-02 00:19
+              - paragraph [ref=f7e1083]: 吉姆·克莱默称因美国联邦贸易委员会新诉讼抛售亚马逊股票将“荒谬至极”
+            - link "CNBC 2026-09-02 00:17 学生因人工智能重新考虑专业、职业路径和行业：CNBC调查" [ref=f7e1084] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/students-are-reconsidering-majors-career-paths-due-to-ai-cnbc-survey.html
+              - generic [ref=f7e1085]:
+                - generic [ref=f7e1086]: CNBC
+                - generic [ref=f7e1087]: 2026-09-02 00:17
+              - paragraph [ref=f7e1088]: 学生因人工智能重新考虑专业、职业路径和行业：CNBC调查
+            - link "CNBC 2026-09-02 00:08 AI代币价格创历史新低" [ref=f7e1089] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/ai-token-prices-lows.html
+              - generic [ref=f7e1090]:
+                - generic [ref=f7e1091]: CNBC
+                - generic [ref=f7e1092]: 2026-09-02 00:08
+              - paragraph [ref=f7e1093]: AI代币价格创历史新低
+        - generic [ref=f7e1094]:
+          - heading "热门美股" [level=2] [ref=f7e1096]
+          - generic [ref=f7e1097]:
+            - generic [ref=f7e1098]:
+              - generic [ref=f7e1099]:
+                - link "Apple Inc AAPL" [ref=f7e1100] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=f7e1101]: Apple Inc
+                  - generic [ref=f7e1102]: AAPL
+                - button "加自选" [ref=f7e1103]
+              - generic [ref=f7e1104]:
+                - generic [ref=f7e1105]: "325.13"
+                - generic [ref=f7e1106]: +2.61%
+            - generic [ref=f7e1107]:
+              - generic [ref=f7e1108]:
+                - link "NVIDIA Corp NVDA" [ref=f7e1109] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=f7e1110]: NVIDIA Corp
+                  - generic [ref=f7e1111]: NVDA
+                - button "加自选" [ref=f7e1112]
+              - generic [ref=f7e1113]:
+                - generic [ref=f7e1114]: "217.44"
+                - generic [ref=f7e1115]: "-1.51%"
+            - generic [ref=f7e1116]:
+              - generic [ref=f7e1117]:
+                - link "Microsoft Corp MSFT" [ref=f7e1118] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=f7e1119]: Microsoft Corp
+                  - generic [ref=f7e1120]: MSFT
+                - button "加自选" [ref=f7e1121]
+              - generic [ref=f7e1122]:
+                - generic [ref=f7e1123]: "501.02"
+                - generic [ref=f7e1124]: "-1.24%"
+            - generic [ref=f7e1125]:
+              - generic [ref=f7e1126]:
+                - link "Alphabet Inc GOOGL" [ref=f7e1127] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=f7e1128]: Alphabet Inc
+                  - generic [ref=f7e1129]: GOOGL
+                - button "加自选" [ref=f7e1130]
+              - generic [ref=f7e1131]:
+                - generic [ref=f7e1132]: "335.02"
+                - generic [ref=f7e1133]: "-1.28%"
+            - generic [ref=f7e1134]:
+              - generic [ref=f7e1135]:
+                - link "Amazon.com Inc AMZN" [ref=f7e1136] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=f7e1137]: Amazon.com Inc
+                  - generic [ref=f7e1138]: AMZN
+                - button "加自选" [ref=f7e1139]
+              - generic [ref=f7e1140]:
+                - generic [ref=f7e1141]: "254.92"
+                - generic [ref=f7e1142]: "-1.87%"
+            - generic [ref=f7e1143]:
+              - generic [ref=f7e1144]:
+                - link "Meta Platforms Inc META" [ref=f7e1145] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=f7e1146]: Meta Platforms Inc
+                  - generic [ref=f7e1147]: META
+                - button "加自选" [ref=f7e1148]
+              - generic [ref=f7e1149]:
+                - generic [ref=f7e1150]: "578.54"
+                - generic [ref=f7e1151]: +1.08%
+            - generic [ref=f7e1152]:
+              - generic [ref=f7e1153]:
+                - link "Tesla Inc TSLA" [ref=f7e1154] [cursor=pointer]:
+                  - /url: /stock/TSLA/
+                  - generic [ref=f7e1155]: Tesla Inc
+                  - generic [ref=f7e1156]: TSLA
+                - button "加自选" [ref=f7e1157]
+              - generic [ref=f7e1158]:
+                - generic [ref=f7e1159]: "356.09"
+                - generic [ref=f7e1160]: "-3.22%"
+            - generic [ref=f7e1161]:
+              - generic [ref=f7e1162]:
+                - link "Netflix Inc NFLX" [ref=f7e1163] [cursor=pointer]:
+                  - /url: /stock/NFLX/
+                  - generic [ref=f7e1164]: Netflix Inc
+                  - generic [ref=f7e1165]: NFLX
+                - button "加自选" [ref=f7e1166]
+              - generic [ref=f7e1167]:
+                - generic [ref=f7e1168]: "80.81"
+                - generic [ref=f7e1169]: "-0.30%"
+    - contentinfo [ref=f7e818]:
+      - generic [ref=f7e819]:
+        - generic [ref=f7e820]:
+          - generic [ref=f7e821]:
+            - generic [ref=f7e822]: 📊
+            - generic [ref=f7e824]: 爱看盘 · 每日复盘工具
+          - generic [ref=f7e825]:
+            - link "关于" [ref=f7e826] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f7e827] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f7e828] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f7e829] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f7e830] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f7e831]: 数据：Finnhub
+        - paragraph [ref=f7e832]: ⚠ 本站数据仅供参考，不构成投资建议
+  - navigation [ref=f7e833]:
+    - generic [ref=f7e834]:
+      - generic [ref=f7e835]:
+        - link "全部" [ref=f7e836] [cursor=pointer]:
+          - /url: /
+        - link "A股" [ref=f7e837] [cursor=pointer]:
+          - /url: /review/?market=cn
+        - link "美股" [active] [ref=f7e838] [cursor=pointer]:
+          - /url: /review/?market=us
+      - generic [ref=f7e839]:
+        - link "市场" [ref=f7e1170] [cursor=pointer]:
+          - /url: /market/?market=us
+        - link "复盘" [ref=f7e1175] [cursor=pointer]:
+          - /url: /review/?market=us
+        - link "研究" [ref=f7e1180] [cursor=pointer]:
+          - /url: /research/?market=us
+        - link "搜索" [ref=f7e1186] [cursor=pointer]:
+          - /url: /search/?market=us
+        - link "盯盘" [ref=f7e1191] [cursor=pointer]:
+          - /url: /alerts/?market=us
+  - alert [ref=f7e898]

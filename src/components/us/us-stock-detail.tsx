@@ -1,15 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bot, RefreshCw } from "lucide-react";
+import { Bot, ExternalLink, FileText, RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
-import { formatPct, formatPrice } from "@/lib/format";
+import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
+import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
+import { formatPct, formatPrice, formatVolume } from "@/lib/format";
 import { usNameZh } from "@/lib/us-stock-names";
 import { useAuth } from "@/lib/auth";
-import { api, type AIComment, type UsEarnings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
+import { api, type AIComment, type UsEarnings, type UsFilings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
+
+export type UsStockDetailInitialData = {
+  quote?: UsQuote | null;
+  history?: UsHistory | null;
+  financials?: UsFinancials | null;
+  earnings?: UsEarnings | null;
+  news?: UsNewsItem[];
+  filings?: UsFilings | null;
+};
 
 function formatUsMarketCap(millions?: number) {
   if (millions == null) return "";
@@ -19,12 +30,29 @@ function formatUsMarketCap(millions?: number) {
   return `$${Math.round(usd).toLocaleString()}`;
 }
 
-export function UsStockDetail({ symbol }: { symbol: string }) {
-  const [quote, setQuote] = useState<UsQuote | null>(null);
-  const [history, setHistory] = useState<UsHistory | null>(null);
-  const [financials, setFinancials] = useState<UsFinancials | null>(null);
-  const [earnings, setEarnings] = useState<UsEarnings | null>(null);
-  const [news, setNews] = useState<UsNewsItem[]>([]);
+const FILING_LABELS: Record<string, string> = {
+  "10-K": "年报",
+  "10-Q": "季报",
+  "8-K": "重大事项",
+  "DEF 14A": "股东会文件",
+  "20-F": "境外年报",
+  "40-F": "境外年报",
+  "6-K": "境外中期报告",
+};
+
+function filingLabel(form: string) {
+  const amendment = form.trim().toUpperCase().endsWith("/A");
+  const base = form.trim().toUpperCase().replace(/\/A$/, "");
+  return `${FILING_LABELS[base] || base}${amendment ? "（修订）" : ""}`;
+}
+
+export function UsStockDetail({ symbol, initialData }: { symbol: string; initialData?: UsStockDetailInitialData }) {
+  const [quote, setQuote] = useState<UsQuote | null>(initialData?.quote ?? null);
+  const [history, setHistory] = useState<UsHistory | null>(initialData?.history ?? null);
+  const [financials, setFinancials] = useState<UsFinancials | null>(initialData?.financials ?? null);
+  const [earnings, setEarnings] = useState<UsEarnings | null>(initialData?.earnings ?? null);
+  const [news, setNews] = useState<UsNewsItem[]>(initialData?.news ?? []);
+  const [filings, setFilings] = useState<UsFilings | null>(initialData?.filings ?? null);
   const [ai, setAi] = useState<AIComment | null>(null);
   const [aiLoading, setAiLoading] = useState(true);
   const { isAuthenticated } = useAuth();
@@ -42,7 +70,8 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       api.getUsNews(symbol, 8),
       isAuthenticated ? api.getUsAI(symbol) : Promise.resolve(null),
       api.getUsEarnings(symbol),
-    ]).then(([q, h, f, n, a, e]) => {
+      api.getUsFilings(symbol, 12),
+    ]).then(([q, h, f, n, a, e, l]) => {
       if (cancelled) return;
       if (q.status === "fulfilled") setQuote(q.value);
       if (h.status === "fulfilled") setHistory(h.value);
@@ -59,6 +88,7 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
       }
       if (a.status === "fulfilled") setAi(a.value);
       if (e.status === "fulfilled") setEarnings(e.value);
+      if (l.status === "fulfilled") setFilings(l.value);
       setAiLoading(false);
     });
     return () => {
@@ -95,6 +125,29 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
         <Sparkline data={history?.closes ?? []} trend={trend} height={48} className="mt-3 w-full" />
       </section>
 
+      {quote && (
+        <section className="neo-card p-5">
+          <h2 className="text-[14px] font-semibold text-neo-ink">行情数据</h2>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { label: "今开", value: quote.open ?? 0, fmt: formatPrice },
+              { label: "最高", value: quote.high ?? 0, fmt: formatPrice, color: "text-neo-up" },
+              { label: "最低", value: quote.low ?? 0, fmt: formatPrice, color: "text-neo-down" },
+              { label: "昨收", value: quote.prev_close ?? 0, fmt: formatPrice },
+              { label: "成交量", value: quote.volume ?? 0, fmt: formatVolume },
+              { label: "市值", value: quote.market_cap ?? 0, fmt: formatUsMarketCap },
+            ].map((item) => (
+              <div key={item.label} className="neo-inset-sm px-3 py-2.5">
+                <div className="text-[10px] uppercase tracking-wider text-neo-dim">{item.label}</div>
+                <div className={`mt-1 text-[14px] font-semibold ${item.color || "text-neo-ink"}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                  {item.fmt(item.value)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {financials?.available && (
         <section className="neo-card p-5">
           <h2 className="text-[14px] font-semibold text-neo-ink">关键指标</h2>
@@ -120,6 +173,58 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
               </div>
             </div>
           </div>
+        </section>
+      )}
+
+      {filings?.available && filings.filings.length > 0 && (
+        <section className="neo-card p-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-[14px] font-semibold text-neo-ink">SEC 官方披露</h2>
+            <span className="text-[10px] text-neo-dim">最近 {filings.count} 条</span>
+          </div>
+          <p className="mt-1 text-[10px] text-neo-dim">来源：SEC EDGAR 官方文件，点击可查看原文</p>
+          <div className="mt-3 space-y-2">
+            {filings.filings.slice(0, 10).map((filing) => (
+              <a
+                key={filing.id}
+                href={filing.document_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neo-inset flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover-neo-inset"
+              >
+                <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-neo-primary-soft text-neo-primary">
+                  <FileText size={13} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded bg-neo-primary-soft px-1.5 py-0.5 text-[10px] font-semibold text-neo-primary">{filing.form}</span>
+                    <span className="text-[12px] font-medium text-neo-ink">{filingLabel(filing.form)}</span>
+                  </div>
+                  {(filing.description || filing.items) && (
+                    <div className="mt-1 truncate text-[11px] text-neo-mid">
+                      {filing.description || `事项代码 ${filing.items}`}
+                    </div>
+                  )}
+                  <div className="mt-1 text-[10px] text-neo-dim">
+                    {filing.filing_date}
+                    {filing.report_date ? ` · 报告期 ${filing.report_date}` : ""}
+                  </div>
+                </div>
+                <ExternalLink size={12} className="mt-1 shrink-0 text-neo-dim" />
+              </a>
+            ))}
+          </div>
+          {filings.source_url && (
+            <a
+              href={filings.source_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1 text-[11px] text-neo-primary transition-opacity hover:opacity-80"
+            >
+              在 SEC EDGAR 查看全部披露
+              <ExternalLink size={11} />
+            </a>
+          )}
         </section>
       )}
 
@@ -185,11 +290,14 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
             <div className="neo-skeleton h-3 w-3/4 rounded" />
           </div>
         ) : ai ? (
+          <>
           <div className="neo-inset mt-3 rounded-lg px-3 py-3">
             <div className="whitespace-pre-wrap text-[12px] leading-relaxed text-neo-ink">
               <ReactMarkdown>{ai.content}</ReactMarkdown>
             </div>
           </div>
+          <AIEvidencePanel evidence={ai.evidence} />
+          </>
         ) : (
           <div className="mt-3 flex items-center justify-between gap-2">
             <p className="text-[11px] text-neo-dim">{isAuthenticated ? "AI 解读暂不可用" : "登录后可查看 AI 解读"}</p>
@@ -207,6 +315,8 @@ export function UsStockDetail({ symbol }: { symbol: string }) {
           </div>
         )}
       </section>
+
+      <AIHistoryPanel code={symbol} kind="us_stock_ai" />
     </div>
   );
 }

@@ -135,10 +135,10 @@
   --sidebar-ring: var(--flux);
   --radius: 10px;
 
-  --brand: #6C63FF;
-  --brand-hover: #5B52E8;
-  --brand-soft: rgba(108,99,255,0.08);
-  --brand-text: #6C63FF;
+  --brand: #5B52E8;
+  --brand-hover: #635BEE;
+  --brand-soft: rgba(154,147,255,0.08);
+  --brand-text: #9A93FF;
 }
 
 @layer base {
@@ -466,14 +466,15 @@
   /* Ink — 加深 dim/faint 提升对比度 */
   --neo-ink: #EDEFF3;
   --neo-ink-mid: #9AA3B2;
-  --neo-ink-dim: #6B7482;
+  --neo-ink-dim: #7C8595;
   --neo-ink-faint: #3A414D;
 
   /* Brand */
-  --neo-primary: #6C63FF;
-  --neo-primary-hover: #7A72FF;
-  --neo-primary-active: #5B52E8;
-  --neo-primary-soft: rgba(108,99,255,0.14);
+  --neo-primary: #9A93FF;
+  --neo-primary-fill: #5B52E8;
+  --neo-primary-hover: #635BEE;
+  --neo-primary-active: #4F46D8;
+  --neo-primary-soft: rgba(154,147,255,0.14);
   --neo-primary-text: #9A93FF;
 
   /* Accents */
@@ -568,16 +569,16 @@
 
 /* === Neo Button Primary === */
 .neo-btn-primary {
-  background: var(--neo-primary);
+  background: var(--neo-primary-fill);
   color: #FFFFFF;
   border-radius: 12px;
-  box-shadow: -3px -3px 8px var(--neo-shadow-light), 3px 3px 8px rgba(108,99,255,0.35);
+  box-shadow: -3px -3px 8px var(--neo-shadow-light), 3px 3px 8px rgba(91,82,232,0.35);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 600;
 }
 .neo-btn-primary:hover {
   background: var(--neo-primary-hover);
-  box-shadow: -4px -4px 10px var(--neo-shadow-light), 4px 4px 10px rgba(108,99,255,0.45);
+  box-shadow: -4px -4px 10px var(--neo-shadow-light), 4px 4px 10px rgba(99,91,238,0.45);
 }
 .neo-btn-primary:active {
   box-shadow: var(--neo-pressed);
@@ -619,9 +620,9 @@
   transform: translateY(1px) scale(0.99);
 }
 .neo-chip-active {
-  background: var(--neo-primary);
+  background: var(--neo-primary-fill);
   color: #FFFFFF;
-  box-shadow: -2px -2px 6px var(--neo-shadow-light), 2px 2px 6px rgba(108,99,255,0.35);
+  box-shadow: -2px -2px 6px var(--neo-shadow-light), 2px 2px 6px rgba(91,82,232,0.35);
 }
 
 /* === Neo Navbar === */
@@ -635,13 +636,13 @@
 .text-neo-ink { color: var(--neo-ink); }
 .text-neo-mid { color: var(--neo-ink-mid); }
 .text-neo-dim { color: var(--neo-ink-dim); }
-.text-neo-primary { color: var(--neo-primary); }
+.text-neo-primary { color: var(--neo-primary-text); }
 .text-neo-up { color: var(--neo-up-text); }
 .text-neo-down { color: var(--neo-down-text); }
 
 .bg-neo-surface { background-color: var(--neo-surface); }
 .bg-neo-inset { background-color: var(--neo-surface-inset); }
-.bg-neo-primary { background-color: var(--neo-primary); }
+.bg-neo-primary { background-color: var(--neo-primary-fill); }
 .bg-neo-primary-soft { background-color: var(--neo-primary-soft); }
 
 .hover-neo-inset:hover { background-color: var(--neo-surface-inset); }
@@ -711,6 +712,32 @@
 .neo-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
 .neo-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .neo-scrollbar::-webkit-scrollbar-thumb { background-color: var(--neo-ink-faint); border-radius: 3px; }
+
+/* === Legibility floor — 统一小字号下限，避免 9-11px 正文 === */
+.text-\[8px\],
+.text-\[9px\],
+.text-\[10px\],
+.text-\[11px\] {
+  font-size: 12px !important;
+  line-height: 1rem;
+}
+
+.app-bottom-clearance {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .app-bottom-clearance {
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  input.neo-input,
+  input.neo-input.text-\[11px\] {
+    font-size: 16px !important;
+  }
+}
 
 /* === Mission Vision Dynamic Background === */
 .mission-panel {

@@ -1,0 +1,269 @@
+- generic [active] [ref=f16e1]:
+  - generic [ref=f16e2]:
+    - banner [ref=f16e3]:
+      - navigation [ref=f16e4]:
+        - link "爱看盘" [ref=f16e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f16e10]:
+          - link "升级 Pro" [ref=f16e11] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f16e14] [cursor=pointer]:
+            - /url: /account/
+          - button "菜单" [ref=f16e18]
+    - main [ref=f16e21]:
+      - generic [ref=f16e22]:
+        - generic [ref=f16e25]:
+          - generic [ref=f16e26]:
+            - heading "市场总览" [level=1] [ref=f16e27]
+            - generic [ref=f16e28]: 美股
+          - paragraph [ref=f16e29]: 2026-09-03 01:24
+        - generic [ref=f16e31]:
+          - link "标普500 ETF SPY +0.38% 764.66 +2.88 2026-09-03 01:23:45 · finnhub" [ref=f16e32] [cursor=pointer]:
+            - /url: /stock/SPY/
+            - generic [ref=f16e33]:
+              - generic [ref=f16e34]:
+                - generic [ref=f16e35]: 标普500 ETF
+                - generic [ref=f16e36]: SPY
+              - generic [ref=f16e37]: +0.38%
+            - generic [ref=f16e38]:
+              - generic [ref=f16e39]: "764.66"
+              - generic [ref=f16e40]: "+2.88"
+            - generic [ref=f16e41]: 2026-09-03 01:23:45 · finnhub
+          - link "纳指100 ETF QQQ +0.07% 708.17 +0.53 2026-09-03 01:23:46 · finnhub" [ref=f16e42] [cursor=pointer]:
+            - /url: /stock/QQQ/
+            - generic [ref=f16e43]:
+              - generic [ref=f16e44]:
+                - generic [ref=f16e45]: 纳指100 ETF
+                - generic [ref=f16e46]: QQQ
+              - generic [ref=f16e47]: +0.07%
+            - generic [ref=f16e48]:
+              - generic [ref=f16e49]: "708.17"
+              - generic [ref=f16e50]: "+0.53"
+            - generic [ref=f16e51]: 2026-09-03 01:23:46 · finnhub
+          - link "道琼斯 ETF DIA +0.38% 529.75 +2.00 2026-09-03 01:23:34 · finnhub" [ref=f16e52] [cursor=pointer]:
+            - /url: /stock/DIA/
+            - generic [ref=f16e53]:
+              - generic [ref=f16e54]:
+                - generic [ref=f16e55]: 道琼斯 ETF
+                - generic [ref=f16e56]: DIA
+              - generic [ref=f16e57]: +0.38%
+            - generic [ref=f16e58]:
+              - generic [ref=f16e59]: "529.75"
+              - generic [ref=f16e60]: "+2.00"
+            - generic [ref=f16e61]: 2026-09-03 01:23:34 · finnhub
+        - generic [ref=f16e62]:
+          - generic [ref=f16e63]:
+            - heading "板块表现" [level=2] [ref=f16e64]
+            - generic [ref=f16e65]: 6 个
+          - table [ref=f16e68]:
+            - rowgroup [ref=f16e69]:
+              - row [ref=f16e70]:
+                - columnheader "板块名称" [ref=f16e71] [cursor=pointer]
+                - columnheader "最新价" [ref=f16e73] [cursor=pointer]
+                - columnheader "涨跌幅 ▼" [ref=f16e75] [cursor=pointer]:
+                  - generic [ref=f16e76]:
+                    - text: 涨跌幅
+                    - generic [ref=f16e77]: ▼
+                - columnheader "涨跌额" [ref=f16e78] [cursor=pointer]
+            - rowgroup [ref=f16e80]:
+              - row [ref=f16e81]:
+                - cell "金融XLF" [ref=f16e82]
+                - cell "57.62" [ref=f16e83]
+                - cell "+0.73%" [ref=f16e84]
+                - cell "+0.42" [ref=f16e85]
+              - row [ref=f16e86]:
+                - cell "医疗XLV" [ref=f16e87]
+                - cell "172.73" [ref=f16e88]
+                - cell "+0.62%" [ref=f16e89]
+                - cell "+1.06" [ref=f16e90]
+              - row [ref=f16e91]:
+                - cell "能源XLE" [ref=f16e92]
+                - cell "64.96" [ref=f16e93]
+                - cell "+0.29%" [ref=f16e94]
+                - cell "+0.19" [ref=f16e95]
+              - row [ref=f16e96]:
+                - cell "消费XLY" [ref=f16e97]
+                - cell "114.82" [ref=f16e98]
+                - cell "+0.20%" [ref=f16e99]
+                - cell "+0.23" [ref=f16e100]
+              - row [ref=f16e101]:
+                - cell "工业XLI" [ref=f16e102]
+                - cell "172.72" [ref=f16e103]
+                - cell "-0.01%" [ref=f16e104]
+                - cell "-0.01" [ref=f16e105]
+              - row [ref=f16e106]:
+                - cell "科技XLK" [ref=f16e107]
+                - cell "183.28" [ref=f16e108]
+                - cell "-0.20%" [ref=f16e109]
+                - cell "-0.36" [ref=f16e110]
+        - generic [ref=f16e111]:
+          - heading "市场结构" [level=2] [ref=f16e113]
+          - generic [ref=f16e114]:
+            - generic [ref=f16e115]:
+              - heading "热门美股" [level=3] [ref=f16e117]
+              - generic [ref=f16e118]:
+                - generic [ref=f16e119]:
+                  - generic [ref=f16e120]:
+                    - link "Apple Inc AAPL" [ref=f16e121] [cursor=pointer]:
+                      - /url: /stock/AAPL/
+                      - generic [ref=f16e122]: Apple Inc
+                      - generic [ref=f16e123]: AAPL
+                    - generic [ref=f16e124]: …
+                  - generic [ref=f16e125]:
+                    - generic [ref=f16e126]: "325.67"
+                    - generic [ref=f16e127]: +0.17%
+                - generic [ref=f16e128]:
+                  - generic [ref=f16e129]:
+                    - link "NVIDIA Corp NVDA" [ref=f16e130] [cursor=pointer]:
+                      - /url: /stock/NVDA/
+                      - generic [ref=f16e131]: NVIDIA Corp
+                      - generic [ref=f16e132]: NVDA
+                    - generic [ref=f16e133]: …
+                  - generic [ref=f16e134]:
+                    - generic [ref=f16e135]: "224.97"
+                    - generic [ref=f16e136]: +3.46%
+                - generic [ref=f16e137]:
+                  - generic [ref=f16e138]:
+                    - link "Microsoft Corp MSFT" [ref=f16e139] [cursor=pointer]:
+                      - /url: /stock/MSFT/
+                      - generic [ref=f16e140]: Microsoft Corp
+                      - generic [ref=f16e141]: MSFT
+                    - generic [ref=f16e142]: …
+                  - generic [ref=f16e143]:
+                    - generic [ref=f16e144]: "496.21"
+                    - generic [ref=f16e145]: "-0.96%"
+                - generic [ref=f16e146]:
+                  - generic [ref=f16e147]:
+                    - link "Alphabet Inc GOOGL" [ref=f16e148] [cursor=pointer]:
+                      - /url: /stock/GOOGL/
+                      - generic [ref=f16e149]: Alphabet Inc
+                      - generic [ref=f16e150]: GOOGL
+                    - generic [ref=f16e151]: …
+                  - generic [ref=f16e152]:
+                    - generic [ref=f16e153]: "338.22"
+                    - generic [ref=f16e154]: +0.96%
+                - generic [ref=f16e155]:
+                  - generic [ref=f16e156]:
+                    - link "Amazon.com Inc AMZN" [ref=f16e157] [cursor=pointer]:
+                      - /url: /stock/AMZN/
+                      - generic [ref=f16e158]: Amazon.com Inc
+                      - generic [ref=f16e159]: AMZN
+                    - generic [ref=f16e160]: …
+                  - generic [ref=f16e161]:
+                    - generic [ref=f16e162]: "254.81"
+                    - generic [ref=f16e163]: "-0.04%"
+                - generic [ref=f16e164]:
+                  - generic [ref=f16e165]:
+                    - link "Meta Platforms Inc META" [ref=f16e166] [cursor=pointer]:
+                      - /url: /stock/META/
+                      - generic [ref=f16e167]: Meta Platforms Inc
+                      - generic [ref=f16e168]: META
+                    - generic [ref=f16e169]: …
+                  - generic [ref=f16e170]:
+                    - generic [ref=f16e171]: "593.21"
+                    - generic [ref=f16e172]: +2.54%
+                - generic [ref=f16e173]:
+                  - generic [ref=f16e174]:
+                    - link "Tesla Inc TSLA" [ref=f16e175] [cursor=pointer]:
+                      - /url: /stock/TSLA/
+                      - generic [ref=f16e176]: Tesla Inc
+                      - generic [ref=f16e177]: TSLA
+                    - generic [ref=f16e178]: …
+                  - generic [ref=f16e179]:
+                    - generic [ref=f16e180]: "353.07"
+                    - generic [ref=f16e181]: "-0.85%"
+                - generic [ref=f16e182]:
+                  - generic [ref=f16e183]:
+                    - link "Netflix Inc NFLX" [ref=f16e184] [cursor=pointer]:
+                      - /url: /stock/NFLX/
+                      - generic [ref=f16e185]: Netflix Inc
+                      - generic [ref=f16e186]: NFLX
+                    - generic [ref=f16e187]: …
+                  - generic [ref=f16e188]:
+                    - generic [ref=f16e189]: "82.21"
+                    - generic [ref=f16e190]: +1.73%
+            - generic [ref=f16e191]:
+              - heading "市场资讯" [level=3] [ref=f16e193]
+              - generic [ref=f16e194]:
+                - link "CNBC 2026-09-03 00:19 我们开始建仓另外两只防御性股票，以平衡AI敞口" [ref=f16e195] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/were-starting-positions-in-2-more-defensive-stocks-to-balance-our-ai-exposure.html
+                  - generic [ref=f16e196]:
+                    - generic [ref=f16e197]: CNBC
+                    - generic [ref=f16e198]: 2026-09-03 00:19
+                  - paragraph [ref=f16e199]: 我们开始建仓另外两只防御性股票，以平衡AI敞口
+                - link "CNBC 2026-09-02 23:54 博通即将发布的财报看点——以及英伟达为何跑赢" [ref=f16e200] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/what-to-watch-in-broadcoms-upcoming-earnings-and-why-nvidia-is-running-.html
+                  - generic [ref=f16e201]:
+                    - generic [ref=f16e202]: CNBC
+                    - generic [ref=f16e203]: 2026-09-02 23:54
+                  - paragraph [ref=f16e204]: 博通即将发布的财报看点——以及英伟达为何跑赢
+                - link "CNBC 2026-09-02 22:08 近期私募股权基金跑输标普500指数——为何富人的投资未必更好" [ref=f16e205] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/why-funds-meant-for-wealthier-investors-dont-always-perform-better.html
+                  - generic [ref=f16e206]:
+                    - generic [ref=f16e207]: CNBC
+                    - generic [ref=f16e208]: 2026-09-02 22:08
+                  - paragraph [ref=f16e209]: 近期私募股权基金跑输标普500指数——为何富人的投资未必更好
+                - link "CNBC 2026-09-02 22:00 美国航空继续推进高端化战略，推出重新设计的波音飞机" [ref=f16e210] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/american-airlines-flagship-suite.html
+                  - generic [ref=f16e211]:
+                    - generic [ref=f16e212]: CNBC
+                    - generic [ref=f16e213]: 2026-09-02 22:00
+                  - paragraph [ref=f16e214]: 美国航空继续推进高端化战略，推出重新设计的波音飞机
+                - link "CNBC 2026-09-02 20:51 吉姆·克莱默周三股市十大关注点" [ref=f16e215] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/jim-cramers-top-10-things-to-watch-in-the-stock-market-wednesday.html
+                  - generic [ref=f16e216]:
+                    - generic [ref=f16e217]: CNBC
+                    - generic [ref=f16e218]: 2026-09-02 20:51
+                  - paragraph [ref=f16e219]: 吉姆·克莱默周三股市十大关注点
+                - link "CNBC 2026-09-02 20:10 苹果股价出现了20年来未见的情况。以下是原因" [ref=f16e220] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/02/apple-shares-are-doing-something-they-havent-done-in-20-years-heres-whats-happening.html
+                  - generic [ref=f16e221]:
+                    - generic [ref=f16e222]: CNBC
+                    - generic [ref=f16e223]: 2026-09-02 20:10
+                  - paragraph [ref=f16e224]: 苹果股价出现了20年来未见的情况。以下是原因
+        - generic [ref=f16e225]:
+          - heading "AI 聚焦" [level=2] [ref=f16e227]
+          - generic [ref=f16e229]:
+            - generic [ref=f16e230]: 美股 AI 复盘
+            - generic [ref=f16e231]: 生成中…
+        - heading "近期财报" [level=2] [ref=f16e239]
+    - contentinfo [ref=f16e246]:
+      - generic [ref=f16e247]:
+        - generic [ref=f16e248]:
+          - generic [ref=f16e249]:
+            - generic [ref=f16e250]: 📊
+            - generic [ref=f16e252]: 爱看盘 · 每日复盘工具
+          - generic [ref=f16e253]:
+            - link "关于" [ref=f16e254] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f16e255] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f16e256] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f16e257] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f16e258] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f16e259]: 数据：Finnhub
+        - paragraph [ref=f16e260]: ⚠ 本站数据仅供参考，不构成投资建议
+  - navigation [ref=f16e261]:
+    - generic [ref=f16e262]:
+      - generic [ref=f16e263]:
+        - link "全部" [ref=f16e264] [cursor=pointer]:
+          - /url: /
+        - link "A股" [ref=f16e265] [cursor=pointer]:
+          - /url: /market/?market=cn
+        - link "美股" [ref=f16e266] [cursor=pointer]:
+          - /url: /market/?market=us
+      - generic [ref=f16e267]:
+        - link "市场" [ref=f16e268] [cursor=pointer]:
+          - /url: /market/?market=us
+        - link "复盘" [ref=f16e273] [cursor=pointer]:
+          - /url: /review/?market=us
+        - link "研究" [ref=f16e278] [cursor=pointer]:
+          - /url: /research/?market=us
+        - link "搜索" [ref=f16e284] [cursor=pointer]:
+          - /url: /search/?market=us
+        - link "盯盘" [ref=f16e289] [cursor=pointer]:
+          - /url: /alerts/?market=us
+  - alert [ref=f16e294]

@@ -1,0 +1,237 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2233]:
+    - banner [ref=e2234]:
+      - navigation [ref=e2235]:
+        - link "爱看盘" [ref=e2236] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e2241]:
+          - tablist "市场范围" [ref=e2242]:
+            - tab "全部" [ref=e2243]
+            - tab "A股" [selected] [ref=e2244]
+            - tab "美股" [ref=e2245]
+          - navigation "功能导航" [ref=e2247]:
+            - link "市场" [ref=e2248] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e2249] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e2250] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e2251] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e2252] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e2253]:
+          - link "升级 Pro" [ref=e2254] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e2257]: 会员
+          - link "登录 / 注册" [ref=e2258] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e2263]
+    - main [ref=e2267]:
+      - generic [ref=e2270]:
+        - generic [ref=e2271]:
+          - heading "搜索" [level=1] [ref=e2272]
+          - generic [ref=e2273]: A股
+        - paragraph [ref=e2274]: 按代码、名称或拼音查找股票
+      - generic [ref=e2277]:
+        - textbox "输入股票代码、名称或拼音…" [ref=e2278]
+        - button "搜索" [ref=e2279]
+      - generic [ref=e2280]:
+        - generic [ref=e2281]:
+          - heading "今日涨停" [level=2] [ref=e2282]
+          - generic [ref=e2283]: 从涨停板进入个股详情
+        - generic [ref=e2284]:
+          - link "维琪科技 limit30 bj.920176 70.66 +29.98%" [ref=e2285] [cursor=pointer]:
+            - /url: /stock/bj920176/
+            - generic [ref=e2286]:
+              - generic [ref=e2287]: 维琪科技
+              - generic [ref=e2288]: limit30
+            - generic [ref=e2289]: bj.920176
+            - generic [ref=e2290]:
+              - generic [ref=e2291]: "70.66"
+              - generic [ref=e2292]: +29.98%
+          - link "晟楠科技 limit30 bj.920006 22.21 +29.96%" [ref=e2293] [cursor=pointer]:
+            - /url: /stock/bj920006/
+            - generic [ref=e2294]:
+              - generic [ref=e2295]: 晟楠科技
+              - generic [ref=e2296]: limit30
+            - generic [ref=e2297]: bj.920006
+            - generic [ref=e2298]:
+              - generic [ref=e2299]: "22.21"
+              - generic [ref=e2300]: +29.96%
+          - link "智新电子 limit30 bj.920212 14.10 +29.95%" [ref=e2301] [cursor=pointer]:
+            - /url: /stock/bj920212/
+            - generic [ref=e2302]:
+              - generic [ref=e2303]: 智新电子
+              - generic [ref=e2304]: limit30
+            - generic [ref=e2305]: bj.920212
+            - generic [ref=e2306]:
+              - generic [ref=e2307]: "14.10"
+              - generic [ref=e2308]: +29.95%
+          - link "*ST宝馨 st sz.002514 2.27 +10.19%" [ref=e2309] [cursor=pointer]:
+            - /url: /stock/sz002514/
+            - generic [ref=e2310]:
+              - generic [ref=e2311]: "*ST宝馨"
+              - generic [ref=e2312]: st
+            - generic [ref=e2313]: sz.002514
+            - generic [ref=e2314]:
+              - generic [ref=e2315]: "2.27"
+              - generic [ref=e2316]: +10.19%
+          - link "信达地产 limit10 sh.600657 3.05 +10.11%" [ref=e2317] [cursor=pointer]:
+            - /url: /stock/sh600657/
+            - generic [ref=e2318]:
+              - generic [ref=e2319]: 信达地产
+              - generic [ref=e2320]: limit10
+            - generic [ref=e2321]: sh.600657
+            - generic [ref=e2322]:
+              - generic [ref=e2323]: "3.05"
+              - generic [ref=e2324]: +10.11%
+          - link "大晟文化 limit10 sh.600892 5.35 +10.08%" [ref=e2325] [cursor=pointer]:
+            - /url: /stock/sh600892/
+            - generic [ref=e2326]:
+              - generic [ref=e2327]: 大晟文化
+              - generic [ref=e2328]: limit10
+            - generic [ref=e2329]: sh.600892
+            - generic [ref=e2330]:
+              - generic [ref=e2331]: "5.35"
+              - generic [ref=e2332]: +10.08%
+      - generic [ref=e2333]:
+        - heading "热门股票" [level=2] [ref=e2335]
+        - generic [ref=e2336]:
+          - link "贵州茅台 白酒 sh.600519 - -" [ref=e2337] [cursor=pointer]:
+            - /url: /stock/sh600519/
+            - generic [ref=e2338]:
+              - generic [ref=e2339]: 贵州茅台
+              - generic [ref=e2340]: 白酒
+            - generic [ref=e2341]: sh.600519
+            - generic [ref=e2342]:
+              - generic [ref=e2343]: "-"
+              - generic [ref=e2344]: "-"
+          - link "宁德时代 新能源 sz.300750 - -" [ref=e2345] [cursor=pointer]:
+            - /url: /stock/sz300750/
+            - generic [ref=e2346]:
+              - generic [ref=e2347]: 宁德时代
+              - generic [ref=e2348]: 新能源
+            - generic [ref=e2349]: sz.300750
+            - generic [ref=e2350]:
+              - generic [ref=e2351]: "-"
+              - generic [ref=e2352]: "-"
+          - link "中国平安 保险 sh.601318 - -" [ref=e2353] [cursor=pointer]:
+            - /url: /stock/sh601318/
+            - generic [ref=e2354]:
+              - generic [ref=e2355]: 中国平安
+              - generic [ref=e2356]: 保险
+            - generic [ref=e2357]: sh.601318
+            - generic [ref=e2358]:
+              - generic [ref=e2359]: "-"
+              - generic [ref=e2360]: "-"
+          - link "五粮液 白酒 sz.000858 - -" [ref=e2361] [cursor=pointer]:
+            - /url: /stock/sz000858/
+            - generic [ref=e2362]:
+              - generic [ref=e2363]: 五粮液
+              - generic [ref=e2364]: 白酒
+            - generic [ref=e2365]: sz.000858
+            - generic [ref=e2366]:
+              - generic [ref=e2367]: "-"
+              - generic [ref=e2368]: "-"
+          - link "招商银行 银行 sh.600036 - -" [ref=e2369] [cursor=pointer]:
+            - /url: /stock/sh600036/
+            - generic [ref=e2370]:
+              - generic [ref=e2371]: 招商银行
+              - generic [ref=e2372]: 银行
+            - generic [ref=e2373]: sh.600036
+            - generic [ref=e2374]:
+              - generic [ref=e2375]: "-"
+              - generic [ref=e2376]: "-"
+          - link "比亚迪 汽车 sz.002594 - -" [ref=e2377] [cursor=pointer]:
+            - /url: /stock/sz002594/
+            - generic [ref=e2378]:
+              - generic [ref=e2379]: 比亚迪
+              - generic [ref=e2380]: 汽车
+            - generic [ref=e2381]: sz.002594
+            - generic [ref=e2382]:
+              - generic [ref=e2383]: "-"
+              - generic [ref=e2384]: "-"
+          - link "中芯国际 半导体 sh.688981 - -" [ref=e2385] [cursor=pointer]:
+            - /url: /stock/sh688981/
+            - generic [ref=e2386]:
+              - generic [ref=e2387]: 中芯国际
+              - generic [ref=e2388]: 半导体
+            - generic [ref=e2389]: sh.688981
+            - generic [ref=e2390]:
+              - generic [ref=e2391]: "-"
+              - generic [ref=e2392]: "-"
+          - link "美的集团 家电 sz.000333 - -" [ref=e2393] [cursor=pointer]:
+            - /url: /stock/sz000333/
+            - generic [ref=e2394]:
+              - generic [ref=e2395]: 美的集团
+              - generic [ref=e2396]: 家电
+            - generic [ref=e2397]: sz.000333
+            - generic [ref=e2398]:
+              - generic [ref=e2399]: "-"
+              - generic [ref=e2400]: "-"
+          - link "隆基绿能 光伏 sh.601012 - -" [ref=e2401] [cursor=pointer]:
+            - /url: /stock/sh601012/
+            - generic [ref=e2402]:
+              - generic [ref=e2403]: 隆基绿能
+              - generic [ref=e2404]: 光伏
+            - generic [ref=e2405]: sh.601012
+            - generic [ref=e2406]:
+              - generic [ref=e2407]: "-"
+              - generic [ref=e2408]: "-"
+          - link "东方财富 券商 sz.300059 - -" [ref=e2409] [cursor=pointer]:
+            - /url: /stock/sz300059/
+            - generic [ref=e2410]:
+              - generic [ref=e2411]: 东方财富
+              - generic [ref=e2412]: 券商
+            - generic [ref=e2413]: sz.300059
+            - generic [ref=e2414]:
+              - generic [ref=e2415]: "-"
+              - generic [ref=e2416]: "-"
+          - link "恒瑞医药 医药 sh.600276 - -" [ref=e2417] [cursor=pointer]:
+            - /url: /stock/sh600276/
+            - generic [ref=e2418]:
+              - generic [ref=e2419]: 恒瑞医药
+              - generic [ref=e2420]: 医药
+            - generic [ref=e2421]: sh.600276
+            - generic [ref=e2422]:
+              - generic [ref=e2423]: "-"
+              - generic [ref=e2424]: "-"
+          - link "立讯精密 消费电子 sz.002475 - -" [ref=e2425] [cursor=pointer]:
+            - /url: /stock/sz002475/
+            - generic [ref=e2426]:
+              - generic [ref=e2427]: 立讯精密
+              - generic [ref=e2428]: 消费电子
+            - generic [ref=e2429]: sz.002475
+            - generic [ref=e2430]:
+              - generic [ref=e2431]: "-"
+              - generic [ref=e2432]: "-"
+      - generic [ref=e2434]:
+        - heading "搜索技巧" [level=3] [ref=e2435]
+        - list [ref=e2436]:
+          - listitem [ref=e2437]:
+            - text: • 输入 6 位股票代码可直接跳转，如
+            - link "300414" [ref=e2438] [cursor=pointer]:
+              - /url: /stock/sz300414/
+          - listitem [ref=e2439]: • 输入股票名称搜索，如「茅台」「宁德」
+          - listitem [ref=e2440]: • 也可以从上方热门股票或今日涨停直接进入
+    - contentinfo [ref=e2441]:
+      - generic [ref=e2442]:
+        - generic [ref=e2443]:
+          - generic [ref=e2444]:
+            - generic [ref=e2445]: 📊
+            - generic [ref=e2447]: 爱看盘 · 每日复盘工具
+          - generic [ref=e2448]:
+            - link "关于" [ref=e2449] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e2450] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e2451] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e2452] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e2453] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e2454]: 数据：东方财富
+        - paragraph [ref=e2455]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e171]: 搜索股票 · 爱看盘

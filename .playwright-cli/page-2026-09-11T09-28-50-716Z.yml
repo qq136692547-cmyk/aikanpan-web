@@ -1,0 +1,176 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - banner [ref=f15e4]:
+      - generic [ref=f15e5]:
+        - generic [ref=f15e6]:
+          - button "主菜单" [ref=f15e7] [cursor=pointer]
+          - link "Google Search Console" [ref=f15e12] [cursor=pointer]:
+            - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+        - generic [ref=f15e14]:
+          - search [ref=f15e16]:
+            - generic [ref=f15e22]:
+              - textbox [disabled] [aria-hidden] [ref=f15e23]: 检查“https://aikanpan.top/”中的任何网址
+              - combobox "检查 https://aikanpan.top/ 中的任何网址" [ref=f15e24]
+            - button "搜索" [ref=f15e25] [cursor=pointer]
+          - generic [ref=f15e29]:
+            - generic [ref=f15e31]:
+              - generic [ref=f15e33]:
+                - button "帮助" [ref=f15e34] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e36]: help_outline
+                - tooltip [aria-hidden] [ref=f15e38]: 帮助
+              - generic [ref=f15e40]:
+                - button "用户设置" [ref=f15e41] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e43]: manage_accounts
+                - tooltip [aria-hidden] [ref=f15e45]: 用户设置
+            - generic [ref=f15e48]:
+              - generic [ref=f15e49]:
+                - button "未读消息：1 条" [ref=f15e50] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e52]: notifications
+                - tooltip [aria-hidden] [ref=f15e54]: 留言
+              - generic: "1"
+        - generic [ref=f15e56]:
+          - button "Google 应用" [ref=f15e60] [cursor=pointer]
+          - button "Google 账号： L D (qq136692547@gmail.com), Google One 会员" [ref=f15e66] [cursor=pointer]
+    - dialog "navigational drawer" [ref=f15e73]:
+      - navigation "主要" [ref=f15e76]:
+        - button "搜索资源" [ref=f15e80] [cursor=pointer]:
+          - img "网站图标" [ref=f15e82]
+          - combobox "https://aikanpan.top/" [ref=f15e90]
+          - generic [aria-hidden] [ref=f15e91]: 
+        - generic [ref=f15e92]:
+          - generic [ref=f15e93]:
+            - generic [ref=f15e94]:
+              - generic:
+                - link "概述":
+                  - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: home
+              - generic:
+                - link "数据洞见":
+                  - /url: ./search-console/performance/insights?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: lightbulb_2
+              - generic:
+                - link "效果":
+                  - /url: ./search-console/performance/search-analytics?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: trending_up
+              - generic:
+                - button "网址检查":
+                  - generic:
+                    - generic [aria-hidden]: search
+            - generic [ref=f15e125]:
+              - generic [ref=f15e127]:
+                - generic [ref=f15e128]: 编制索引
+                - button "“编制索引”报告部分" [expanded] [ref=f15e132] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e134]: keyboard_arrow_up
+              - generic [ref=f15e138]:
+                - generic:
+                  - link "网页":
+                    - /url: ./search-console/index?resource_id=https%3A%2F%2Faikanpan.top%2F
+                    - generic:
+                      - generic [aria-hidden]: file_copy
+                - generic:
+                  - link "站点地图":
+                    - /url: ./search-console/sitemaps?resource_id=https%3A%2F%2Faikanpan.top%2F
+                    - generic:
+                      - generic [aria-hidden]: account_tree
+                - generic:
+                  - link "移除":
+                    - /url: ./search-console/removals?resource_id=https%3A%2F%2Faikanpan.top%2F
+                    - generic:
+                      - generic [aria-hidden]: visibility_off
+            - generic [ref=f15e162]:
+              - generic [ref=f15e164]:
+                - generic [ref=f15e165]: 体验
+                - button "“体验”报告部分" [expanded] [ref=f15e169] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e171]: keyboard_arrow_up
+              - generic [ref=f15e175]:
+                - generic:
+                  - link "核心网页指标":
+                    - /url: ./search-console/core-web-vitals?resource_id=https%3A%2F%2Faikanpan.top%2F
+                    - generic:
+                      - generic [aria-hidden]: speed
+            - generic [ref=f15e187]:
+              - generic [ref=f15e188]: 安全问题和人工处置措施
+              - button "“安全问题和人工处置措施”报告部分" [ref=f15e192] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e194]: keyboard_arrow_down
+            - generic [ref=f15e195]:
+              - generic:
+                - link "“链接”报告":
+                  - /url: ./search-console/links?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: link_2
+                  - generic: 链接数量
+              - generic:
+                - link "成就":
+                  - /url: ./search-console/achievements?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: trophy
+              - generic:
+                - link "设置":
+                  - /url: ./search-console/settings?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic:
+                    - generic [aria-hidden]: settings
+          - generic [ref=f15e217]:
+            - generic [ref=f15e219]:
+              - generic:
+                - button "提交反馈":
+                  - generic:
+                    - generic [aria-hidden]: feedback
+              - generic:
+                - button "Search Console 简介":
+                  - generic:
+                    - generic [aria-hidden]: info
+            - generic [ref=f15e236]:
+              - link "隐私权" [ref=f15e237] [cursor=pointer]:
+                - /url: https://myaccount.google.com/privacypolicy?hl=zh-CN
+              - link "条款" [ref=f15e238] [cursor=pointer]:
+                - /url: https://myaccount.google.com/termsofservice?hl=zh-CN
+    - generic [ref=f15e354]:
+      - generic [ref=f15e357]:
+        - navigation [ref=f15e359]:
+          - link [ref=f15e361] [cursor=pointer]:
+            - /url: ./search-console/sitemaps?resource_id=https%3A%2F%2Faikanpan.top%2F
+            - text: 站点地图
+          - generic [aria-hidden] [ref=f15e362]: 
+          - heading [level=1] [ref=f15e365]: /sitemap.xml
+        - generic [ref=f15e368]:
+          - button [ref=f15e369] [cursor=pointer]:
+            - generic [ref=f15e373]:
+              - generic [ref=f15e374]: 打开站点地图
+              - generic [aria-hidden] [ref=f15e375]: 
+          - button [ref=f15e376] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f15e379]: 
+      - main [ref=f15e382]:
+        - generic [ref=f15e386]:
+          - generic [ref=f15e387]:
+            - generic [ref=f15e388]: 上次读取时间
+            - generic [ref=f15e389]: 2026/9/11
+          - generic [ref=f15e390]:
+            - generic [ref=f15e391]:
+              - generic [ref=f15e392]: 已发现的网页
+              - generic [ref=f15e393]: "0"
+            - generic [ref=f15e394]:
+              - generic [ref=f15e395]: 已发现的视频
+              - generic [ref=f15e396]: "0"
+          - generic [ref=f15e397]:
+            - button [disabled] [ref=f15e400]:
+              - generic [ref=f15e404]:
+                - generic [aria-hidden] [ref=f15e405]: 
+                - text: 查看网页索引编制
+            - button [disabled] [ref=f15e408]:
+              - generic [ref=f15e412]:
+                - generic [aria-hidden] [ref=f15e413]: 
+                - text: 查看视频网页索引编制
+        - generic [ref=f15e416]:
+          - generic [ref=f15e417]:
+            - generic [aria-hidden] [ref=f15e418]: 
+            - generic [ref=f15e419]: 无法读取此站点地图
+          - button [ref=f15e423] [cursor=pointer]:
+            - generic [ref=f15e424]:
+              - generic [ref=f15e425]:
+                - generic [ref=f15e426]: 常见 HTTP 错误
+                - generic [ref=f15e427]: 1 处
+              - generic [aria-hidden] [ref=f15e431]: 
+  - generic [ref=f15e432]: Loading...

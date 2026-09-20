@@ -3,6 +3,7 @@
 import { useCallback, useMemo } from "react";
 import useSWR from "swr";
 import { api, type WatchlistItem } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 import { useSync } from "@/lib/use-sync";
 
 const WATCHLIST_KEY = "watchlist-items";
@@ -11,8 +12,10 @@ const WATCHLIST_KEY = "watchlist-items";
  * 自选股共享状态：后端按 token 隔离存储，增删后整包同步。
  */
 export function useWatchlist() {
+  const { user, loading } = useAuth();
+  const ready = !loading && !!user;
   const { data, error, mutate } = useSWR<{ watchlist: WatchlistItem[]; count: number }>(
-    WATCHLIST_KEY,
+    ready && user ? [WATCHLIST_KEY, user.user_id] : null,
     () => api.getWatchlist(),
     { refreshInterval: 30000 }
   );
@@ -27,6 +30,7 @@ export function useWatchlist() {
 
   const toggle = useCallback(
     async (code: string, name: string) => {
+      if (!ready || !user) throw new Error("账户尚未就绪，请稍后重试");
       const current = data?.watchlist || [];
       const exists = current.some((w) => w.code === code);
       const next: WatchlistItem[] = exists
@@ -41,7 +45,7 @@ export function useWatchlist() {
         mutate();
       }
     },
-    [data, mutate, pushData]
+    [data, mutate, pushData, ready, user]
   );
 
   return { watchlist, error, inWatchlist, toggle, mutate };

@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { api, type AIReview } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { AIEvidencePanel } from "./ai-evidence-panel";
 
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
@@ -30,14 +31,25 @@ const scoreColor = (score: number) => {
   return { bg: "neo-down-soft", text: "text-neo-down" };
 };
 
-type LoadState = "loading" | "done" | "error";
+type LoadState = "loading" | "done" | "error" | "unavailable";
 
-export function AIReview({ date }: { date?: string }) {
-  const { isAuthenticated } = useAuth();
+export function AIReview({ date, available = true }: { date?: string; available?: boolean }) {
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [state, setState] = useState<LoadState>("loading");
   const [data, setData] = useState<AIReview | null>(null);
   const [error, setError] = useState<string>("");
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const unavailableWithoutAuth = !authLoading && !isAuthenticated;
+  const unavailableHistorical = !available;
+  const displayState: LoadState = unavailableWithoutAuth || unavailableHistorical ? "unavailable" : state;
+  const displayError = unavailableWithoutAuth
+    ? "账户初始化失败，暂时无法生成或读取 AI 复盘。"
+    : displayState === "unavailable"
+      ? date
+        ? `${date} 已保存市场数据，但没有可用的 AI 复盘原文。`
+        : error || "当前没有可用的 AI 复盘原文。"
+      : error;
 
   const fetchReview = useCallback(async () => {
     setState("loading");
@@ -57,22 +69,29 @@ export function AIReview({ date }: { date?: string }) {
       setState("done");
     } catch (e: unknown) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      setError(e instanceof Error ? e.message : "AI 复盘请求失败");
-      setState("error");
+      if (date && typeof e === "object" && e !== null && "status" in e && (e as any).status === 404) {
+        setError(`${date} 已保存市场数据，但没有可用的 AI 复盘原文。`);
+        setState("unavailable");
+      } else {
+        setError(e instanceof Error ? e.message : "AI 复盘请求失败");
+        setState("error");
+      }
     }
   }, [date]);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAuthenticated) return;
+    if (!available) return;
     // The review is fetched when the requested date changes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchReview();
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [fetchReview, isAuthenticated]);
+  }, [authLoading, fetchReview, isAuthenticated, available]);
 
-  if (state === "loading") {
+  if (displayState === "loading") {
     return (
       <div className="neo-ai scanline p-6">
         <div className="flex items-center gap-2">
@@ -92,14 +111,26 @@ export function AIReview({ date }: { date?: string }) {
     );
   }
 
-  if (state === "error") {
+  if (displayState === "error") {
     return (
       <div className="neo-card-sm p-6">
         <div className="flex items-center justify-between">
           <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
-          <button onClick={fetchReview} className="rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
+          <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
         </div>
-        <p className="mt-3 text-[13px] text-neo-down">{error}{error.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</p>
+        <p className="mt-3 text-[13px] text-neo-down">{displayError}{displayError.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</p>
+      </div>
+    );
+  }
+
+  if (displayState === "unavailable") {
+    return (
+      <div className="neo-card-sm p-6">
+        <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
+        <p className="mt-3 text-[13px] text-neo-mid">{displayError}</p>
+        {!isAuthenticated && (
+          <button onClick={() => window.location.reload()} className="neo-chip mt-3 min-h-11 px-3 py-1.5 text-xs text-neo-primary">刷新页面</button>
+        )}
       </div>
     );
   }
@@ -118,7 +149,7 @@ export function AIReview({ date }: { date?: string }) {
           <span className="text-[11px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{data!.generated_at.slice(0, 16).replace("T", " ")}</span>
           {data!.cached && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">缓存</span>}
         </div>
-        <button onClick={fetchReview} className="rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">
+        <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">
           重新生成
         </button>
       </div>
@@ -128,7 +159,7 @@ export function AIReview({ date }: { date?: string }) {
           {score !== null && sc && (
             <div className={`flex items-baseline gap-1 rounded-md ${sc.bg} px-3 py-1.5`}>
               <span className={`text-[20px] font-bold ${sc.text}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{score}</span>
-              <span className="text-[10px] text-neo-dim">/10</span>
+              <span className="text-[10px] text-neo-mid">/10</span>
             </div>
           )}
           {status && (
@@ -142,6 +173,8 @@ export function AIReview({ date }: { date?: string }) {
       <div className="ai-markdown mt-4 text-sm leading-relaxed text-neo-ink">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
       </div>
+
+      <AIEvidencePanel evidence={data!.evidence} />
 
       <p className="mt-4 pt-3 text-[11px] text-neo-dim">
         ⚠ 本内容由 AI 生成，不构成投资建议

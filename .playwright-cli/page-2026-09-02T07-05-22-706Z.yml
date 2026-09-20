@@ -1,0 +1,234 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - banner [ref=f4e3]:
+      - navigation [ref=f4e4]:
+        - link "爱看盘" [ref=f4e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f4e10]:
+          - link "升级 Pro" [ref=f4e11] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f4e14] [cursor=pointer]:
+            - /url: /account/
+          - button "菜单" [ref=f4e18]
+      - navigation "页面位置" [ref=f4e21]:
+        - generic [ref=f4e22]:
+          - link "全部" [ref=f4e24] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f4e25]: 会员
+    - main [ref=f4e29]:
+      - generic [ref=f4e31]:
+        - generic [ref=f4e32]:
+          - heading "爱看盘 Pro" [level=1] [ref=f4e33]
+          - paragraph [ref=f4e34]: 为复盘、研究、盯盘建立连续的 AI 工作流。订阅制按自然日重置额度，会员到期后自动回到免费版。
+        - generic [ref=f4e35]:
+          - generic [ref=f4e36]: 当前状态
+          - generic [ref=f4e37]: 免费版
+          - generic [ref=f4e356]: 今日 AI：0/5
+      - region "用户画像" [ref=f4e40]:
+        - generic [ref=f4e41]:
+          - article [ref=f4e42]:
+            - heading "短线盯盘" [level=2] [ref=f4e47]
+            - paragraph [ref=f4e48]: 聚焦盘面结构、涨跌停变化和盯盘提醒。
+            - generic [ref=f4e49]:
+              - generic [ref=f4e50]: 免费可用
+              - list [ref=f4e51]:
+                - listitem [ref=f4e52]:
+                  - generic [ref=f4e56]: 涨跌停与市场结构
+                - listitem [ref=f4e57]:
+                  - generic [ref=f4e61]: 盯盘提醒管理
+                - listitem [ref=f4e62]:
+                  - generic [ref=f4e66]: 自选股联动
+            - generic [ref=f4e67]:
+              - generic [ref=f4e68]: Pro 加值
+              - list [ref=f4e69]:
+                - listitem [ref=f4e70]:
+                  - generic [ref=f4e74]: AI 批量评分
+                - listitem [ref=f4e75]:
+                  - generic [ref=f4e79]: 盘前计划诊断
+                - listitem [ref=f4e80]:
+                  - generic [ref=f4e84]: 更高 AI 复盘额度
+            - generic [ref=f4e85]:
+              - button "选择画像" [ref=f4e357]
+              - link "进入盯盘" [ref=f4e87] [cursor=pointer]:
+                - /url: /alerts/?market=us
+          - article [ref=f4e88]:
+            - heading "中长线研究" [level=2] [ref=f4e93]
+            - paragraph [ref=f4e94]: 围绕财务、事件、论点和组合做连续研究。
+            - generic [ref=f4e95]:
+              - generic [ref=f4e96]: 免费可用
+              - list [ref=f4e97]:
+                - listitem [ref=f4e98]:
+                  - generic [ref=f4e102]: 基础财务与历史行情
+                - listitem [ref=f4e103]:
+                  - generic [ref=f4e107]: 研究论点记录
+                - listitem [ref=f4e108]:
+                  - generic [ref=f4e112]: 组合持仓管理
+            - generic [ref=f4e113]:
+              - generic [ref=f4e114]: Pro 加值
+              - list [ref=f4e115]:
+                - listitem [ref=f4e116]:
+                  - generic [ref=f4e120]: 个股 AI 深度解读
+                - listitem [ref=f4e121]:
+                  - generic [ref=f4e125]: 组合 AI 复盘
+                - listitem [ref=f4e126]:
+                  - generic [ref=f4e130]: 研究计划 AI 梳理
+            - generic [ref=f4e131]:
+              - button "选择画像" [ref=f4e359]
+              - link "进入研究" [ref=f4e133] [cursor=pointer]:
+                - /url: /research/?market=us
+          - article [ref=f4e134]:
+            - heading "新手学习" [level=2] [ref=f4e139]
+            - paragraph [ref=f4e140]: 从每日结构和复盘框架开始，降低理解门槛。
+            - generic [ref=f4e141]:
+              - generic [ref=f4e142]: 免费可用
+              - list [ref=f4e143]:
+                - listitem [ref=f4e144]:
+                  - generic [ref=f4e148]: 每日复盘结构
+                - listitem [ref=f4e149]:
+                  - generic [ref=f4e153]: 市场温度概览
+                - listitem [ref=f4e154]:
+                  - generic [ref=f4e158]: 基础行情检索
+            - generic [ref=f4e159]:
+              - generic [ref=f4e160]: Pro 加值
+              - list [ref=f4e161]:
+                - listitem [ref=f4e162]:
+                  - generic [ref=f4e166]: AI 复盘通俗解读
+                - listitem [ref=f4e167]:
+                  - generic [ref=f4e171]: 个股 AI 诊断示例
+                - listitem [ref=f4e172]:
+                  - generic [ref=f4e176]: 更多学习式分析
+            - generic [ref=f4e177]:
+              - button "当前画像" [ref=f4e360]
+              - link "进入复盘" [ref=f4e179] [cursor=pointer]:
+                - /url: /review/?market=us
+      - generic [ref=f4e180]:
+        - generic [ref=f4e181]:
+          - heading "免费版" [level=2] [ref=f4e186]
+          - paragraph [ref=f4e187]: 适合先体验看盘与复盘结构。
+          - list [ref=f4e188]:
+            - listitem [ref=f4e189]:
+              - generic [ref=f4e193]: 基础行情与市场结构
+            - listitem [ref=f4e194]:
+              - generic [ref=f4e198]: 每日 AI 复盘（缓存可用时）
+            - listitem [ref=f4e199]:
+              - generic [ref=f4e203]: 每天 5 次有效 AI 调用
+        - generic [ref=f4e204]:
+          - generic [ref=f4e205]:
+            - heading "Pro 会员" [level=2] [ref=f4e209]
+            - generic [ref=f4e210]: 订阅制
+          - generic [ref=f4e211]:
+            - generic [ref=f4e212]: "29"
+            - generic [ref=f4e213]: 元 / 30 天
+          - list [ref=f4e214]:
+            - listitem [ref=f4e215]:
+              - generic [ref=f4e219]: 每日 AI 复盘与解读
+            - listitem [ref=f4e220]:
+              - generic [ref=f4e224]: 个股、组合与盘前计划 AI 诊断
+            - listitem [ref=f4e225]:
+              - generic [ref=f4e229]: AI 批量评分与历史归档
+            - listitem [ref=f4e230]:
+              - generic [ref=f4e234]: 更高每日 AI 额度
+          - paragraph [ref=f4e235]: 支付入口接入前，可先通过人工渠道获取 30 天激活码；开通后立即生效。
+      - generic [ref=f4e236]:
+        - generic [ref=f4e237]:
+          - heading "免费版" [level=2] [ref=f4e242]
+          - generic [ref=f4e243]:
+            - generic [ref=f4e244]: "0"
+            - generic [ref=f4e245]: 元
+          - paragraph [ref=f4e246]: 适合先体验看盘与复盘结构。
+        - generic [ref=f4e247]:
+          - generic [ref=f4e248]:
+            - heading "Pro 月卡" [level=2] [ref=f4e252]
+            - generic [ref=f4e253]: 订阅制
+          - generic [ref=f4e254]:
+            - generic [ref=f4e255]: "29"
+            - generic [ref=f4e256]: 元 / 30 天
+          - paragraph [ref=f4e257]: 短线盯盘与日常复盘的主力选择。
+        - generic [ref=f4e258]:
+          - generic [ref=f4e259]:
+            - heading "Pro 年卡" [level=2] [ref=f4e263]
+            - generic [ref=f4e264]: 主推
+          - generic [ref=f4e265]:
+            - generic [ref=f4e266]: "299"
+            - generic [ref=f4e267]: 元 / 365 天
+          - paragraph [ref=f4e268]: ≈ ¥24.9/月 · 较月卡立省 ¥149
+          - paragraph [ref=f4e269]: 中长线研究与连续学习的首选。
+      - generic [ref=f4e270]:
+        - heading "权益对照" [level=2] [ref=f4e275]
+        - table [ref=f4e277]:
+          - rowgroup [ref=f4e278]:
+            - row [ref=f4e279]:
+              - columnheader "权益" [ref=f4e280]
+              - columnheader "免费版" [ref=f4e281]
+              - columnheader "Pro" [ref=f4e282]
+          - rowgroup [ref=f4e283]:
+            - row [ref=f4e284]:
+              - cell "每日有效 AI 调用" [ref=f4e285]
+              - cell "5 次" [ref=f4e286]
+              - cell "500 次" [ref=f4e287]
+            - row [ref=f4e288]:
+              - cell "每日 AI 复盘" [ref=f4e289]
+              - cell "缓存可用时" [ref=f4e290]
+              - cell "每日更新" [ref=f4e291]
+            - row [ref=f4e292]:
+              - cell "个股 / 组合 / 盘前计划 AI 诊断" [ref=f4e293]
+              - cell "—" [ref=f4e294]
+              - cell "✓" [ref=f4e295]
+            - row [ref=f4e296]:
+              - cell "AI 批量评分与历史归档" [ref=f4e297]
+              - cell "—" [ref=f4e298]
+              - cell "✓" [ref=f4e299]
+            - row [ref=f4e300]:
+              - cell "有效期" [ref=f4e301]
+              - cell "—" [ref=f4e302]
+              - cell "30 天 / 365 天，可叠加" [ref=f4e303]
+      - generic [ref=f4e304]:
+        - heading "激活码开通" [level=2] [ref=f4e309]
+        - generic [ref=f4e310]:
+          - textbox "输入 Pro 激活码" [ref=f4e311]: TEST_INVALID_CODE
+          - button "立即激活" [ref=f4e312]
+        - paragraph [ref=f4e361]: "API 400: — https://aikanpan.top/api/v1/membership/activate"
+        - paragraph [ref=f4e313]: 支付入口接入前，可先通过人工渠道获取 30 天或 365 天激活码；开通后立即生效，时长自动叠加。
+        - paragraph [ref=f4e314]:
+          - text: 还没有绑定手机号？先到
+          - link "账户页" [ref=f4e315] [cursor=pointer]:
+            - /url: /account/
+          - text: 绑定，便于跨设备保留会员状态。
+      - generic [ref=f4e316]:
+        - heading "合规说明" [level=2] [ref=f4e321]
+        - paragraph [ref=f4e322]: Pro 提供的是研究效率工具，不提供荐股、代客理财或收益保证。AI 输出可能存在偏差，重要决策请独立核实数据并自主判断。
+        - paragraph [ref=f4e323]: ⚠ 本站 AI 内容由 AI 生成，不构成投资建议。
+    - contentinfo [ref=f4e324]:
+      - generic [ref=f4e325]:
+        - generic [ref=f4e326]:
+          - generic [ref=f4e327]:
+            - generic [ref=f4e328]: 📊
+            - generic [ref=f4e330]: 爱看盘 · 每日复盘工具
+          - generic [ref=f4e331]:
+            - link "关于" [ref=f4e332] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f4e333] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f4e334] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f4e335] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f4e336] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f4e337]: 数据：东方财富
+        - paragraph [ref=f4e338]: ⚠ 本站数据仅供参考，不构成投资建议
+  - navigation [ref=f4e339]:
+    - generic [ref=f4e340]:
+      - generic [ref=f4e341]:
+        - link "全部" [ref=f4e342] [cursor=pointer]:
+          - /url: /
+        - link "A股" [ref=f4e343] [cursor=pointer]:
+          - /url: /market/?market=cn
+        - link "美股" [ref=f4e344] [cursor=pointer]:
+          - /url: /market/?market=us
+      - generic [ref=f4e345]:
+        - link "首页" [ref=f4e346] [cursor=pointer]:
+          - /url: /
+        - link "关于" [ref=f4e351] [cursor=pointer]:
+          - /url: /about/
+  - alert [ref=f4e355]

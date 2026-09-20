@@ -15,14 +15,14 @@ function BreadcrumbContent() {
 
   return (
     <nav aria-label="页面位置" className="border-t border-[var(--neo-surface-inset)]">
-      <div className="mx-auto flex h-7 w-full max-w-[1440px] items-center gap-1 overflow-x-auto px-4 text-[10px] text-neo-dim sm:px-6">
+      <div className="mx-auto flex min-h-11 w-full max-w-[1440px] items-center gap-1 overflow-x-auto px-4 text-[10px] text-neo-dim sm:px-6">
         {context.breadcrumb.map((crumb, index) => {
           const isLast = index === context.breadcrumb.length - 1;
           return (
             <span key={`${crumb.label}-${index}`} className="flex shrink-0 items-center gap-1">
               {index > 0 && <ChevronRight size={10} aria-hidden />}
               {crumb.href && !isLast ? (
-                <Link href={crumb.href} className="transition-colors hover:text-neo-primary">
+                <Link href={crumb.href} className="inline-flex min-h-11 items-center transition-colors hover:text-neo-primary">
                   {crumb.label}
                 </Link>
               ) : (

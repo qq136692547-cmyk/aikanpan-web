@@ -63,6 +63,14 @@ test("daily review is cached", { timeout: 60000 }, async () => {
   }
 });
 
+test("historical review URL keeps the selected date", { timeout: 30000 }, async () => {
+  const res = await fetch("https://aikanpan.top/review/?date=2026-09-10");
+  assert.ok(res.ok, `historical review -> ${res.status}`);
+  assert.equal(new URL(res.url).searchParams.get("date"), "2026-09-10");
+  const snapshot = await request("/workbench/daily-review?date=2026-09-10");
+  assert.equal(snapshot.ai_available, false);
+});
+
 test("portfolio AI review generates content", { timeout: 90000 }, async () => {
   const data = await request("/ai/portfolio-review", {
   headers: await authHeaders(),
@@ -129,6 +137,37 @@ test("US alerts create/filter/delete", { timeout: 30000 }, async () => {
   assert.ok(!cn.alerts.some((a) => a.id === created.id));
   const removed = await request(`/alerts/${created.id}`, { method: "DELETE", headers });
   assert.equal(removed.deleted, true);
+});
+
+test("alert tasks are isolated between authenticated users", { timeout: 30000 }, async () => {
+  const [loginA, loginB] = await Promise.all([
+    request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) }),
+    request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) }),
+  ]);
+  const headersA = { Authorization: `Bearer ${loginA.token}` };
+  const headersB = { Authorization: `Bearer ${loginB.token}` };
+  const created = await request("/alerts", {
+    method: "POST",
+    headers: headersA,
+    body: JSON.stringify({ code: "sh.600519", condition: "below", threshold: 1, market: "cn", note: "smoke isolation" }),
+  });
+  try {
+    const listA = await request("/alerts", { headers: headersA });
+    assert.ok(listA.alerts.some((a) => a.id === created.id));
+    const listB = await request("/alerts", { headers: headersB });
+    assert.ok(!listB.alerts.some((a) => a.id === created.id));
+    const triggeredB = await request("/alerts/triggered", { headers: headersB });
+    assert.equal(triggeredB.total_triggered, 0);
+    assert.ok(!triggeredB.alerts.some((a) => a.id === created.id));
+    const readB = await fetch(`${API_BASE}/alerts/${created.id}`, { headers: headersB });
+    assert.equal(readB.status, 404);
+    const deleteB = await fetch(`${API_BASE}/alerts/${created.id}`, { method: "DELETE", headers: headersB });
+    assert.equal(deleteB.status, 404);
+    const legacy = await request("/alerts");
+    assert.ok(Array.isArray(legacy.alerts));
+  } finally {
+    await fetch(`${API_BASE}/alerts/${created.id}`, { method: "DELETE", headers: headersA });
+  }
 });
 
 test("multi-condition alert roundtrip", { timeout: 30000 }, async () => {
@@ -221,7 +260,8 @@ test("analytics events endpoint accepts page_view", { timeout: 30000 }, async ()
     headers,
     body: JSON.stringify({ event: "page_view", path: "/smoke", label: "test" }),
   });
-  assert.equal(saved.accepted, true);
+  assert.equal(saved.accepted, false);
+  assert.equal(saved.reason, "ignored_test_path");
 });
 
 test("analytics retention returns cohorts and totals", { timeout: 30000 }, async () => {
@@ -236,6 +276,16 @@ test("analytics sources returns source buckets", { timeout: 30000 }, async () =>
   assert.ok(Array.isArray(data.sources));
   assert.equal(typeof data.totals.page_views, "number");
   assert.ok(Array.isArray(data.top_paths));
+});
+
+test("analytics funnel returns stages and totals", { timeout: 30000 }, async () => {
+  const data = await request("/analytics/funnel?days=7");
+  assert.ok(Array.isArray(data.stages));
+  assert.ok(Array.isArray(data.signals));
+  assert.equal(typeof data.totals.events, "number");
+  assert.equal(typeof data.totals.unique_visitors, "number");
+  assert.ok(data.stages.every((stage) => typeof stage.conversion_pct === "number"));
+  assert.ok(Array.isArray(data.daily));
 });
 
 test("US dashboard returns indices", { timeout: 30000 }, async () => {
@@ -254,6 +304,14 @@ test("US quote and history degrade gracefully", { timeout: 30000 }, async () => 
 test("US search returns list", { timeout: 30000 }, async () => {
   const data = await request("/us/stocks/search?q=apple");
   assert.ok(Array.isArray(data.list));
+});
+
+test("US SEC filings endpoint returns official documents", { timeout: 30000 }, async () => {
+  const data = await request("/us/stocks/AAPL/filings?limit=5");
+  assert.equal(data.available, true);
+  assert.ok(Array.isArray(data.filings) && data.filings.length > 0);
+  assert.ok(data.filings.every((f) => f.document_url.startsWith("https://www.sec.gov/Archives/edgar/data/")));
+  assert.ok(data.filings.some((f) => ["10-K", "10-Q", "8-K"].includes(String(f.form).replace("/A", ""))));
 });
 
 test("US earnings endpoint returns free-tier data", { timeout: 30000 }, async () => {
@@ -310,3 +368,35 @@ test("membership status is available for authenticated guest", { timeout: 30000 
   assert.equal(data.ai_daily_limit, 5);
   assert.equal(data.ai_remaining, Math.max(0, data.ai_daily_limit - data.ai_used_today));
 });
+
+test("guest must bind an identity before membership activation", { timeout: 30000 }, async () => {
+  const login = await request("/auth/guest-login", { method: "POST", body: JSON.stringify({}) });
+  const res = await fetch(`${API_BASE}/membership/activate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${login.token}` },
+    body: JSON.stringify({ code: "AKP-SMOKE-IDENTITY-GUARD" }),
+  });
+  assert.equal(res.status, 403);
+  const data = await res.json();
+  assert.equal(data.detail, "identity_required");
+});
+
+test("limit-analysis returns structured AI attribution", { timeout: 45000 }, async () => {
+  const data = await request("/ai/limit-analysis", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  assert.ok(data.content && data.content.length > 50);
+  assert.equal(data.market, "cn");
+});
+
+
+test("premarket-briefing returns structured overnight intelligence", { timeout: 45000 }, async () => {
+  const data = await request("/ai/premarket-briefing", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  assert.ok(data.content && data.content.length > 50);
+  assert.equal(data.market, "all");
+});
+

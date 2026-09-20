@@ -1,0 +1,71 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [selected] [ref=e13]
+            - tab "美股" [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e22]:
+          - link "升级 Pro" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e26]: 会员
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "搜索" [level=1] [ref=e41]
+          - generic [ref=e42]: A股
+        - paragraph [ref=e43]: 按代码、名称或拼音查找股票
+      - generic [ref=e46]:
+        - textbox "输入股票代码、名称或拼音…" [ref=e47]: 茅台
+        - button "搜索" [ref=e48]
+      - generic [ref=e49]:
+        - paragraph [ref=e50]:
+          - text: "关键词: 茅台"
+          - generic [ref=e51]: (1 条结果)
+        - link "贵州茅台 guizhoumaotai sh.600519 1297.50 -0.16%" [ref=e53] [cursor=pointer]:
+          - /url: /stock/sh600519/
+          - generic [ref=e54]:
+            - generic [ref=e55]: 贵州茅台
+            - generic [ref=e56]: guizhoumaotai
+          - generic [ref=e57]: sh.600519
+          - generic [ref=e58]:
+            - generic [ref=e59]: "1297.50"
+            - generic [ref=e60]: "-0.16%"
+    - contentinfo [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]: 📊
+            - generic [ref=e67]: 爱看盘 · 每日复盘工具
+          - generic [ref=e68]:
+            - link "关于" [ref=e69] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e70] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e71] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e72] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e73] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e74]: 数据：东方财富
+        - paragraph [ref=e75]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e76]

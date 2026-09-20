@@ -1,0 +1,201 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e109]: 个股 sh.600519 · 爱看盘
+  - generic [ref=e120]:
+    - banner [ref=e121]:
+      - navigation [ref=e122]:
+        - link "爱看盘" [ref=e123] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e128]:
+          - tablist "市场范围" [ref=e129]:
+            - tab "全部" [ref=e130]
+            - tab "A股" [selected] [ref=e131]
+            - tab "美股" [ref=e132]
+          - navigation "功能导航" [ref=e134]:
+            - link "市场" [ref=e135] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e136] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e137] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e138] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e139] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e140]:
+          - link "升级 Pro" [ref=e141] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e144]: 会员
+          - link "登录 / 注册" [ref=e145] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e150]
+      - navigation "页面位置" [ref=e154]:
+        - generic [ref=e155]:
+          - link "A股" [ref=e157] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - link "市场" [ref=e161] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - generic [ref=e162]: 个股 SH600519
+    - main [ref=e166]:
+      - generic [ref=e167]:
+        - generic: 示例走势
+        - generic [ref=e168]:
+          - generic [ref=e169]:
+            - heading "贵州茅台" [level=1] [ref=e171]
+            - paragraph [ref=e172]: sh.600519
+          - generic [ref=e173]:
+            - generic [ref=e174]:
+              - generic [ref=e175]: "1297.50"
+              - generic [ref=e176]: "-2.06 (-0.16%)"
+            - button "添加 贵州茅台 到自选" [ref=e177]: 加自选
+      - generic [ref=e180]:
+        - generic [ref=e181]:
+          - generic [ref=e182]:
+            - generic [ref=e183]: 今开
+            - generic [ref=e184]: "1302.80"
+          - generic [ref=e185]:
+            - generic [ref=e186]: 最高
+            - generic [ref=e187]: "1303.00"
+          - generic [ref=e188]:
+            - generic [ref=e189]: 最低
+            - generic [ref=e190]: "1291.20"
+          - generic [ref=e191]:
+            - generic [ref=e192]: 昨收
+            - generic [ref=e193]: "1299.56"
+          - generic [ref=e194]:
+            - generic [ref=e195]: 成交量
+            - generic [ref=e196]: 203.08万
+          - generic [ref=e197]:
+            - generic [ref=e198]: 成交额
+            - generic [ref=e199]: 26.35亿
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - generic [ref=e203]: 主力净流入
+            - generic [ref=e204]: "-3193.10万"
+          - generic [ref=e205]:
+            - generic [ref=e206]: 净流入占比
+            - generic [ref=e207]: "-1.21%"
+          - generic [ref=e208]:
+            - generic [ref=e209]: 超大单比
+            - generic [ref=e210]: 4.04%
+          - generic [ref=e211]:
+            - generic [ref=e212]: 大单比
+            - generic [ref=e213]: "-5.25%"
+      - generic [ref=e214]:
+        - generic [ref=e215]:
+          - button "新闻/事件" [ref=e216]
+          - button "公告/研报" [ref=e217]
+          - button "财务数据" [ref=e218]
+        - generic [ref=e219]:
+          - generic [ref=e220]: 最新价格 1297.50，日内涨跌幅 -0.16% ，短线节奏震荡。 主力资金流出约 0.32 亿，占比 1.21% 。 最近研报关注点：2026年中报点评：茅台酒稳健，系列酒主动调整
+          - generic [ref=e222]:
+            - generic [ref=e223]: 最新节奏
+            - generic [ref=e224]: 最新价格 1297.50，日内涨跌幅 -0.16% ，短线节奏震荡。
+          - generic [ref=e226]:
+            - generic [ref=e227]: 资金风向
+            - generic [ref=e228]: 主力资金流出约 0.32 亿，占比 1.21% 。
+      - generic [ref=e229]:
+        - heading "技术指标" [level=3] [ref=e230]
+        - generic [ref=e231]:
+          - generic [ref=e232]:
+            - generic [ref=e233]: MACD
+            - generic [ref=e234]:
+              - generic [ref=e235]:
+                - generic [ref=e236]: DIF
+                - generic [ref=e237]: "-0.330"
+              - generic [ref=e238]:
+                - generic [ref=e239]: DEA
+                - generic [ref=e240]: "3.052"
+              - generic [ref=e241]:
+                - generic [ref=e242]: MACD
+                - generic [ref=e243]: "-6.764"
+          - generic [ref=e244]:
+            - generic [ref=e245]: KDJ
+            - generic [ref=e246]:
+              - generic [ref=e247]:
+                - generic [ref=e248]: K
+                - generic [ref=e249]: "58.20"
+              - generic [ref=e250]:
+                - generic [ref=e251]: D
+                - generic [ref=e252]: "55.14"
+              - generic [ref=e253]:
+                - generic [ref=e254]: J
+                - generic [ref=e255]: "64.32"
+          - generic [ref=e256]:
+            - generic [ref=e257]: RSI
+            - generic [ref=e259]:
+              - generic [ref=e260]: RSI
+              - generic [ref=e261]: "48.73"
+          - generic [ref=e262]:
+            - generic [ref=e263]: BOLL
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]: UP
+                - generic [ref=e267]: "1355.71"
+              - generic [ref=e268]:
+                - generic [ref=e269]: MID
+                - generic [ref=e270]: "1310.72"
+              - generic [ref=e271]:
+                - generic [ref=e272]: LOW
+                - generic [ref=e273]: "1265.73"
+      - generic [ref=e275]:
+        - generic [ref=e276]:
+          - heading "K 线图" [level=3] [ref=e277]
+          - generic [ref=e278]:
+            - button "30日" [ref=e279]
+            - button "60日" [ref=e280]
+            - button "120日" [ref=e281]
+        - generic [ref=e282]:
+          - generic [ref=e283]:
+            - generic [ref=e284]: 2026-09-02 · 开 1302.8 · 高 1303 · 低 1291.2 · 收 1297.5
+            - generic [ref=e285]:
+              - generic [ref=e286]: 上涨
+              - generic [ref=e288]: 下跌
+          - img "A股日K线图" [ref=e290]:
+            - generic [ref=e291]: "1363.35"
+            - generic [ref=e293]: "1310.26"
+            - generic [ref=e295]: "1257.18"
+            - generic [ref=e297]: "1204.10"
+            - generic [ref=e299]: "1151.01"
+            - generic [ref=e301]: 06-10
+            - generic [ref=e342]: 06-25
+            - generic [ref=e383]: 07-09
+            - generic [ref=e424]: 07-23
+            - generic [ref=e465]: 08-06
+            - generic [ref=e506]: 08-20
+      - generic [ref=e548]:
+        - generic [ref=e549]:
+          - generic [ref=e550]:
+            - generic [ref=e551]: 🤖 AI 诊断
+            - generic [ref=e552]: 深度分析资金面、技术面、估值面
+          - button "生成 AI 诊断" [ref=e553]
+        - generic [ref=e554]:
+          - paragraph [ref=e555]: 示例输出：
+          - list [ref=e556]:
+            - listitem [ref=e557]: • 资金面：主力资金流向分析
+            - listitem [ref=e558]: • 技术面：MACD/KDJ/RSI 指标解读
+            - listitem [ref=e559]: • 估值面：PE/PB 行业对比
+            - listitem [ref=e560]: • 综合评分：AI 给出 1-10 分评级
+      - generic [ref=e562]:
+        - generic [ref=e563]:
+          - heading "AI 诊断历史" [level=3] [ref=e564]
+          - generic [ref=e565]: 0 条
+        - paragraph [ref=e566]: 暂无历史记录，生成 AI 诊断后自动保存
+    - contentinfo [ref=e567]:
+      - generic [ref=e568]:
+        - generic [ref=e569]:
+          - generic [ref=e570]:
+            - generic [ref=e571]: 📊
+            - generic [ref=e573]: 爱看盘 · 每日复盘工具
+          - generic [ref=e574]:
+            - link "关于" [ref=e575] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e576] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e577] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e578] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e579] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e580]: 数据：东方财富
+        - paragraph [ref=e581]: ⚠ 本站数据仅供参考，不构成投资建议

@@ -5,8 +5,8 @@ import Link from "next/link";
 import { BellRing, BookOpenCheck, ClipboardList, Search, Sparkles } from "lucide-react";
 import { reportConversionEvent } from "@/lib/analytics";
 
-function getSteps(market: "cn" | "us") {
-  const query = market === "us" ? "?market=us" : "?market=cn";
+function getSteps(market: "cn" | "hk" | "us") {
+  const query = market === "us" ? "?market=us" : market === "hk" ? "?market=hk" : "?market=cn";
 
   return [
     {
@@ -33,7 +33,7 @@ function getSteps(market: "cn" | "us") {
     {
       id: "alerts",
       title: "设置盯盘提醒",
-      desc: "条件触发时自动提醒",
+      desc: "条件触发后在已开启的渠道提醒",
       href: `/alerts${query}`,
       icon: BellRing,
     },
@@ -79,7 +79,7 @@ function parseWorkflow(raw: string): string[] {
   }
 }
 
-export function DailyWorkflow({ className = "", market = "cn" }: { className?: string; market?: "cn" | "us" }) {
+export function DailyWorkflow({ className = "", market = "cn" }: { className?: string; market?: "cn" | "hk" | "us" }) {
   const raw = useSyncExternalStore(subscribeWorkflow, getWorkflowSnapshot, getServerWorkflowSnapshot);
   const completed = useMemo(() => parseWorkflow(raw), [raw]);
   const steps = getSteps(market);

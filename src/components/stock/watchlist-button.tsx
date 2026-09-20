@@ -26,7 +26,7 @@ export function WatchlistButton({ code, name }: { code: string; name: string }) 
       aria-pressed={active}
       aria-label={active ? `从自选移除 ${name}` : `添加 ${name} 到自选`}
       title={active ? "从自选移除" : "添加自选"}
-      className={`neo-chip flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium disabled:opacity-60 ${
+      className={`neo-chip flex min-h-11 items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium disabled:opacity-60 ${
         active ? "text-[var(--neo-amber)]" : "text-neo-primary"
       }`}
     >

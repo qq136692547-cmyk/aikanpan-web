@@ -1,0 +1,1117 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e263]:
+    - banner [ref=e264]:
+      - navigation [ref=e265]:
+        - link "爱看盘" [ref=e266] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e271]:
+          - tablist "市场范围" [ref=e272]:
+            - tab "全部" [ref=e273]
+            - tab "A股" [selected] [ref=e274]
+            - tab "美股" [ref=e275]
+          - navigation "功能导航" [ref=e277]:
+            - link "市场" [ref=e278] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e279] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e280] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e281] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e282] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e283]:
+          - link "升级 Pro" [ref=e284] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e287]: 会员
+          - link "登录 / 注册" [ref=e288] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e293]
+    - main [ref=e297]:
+      - generic [ref=e298]:
+        - generic [ref=e301]:
+          - generic [ref=e302]:
+            - heading "市场总览" [level=1] [ref=e303]
+            - generic [ref=e304]: A股
+          - paragraph [ref=e305]: 2026-09-02 · 已收盘
+        - generic [ref=e307]:
+          - link "上证指数 sh.000001 -0.97% 3941.39 -38.50 2026-09-02 · tx" [ref=e308] [cursor=pointer]:
+            - /url: /stock/sh.000001/
+            - generic [ref=e309]:
+              - generic [ref=e310]:
+                - generic [ref=e311]: 上证指数
+                - generic [ref=e312]: sh.000001
+              - generic [ref=e313]: "-0.97%"
+            - generic [ref=e314]:
+              - generic [ref=e315]: "3941.39"
+              - generic [ref=e316]: "-38.50"
+            - generic [ref=e317]: 2026-09-02 · tx
+          - link "深证成指 sz.399001 -1.88% 13611.55 -260.83 2026-09-02 · tx" [ref=e318] [cursor=pointer]:
+            - /url: /stock/sz.399001/
+            - generic [ref=e319]:
+              - generic [ref=e320]:
+                - generic [ref=e321]: 深证成指
+                - generic [ref=e322]: sz.399001
+              - generic [ref=e323]: "-1.88%"
+            - generic [ref=e324]:
+              - generic [ref=e325]: "13611.55"
+              - generic [ref=e326]: "-260.83"
+            - generic [ref=e327]: 2026-09-02 · tx
+          - link "创业板指 sz.399006 -2.39% 3312.24 -81.19 2026-09-02 · tx" [ref=e328] [cursor=pointer]:
+            - /url: /stock/sz.399006/
+            - generic [ref=e329]:
+              - generic [ref=e330]:
+                - generic [ref=e331]: 创业板指
+                - generic [ref=e332]: sz.399006
+              - generic [ref=e333]: "-2.39%"
+            - generic [ref=e334]:
+              - generic [ref=e335]: "3312.24"
+              - generic [ref=e336]: "-81.19"
+            - generic [ref=e337]: 2026-09-02 · tx
+        - generic [ref=e338]:
+          - generic [ref=e339]:
+            - heading "板块表现" [level=2] [ref=e340]
+            - generic [ref=e341]: 30 个
+          - table [ref=e344]:
+            - rowgroup [ref=e345]:
+              - row [ref=e346]:
+                - columnheader "板块名称" [ref=e347] [cursor=pointer]
+                - columnheader "最新价" [ref=e349] [cursor=pointer]
+                - columnheader "涨跌幅 ▼" [ref=e351] [cursor=pointer]:
+                  - generic [ref=e352]:
+                    - text: 涨跌幅
+                    - generic [ref=e353]: ▼
+                - columnheader "涨跌额" [ref=e354] [cursor=pointer]
+                - columnheader "换手率" [ref=e356] [cursor=pointer]
+            - rowgroup [ref=e358]:
+              - row [ref=e359]:
+                - cell "地面兵装ⅢBK1382" [ref=e360]
+                - cell "3904.48" [ref=e361]
+                - cell "+5.90%" [ref=e362]
+                - cell "+217.61" [ref=e363]
+                - cell "6.50%" [ref=e364]
+              - row [ref=e365]:
+                - cell "地面兵装ⅡBK1229" [ref=e366]
+                - cell "3904.48" [ref=e367]
+                - cell "+5.90%" [ref=e368]
+                - cell "+217.61" [ref=e369]
+                - cell "6.50%" [ref=e370]
+              - row [ref=e371]:
+                - cell "化妆品制造及其他BK1497" [ref=e372]
+                - cell "2081.90" [ref=e373]
+                - cell "+5.27%" [ref=e374]
+                - cell "+104.13" [ref=e375]
+                - cell "1.99%" [ref=e376]
+              - row [ref=e377]:
+                - cell "化妆品BK1252" [ref=e378]
+                - cell "1958.42" [ref=e379]
+                - cell "+2.96%" [ref=e380]
+                - cell "+56.25" [ref=e381]
+                - cell "2.08%" [ref=e382]
+              - row [ref=e383]:
+                - cell "其他橡胶制品BK1441" [ref=e384]
+                - cell "4397.23" [ref=e385]
+                - cell "+2.56%" [ref=e386]
+                - cell "+109.70" [ref=e387]
+                - cell "2.13%" [ref=e388]
+              - row [ref=e389]:
+                - cell "玻纤制造BK1462" [ref=e390]
+                - cell "15647.26" [ref=e391]
+                - cell "+2.41%" [ref=e392]
+                - cell "+368.65" [ref=e393]
+                - cell "5.71%" [ref=e394]
+              - row [ref=e395]:
+                - cell "鞋帽及其他BK1354" [ref=e396]
+                - cell "721.88" [ref=e397]
+                - cell "+2.40%" [ref=e398]
+                - cell "+16.92" [ref=e399]
+                - cell "4.30%" [ref=e400]
+              - row [ref=e401]:
+                - cell "品牌消费电子BK1337" [ref=e402]
+                - cell "2799.82" [ref=e403]
+                - cell "+2.25%" [ref=e404]
+                - cell "+61.52" [ref=e405]
+                - cell "2.73%" [ref=e406]
+              - row [ref=e407]:
+                - cell "人工景区BK1562" [ref=e408]
+                - cell "2914.10" [ref=e409]
+                - cell "+1.96%" [ref=e410]
+                - cell "+55.98" [ref=e411]
+                - cell "3.28%" [ref=e412]
+              - row [ref=e413]:
+                - cell "宠物食品BK1507" [ref=e414]
+                - cell "1556.42" [ref=e415]
+                - cell "+1.94%" [ref=e416]
+                - cell "+29.62" [ref=e417]
+                - cell "2.95%" [ref=e418]
+              - row [ref=e419]:
+                - cell "线缆部件及其他BK1312" [ref=e420]
+                - cell "3776.39" [ref=e421]
+                - cell "+1.62%" [ref=e422]
+                - cell "+60.35" [ref=e423]
+                - cell "4.26%" [ref=e424]
+              - row [ref=e425]:
+                - cell "橡胶BK1018" [ref=e426]
+                - cell "1497.83" [ref=e427]
+                - cell "+1.56%" [ref=e428]
+                - cell "+22.97" [ref=e429]
+                - cell "1.96%" [ref=e430]
+              - row [ref=e431]:
+                - cell "航空装备ⅢBK1384" [ref=e432]
+                - cell "4259.61" [ref=e433]
+                - cell "+1.56%" [ref=e434]
+                - cell "+65.31" [ref=e435]
+                - cell "2.24%" [ref=e436]
+              - row [ref=e437]:
+                - cell "航空装备ⅡBK1231" [ref=e438]
+                - cell "4259.61" [ref=e439]
+                - cell "+1.56%" [ref=e440]
+                - cell "+65.31" [ref=e441]
+                - cell "2.24%" [ref=e442]
+              - row [ref=e443]:
+                - cell "大气治理BK1388" [ref=e444]
+                - cell "3274.24" [ref=e445]
+                - cell "+1.53%" [ref=e446]
+                - cell "+49.29" [ref=e447]
+                - cell "2.29%" [ref=e448]
+              - row [ref=e449]:
+                - cell "卫浴电器BK1452" [ref=e450]
+                - cell "1400.99" [ref=e451]
+                - cell "+1.40%" [ref=e452]
+                - cell "+19.31" [ref=e453]
+                - cell "3.52%" [ref=e454]
+              - row [ref=e455]:
+                - cell "美容护理BK1035" [ref=e456]
+                - cell "893.99" [ref=e457]
+                - cell "+1.38%" [ref=e458]
+                - cell "+12.19" [ref=e459]
+                - cell "1.59%" [ref=e460]
+              - row [ref=e461]:
+                - cell "辅料BK1348" [ref=e462]
+                - cell "3205.55" [ref=e463]
+                - cell "+1.31%" [ref=e464]
+                - cell "+41.51" [ref=e465]
+                - cell "2.54%" [ref=e466]
+              - row [ref=e467]:
+                - cell "国防军工BK1204" [ref=e468]
+                - cell "5611.75" [ref=e469]
+                - cell "+1.31%" [ref=e470]
+                - cell "+72.45" [ref=e471]
+                - cell "2.53%" [ref=e472]
+              - row [ref=e473]:
+                - cell "塑料包装BK1533" [ref=e474]
+                - cell "4237.54" [ref=e475]
+                - cell "+1.08%" [ref=e476]
+                - cell "+45.42" [ref=e477]
+                - cell "2.55%" [ref=e478]
+              - row [ref=e479]:
+                - cell "厨卫电器BK1240" [ref=e480]
+                - cell "6010.63" [ref=e481]
+                - cell "+1.07%" [ref=e482]
+                - cell "+63.85" [ref=e483]
+                - cell "2.63%" [ref=e484]
+              - row [ref=e485]:
+                - cell "旅游及景区BK1272" [ref=e486]
+                - cell "3134.97" [ref=e487]
+                - cell "+1.03%" [ref=e488]
+                - cell "+31.86" [ref=e489]
+                - cell "4.14%" [ref=e490]
+              - row [ref=e491]:
+                - cell "玻璃玻纤BK0546" [ref=e492]
+                - cell "65432.12" [ref=e493]
+                - cell "+1.00%" [ref=e494]
+                - cell "+650.20" [ref=e495]
+                - cell "3.54%" [ref=e496]
+              - row [ref=e497]:
+                - cell "涂料BK1469" [ref=e498]
+                - cell "1019.74" [ref=e499]
+                - cell "+1.00%" [ref=e500]
+                - cell "+10.12" [ref=e501]
+                - cell "0.97%" [ref=e502]
+              - row [ref=e503]:
+                - cell "通信线缆及配套BK1592" [ref=e504]
+                - cell "25301.10" [ref=e505]
+                - cell "+0.99%" [ref=e506]
+                - cell "+248.17" [ref=e507]
+                - cell "5.66%" [ref=e508]
+              - row [ref=e509]:
+                - cell "有机硅BK1431" [ref=e510]
+                - cell "3335.31" [ref=e511]
+                - cell "+0.96%" [ref=e512]
+                - cell "+31.84" [ref=e513]
+                - cell "2.48%" [ref=e514]
+              - row [ref=e515]:
+                - cell "厨房电器BK1451" [ref=e516]
+                - cell "8919.21" [ref=e517]
+                - cell "+0.91%" [ref=e518]
+                - cell "+80.59" [ref=e519]
+                - cell "2.06%" [ref=e520]
+              - row [ref=e521]:
+                - cell "输变电设备BK1311" [ref=e522]
+                - cell "3985.10" [ref=e523]
+                - cell "+0.91%" [ref=e524]
+                - cell "+36.00" [ref=e525]
+                - cell "2.21%" [ref=e526]
+              - row [ref=e527]:
+                - cell "自然景区BK1563" [ref=e528]
+                - cell "3044.63" [ref=e529]
+                - cell "+0.89%" [ref=e530]
+                - cell "+26.85" [ref=e531]
+                - cell "4.42%" [ref=e532]
+              - row [ref=e533]:
+                - cell "培训教育BK1557" [ref=e534]
+                - cell "5122.17" [ref=e535]
+                - cell "+0.87%" [ref=e536]
+                - cell "+44.06" [ref=e537]
+                - cell "2.97%" [ref=e538]
+        - generic [ref=e539]:
+          - heading "市场结构" [level=2] [ref=e541]
+          - generic [ref=e542]:
+            - generic [ref=e543]:
+              - generic [ref=e544]:
+                - heading "涨停板" [level=3] [ref=e545]
+                - generic [ref=e546]: 64 只
+              - table [ref=e548]:
+                - rowgroup [ref=e549]:
+                  - row [ref=e550]:
+                    - columnheader "名称 / 代码" [ref=e551]
+                    - columnheader "价格" [ref=e552]
+                    - columnheader "涨跌幅" [ref=e553]
+                    - columnheader "类型" [ref=e554]
+                - rowgroup [ref=e555]:
+                  - row [ref=e556]:
+                    - cell [ref=e557]:
+                      - link "维琪科技 bj.920176" [ref=e558] [cursor=pointer]:
+                        - /url: /stock/bj920176/
+                        - generic [ref=e559]: 维琪科技
+                        - generic [ref=e560]: bj.920176
+                    - cell "70.66" [ref=e561]
+                    - cell "+29.98%" [ref=e562]
+                    - cell "limit30" [ref=e563]
+                  - row [ref=e564]:
+                    - cell [ref=e565]:
+                      - link "晟楠科技 bj.920006" [ref=e566] [cursor=pointer]:
+                        - /url: /stock/bj920006/
+                        - generic [ref=e567]: 晟楠科技
+                        - generic [ref=e568]: bj.920006
+                    - cell "22.21" [ref=e569]
+                    - cell "+29.96%" [ref=e570]
+                    - cell "limit30" [ref=e571]
+                  - row [ref=e572]:
+                    - cell [ref=e573]:
+                      - link "智新电子 bj.920212" [ref=e574] [cursor=pointer]:
+                        - /url: /stock/bj920212/
+                        - generic [ref=e575]: 智新电子
+                        - generic [ref=e576]: bj.920212
+                    - cell "14.10" [ref=e577]
+                    - cell "+29.95%" [ref=e578]
+                    - cell "limit30" [ref=e579]
+                  - row [ref=e580]:
+                    - cell [ref=e581]:
+                      - link "*ST宝馨 sz.002514" [ref=e582] [cursor=pointer]:
+                        - /url: /stock/sz002514/
+                        - generic [ref=e583]: "*ST宝馨"
+                        - generic [ref=e584]: sz.002514
+                    - cell "2.27" [ref=e585]
+                    - cell "+10.19%" [ref=e586]
+                    - cell "st" [ref=e587]
+                  - row [ref=e588]:
+                    - cell [ref=e589]:
+                      - link "信达地产 sh.600657" [ref=e590] [cursor=pointer]:
+                        - /url: /stock/sh600657/
+                        - generic [ref=e591]: 信达地产
+                        - generic [ref=e592]: sh.600657
+                    - cell "3.05" [ref=e593]
+                    - cell "+10.11%" [ref=e594]
+                    - cell "limit10" [ref=e595]
+                  - row [ref=e596]:
+                    - cell [ref=e597]:
+                      - link "大晟文化 sh.600892" [ref=e598] [cursor=pointer]:
+                        - /url: /stock/sh600892/
+                        - generic [ref=e599]: 大晟文化
+                        - generic [ref=e600]: sh.600892
+                    - cell "5.35" [ref=e601]
+                    - cell "+10.08%" [ref=e602]
+                    - cell "limit10" [ref=e603]
+                  - row [ref=e604]:
+                    - cell [ref=e605]:
+                      - link "茂业商业 sh.600828" [ref=e606] [cursor=pointer]:
+                        - /url: /stock/sh600828/
+                        - generic [ref=e607]: 茂业商业
+                        - generic [ref=e608]: sh.600828
+                    - cell "4.81" [ref=e609]
+                    - cell "+10.07%" [ref=e610]
+                    - cell "limit10" [ref=e611]
+                  - row [ref=e612]:
+                    - cell [ref=e613]:
+                      - link "云南旅游 sz.002059" [ref=e614] [cursor=pointer]:
+                        - /url: /stock/sz002059/
+                        - generic [ref=e615]: 云南旅游
+                        - generic [ref=e616]: sz.002059
+                    - cell "5.25" [ref=e617]
+                    - cell "+10.06%" [ref=e618]
+                    - cell "limit10" [ref=e619]
+                  - row [ref=e620]:
+                    - cell [ref=e621]:
+                      - link "天禾股份 sz.002999" [ref=e622] [cursor=pointer]:
+                        - /url: /stock/sz002999/
+                        - generic [ref=e623]: 天禾股份
+                        - generic [ref=e624]: sz.002999
+                    - cell "7.33" [ref=e625]
+                    - cell "+10.06%" [ref=e626]
+                    - cell "limit10" [ref=e627]
+                  - row [ref=e628]:
+                    - cell [ref=e629]:
+                      - link "京能热力 sz.002893" [ref=e630] [cursor=pointer]:
+                        - /url: /stock/sz002893/
+                        - generic [ref=e631]: 京能热力
+                        - generic [ref=e632]: sz.002893
+                    - cell "11.17" [ref=e633]
+                    - cell "+10.05%" [ref=e634]
+                    - cell "limit10" [ref=e635]
+                  - row [ref=e636]:
+                    - cell [ref=e637]:
+                      - link "华昌化工 sz.002274" [ref=e638] [cursor=pointer]:
+                        - /url: /stock/sz002274/
+                        - generic [ref=e639]: 华昌化工
+                        - generic [ref=e640]: sz.002274
+                    - cell "7.12" [ref=e641]
+                    - cell "+10.05%" [ref=e642]
+                    - cell "limit10" [ref=e643]
+                  - row [ref=e644]:
+                    - cell [ref=e645]:
+                      - link "雪人集团 sz.002639" [ref=e646] [cursor=pointer]:
+                        - /url: /stock/sz002639/
+                        - generic [ref=e647]: 雪人集团
+                        - generic [ref=e648]: sz.002639
+                    - cell "13.27" [ref=e649]
+                    - cell "+10.03%" [ref=e650]
+                    - cell "limit10" [ref=e651]
+                  - row [ref=e652]:
+                    - cell [ref=e653]:
+                      - link "国晟科技 sh.603778" [ref=e654] [cursor=pointer]:
+                        - /url: /stock/sh603778/
+                        - generic [ref=e655]: 国晟科技
+                        - generic [ref=e656]: sh.603778
+                    - cell "10.75" [ref=e657]
+                    - cell "+10.03%" [ref=e658]
+                    - cell "limit10" [ref=e659]
+                  - row [ref=e660]:
+                    - cell [ref=e661]:
+                      - link "深圳新星 sh.603978" [ref=e662] [cursor=pointer]:
+                        - /url: /stock/sh603978/
+                        - generic [ref=e663]: 深圳新星
+                        - generic [ref=e664]: sh.603978
+                    - cell "22.61" [ref=e665]
+                    - cell "+10.02%" [ref=e666]
+                    - cell "limit10" [ref=e667]
+                  - row [ref=e668]:
+                    - cell [ref=e669]:
+                      - link "一彬科技 sz.001278" [ref=e670] [cursor=pointer]:
+                        - /url: /stock/sz001278/
+                        - generic [ref=e671]: 一彬科技
+                        - generic [ref=e672]: sz.001278
+                    - cell "18.22" [ref=e673]
+                    - cell "+10.02%" [ref=e674]
+                    - cell "limit10" [ref=e675]
+                  - row [ref=e676]:
+                    - cell [ref=e677]:
+                      - link "九鼎新材 sz.002201" [ref=e678] [cursor=pointer]:
+                        - /url: /stock/sz002201/
+                        - generic [ref=e679]: 九鼎新材
+                        - generic [ref=e680]: sz.002201
+                    - cell "9.22" [ref=e681]
+                    - cell "+10.02%" [ref=e682]
+                    - cell "limit10" [ref=e683]
+                  - row [ref=e684]:
+                    - cell [ref=e685]:
+                      - link "光洋股份 sz.002708" [ref=e686] [cursor=pointer]:
+                        - /url: /stock/sz002708/
+                        - generic [ref=e687]: 光洋股份
+                        - generic [ref=e688]: sz.002708
+                    - cell "14.16" [ref=e689]
+                    - cell "+10.02%" [ref=e690]
+                    - cell "limit10" [ref=e691]
+                  - row [ref=e692]:
+                    - cell [ref=e693]:
+                      - link "道明光学 sz.002632" [ref=e694] [cursor=pointer]:
+                        - /url: /stock/sz002632/
+                        - generic [ref=e695]: 道明光学
+                        - generic [ref=e696]: sz.002632
+                    - cell "9.88" [ref=e697]
+                    - cell "+10.02%" [ref=e698]
+                    - cell "limit10" [ref=e699]
+                  - row [ref=e700]:
+                    - cell [ref=e701]:
+                      - link "龙版传媒 sh.605577" [ref=e702] [cursor=pointer]:
+                        - /url: /stock/sh605577/
+                        - generic [ref=e703]: 龙版传媒
+                        - generic [ref=e704]: sh.605577
+                    - cell "12.85" [ref=e705]
+                    - cell "+10.02%" [ref=e706]
+                    - cell "limit10" [ref=e707]
+                  - row [ref=e708]:
+                    - cell [ref=e709]:
+                      - link "恒宝股份 sz.002104" [ref=e710] [cursor=pointer]:
+                        - /url: /stock/sz002104/
+                        - generic [ref=e711]: 恒宝股份
+                        - generic [ref=e712]: sz.002104
+                    - cell "13.51" [ref=e713]
+                    - cell "+10.02%" [ref=e714]
+                    - cell "limit10" [ref=e715]
+                  - row [ref=e716]:
+                    - cell [ref=e717]:
+                      - link "播恩集团 sz.001366" [ref=e718] [cursor=pointer]:
+                        - /url: /stock/sz001366/
+                        - generic [ref=e719]: 播恩集团
+                        - generic [ref=e720]: sz.001366
+                    - cell "14.50" [ref=e721]
+                    - cell "+10.02%" [ref=e722]
+                    - cell "limit10" [ref=e723]
+                  - row [ref=e724]:
+                    - cell [ref=e725]:
+                      - link "大位科技 sh.600589" [ref=e726] [cursor=pointer]:
+                        - /url: /stock/sh600589/
+                        - generic [ref=e727]: 大位科技
+                        - generic [ref=e728]: sh.600589
+                    - cell "8.68" [ref=e729]
+                    - cell "+10.01%" [ref=e730]
+                    - cell "limit10" [ref=e731]
+                  - row [ref=e732]:
+                    - cell [ref=e733]:
+                      - link "博云新材 sz.002297" [ref=e734] [cursor=pointer]:
+                        - /url: /stock/sz002297/
+                        - generic [ref=e735]: 博云新材
+                        - generic [ref=e736]: sz.002297
+                    - cell "20.00" [ref=e737]
+                    - cell "+10.01%" [ref=e738]
+                    - cell "limit10" [ref=e739]
+                  - row [ref=e740]:
+                    - cell [ref=e741]:
+                      - link "竞业达 sz.003005" [ref=e742] [cursor=pointer]:
+                        - /url: /stock/sz003005/
+                        - generic [ref=e743]: 竞业达
+                        - generic [ref=e744]: sz.003005
+                    - cell "20.00" [ref=e745]
+                    - cell "+10.01%" [ref=e746]
+                    - cell "limit10" [ref=e747]
+                  - row [ref=e748]:
+                    - cell [ref=e749]:
+                      - link "国芳集团 sh.601086" [ref=e750] [cursor=pointer]:
+                        - /url: /stock/sh601086/
+                        - generic [ref=e751]: 国芳集团
+                        - generic [ref=e752]: sh.601086
+                    - cell "11.10" [ref=e753]
+                    - cell "+10.01%" [ref=e754]
+                    - cell "limit10" [ref=e755]
+                  - row [ref=e756]:
+                    - cell [ref=e757]:
+                      - link "哈森股份 sh.603958" [ref=e758] [cursor=pointer]:
+                        - /url: /stock/sh603958/
+                        - generic [ref=e759]: 哈森股份
+                        - generic [ref=e760]: sh.603958
+                    - cell "23.85" [ref=e761]
+                    - cell "+10.01%" [ref=e762]
+                    - cell "limit10" [ref=e763]
+                  - row [ref=e764]:
+                    - cell [ref=e765]:
+                      - link "内蒙一机 sh.600967" [ref=e766] [cursor=pointer]:
+                        - /url: /stock/sh600967/
+                        - generic [ref=e767]: 内蒙一机
+                        - generic [ref=e768]: sh.600967
+                    - cell "13.41" [ref=e769]
+                    - cell "+10.01%" [ref=e770]
+                    - cell "limit10" [ref=e771]
+                  - row [ref=e772]:
+                    - cell [ref=e773]:
+                      - link "金帝股份 sh.603270" [ref=e774] [cursor=pointer]:
+                        - /url: /stock/sh603270/
+                        - generic [ref=e775]: 金帝股份
+                        - generic [ref=e776]: sh.603270
+                    - cell "31.77" [ref=e777]
+                    - cell "+10.01%" [ref=e778]
+                    - cell "limit10" [ref=e779]
+                  - row [ref=e780]:
+                    - cell [ref=e781]:
+                      - link "建设工业 sz.002265" [ref=e782] [cursor=pointer]:
+                        - /url: /stock/sz002265/
+                        - generic [ref=e783]: 建设工业
+                        - generic [ref=e784]: sz.002265
+                    - cell "21.44" [ref=e785]
+                    - cell "+10.01%" [ref=e786]
+                    - cell "limit10" [ref=e787]
+                  - row [ref=e788]:
+                    - cell [ref=e789]:
+                      - link "ST东尼 sh.603595" [ref=e790] [cursor=pointer]:
+                        - /url: /stock/sh603595/
+                        - generic [ref=e791]: ST东尼
+                        - generic [ref=e792]: sh.603595
+                    - cell "30.24" [ref=e793]
+                    - cell "+10.00%" [ref=e794]
+                    - cell "st" [ref=e795]
+                  - row [ref=e796]:
+                    - cell [ref=e797]:
+                      - link "长城军工 sh.601606" [ref=e798] [cursor=pointer]:
+                        - /url: /stock/sh601606/
+                        - generic [ref=e799]: 长城军工
+                        - generic [ref=e800]: sh.601606
+                    - cell "36.62" [ref=e801]
+                    - cell "+10.00%" [ref=e802]
+                    - cell "limit10" [ref=e803]
+                  - row [ref=e804]:
+                    - cell [ref=e805]:
+                      - link "盛景微 sh.603375" [ref=e806] [cursor=pointer]:
+                        - /url: /stock/sh603375/
+                        - generic [ref=e807]: 盛景微
+                        - generic [ref=e808]: sh.603375
+                    - cell "43.33" [ref=e809]
+                    - cell "+10.00%" [ref=e810]
+                    - cell "limit10" [ref=e811]
+                  - row [ref=e812]:
+                    - cell [ref=e813]:
+                      - link "飞龙股份 sz.002536" [ref=e814] [cursor=pointer]:
+                        - /url: /stock/sz002536/
+                        - generic [ref=e815]: 飞龙股份
+                        - generic [ref=e816]: sz.002536
+                    - cell "58.07" [ref=e817]
+                    - cell "+10.00%" [ref=e818]
+                    - cell "limit10" [ref=e819]
+                  - row [ref=e820]:
+                    - cell [ref=e821]:
+                      - link "小方制药 sh.603207" [ref=e822] [cursor=pointer]:
+                        - /url: /stock/sh603207/
+                        - generic [ref=e823]: 小方制药
+                        - generic [ref=e824]: sh.603207
+                    - cell "27.94" [ref=e825]
+                    - cell "+10.00%" [ref=e826]
+                    - cell "limit10" [ref=e827]
+                  - row [ref=e828]:
+                    - cell [ref=e829]:
+                      - link "梦天家居 sh.603216" [ref=e830] [cursor=pointer]:
+                        - /url: /stock/sh603216/
+                        - generic [ref=e831]: 梦天家居
+                        - generic [ref=e832]: sh.603216
+                    - cell "24.09" [ref=e833]
+                    - cell "+10.00%" [ref=e834]
+                    - cell "limit10" [ref=e835]
+                  - row [ref=e836]:
+                    - cell [ref=e837]:
+                      - link "德宏股份 sh.603701" [ref=e838] [cursor=pointer]:
+                        - /url: /stock/sh603701/
+                        - generic [ref=e839]: 德宏股份
+                        - generic [ref=e840]: sh.603701
+                    - cell "21.23" [ref=e841]
+                    - cell "+10.00%" [ref=e842]
+                    - cell "limit10" [ref=e843]
+                  - row [ref=e844]:
+                    - cell [ref=e845]:
+                      - link "神马电力 sh.603530" [ref=e846] [cursor=pointer]:
+                        - /url: /stock/sh603530/
+                        - generic [ref=e847]: 神马电力
+                        - generic [ref=e848]: sh.603530
+                    - cell "50.39" [ref=e849]
+                    - cell "+10.00%" [ref=e850]
+                    - cell "limit10" [ref=e851]
+                  - row [ref=e852]:
+                    - cell [ref=e853]:
+                      - link "高新发展 sz.000628" [ref=e854] [cursor=pointer]:
+                        - /url: /stock/sz000628/
+                        - generic [ref=e855]: 高新发展
+                        - generic [ref=e856]: sz.000628
+                    - cell "54.79" [ref=e857]
+                    - cell "+10.00%" [ref=e858]
+                    - cell "limit10" [ref=e859]
+                  - row [ref=e860]:
+                    - cell [ref=e861]:
+                      - link "力鼎光电 sh.605118" [ref=e862] [cursor=pointer]:
+                        - /url: /stock/sh605118/
+                        - generic [ref=e863]: 力鼎光电
+                        - generic [ref=e864]: sh.605118
+                    - cell "34.44" [ref=e865]
+                    - cell "+10.00%" [ref=e866]
+                    - cell "limit10" [ref=e867]
+                  - row [ref=e868]:
+                    - cell [ref=e869]:
+                      - link "联域股份 sz.001326" [ref=e870] [cursor=pointer]:
+                        - /url: /stock/sz001326/
+                        - generic [ref=e871]: 联域股份
+                        - generic [ref=e872]: sz.001326
+                    - cell "73.40" [ref=e873]
+                    - cell "+10.00%" [ref=e874]
+                    - cell "limit10" [ref=e875]
+                  - row [ref=e876]:
+                    - cell [ref=e877]:
+                      - link "康隆达 sh.603665" [ref=e878] [cursor=pointer]:
+                        - /url: /stock/sh603665/
+                        - generic [ref=e879]: 康隆达
+                        - generic [ref=e880]: sh.603665
+                    - cell "22.56" [ref=e881]
+                    - cell "+9.99%" [ref=e882]
+                    - cell "limit10" [ref=e883]
+                  - row [ref=e884]:
+                    - cell [ref=e885]:
+                      - link "山东玻纤 sh.605006" [ref=e886] [cursor=pointer]:
+                        - /url: /stock/sh605006/
+                        - generic [ref=e887]: 山东玻纤
+                        - generic [ref=e888]: sh.605006
+                    - cell "15.96" [ref=e889]
+                    - cell "+9.99%" [ref=e890]
+                    - cell "limit10" [ref=e891]
+                  - row [ref=e892]:
+                    - cell [ref=e893]:
+                      - link "杭电股份 sh.603618" [ref=e894] [cursor=pointer]:
+                        - /url: /stock/sh603618/
+                        - generic [ref=e895]: 杭电股份
+                        - generic [ref=e896]: sh.603618
+                    - cell "37.22" [ref=e897]
+                    - cell "+9.99%" [ref=e898]
+                    - cell "limit10" [ref=e899]
+                  - row [ref=e900]:
+                    - cell [ref=e901]:
+                      - link "沃特股份 sz.002886" [ref=e902] [cursor=pointer]:
+                        - /url: /stock/sz002886/
+                        - generic [ref=e903]: 沃特股份
+                        - generic [ref=e904]: sz.002886
+                    - cell "30.84" [ref=e905]
+                    - cell "+9.99%" [ref=e906]
+                    - cell "limit10" [ref=e907]
+                  - row [ref=e908]:
+                    - cell [ref=e909]:
+                      - link "顺控发展 sz.003039" [ref=e910] [cursor=pointer]:
+                        - /url: /stock/sz003039/
+                        - generic [ref=e911]: 顺控发展
+                        - generic [ref=e912]: sz.003039
+                    - cell "13.77" [ref=e913]
+                    - cell "+9.98%" [ref=e914]
+                    - cell "limit10" [ref=e915]
+                  - row [ref=e916]:
+                    - cell [ref=e917]:
+                      - link "远东股份 sh.600869" [ref=e918] [cursor=pointer]:
+                        - /url: /stock/sh600869/
+                        - generic [ref=e919]: 远东股份
+                        - generic [ref=e920]: sh.600869
+                    - cell "19.50" [ref=e921]
+                    - cell "+9.98%" [ref=e922]
+                    - cell "limit10" [ref=e923]
+                  - row [ref=e924]:
+                    - cell [ref=e925]:
+                      - link "石化机械 sz.000852" [ref=e926] [cursor=pointer]:
+                        - /url: /stock/sz000852/
+                        - generic [ref=e927]: 石化机械
+                        - generic [ref=e928]: sz.000852
+                    - cell "6.06" [ref=e929]
+                    - cell "+9.98%" [ref=e930]
+                    - cell "limit10" [ref=e931]
+                  - row [ref=e932]:
+                    - cell [ref=e933]:
+                      - link "九牧王 sh.601566" [ref=e934] [cursor=pointer]:
+                        - /url: /stock/sh601566/
+                        - generic [ref=e935]: 九牧王
+                        - generic [ref=e936]: sh.601566
+                    - cell "10.36" [ref=e937]
+                    - cell "+9.98%" [ref=e938]
+                    - cell "limit10" [ref=e939]
+                  - row [ref=e940]:
+                    - cell [ref=e941]:
+                      - link "英 力 特 sz.000635" [ref=e942] [cursor=pointer]:
+                        - /url: /stock/sz000635/
+                        - generic [ref=e943]: 英 力 特
+                        - generic [ref=e944]: sz.000635
+                    - cell "7.94" [ref=e945]
+                    - cell "+9.97%" [ref=e946]
+                    - cell "limit10" [ref=e947]
+                  - row [ref=e948]:
+                    - cell [ref=e949]:
+                      - link "集泰股份 sz.002909" [ref=e950] [cursor=pointer]:
+                        - /url: /stock/sz002909/
+                        - generic [ref=e951]: 集泰股份
+                        - generic [ref=e952]: sz.002909
+                    - cell "7.28" [ref=e953]
+                    - cell "+9.97%" [ref=e954]
+                    - cell "limit10" [ref=e955]
+                  - row [ref=e956]:
+                    - cell [ref=e957]:
+                      - link "新赛股份 sh.600540" [ref=e958] [cursor=pointer]:
+                        - /url: /stock/sh600540/
+                        - generic [ref=e959]: 新赛股份
+                        - generic [ref=e960]: sh.600540
+                    - cell "6.73" [ref=e961]
+                    - cell "+9.97%" [ref=e962]
+                    - cell "limit10" [ref=e963]
+                  - row [ref=e964]:
+                    - cell [ref=e965]:
+                      - link "香溢融通 sh.600830" [ref=e966] [cursor=pointer]:
+                        - /url: /stock/sh600830/
+                        - generic [ref=e967]: 香溢融通
+                        - generic [ref=e968]: sh.600830
+                    - cell "10.15" [ref=e969]
+                    - cell "+9.97%" [ref=e970]
+                    - cell "limit10" [ref=e971]
+                  - row [ref=e972]:
+                    - cell [ref=e973]:
+                      - link "贵州燃气 sh.600903" [ref=e974] [cursor=pointer]:
+                        - /url: /stock/sh600903/
+                        - generic [ref=e975]: 贵州燃气
+                        - generic [ref=e976]: sh.600903
+                    - cell "7.07" [ref=e977]
+                    - cell "+9.95%" [ref=e978]
+                    - cell "limit10" [ref=e979]
+                  - row [ref=e980]:
+                    - cell [ref=e981]:
+                      - link "太阳电缆 sz.002300" [ref=e982] [cursor=pointer]:
+                        - /url: /stock/sz002300/
+                        - generic [ref=e983]: 太阳电缆
+                        - generic [ref=e984]: sz.002300
+                    - cell "7.63" [ref=e985]
+                    - cell "+9.94%" [ref=e986]
+                    - cell "limit10" [ref=e987]
+                  - row [ref=e988]:
+                    - cell [ref=e989]:
+                      - link "欢瑞世纪 sz.000892" [ref=e990] [cursor=pointer]:
+                        - /url: /stock/sz000892/
+                        - generic [ref=e991]: 欢瑞世纪
+                        - generic [ref=e992]: sz.000892
+                    - cell "5.20" [ref=e993]
+                    - cell "+9.94%" [ref=e994]
+                    - cell "limit10" [ref=e995]
+                  - row [ref=e996]:
+                    - cell [ref=e997]:
+                      - link "ST雪浪 sz.300385" [ref=e998] [cursor=pointer]:
+                        - /url: /stock/sz300385/
+                        - generic [ref=e999]: ST雪浪
+                        - generic [ref=e1000]: sz.300385
+                    - cell "14.10" [ref=e1001]
+                    - cell "+7.63%" [ref=e1002]
+                    - cell "st" [ref=e1003]
+                  - row [ref=e1004]:
+                    - cell [ref=e1005]:
+                      - link "*ST高科 sh.600730" [ref=e1006] [cursor=pointer]:
+                        - /url: /stock/sh600730/
+                        - generic [ref=e1007]: "*ST高科"
+                        - generic [ref=e1008]: sh.600730
+                    - cell "10.14" [ref=e1009]
+                    - cell "+7.08%" [ref=e1010]
+                    - cell "st" [ref=e1011]
+                  - row [ref=e1012]:
+                    - cell [ref=e1013]:
+                      - link "*ST联翔 sh.603272" [ref=e1014] [cursor=pointer]:
+                        - /url: /stock/sh603272/
+                        - generic [ref=e1015]: "*ST联翔"
+                        - generic [ref=e1016]: sh.603272
+                    - cell "17.38" [ref=e1017]
+                    - cell "+7.02%" [ref=e1018]
+                    - cell "st" [ref=e1019]
+                  - row [ref=e1020]:
+                    - cell [ref=e1021]:
+                      - link "ST嘉澳 sh.603822" [ref=e1022] [cursor=pointer]:
+                        - /url: /stock/sh603822/
+                        - generic [ref=e1023]: ST嘉澳
+                        - generic [ref=e1024]: sh.603822
+                    - cell "66.72" [ref=e1025]
+                    - cell "+6.38%" [ref=e1026]
+                    - cell "st" [ref=e1027]
+                  - row [ref=e1028]:
+                    - cell [ref=e1029]:
+                      - link "ST际华 sh.601718" [ref=e1030] [cursor=pointer]:
+                        - /url: /stock/sh601718/
+                        - generic [ref=e1031]: ST际华
+                        - generic [ref=e1032]: sh.601718
+                    - cell "2.01" [ref=e1033]
+                    - cell "+5.24%" [ref=e1034]
+                    - cell "st" [ref=e1035]
+                  - row [ref=e1036]:
+                    - cell [ref=e1037]:
+                      - link "*ST皇庭 sz.000056" [ref=e1038] [cursor=pointer]:
+                        - /url: /stock/sz000056/
+                        - generic [ref=e1039]: "*ST皇庭"
+                        - generic [ref=e1040]: sz.000056
+                    - cell "2.33" [ref=e1041]
+                    - cell "+4.96%" [ref=e1042]
+                    - cell "st" [ref=e1043]
+                  - row [ref=e1044]:
+                    - cell [ref=e1045]:
+                      - link "*ST易录 sz.300212" [ref=e1046] [cursor=pointer]:
+                        - /url: /stock/sz300212/
+                        - generic [ref=e1047]: "*ST易录"
+                        - generic [ref=e1048]: sz.300212
+                    - cell "8.33" [ref=e1049]
+                    - cell "+4.91%" [ref=e1050]
+                    - cell "st" [ref=e1051]
+                  - row [ref=e1052]:
+                    - cell [ref=e1053]:
+                      - link "ST佳缘 sz.301117" [ref=e1054] [cursor=pointer]:
+                        - /url: /stock/sz301117/
+                        - generic [ref=e1055]: ST佳缘
+                        - generic [ref=e1056]: sz.301117
+                    - cell "15.23" [ref=e1057]
+                    - cell "+4.89%" [ref=e1058]
+                    - cell "st" [ref=e1059]
+                  - row [ref=e1060]:
+                    - cell [ref=e1061]:
+                      - link "*ST帅电 sh.605336" [ref=e1062] [cursor=pointer]:
+                        - /url: /stock/sh605336/
+                        - generic [ref=e1063]: "*ST帅电"
+                        - generic [ref=e1064]: sh.605336
+                    - cell "12.25" [ref=e1065]
+                    - cell "+4.88%" [ref=e1066]
+                    - cell "st" [ref=e1067]
+            - generic [ref=e1068]:
+              - generic [ref=e1069]:
+                - heading "跌停板" [level=3] [ref=e1070]
+                - generic [ref=e1071]: 13 只
+              - table [ref=e1073]:
+                - rowgroup [ref=e1074]:
+                  - row [ref=e1075]:
+                    - columnheader "名称 / 代码" [ref=e1076]
+                    - columnheader "价格" [ref=e1077]
+                    - columnheader "涨跌幅" [ref=e1078]
+                    - columnheader "类型" [ref=e1079]
+                - rowgroup [ref=e1080]:
+                  - row [ref=e1081]:
+                    - cell [ref=e1082]:
+                      - link "金浦钛业 sz.000545" [ref=e1083] [cursor=pointer]:
+                        - /url: /stock/sz000545/
+                        - generic [ref=e1084]: 金浦钛业
+                        - generic [ref=e1085]: sz.000545
+                    - cell "2.13" [ref=e1086]
+                    - cell "-10.13%" [ref=e1087]
+                    - cell "limit10" [ref=e1088]
+                  - row [ref=e1089]:
+                    - cell [ref=e1090]:
+                      - link "神奇制药 sh.600613" [ref=e1091] [cursor=pointer]:
+                        - /url: /stock/sh600613/
+                        - generic [ref=e1092]: 神奇制药
+                        - generic [ref=e1093]: sh.600613
+                    - cell "10.04" [ref=e1094]
+                    - cell "-10.04%" [ref=e1095]
+                    - cell "limit10" [ref=e1096]
+                  - row [ref=e1097]:
+                    - cell [ref=e1098]:
+                      - link "冀衡医药 sz.002742" [ref=e1099] [cursor=pointer]:
+                        - /url: /stock/sz002742/
+                        - generic [ref=e1100]: 冀衡医药
+                        - generic [ref=e1101]: sz.002742
+                    - cell "5.03" [ref=e1102]
+                    - cell "-10.02%" [ref=e1103]
+                    - cell "limit10" [ref=e1104]
+                  - row [ref=e1105]:
+                    - cell [ref=e1106]:
+                      - link "一鸣食品 sh.605179" [ref=e1107] [cursor=pointer]:
+                        - /url: /stock/sh605179/
+                        - generic [ref=e1108]: 一鸣食品
+                        - generic [ref=e1109]: sh.605179
+                    - cell "31.20" [ref=e1110]
+                    - cell "-10.01%" [ref=e1111]
+                    - cell "limit10" [ref=e1112]
+                  - row [ref=e1113]:
+                    - cell [ref=e1114]:
+                      - link "开开实业 sh.600272" [ref=e1115] [cursor=pointer]:
+                        - /url: /stock/sh600272/
+                        - generic [ref=e1116]: 开开实业
+                        - generic [ref=e1117]: sh.600272
+                    - cell "18.08" [ref=e1118]
+                    - cell "-10.01%" [ref=e1119]
+                    - cell "limit10" [ref=e1120]
+                  - row [ref=e1121]:
+                    - cell [ref=e1122]:
+                      - link "新农股份 sz.002942" [ref=e1123] [cursor=pointer]:
+                        - /url: /stock/sz002942/
+                        - generic [ref=e1124]: 新农股份
+                        - generic [ref=e1125]: sz.002942
+                    - cell "19.88" [ref=e1126]
+                    - cell "-10.01%" [ref=e1127]
+                    - cell "limit10" [ref=e1128]
+                  - row [ref=e1129]:
+                    - cell [ref=e1130]:
+                      - link "红四方 sh.603395" [ref=e1131] [cursor=pointer]:
+                        - /url: /stock/sh603395/
+                        - generic [ref=e1132]: 红四方
+                        - generic [ref=e1133]: sh.603395
+                    - cell "27.81" [ref=e1134]
+                    - cell "-10.00%" [ref=e1135]
+                    - cell "limit10" [ref=e1136]
+                  - row [ref=e1137]:
+                    - cell [ref=e1138]:
+                      - link "敦煌种业 sh.600354" [ref=e1139] [cursor=pointer]:
+                        - /url: /stock/sh600354/
+                        - generic [ref=e1140]: 敦煌种业
+                        - generic [ref=e1141]: sh.600354
+                    - cell "8.21" [ref=e1142]
+                    - cell "-9.98%" [ref=e1143]
+                    - cell "limit10" [ref=e1144]
+                  - row [ref=e1145]:
+                    - cell [ref=e1146]:
+                      - link "国投丰乐 sz.000713" [ref=e1147] [cursor=pointer]:
+                        - /url: /stock/sz000713/
+                        - generic [ref=e1148]: 国投丰乐
+                        - generic [ref=e1149]: sz.000713
+                    - cell "6.43" [ref=e1150]
+                    - cell "-9.94%" [ref=e1151]
+                    - cell "limit10" [ref=e1152]
+                  - row [ref=e1153]:
+                    - cell [ref=e1154]:
+                      - link "ST荃银 sz.300087" [ref=e1155] [cursor=pointer]:
+                        - /url: /stock/sz300087/
+                        - generic [ref=e1156]: ST荃银
+                        - generic [ref=e1157]: sz.300087
+                    - cell "5.90" [ref=e1158]
+                    - cell "-6.65%" [ref=e1159]
+                    - cell "st" [ref=e1160]
+                  - row [ref=e1161]:
+                    - cell [ref=e1162]:
+                      - link "*ST美芝 sz.002856" [ref=e1163] [cursor=pointer]:
+                        - /url: /stock/sz002856/
+                        - generic [ref=e1164]: "*ST美芝"
+                        - generic [ref=e1165]: sz.002856
+                    - cell "18.18" [ref=e1166]
+                    - cell "-5.75%" [ref=e1167]
+                    - cell "st" [ref=e1168]
+                  - row [ref=e1169]:
+                    - cell [ref=e1170]:
+                      - link "ST天际 sz.002759" [ref=e1171] [cursor=pointer]:
+                        - /url: /stock/sz002759/
+                        - generic [ref=e1172]: ST天际
+                        - generic [ref=e1173]: sz.002759
+                    - cell "15.85" [ref=e1174]
+                    - cell "-4.92%" [ref=e1175]
+                    - cell "st" [ref=e1176]
+                  - row [ref=e1177]:
+                    - cell [ref=e1178]:
+                      - link "ST西王 sz.000639" [ref=e1179] [cursor=pointer]:
+                        - /url: /stock/sz000639/
+                        - generic [ref=e1180]: ST西王
+                        - generic [ref=e1181]: sz.000639
+                    - cell "1.58" [ref=e1182]
+                    - cell "-4.82%" [ref=e1183]
+                    - cell "st" [ref=e1184]
+        - generic [ref=e1185]:
+          - heading "AI 聚焦" [level=2] [ref=e1187]
+          - generic [ref=e1188]:
+            - generic [ref=e1189]:
+              - heading "强势行业 TOP12" [level=3] [ref=e1191]
+              - generic [ref=e1192]:
+                - generic [ref=e1193]:
+                  - generic [ref=e1194]: "1"
+                  - generic [ref=e1195]: 地面兵装Ⅲ
+                  - generic [ref=e1198]: +5.90%
+                - generic [ref=e1199]:
+                  - generic [ref=e1200]: "2"
+                  - generic [ref=e1201]: 地面兵装Ⅱ
+                  - generic [ref=e1204]: +5.90%
+                - generic [ref=e1205]:
+                  - generic [ref=e1206]: "3"
+                  - generic [ref=e1207]: 化妆品制造及其他
+                  - generic [ref=e1210]: +5.27%
+                - generic [ref=e1211]:
+                  - generic [ref=e1212]: "4"
+                  - generic [ref=e1213]: 化妆品
+                  - generic [ref=e1216]: +2.96%
+                - generic [ref=e1217]:
+                  - generic [ref=e1218]: "5"
+                  - generic [ref=e1219]: 其他橡胶制品
+                  - generic [ref=e1222]: +2.56%
+                - generic [ref=e1223]:
+                  - generic [ref=e1224]: "6"
+                  - generic [ref=e1225]: 玻纤制造
+                  - generic [ref=e1228]: +2.41%
+                - generic [ref=e1229]:
+                  - generic [ref=e1230]: "7"
+                  - generic [ref=e1231]: 鞋帽及其他
+                  - generic [ref=e1234]: +2.40%
+                - generic [ref=e1235]:
+                  - generic [ref=e1236]: "8"
+                  - generic [ref=e1237]: 品牌消费电子
+                  - generic [ref=e1240]: +2.25%
+                - generic [ref=e1241]:
+                  - generic [ref=e1242]: "9"
+                  - generic [ref=e1243]: 人工景区
+                  - generic [ref=e1246]: +1.96%
+                - generic [ref=e1247]:
+                  - generic [ref=e1248]: "10"
+                  - generic [ref=e1249]: 宠物食品
+                  - generic [ref=e1252]: +1.94%
+                - generic [ref=e1253]:
+                  - generic [ref=e1254]: "11"
+                  - generic [ref=e1255]: 线缆部件及其他
+                  - generic [ref=e1258]: +1.62%
+                - generic [ref=e1259]:
+                  - generic [ref=e1260]: "12"
+                  - generic [ref=e1261]: 橡胶
+                  - generic [ref=e1264]: +1.56%
+            - generic [ref=e1265]:
+              - generic [ref=e1266]:
+                - generic [ref=e1267]: 市场聚焦
+                - generic [ref=e1268]: 2026-09-02T16:03:22
+              - paragraph [ref=e1269]: 上证指数震荡（-0.97%），当前更活跃的方向是 地面兵装Ⅲ、地面兵装Ⅱ、化妆品制造及其他。
+              - generic [ref=e1270]:
+                - generic [ref=e1271]: 热门板块
+                - generic [ref=e1272]:
+                  - generic [ref=e1273]: 地面兵装Ⅲ+5.90%
+                  - generic [ref=e1274]: 地面兵装Ⅱ+5.90%
+                  - generic [ref=e1275]: 化妆品制造及其他+5.27%
+                  - generic [ref=e1276]: 化妆品+2.96%
+                  - generic [ref=e1277]: 其他橡胶制品+2.56%
+                  - generic [ref=e1278]: 玻纤制造+2.41%
+        - generic [ref=e1279]:
+          - heading "近期财报" [level=2] [ref=e1281]
+          - generic [ref=e1283]:
+            - link "上海合晶 2026-08-31 2026年 半年报" [ref=e1284] [cursor=pointer]:
+              - /url: /stock/sh688584/
+              - generic [ref=e1285]: 上海合晶
+              - generic [ref=e1286]: 2026-08-31
+              - generic [ref=e1287]: 2026年 半年报
+            - link "王力安防 2026-08-31 2026年 半年报" [ref=e1288] [cursor=pointer]:
+              - /url: /stock/sh605268/
+              - generic [ref=e1289]: 王力安防
+              - generic [ref=e1290]: 2026-08-31
+              - generic [ref=e1291]: 2026年 半年报
+            - link "卧龙电驱 2026-08-31 2026年 半年报" [ref=e1292] [cursor=pointer]:
+              - /url: /stock/sh600580/
+              - generic [ref=e1293]: 卧龙电驱
+              - generic [ref=e1294]: 2026-08-31
+              - generic [ref=e1295]: 2026年 半年报
+            - link "招商轮船 2026-08-31 2026年 半年报" [ref=e1296] [cursor=pointer]:
+              - /url: /stock/sh601872/
+              - generic [ref=e1297]: 招商轮船
+              - generic [ref=e1298]: 2026-08-31
+              - generic [ref=e1299]: 2026年 半年报
+            - link "英利汽车 2026-08-31 2026年 半年报" [ref=e1300] [cursor=pointer]:
+              - /url: /stock/sh601279/
+              - generic [ref=e1301]: 英利汽车
+              - generic [ref=e1302]: 2026-08-31
+              - generic [ref=e1303]: 2026年 半年报
+            - link "浙江黎明 2026-08-31 2026年 半年报" [ref=e1304] [cursor=pointer]:
+              - /url: /stock/sh603048/
+              - generic [ref=e1305]: 浙江黎明
+              - generic [ref=e1306]: 2026-08-31
+              - generic [ref=e1307]: 2026年 半年报
+            - link "大商股份 2026-08-31 2026年 半年报" [ref=e1308] [cursor=pointer]:
+              - /url: /stock/sh600694/
+              - generic [ref=e1309]: 大商股份
+              - generic [ref=e1310]: 2026-08-31
+              - generic [ref=e1311]: 2026年 半年报
+            - link "赛微微电 2026-08-31 2026年 半年报" [ref=e1312] [cursor=pointer]:
+              - /url: /stock/sh688325/
+              - generic [ref=e1313]: 赛微微电
+              - generic [ref=e1314]: 2026-08-31
+              - generic [ref=e1315]: 2026年 半年报
+    - contentinfo [ref=e1316]:
+      - generic [ref=e1317]:
+        - generic [ref=e1318]:
+          - generic [ref=e1319]:
+            - generic [ref=e1320]: 📊
+            - generic [ref=e1322]: 爱看盘 · 每日复盘工具
+          - generic [ref=e1323]:
+            - link "关于" [ref=e1324] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e1325] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e1326] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e1327] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e1328] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e1329]: 数据：东方财富
+        - paragraph [ref=e1330]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e171]: 市场总览

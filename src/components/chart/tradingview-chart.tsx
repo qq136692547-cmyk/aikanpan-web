@@ -85,7 +85,7 @@ function CandleChart({ bars }: { bars: KlineData[] }) {
           return (
             <g key={ratio}>
               <line x1="0" x2="800" y1={y} y2={y} stroke="var(--neo-surface-inset)" strokeWidth="1" />
-              <text x="6" y={y - 4} fill="var(--neo-dim)" fontSize="10">
+              <text x="6" y={y - 4} fill="var(--neo-dim)" fontSize="12">
                 {value.toFixed(2)}
               </text>
             </g>
@@ -124,7 +124,7 @@ function CandleChart({ bars }: { bars: KlineData[] }) {
                 opacity="0.32"
               />
               {index % dateStep === 0 && (
-                <text x={x} y={397} fill="var(--neo-dim)" fontSize="9" textAnchor="middle">
+                <text x={x} y={397} fill="var(--neo-dim)" fontSize="12" textAnchor="middle">
                   {bar.date.slice(5)}
                 </text>
               )}
@@ -182,7 +182,7 @@ function TradingViewChartInner({ code }: TradingViewChartProps) {
               key={item.days}
               type="button"
               onClick={() => setDays(item.days)}
-              className={`rounded-full px-3 py-1 text-[12px] font-medium transition-all ${
+              className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-[12px] font-medium transition-all ${
                 days === item.days ? "neo-chip-active" : "neo-chip"
               }`}
             >
@@ -202,7 +202,7 @@ function TradingViewChartInner({ code }: TradingViewChartProps) {
           <button
             type="button"
             onClick={() => setReloadKey((current) => current + 1)}
-            className="neo-btn-primary flex items-center gap-1.5 rounded-md px-4 py-1.5 text-[13px] font-medium"
+            className="neo-btn-primary flex min-h-11 items-center gap-1.5 rounded-md px-4 py-1.5 text-[13px] font-medium"
           >
             <RefreshCw size={13} />
             重新加载

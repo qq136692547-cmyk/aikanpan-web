@@ -52,7 +52,7 @@ export function ReviewStatusBar() {
         <button
           onClick={refresh}
           disabled={refreshing}
-          className="neo-btn-primary ml-auto flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium disabled:opacity-60"
+          className="neo-btn-primary ml-auto flex min-h-11 items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium disabled:opacity-60"
         >
           <RefreshCw size={13} className={refreshing ? "animate-spin" : ""} />
           {refreshing ? "刷新中…" : "立即刷新"}

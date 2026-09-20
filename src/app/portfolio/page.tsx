@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "持仓组合",
   description: "爱看盘持仓管理：盈亏汇总、仓位占比、持仓明细。",
+  alternates: { canonical: "/portfolio/" },
 };
 
 export default async function PortfolioPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {

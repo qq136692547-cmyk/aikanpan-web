@@ -1,0 +1,180 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - banner [ref=f12e3]:
+      - navigation [ref=f12e4]:
+        - link "爱看盘" [ref=f12e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f12e10]:
+          - tablist "市场范围" [ref=f12e11]:
+            - tab "全部" [ref=f12e12]
+            - tab "A股" [selected] [ref=f12e13]
+            - tab "美股" [ref=f12e14]
+          - navigation "功能导航" [ref=f12e16]:
+            - link "市场" [ref=f12e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=f12e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=f12e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=f12e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=f12e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=f12e22]:
+          - link "升级 Pro" [ref=f12e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=f12e26]: 会员
+          - link "登录 / 注册" [ref=f12e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f12e32]
+      - navigation "页面位置" [ref=f12e36]:
+        - generic [ref=f12e37]:
+          - link "A股" [ref=f12e39] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - link "市场" [ref=f12e43] [cursor=pointer]:
+            - /url: /market/?market=cn
+          - generic [ref=f12e44]: 个股 SH600519
+    - main [ref=f12e48]:
+      - generic [ref=f12e50]:
+        - generic [ref=f12e51]:
+          - heading "贵州茅台" [level=1] [ref=f12e53]
+          - paragraph [ref=f12e54]: sh.600519
+        - generic [ref=f12e55]:
+          - generic [ref=f12e56]:
+            - generic [ref=f12e57]: "1297.50"
+            - generic [ref=f12e58]: "-2.06 (-0.16%)"
+          - button "添加 贵州茅台 到自选" [ref=f12e59]: 加自选
+      - generic [ref=f12e62]:
+        - generic [ref=f12e63]:
+          - generic [ref=f12e64]:
+            - generic [ref=f12e65]: 今开
+            - generic [ref=f12e66]: "1302.80"
+          - generic [ref=f12e67]:
+            - generic [ref=f12e68]: 最高
+            - generic [ref=f12e69]: "1303.00"
+          - generic [ref=f12e70]:
+            - generic [ref=f12e71]: 最低
+            - generic [ref=f12e72]: "1291.20"
+          - generic [ref=f12e73]:
+            - generic [ref=f12e74]: 昨收
+            - generic [ref=f12e75]: "1299.56"
+          - generic [ref=f12e76]:
+            - generic [ref=f12e77]: 成交量
+            - generic [ref=f12e78]: 203.08万
+          - generic [ref=f12e79]:
+            - generic [ref=f12e80]: 成交额
+            - generic [ref=f12e81]: 26.35亿
+        - generic [ref=f12e83]:
+          - generic [ref=f12e84]:
+            - generic [ref=f12e85]: 主力净流入
+            - generic [ref=f12e86]: "-3193.10万"
+          - generic [ref=f12e87]:
+            - generic [ref=f12e88]: 净流入占比
+            - generic [ref=f12e89]: "-1.21%"
+          - generic [ref=f12e90]:
+            - generic [ref=f12e91]: 超大单比
+            - generic [ref=f12e92]: 4.04%
+          - generic [ref=f12e93]:
+            - generic [ref=f12e94]: 大单比
+            - generic [ref=f12e95]: "-5.25%"
+      - generic [ref=f12e96]:
+        - generic [ref=f12e97]:
+          - button "新闻/事件" [ref=f12e98]
+          - button "公告/研报" [ref=f12e99]
+          - button "财务数据" [ref=f12e100]
+        - generic [ref=f12e101]:
+          - generic [ref=f12e102]: 最新价格 1297.50，日内涨跌幅 -0.16% ，短线节奏震荡。 主力资金流出约 0.32 亿，占比 1.21% 。 最近研报关注点：2026年中报点评：茅台酒稳健，系列酒主动调整
+          - generic [ref=f12e104]:
+            - generic [ref=f12e105]: 最新节奏
+            - generic [ref=f12e106]: 最新价格 1297.50，日内涨跌幅 -0.16% ，短线节奏震荡。
+          - generic [ref=f12e108]:
+            - generic [ref=f12e109]: 资金风向
+            - generic [ref=f12e110]: 主力资金流出约 0.32 亿，占比 1.21% 。
+      - generic [ref=f12e111]:
+        - heading "技术指标" [level=3] [ref=f12e112]
+        - generic [ref=f12e113]:
+          - generic [ref=f12e114]:
+            - generic [ref=f12e115]: MACD
+            - generic [ref=f12e116]:
+              - generic [ref=f12e117]:
+                - generic [ref=f12e118]: DIF
+                - generic [ref=f12e119]: "-0.330"
+              - generic [ref=f12e120]:
+                - generic [ref=f12e121]: DEA
+                - generic [ref=f12e122]: "3.052"
+              - generic [ref=f12e123]:
+                - generic [ref=f12e124]: MACD
+                - generic [ref=f12e125]: "-6.764"
+          - generic [ref=f12e126]:
+            - generic [ref=f12e127]: KDJ
+            - generic [ref=f12e128]:
+              - generic [ref=f12e129]:
+                - generic [ref=f12e130]: K
+                - generic [ref=f12e131]: "58.20"
+              - generic [ref=f12e132]:
+                - generic [ref=f12e133]: D
+                - generic [ref=f12e134]: "55.14"
+              - generic [ref=f12e135]:
+                - generic [ref=f12e136]: J
+                - generic [ref=f12e137]: "64.32"
+          - generic [ref=f12e138]:
+            - generic [ref=f12e139]: RSI
+            - generic [ref=f12e141]:
+              - generic [ref=f12e142]: RSI
+              - generic [ref=f12e143]: "48.73"
+          - generic [ref=f12e144]:
+            - generic [ref=f12e145]: BOLL
+            - generic [ref=f12e146]:
+              - generic [ref=f12e147]:
+                - generic [ref=f12e148]: UP
+                - generic [ref=f12e149]: "1355.71"
+              - generic [ref=f12e150]:
+                - generic [ref=f12e151]: MID
+                - generic [ref=f12e152]: "1310.72"
+              - generic [ref=f12e153]:
+                - generic [ref=f12e154]: LOW
+                - generic [ref=f12e155]: "1265.73"
+      - generic [ref=f12e157]:
+        - generic [ref=f12e158]:
+          - heading "K 线图" [level=3] [ref=f12e159]
+          - generic [ref=f12e160]:
+            - button "30日" [ref=f12e161]
+            - button "60日" [ref=f12e162]
+            - button "120日" [ref=f12e163]
+        - generic [ref=f12e164]: 加载 K 线图...
+      - generic [ref=f12e167]:
+        - generic [ref=f12e168]:
+          - generic [ref=f12e169]:
+            - generic [ref=f12e170]: 🤖 AI 诊断
+            - generic [ref=f12e171]: 深度分析资金面、技术面、估值面
+          - button "生成 AI 诊断" [ref=f12e172]
+        - generic [ref=f12e173]:
+          - paragraph [ref=f12e174]: 示例输出：
+          - list [ref=f12e175]:
+            - listitem [ref=f12e176]: • 资金面：主力资金流向分析
+            - listitem [ref=f12e177]: • 技术面：MACD/KDJ/RSI 指标解读
+            - listitem [ref=f12e178]: • 估值面：PE/PB 行业对比
+            - listitem [ref=f12e179]: • 综合评分：AI 给出 1-10 分评级
+      - generic [ref=f12e182]:
+        - heading "AI 诊断历史" [level=3] [ref=f12e183]
+        - generic [ref=f12e184]: 0 条
+    - contentinfo [ref=f12e188]:
+      - generic [ref=f12e189]:
+        - generic [ref=f12e190]:
+          - generic [ref=f12e191]:
+            - generic [ref=f12e192]: 📊
+            - generic [ref=f12e194]: 爱看盘 · 每日复盘工具
+          - generic [ref=f12e195]:
+            - link "关于" [ref=f12e196] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f12e197] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f12e198] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f12e199] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f12e200] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f12e201]: 数据：东方财富
+        - paragraph [ref=f12e202]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f12e203]

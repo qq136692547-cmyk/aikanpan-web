@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { BellRing, ShieldAlert, TrendingUp } from "lucide-react";
 
-function riskText(market: "cn" | "us", value?: string) {
-  return value || (market === "us" ? "美股暂无额外风险提示" : "暂无额外风险提示");
+function riskText(market: "cn" | "hk" | "us", value?: string) {
+  return value || (market === "us" ? "美股暂无额外风险提示" : market === "hk" ? "港股暂无额外风险提示" : "暂无额外风险提示");
 }
 
 export function DailyLoopCard({
@@ -11,12 +11,12 @@ export function DailyLoopCard({
   focus,
   risk,
 }: {
-  market: "cn" | "us";
+  market: "cn" | "hk" | "us";
   conclusion?: string;
   focus: string[];
   risk?: string;
 }) {
-  const query = market === "us" ? "?market=us" : "?market=cn";
+  const query = market === "us" ? "?market=us" : market === "hk" ? "?market=hk" : "?market=cn";
 
   return (
     <section aria-label="今日决策闭环" className="neo-card mt-3 p-4">
@@ -25,7 +25,7 @@ export function DailyLoopCard({
           <h2 className="text-[14px] font-semibold text-neo-ink">今日决策闭环</h2>
           <p className="mt-0.5 text-[11px] text-neo-dim">先看结论，再定关注，最后落到一条提醒。</p>
         </div>
-        <Link href={`/alerts${query}`} className="neo-btn-primary flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium">
+        <Link href={`/alerts${query}`} className="neo-btn-primary flex min-h-11 items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium">
           <BellRing size={13} />
           设置提醒
         </Link>

@@ -1,6 +1,6 @@
 import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { EmptyState } from "@/components/ui/state";
-import { api, type Dashboard, type StockSearchResult, type UsDashboard, type UsSearchResult } from "@/lib/api";
+import { api, type Dashboard, type HkDashboard, type HkSearchResult, type StockSearchResult, type UsDashboard, type UsSearchResult } from "@/lib/api";
 import { formatPrice, formatPct } from "@/lib/format";
 import { usNameZh, usTypeZh } from "@/lib/us-stock-names";
 import Link from "next/link";
@@ -13,7 +13,9 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "搜索股票",
-  description: "搜索A股与美股股票，按代码、名称或拼音查找个股行情数据。",
+  description: "搜索A股、港股与美股股票，按代码、名称或拼音查找个股行情数据。",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/search/" },
 };
 
 // 热门股票快捷入口
@@ -63,10 +65,10 @@ function SearchStockCard({
 }) {
   const color = pct === undefined ? "text-neo-dim" : pct > 0 ? "text-neo-up" : pct < 0 ? "text-neo-down" : "text-neo-mid";
   return (
-    <a href={href} className="neo-card-sm group p-3">
+    <a href={href} className="neo-card group p-3 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md block">
       <div className="flex items-start justify-between gap-2">
         <div className="truncate text-sm font-medium text-neo-ink transition-colors group-hover:text-brand">{name}</div>
-        {tag && <span className="shrink-0 rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-mid">{tag}</span>}
+        {tag && <span className="shrink-0 rounded bg-neo-bg-dim border border-white/40 shadow-inner px-1.5 py-0.5 text-[10px] text-neo-mid">{tag}</span>}
       </div>
       <div style={{ fontFamily: 'var(--font-inter), system-ui' }} className="mt-0.5 text-[10px] text-neo-dim">{code}</div>
       <div className="mt-1.5 flex items-baseline gap-1.5">
@@ -85,14 +87,19 @@ export default async function SearchPage({
   const { q, market } = await searchParams;
   const scope = marketFromSearchParams(market);
   if (scope === "all") {
-    redirect("/search/?market=cn");
+    const target = new URLSearchParams({ market: "cn" });
+    if (q) target.set("q", q);
+    redirect(`/search/?${target.toString()}`);
   }
   const isUs = scope === "us";
+  const isHk = scope === "hk";
   let results: StockSearchResult[] = [];
   let usResults: UsSearchResult[] = [];
+  let hkResults: HkSearchResult[] = [];
   let error: string | null = null;
   let dashboard: Dashboard | null = null;
   let usDashboard: UsDashboard | null = null;
+  let hkDashboard: HkDashboard | null = null;
   let hotQuotes: Record<string, { last: number; change_pct: number }> = {};
   let resultQuotes: Record<string, { last: number; change_pct: number }> = {};
 
@@ -111,14 +118,26 @@ export default async function SearchPage({
             const code = usResults[index].code;
             resultQuotes[code] = { last: quote.last, change_pct: quote.change_pct ?? 0 };
           }
-        });
+          });
+        }
+      } else if (isHk) {
+        const data = await api.searchHkStocks(query);
+        hkResults = data.list || [];
+        if (hkResults.length > 0) {
+          const quoteResults = await Promise.allSettled(hkResults.slice(0, 8).map((item) => api.getHkQuote(item.code)));
+          quoteResults.forEach((result, index) => {
+            if (result.status === "fulfilled") {
+              const quote = result.value;
+              resultQuotes[hkResults[index].code] = { last: quote.last, change_pct: quote.change_pct ?? 0 };
+            }
+          });
         }
       } else {
         const data = await api.searchStocks(query);
         results = data.list || [];
       }
     } catch {
-      error = isUs ? "美股搜索接口暂时不可用" : "搜索接口暂时不可用";
+      error = isUs ? "美股搜索接口暂时不可用" : isHk ? "港股搜索接口暂时不可用" : "搜索接口暂时不可用";
     }
 
     if (!isUs && results.length > 0) {
@@ -134,6 +153,10 @@ export default async function SearchPage({
     try {
       usDashboard = await api.getUsDashboard();
     } catch {}
+  } else if (isHk) {
+    try {
+      hkDashboard = await api.getHkDashboard();
+    } catch {}
   } else {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 2500);
@@ -147,8 +170,8 @@ export default async function SearchPage({
   }
 
   // 从涨停板提取热门股票
-  const hotFromMarket = isUs ? [] : dashboard?.limit_up?.slice(0, 6) || [];
-  const searchResults = isUs ? usResults : results;
+  const hotFromMarket = isUs || isHk ? [] : dashboard?.limit_up?.slice(0, 6) || [];
+  const searchResults = isUs ? usResults : isHk ? hkResults : results;
 
   return (
     <MarketPageFrame market={scope}>
@@ -156,7 +179,7 @@ export default async function SearchPage({
         market={scope}
         title="搜索"
         subtitle="按代码、名称或拼音查找股票"
-        image="/images/ai-art/search-decoration.png"
+        image="/images/ai-art/search-decoration-v3.png"
       />
 
         <div className="mt-4">
@@ -182,9 +205,9 @@ export default async function SearchPage({
               <div className="mt-4">
                 <EmptyState
                   image="/images/ai-art/empty-state-robot.png"
-                  title={isUs ? "未找到匹配的美股" : "未找到匹配的股票"}
-                  description={isUs ? "试试直接输入美股代码（如 AAPL）或公司名称" : "试试直接输入 6 位代码（如 300414）或改用拼音搜索"}
-                  action={isUs ? (/^[A-Za-z][A-Za-z0-9.-]{0,9}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().toUpperCase()}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().toUpperCase()} →</a>) : undefined) : (q.match(/^\d{6}$/) ? (<a href={`/stock/${q}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q} →</a>) : undefined)}
+                  title={isUs ? "未找到匹配的美股" : isHk ? "未找到匹配的港股" : "未找到匹配的股票"}
+                  description={isUs ? "试试直接输入美股代码（如 AAPL）或公司名称" : isHk ? "试试直接输入港股 5 位代码（如 00700）或公司名称" : "试试直接输入 6 位代码（如 300414）或改用拼音搜索"}
+                  action={isUs ? (/^[A-Za-z][A-Za-z0-9.-]{0,9}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().toUpperCase()}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().toUpperCase()} →</a>) : undefined) : isHk ? (/^\d{4,5}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().padStart(5, "0")}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().padStart(5, "0")} →</a>) : undefined) : (q.match(/^\d{6}$/) ? (<a href={`/stock/${q}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q} →</a>) : undefined)}
                 />
               </div>
             )}
@@ -197,10 +220,10 @@ export default async function SearchPage({
                     key={s.code}
                     name={isUs ? usNameZh((s as UsSearchResult).name, s.code) : s.name}
                     code={s.code}
-                    tag={isUs ? usTypeZh((s as UsSearchResult).type) : (s as StockSearchResult).pinyin || "A股"}
+                    tag={isUs ? usTypeZh((s as UsSearchResult).type) : isHk ? ((s as HkSearchResult).type || "港股") : (s as StockSearchResult).pinyin || "A股"}
                     price={resultQuotes[s.code]?.last}
                     pct={resultQuotes[s.code]?.change_pct}
-                    href={isUs ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
+                    href={isUs || isHk ? `/stock/${s.code}/` : `/stock/${s.code.replace(/\./, "")}/`}
                   />
                 ))}
               </div>
@@ -224,6 +247,23 @@ export default async function SearchPage({
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {usDashboard.stocks.map((s) => (
                     <SearchStockCard key={s.code} name={usNameZh(s.name, s.code)} code={s.code} price={s.last} pct={s.change_pct} tag="美股" href={`/stock/${s.code}/`} />
+                  ))}
+                </div>
+              </section>
+            )}
+            {isHk && hkDashboard && (
+              <section className="neo-fade-up mt-6">
+                <div className="mb-3 flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-neo-mid">港股指数</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                  {hkDashboard.indices.map((idx) => (
+                    <SearchStockCard key={idx.code} name={idx.name ?? idx.code} code={idx.code} price={idx.last} pct={idx.change_pct} tag="指数" href={`/stock/${idx.code}/`} />
+                  ))}
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {hkDashboard.hot_stocks.map((s) => (
+                    <SearchStockCard key={s.code} name={s.name || s.code} code={s.code} price={s.last} pct={s.change_pct} tag="港股" href={`/stock/${s.code}/`} />
                   ))}
                 </div>
               </section>
@@ -252,7 +292,7 @@ export default async function SearchPage({
             )}
 
             {/* 热门股票 */}
-            {!isUs && (
+            {!isUs && !isHk && (
             <section className="neo-fade-up mt-6" style={{ animationDelay: "60ms" }}>
               <div className="mb-3 flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-neo-mid">热门股票</h2>
@@ -277,7 +317,7 @@ export default async function SearchPage({
             )}
 
             {/* 搜索提示 */}
-            {!isUs && (
+            {!isUs && !isHk && (
               <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
                 <div className="neo-card-sm p-5">
                   <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
@@ -301,8 +341,21 @@ export default async function SearchPage({
                 </div>
               </section>
             )}
+            {isHk && (
+              <section className="neo-fade-up mt-6" style={{ animationDelay: "120ms" }}>
+                <div className="neo-card-sm p-5">
+                  <h3 className="text-sm font-medium text-neo-mid">搜索技巧</h3>
+                  <ul className="mt-2 space-y-1.5 text-xs text-neo-dim">
+                    <li>• 输入港股 5 位代码可直接跳转，如 00700、09988</li>
+                    <li>• 输入公司名称搜索，如 腾讯、美团</li>
+                    <li>• 也可以从上方港股指数或热门港股直接进入</li>
+                  </ul>
+                </div>
+              </section>
+            )}
           </>
         )}
     </MarketPageFrame>
   );
 }
+

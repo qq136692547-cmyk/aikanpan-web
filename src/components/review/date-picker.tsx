@@ -17,10 +17,11 @@ export function DatePicker({ initialDate }: { initialDate?: string }) {
     <div className="flex items-center gap-2">
       <input
         type="date"
+        aria-label="选择复盘日期"
         value={date}
         max={today}
         onChange={handleChange}
-        className="neo-input px-3 py-1.5 text-[12px]"
+        className="neo-input min-h-11 px-3 py-1.5 text-[12px]"
       />
     </div>
   );

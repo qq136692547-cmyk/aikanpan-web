@@ -6,7 +6,8 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "API 文档",
-  description: "爱看盘后端API接口文档，包含29个端点的完整说明。",
+  description: "爱看盘后端API接口文档与完整接口清单。",
+  alternates: { canonical: "/api-docs/" },
 };
 
 const apiEndpoints = [
@@ -40,6 +41,7 @@ const apiEndpoints = [
   { method: "POST", path: "/api/v1/alerts/parse", desc: "解析预警指令" },
   { method: "POST", path: "/api/v1/feedback", desc: "提交反馈" },
   { method: "GET", path: "/api/v1/feedback", desc: "反馈列表" },
+  { method: "GET", path: "/api/v1/us/stocks/{symbol}/filings", desc: "美股 SEC 官方披露" },
 ];
 
 const methodColors: Record<string, string> = {
@@ -117,7 +119,10 @@ curl "https://aikanpan.top/api/v1/stocks/search?q=300414"
 curl https://aikanpan.top/api/v1/stocks/sz.300414/quote
 
 # 个股AI事件摘要
-curl https://aikanpan.top/api/v1/stocks/sz.300414/events`}</code></pre>
+curl https://aikanpan.top/api/v1/stocks/sz.300414/events
+
+# 美股 SEC 官方披露
+curl https://aikanpan.top/api/v1/us/stocks/AAPL/filings`}</code></pre>
           </div>
         </section>
       </main>

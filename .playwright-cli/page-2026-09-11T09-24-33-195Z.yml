@@ -1,0 +1,130 @@
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - img "Search Console" [ref=e7]
+    - link "立即使用" [ref=e9] [cursor=pointer]:
+      - /url: https://accounts.google.com/ServiceLogin?service=sitemaps&hl=zh-CN&continue=https://search.google.com/search-console?utm_source%3Dabout-page
+  - generic [ref=e13]:
+    - generic [ref=e18]:
+      - generic [ref=e19]: 提升您的网站在 Google 搜索结果中的排名
+      - generic [ref=e20]:
+        - generic [ref=e21]: Search Console 中的工具与报告可帮助您衡量您网站的搜索流量和搜索排名情况、解决相关问题以及让您的网站在 Google 搜索结果中脱颖而出
+        - link "立即使用" [ref=e23] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?service=sitemaps&hl=zh-CN&continue=https://search.google.com/search-console?utm_source%3Dabout-page
+    - generic [ref=e31]:
+      - generic [ref=e32]: 借助“搜索分析”报告，优化您网站的内容
+      - generic [ref=e33]: 了解哪些查询会吸引用户访问您的网站。分析您的网站在 Google 搜索中获得的展示次数、点击次数和排名。
+    - generic [ref=e38]:
+      - generic [ref=e39]: 使您的内容编入 Google 索引中
+      - generic [ref=e40]: 提交站点地图和各个网址，以供抓取。您可查看自己的索引覆盖范围，确保 Google 已收录您网站的最新视图。
+    - generic [ref=e45]:
+      - generic [ref=e46]: 接收问题提醒并解决网站问题
+      - generic [ref=e47]: 接收当 Google 检测到您网站上存在问题时向您发送的邮件提醒。您可在邮件中查看哪些网址受到了这些问题的影响，并在解决这些问题后告知 Google。
+    - generic [ref=e52]:
+      - generic [ref=e53]: 了解 Google 搜索如何查看您的网页
+      - generic [ref=e54]: 这款网址检查工具会直接从 Google 索引中检索出有关您网页的抓取、索引和展示情况的信息。
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: Search Console 培训
+        - generic [ref=e59]: 学习如何改善您的 Google 搜索结果呈现效果，并提升网站的自然流量
+      - generic [ref=e60]:
+        - link "Google Search Console 简介" [ref=e61] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=ONr5Z7VhNFI&list=PLKoqnv2vTMUOnQn-lNDfT38X9gA_CHxTo&index=1
+          - generic [ref=e64]:
+            - generic [aria-hidden] [ref=e67]: 
+            - generic [ref=e68]: Google Search Console 简介
+        - link "验证网站所有权的 7 种方法" [ref=e69] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=N4PmE3LysUM&list=PLKoqnv2vTMUOnQn-lNDfT38X9gA_CHxTo&index=8
+          - generic [ref=e72]:
+            - generic [aria-hidden] [ref=e75]: 
+            - generic [ref=e76]: 验证网站所有权的 7 种方法
+        - link "Search Console 中的效果报告" [ref=e77] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=wTwnFcWUM3k&list=PLKoqnv2vTMUOnQn-lNDfT38X9gA_CHxTo&index=6
+          - generic [ref=e80]:
+            - generic [aria-hidden] [ref=e83]: 
+            - generic [ref=e84]: Search Console 中的效果报告
+        - link "网址检查工具" [ref=e85] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=Pe_-TkdbXN0&list=PLKoqnv2vTMUOnQn-lNDfT38X9gA_CHxTo&index=5
+          - generic [ref=e88]:
+            - generic [aria-hidden] [ref=e91]: 
+            - generic [ref=e92]: 网址检查工具
+      - link "更多视频" [ref=e94] [cursor=pointer]:
+        - /url: https://www.youtube.com/playlist?list=PLKoqnv2vTMUOnQn-lNDfT38X9gA_CHxTo
+    - generic [ref=e99]:
+      - generic [ref=e100]: 优化并增强您的网站：
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e104]: AMP
+          - generic [ref=e105]: 借助 Search Console 中的工具与报告，监控、测试和跟踪您的 AMP 网页。
+          - link "了解详情" [ref=e106] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters/answer/7450883?hl=zh_CN
+        - generic [ref=e107]:
+          - generic [ref=e109]: 核心网页指标
+          - generic [ref=e110]: 借助 Search Console 报告，您可以在移动设备和桌面设备上监控网站的 Core Web Vitals。
+          - link "了解详情" [ref=e111] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters/answer/9205520?hl=zh_CN
+        - generic [ref=e112]:
+          - generic [ref=e114]: 富媒体搜索结果
+          - generic [ref=e115]: 您的食谱、招聘信息或其他结构化数据都能以富媒体搜索结果的形式显示在 Google 搜索结果中。您可以使用 Search Console 中的报告来监控和改进这些内容。
+          - link "了解详情" [ref=e116] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters/answer/7552505?hl=zh_CN
+    - generic [ref=e119]:
+      - generic [ref=e120]: 让您的网站在 Google 搜索结果中大放异彩。
+      - link "前往 Google Search Console" [ref=e122] [cursor=pointer]:
+        - /url: https://accounts.google.com/ServiceLogin?service=sitemaps&hl=zh-CN&continue=https://search.google.com/search-console?utm_source%3Dabout-page
+        - text: 前往 Google Search Console
+        - generic [aria-hidden] [ref=e123]: 
+    - generic [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]: 在以下平台上关注我们：
+        - generic [ref=e128]:
+          - link [ref=e129] [cursor=pointer]:
+            - /url: https://twitter.com/googlewmc
+          - link [ref=e132] [cursor=pointer]:
+            - /url: https://plus.google.com/s/googlewebmasters?hl=zh_CN
+            - generic [aria-hidden] [ref=e133]: 
+          - link [ref=e134] [cursor=pointer]:
+            - /url: https://webmasters.googleblog.com/?hl=zh_CN
+            - generic [aria-hidden] [ref=e135]: 
+          - link [ref=e136] [cursor=pointer]:
+            - /url: https://www.youtube.com/user/GoogleWebmasterHelp
+            - generic [aria-hidden] [ref=e137]: 
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]: 网站站长资源
+          - link "帮助中心" [ref=e142] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters?hl=zh_CN
+          - link "帮助论坛" [ref=e143] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters/go/community?hl=zh_CN
+          - link "网站站长学院" [ref=e144] [cursor=pointer]:
+            - /url: https://support.google.com/webmasters/answer/6001102?hl=zh_CN
+        - generic [ref=e145]:
+          - generic [ref=e146]: 商务基础知识
+          - link "Google 商务解决方案" [ref=e147] [cursor=pointer]:
+            - /url: https://www.google.com/services/
+          - link "Google Ads" [ref=e148] [cursor=pointer]:
+            - /url: https://www.google.com/ads/?ww-ww-et-g-aw-a-webmaster_1-footer!o2
+          - link "线上营销学堂" [ref=e149] [cursor=pointer]:
+            - /url: https://digitalgarage.withgoogle.com/?utm_source=Engagement&utm_medium=ep&utm_term=SMB&utm_content=UK%20Webmast%20footer&utm_campaign=Q1_2016%20UK%20Webmast%20footer
+        - generic [ref=e150]:
+          - generic [ref=e151]: 开发者工具包
+          - link "面向开发者的搜索服务" [ref=e152] [cursor=pointer]:
+            - /url: https://developers.google.com/search/
+          - link "网站开发基础" [ref=e153] [cursor=pointer]:
+            - /url: https://developers.google.com/web/fundamentals/
+          - link "App Indexing" [ref=e154] [cursor=pointer]:
+            - /url: https://developers.google.com/app-indexing/?hl=zh_CN
+        - generic [ref=e155]:
+          - generic [ref=e156]: 相关产品
+          - link "Google Analytics" [ref=e157] [cursor=pointer]:
+            - /url: https://www.google.com/analytics/
+          - link "G Suite" [ref=e158] [cursor=pointer]:
+            - /url: https://gsuite.google.com?hl=zh_CN
+      - generic [ref=e159]:
+        - link "帮助" [ref=e160] [cursor=pointer]:
+          - /url: https://support.google.com/webmasters/?hl=zh_CN
+        - link "Google" [ref=e161] [cursor=pointer]:
+          - /url: https://www.google.com/?hl=zh_CN
+        - link "隐私权" [ref=e162] [cursor=pointer]:
+          - /url: https://policies.google.com/privacy?hl=zh_CN
+        - link "条款" [ref=e163] [cursor=pointer]:
+          - /url: https://policies.google.com/terms?hl=zh_CN

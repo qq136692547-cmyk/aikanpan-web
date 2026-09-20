@@ -1,0 +1,252 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e1406]:
+    - banner [ref=e1407]:
+      - navigation [ref=e1408]:
+        - link "爱看盘" [ref=e1409] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e1414]:
+          - tablist "市场范围" [ref=e1415]:
+            - tab "全部" [selected] [ref=e1416]
+            - tab "A股" [ref=e1417]
+            - tab "美股" [ref=e1418]
+          - navigation "功能导航" [ref=e1420]:
+            - link "首页" [ref=e1421] [cursor=pointer]:
+              - /url: /
+            - link "关于" [ref=e1422] [cursor=pointer]:
+              - /url: /about/
+        - generic [ref=e1423]:
+          - link "会员" [ref=e1424] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=e1428] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e1433]
+    - main [ref=e1437]:
+      - generic [ref=e1439]:
+        - heading "全部市场" [level=1] [ref=e1440]
+        - paragraph [ref=e1441]: 左右镜像呈现 A股与美股的每日决策视图
+      - generic [ref=e1442]:
+        - generic [ref=e1443]:
+          - generic [ref=e1444]: A股市场
+          - generic [ref=e1448]:
+            - generic [ref=e1449]:
+              - generic [ref=e1450]:
+                - generic [ref=e1451]: A股 AI 结论
+                - link "完整复盘" [ref=e1452] [cursor=pointer]:
+                  - /url: /review/?market=cn
+              - paragraph [ref=e1453]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+            - generic [ref=e1454]:
+              - link "上证指数 3979.89 -0.16%" [ref=e1455] [cursor=pointer]:
+                - /url: /stock/sh.000001/
+                - generic [ref=e1456]: 上证指数
+                - generic [ref=e1457]: "3979.89"
+                - generic [ref=e1458]: "-0.16%"
+              - link "深证成指 13872.38 -1.02%" [ref=e1459] [cursor=pointer]:
+                - /url: /stock/sz.399001/
+                - generic [ref=e1460]: 深证成指
+                - generic [ref=e1461]: "13872.38"
+                - generic [ref=e1462]: "-1.02%"
+              - link "创业板指 3393.43 -1.32%" [ref=e1463] [cursor=pointer]:
+                - /url: /stock/sz.399006/
+                - generic [ref=e1464]: 创业板指
+                - generic [ref=e1465]: "3393.43"
+                - generic [ref=e1466]: "-1.32%"
+              - link "涨停 / 跌停 90 / 2" [ref=e1467] [cursor=pointer]:
+                - /url: /market/?market=cn
+                - generic [ref=e1468]: 涨停 / 跌停
+                - generic [ref=e1469]:
+                  - generic [ref=e1470]: "90"
+                  - generic [ref=e1471]: /
+                  - generic [ref=e1472]: "2"
+            - generic [ref=e1473]:
+              - heading "行业强度" [level=3] [ref=e1474]
+              - generic [ref=e1475]:
+                - link "视频媒体 +20.02%" [ref=e1476] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=e1477]: 视频媒体
+                  - generic [ref=e1478]: +20.02%
+                - link "种子 +12.87%" [ref=e1479] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=e1480]: 种子
+                  - generic [ref=e1481]: +12.87%
+                - link "种植业 +8.88%" [ref=e1482] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=e1483]: 种植业
+                  - generic [ref=e1484]: +8.88%
+                - link "粮食种植 +7.42%" [ref=e1485] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=e1486]: 粮食种植
+                  - generic [ref=e1487]: +7.42%
+                - link "文字媒体 +6.89%" [ref=e1488] [cursor=pointer]:
+                  - /url: /market/?market=cn
+                  - generic [ref=e1489]: 文字媒体
+                  - generic [ref=e1490]: +6.89%
+            - generic [ref=e1492]:
+              - generic [ref=e1493]:
+                - heading "市场温度" [level=2] [ref=e1494]
+                - generic [ref=e1495]:
+                  - generic [ref=e1496]: 偏热
+                  - generic [ref=e1497]: 00:29
+              - generic [ref=e1503]:
+                - generic [ref=e1504]: "71"
+                - generic [ref=e1505]: 综合温度 / 100
+              - generic [ref=e1506]:
+                - generic [ref=e1507]:
+                  - generic [ref=e1508]:
+                    - generic [ref=e1509]: 指数强度
+                    - generic [ref=e1510]: "36"
+                  - paragraph [ref=e1513]: 上证指数 -0.16%、深证成指 -1.02%、创业板指 -1.32%
+                - generic [ref=e1514]:
+                  - generic [ref=e1515]:
+                    - generic [ref=e1516]: 板块热度
+                    - generic [ref=e1517]: "100"
+                  - paragraph [ref=e1520]: 12 个强势行业，平均 7.83%
+                - generic [ref=e1521]:
+                  - generic [ref=e1522]:
+                    - generic [ref=e1523]: 涨停效应
+                    - generic [ref=e1524]: "98"
+                  - paragraph [ref=e1527]: 涨停 90 / 跌停 2，涨停占比 98%
+                - generic [ref=e1528]:
+                  - generic [ref=e1529]:
+                    - generic [ref=e1530]: AI 焦点
+                    - generic [ref=e1531]: "56"
+                  - paragraph [ref=e1534]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+              - generic [ref=e1535]:
+                - generic [ref=e1536]: 热点行业
+                - generic [ref=e1537]:
+                  - generic [ref=e1538]: 视频媒体 +20.02%
+                  - generic [ref=e1539]: 种子 +12.87%
+                  - generic [ref=e1540]: 种植业 +8.88%
+                  - generic [ref=e1541]: 粮食种植 +7.42%
+                  - generic [ref=e1542]: 文字媒体 +6.89%
+                  - generic [ref=e1543]: 农业综合Ⅲ +6.14%
+              - generic [ref=e1544]:
+                - generic [ref=e1545]: AI 焦点
+                - paragraph [ref=e1549]: 上证指数震荡（-0.16%），当前更活跃的方向是 视频媒体、种子、种植业。
+              - button "AI 深度解读" [ref=e1551]
+              - paragraph [ref=e1555]:
+                - generic [ref=e1558]: AI 生成，不构成投资建议
+            - generic [ref=e1559]:
+              - heading "近期财报" [level=3] [ref=e1560]
+              - generic [ref=e1561]:
+                - link "688584.SH 2026-08-31" [ref=e1562] [cursor=pointer]:
+                  - /url: /stock/688584.SH/
+                  - generic [ref=e1563]: 688584.SH
+                  - generic [ref=e1564]: 2026-08-31
+                - link "605268.SH 2026-08-31" [ref=e1565] [cursor=pointer]:
+                  - /url: /stock/605268.SH/
+                  - generic [ref=e1566]: 605268.SH
+                  - generic [ref=e1567]: 2026-08-31
+                - link "600580.SH 2026-08-31" [ref=e1568] [cursor=pointer]:
+                  - /url: /stock/600580.SH/
+                  - generic [ref=e1569]: 600580.SH
+                  - generic [ref=e1570]: 2026-08-31
+                - link "601872.SH 2026-08-31" [ref=e1571] [cursor=pointer]:
+                  - /url: /stock/601872.SH/
+                  - generic [ref=e1572]: 601872.SH
+                  - generic [ref=e1573]: 2026-08-31
+                - link "601279.SH 2026-08-31" [ref=e1574] [cursor=pointer]:
+                  - /url: /stock/601279.SH/
+                  - generic [ref=e1575]: 601279.SH
+                  - generic [ref=e1576]: 2026-08-31
+                - link "603048.SH 2026-08-31" [ref=e1577] [cursor=pointer]:
+                  - /url: /stock/603048.SH/
+                  - generic [ref=e1578]: 603048.SH
+                  - generic [ref=e1579]: 2026-08-31
+        - generic [ref=e1580]:
+          - generic [ref=e1581]: 美股市场
+          - generic [ref=e1585]:
+            - generic [ref=e1587]:
+              - generic [ref=e1588]: 美股 AI 复盘
+              - generic [ref=e1589]: 生成中…
+            - generic [ref=e1595]:
+              - link "标普500 ETF 762.41 -0.60%" [ref=e1596] [cursor=pointer]:
+                - /url: /stock/SPY/
+                - generic [ref=e1597]: 标普500 ETF
+                - generic [ref=e1598]: "762.41"
+                - generic [ref=e1599]: "-0.60%"
+              - link "纳指100 ETF 708.83 -1.11%" [ref=e1600] [cursor=pointer]:
+                - /url: /stock/QQQ/
+                - generic [ref=e1601]: 纳指100 ETF
+                - generic [ref=e1602]: "708.83"
+                - generic [ref=e1603]: "-1.11%"
+              - link "道琼斯 ETF 528.16 -0.64%" [ref=e1604] [cursor=pointer]:
+                - /url: /stock/DIA/
+                - generic [ref=e1605]: 道琼斯 ETF
+                - generic [ref=e1606]: "528.16"
+                - generic [ref=e1607]: "-0.64%"
+              - link "市场温度 28 偏空" [ref=e1608] [cursor=pointer]:
+                - /url: /market/?market=us
+                - generic [ref=e1609]: 市场温度
+                - generic [ref=e1610]: "28"
+                - generic [ref=e1611]: 偏空
+            - generic [ref=e1612]:
+              - heading "板块表现" [level=3] [ref=e1613]
+              - generic [ref=e1614]:
+                - link "科技-1.37%" [ref=e1615] [cursor=pointer]:
+                  - /url: /stock/XLK/
+                - link "金融-0.50%" [ref=e1616] [cursor=pointer]:
+                  - /url: /stock/XLF/
+                - link "医疗+0.41%" [ref=e1617] [cursor=pointer]:
+                  - /url: /stock/XLV/
+                - link "能源+0.72%" [ref=e1618] [cursor=pointer]:
+                  - /url: /stock/XLE/
+                - link "消费-1.54%" [ref=e1619] [cursor=pointer]:
+                  - /url: /stock/XLY/
+                - link "工业-1.40%" [ref=e1620] [cursor=pointer]:
+                  - /url: /stock/XLI/
+            - generic [ref=e1621]:
+              - generic [ref=e1622]:
+                - heading "市场温度" [level=3] [ref=e1623]
+                - generic [ref=e1624]: 偏空
+              - generic [ref=e1625]:
+                - generic [ref=e1626]: "28"
+                - generic [ref=e1630]:
+                  - generic [ref=e1631]: 指数动量 -0.78%
+                  - generic [ref=e1632]: 上涨板块 2/6
+            - generic [ref=e1633]:
+              - heading "近期财报" [level=3] [ref=e1634]
+              - generic [ref=e1635]:
+                - link "AAPL 2027-01-27" [ref=e1636] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=e1637]: AAPL
+                  - generic [ref=e1638]: 2027-01-27
+                - link "NVDA 2027-02-23" [ref=e1639] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=e1640]: NVDA
+                  - generic [ref=e1641]: 2027-02-23
+                - link "MSFT 2027-01-26" [ref=e1642] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=e1643]: MSFT
+                  - generic [ref=e1644]: 2027-01-26
+                - link "GOOGL 2027-02-02" [ref=e1645] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=e1646]: GOOGL
+                  - generic [ref=e1647]: 2027-02-02
+                - link "AMZN 2027-02-03" [ref=e1648] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=e1649]: AMZN
+                  - generic [ref=e1650]: 2027-02-03
+                - link "META 2027-01-26" [ref=e1651] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=e1652]: META
+                  - generic [ref=e1653]: 2027-01-26
+    - contentinfo [ref=e1654]:
+      - generic [ref=e1655]:
+        - generic [ref=e1656]:
+          - generic [ref=e1657]:
+            - generic [ref=e1658]: 📊
+            - generic [ref=e1660]: 爱看盘 · 每日复盘工具
+          - generic [ref=e1661]:
+            - link "关于" [ref=e1662] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e1663] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e1664] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e1665] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e1666] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e1667]: 数据：东方财富
+        - paragraph [ref=e1668]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e1194]: 爱看盘 · AI 复盘工作台

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api, type AlertCondition, type AlertParseResult } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 import { type MarketScope } from "@/lib/market";
 
 const EXAMPLES = [
@@ -16,6 +17,13 @@ const US_EXAMPLES = [
   "英伟达涨到150通知我",
   "特斯拉涨幅超过3%提醒我",
   "微软跌破400",
+];
+
+const HK_EXAMPLES = [
+  "腾讯跌到400提醒我",
+  "阿里涨到120通知我",
+  "美团涨幅超过5%提醒我",
+  "小米跌破25",
 ];
 
 const FIELD_OPTIONS = [
@@ -59,7 +67,11 @@ function opLabel(op: string): string {
 }
 
 export function AlertInput({ market = "all", onCreated }: { market?: MarketScope; onCreated?: () => void }) {
-  const activeMarket: "cn" | "us" = market === "us" ? "us" : "cn";
+  const activeMarket: "cn" | "hk" | "us" = market === "us" ? "us" : market === "hk" ? "hk" : "cn";
+  const examples = market === "us" ? US_EXAMPLES : market === "hk" ? HK_EXAMPLES : EXAMPLES;
+  const marketLabel = activeMarket === "us" ? "美股" : activeMarket === "hk" ? "港股" : "A股";
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [parsed, setParsed] = useState<AlertParseResult | null>(null);
@@ -71,6 +83,10 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
   const [success, setSuccess] = useState<string | null>(null);
 
   async function handleParse() {
+    if (!ready) {
+      setError("账户正在初始化，请稍后重试");
+      return;
+    }
     if (!text.trim()) return;
     setLoading(true);
     setError(null);
@@ -95,6 +111,10 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
   }
 
   function openManual() {
+    if (!ready) {
+      setError("账户正在初始化，请稍后重试");
+      return;
+    }
     setBuilderOpen(true);
     setParsed(null);
     setConditions([emptyCondition()]);
@@ -115,6 +135,10 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
   }
 
   async function handleCreate() {
+    if (!ready) {
+      setError("账户正在初始化，请稍后重试");
+      return;
+    }
     const code = codeInput.trim();
     const valid = conditions.filter((c) => c.threshold !== 0);
     if (!code || valid.length === 0) {
@@ -155,27 +179,28 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
       <div className="neo-inset flex items-center gap-1 rounded-md p-1">
         <input
           type="text"
+          aria-label={market === "us" ? "输入美股盯盘条件" : market === "hk" ? "输入港股盯盘条件" : "输入 A 股盯盘条件"}
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleParse()}
-          placeholder={market === "us" ? "输入盯盘条件，如「苹果跌到180提醒我」" : "输入盯盘条件，如「茅台跌破1500且涨幅超2%」"}
-          className="neo-input flex-1 rounded-md bg-transparent px-3 py-2 text-sm text-neo-ink placeholder:text-neo-dim focus:outline-none"
+          placeholder={market === "us" ? "输入盯盘条件，如「苹果跌到180提醒我」" : market === "hk" ? "输入盯盘条件，如「腾讯跌到400提醒我」" : "输入盯盘条件，如「茅台跌破1500且涨幅超2%」"}
+          className="neo-input min-h-11 flex-1 rounded-md bg-transparent px-3 py-2 text-sm text-neo-ink placeholder:text-neo-dim focus:outline-none"
         />
         <button
           onClick={handleParse}
-          disabled={loading || !text.trim()}
-          className="neo-btn-primary shrink-0 rounded-md px-4 py-1.5 text-sm font-medium text-white disabled:opacity-40 disabled:cursor-not-allowed"
+          disabled={!ready || loading || !text.trim()}
+          className="neo-btn-primary min-h-11 shrink-0 rounded-md px-4 py-1.5 text-sm font-medium text-white disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {loading ? "解析中…" : "解析"}
         </button>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        {(market === "us" ? US_EXAMPLES : EXAMPLES).map((ex) => (
+        {examples.map((ex) => (
           <button
             key={ex}
             onClick={() => setText(ex)}
-            className="neo-input rounded-md px-2.5 py-1 text-xs text-neo-dim transition-colors hover:text-neo-mid"
+            className="neo-input min-h-11 rounded-md px-2.5 py-1 text-xs text-neo-dim transition-colors hover:text-neo-mid"
           >
             {ex}
           </button>
@@ -183,7 +208,8 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
         {!builderOpen && (
           <button
             onClick={openManual}
-            className="neo-btn rounded-md px-3 py-1 text-xs text-neo-primary"
+            disabled={!ready}
+            className="neo-btn min-h-11 rounded-md px-3 py-1 text-xs text-neo-primary"
           >
             + 手动组合条件
           </button>
@@ -206,7 +232,7 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
         <div className="mt-4 neo-inset rounded-md p-4">
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <span className="text-xs font-medium text-neo-ink">创建盯盘任务</span>
-            <span className="rounded bg-neo-primary-soft px-1.5 py-0.5 text-[10px] font-medium text-neo-primary">{activeMarket === "us" ? "美股" : "A股"}</span>
+            <span className="rounded bg-neo-primary-soft px-1.5 py-0.5 text-[10px] font-medium text-neo-primary">{marketLabel}</span>
             {parsed && (
               <span className="text-[11px] text-neo-dim">
                 解析置信度 {(parsed.confidence * 100).toFixed(0)}% · 模型 {parsed.model}
@@ -219,10 +245,11 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
               <div className="text-[10px] text-neo-dim">股票代码</div>
               <input
                 type="text"
+                aria-label="盯盘股票代码"
                 value={codeInput}
                 onChange={(e) => setCodeInput(e.target.value)}
-                placeholder={market === "us" ? "如 AAPL" : "如 sh.600519"}
-                className="neo-input mt-1 w-full rounded-md px-3 py-2 text-sm"
+                placeholder={market === "us" ? "如 AAPL" : market === "hk" ? "如 00700" : "如 sh.600519"}
+                className="neo-input mt-1 min-h-11 w-full rounded-md px-3 py-2 text-sm"
               />
             </div>
             {parsed?.name && (
@@ -234,18 +261,20 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
             {conditions.map((c, i) => (
               <div key={i} className="grid grid-cols-2 gap-2 sm:grid-cols-[1fr_1fr_1fr_auto]">
                 <select
+                  aria-label="条件字段"
                   value={c.field}
                   onChange={(e) => updateCondition(i, { field: e.target.value as AlertCondition["field"] })}
-                  className="neo-input rounded-md px-2 py-2 text-xs"
+                  className="neo-input min-h-11 rounded-md px-2 py-2 text-xs"
                 >
                   {FIELD_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
                   ))}
                 </select>
                 <select
+                  aria-label="条件运算符"
                   value={c.op}
                   onChange={(e) => updateCondition(i, { op: e.target.value as AlertCondition["op"] })}
-                  className="neo-input rounded-md px-2 py-2 text-xs"
+                  className="neo-input min-h-11 rounded-md px-2 py-2 text-xs"
                 >
                   {OP_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
@@ -253,16 +282,17 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
                 </select>
                 <input
                   type="number"
+                  aria-label="条件阈值"
                   step="any"
                   value={c.threshold}
                   onChange={(e) => updateCondition(i, { threshold: Number(e.target.value) })}
                   placeholder="阈值"
-                  className="neo-input rounded-md px-2 py-2 text-xs"
+                  className="neo-input min-h-11 rounded-md px-2 py-2 text-xs"
                 />
                 <button
                   onClick={() => removeCondition(i)}
                   disabled={conditions.length === 1}
-                  className="rounded-md px-2 py-2 text-xs text-neo-dim transition-colors hover:text-neo-down disabled:opacity-40"
+                  className="inline-flex min-h-11 items-center justify-center rounded-md px-2 py-2 text-xs text-neo-dim transition-colors hover:text-neo-down disabled:opacity-40"
                 >
                   删除
                 </button>
@@ -271,13 +301,13 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
           </div>
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <button onClick={addCondition} className="neo-input rounded-md px-3 py-2 text-xs text-neo-mid transition-colors hover:text-neo-primary">
+            <button onClick={addCondition} className="neo-input inline-flex min-h-11 items-center rounded-md px-3 py-2 text-xs text-neo-mid transition-colors hover:text-neo-primary">
               + 添加条件
             </button>
             <button
               onClick={handleCreate}
-              disabled={creating}
-              className="neo-btn-primary rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
+              disabled={!ready || creating}
+              className="neo-btn-primary min-h-11 rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
             >
               {creating ? "创建中…" : "确认创建"}
             </button>
@@ -288,7 +318,7 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
                 setConditions([]);
                 setCodeInput("");
               }}
-              className="neo-input rounded-md px-4 py-2 text-sm text-neo-mid transition-colors"
+              className="neo-input min-h-11 rounded-md px-4 py-2 text-sm text-neo-mid transition-colors"
             >
               取消
             </button>

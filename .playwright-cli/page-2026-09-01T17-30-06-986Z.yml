@@ -1,0 +1,307 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e83]:
+    - banner [ref=e84]:
+      - navigation [ref=e85]:
+        - link "爱看盘" [ref=e86] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e91]:
+          - tablist "市场范围" [ref=e92]:
+            - tab "全部" [ref=e93]
+            - tab "A股" [ref=e94]
+            - tab "美股" [selected] [ref=e95]
+          - navigation "功能导航" [ref=e97]:
+            - link "市场" [ref=e98] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=e99] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=e100] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=e101] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=e102] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=e103]:
+          - link "会员" [ref=e104] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=e108] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e113]
+    - main [ref=e117]:
+      - generic [ref=e118]:
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - heading "市场总览" [level=1] [ref=e123]
+            - generic [ref=e124]: 美股
+          - paragraph [ref=e125]: 2026-09-02 01:29
+        - generic [ref=e127]:
+          - link "标普500 ETF SPY -0.72% 761.56 -5.49 2026-09-02 01:29:14 · finnhub" [ref=e128] [cursor=pointer]:
+            - /url: /stock/SPY/
+            - generic [ref=e129]:
+              - generic [ref=e130]:
+                - generic [ref=e131]: 标普500 ETF
+                - generic [ref=e132]: SPY
+              - generic [ref=e133]: "-0.72%"
+            - generic [ref=e134]:
+              - generic [ref=e135]: "761.56"
+              - generic [ref=e136]: "-5.49"
+            - generic [ref=e137]: 2026-09-02 01:29:14 · finnhub
+          - link "纳指100 ETF QQQ -1.23% 707.94 -8.82 2026-09-02 01:29:14 · finnhub" [ref=e138] [cursor=pointer]:
+            - /url: /stock/QQQ/
+            - generic [ref=e139]:
+              - generic [ref=e140]:
+                - generic [ref=e141]: 纳指100 ETF
+                - generic [ref=e142]: QQQ
+              - generic [ref=e143]: "-1.23%"
+            - generic [ref=e144]:
+              - generic [ref=e145]: "707.94"
+              - generic [ref=e146]: "-8.82"
+            - generic [ref=e147]: 2026-09-02 01:29:14 · finnhub
+          - link "道琼斯 ETF DIA -0.78% 527.41 -4.16 2026-09-02 01:29:11 · finnhub" [ref=e148] [cursor=pointer]:
+            - /url: /stock/DIA/
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - generic [ref=e151]: 道琼斯 ETF
+                - generic [ref=e152]: DIA
+              - generic [ref=e153]: "-0.78%"
+            - generic [ref=e154]:
+              - generic [ref=e155]: "527.41"
+              - generic [ref=e156]: "-4.16"
+            - generic [ref=e157]: 2026-09-02 01:29:11 · finnhub
+        - generic [ref=e158]:
+          - generic [ref=e159]:
+            - heading "板块表现" [level=2] [ref=e160]
+            - generic [ref=e161]: 6 个
+          - table [ref=e164]:
+            - rowgroup [ref=e165]:
+              - row [ref=e166]:
+                - columnheader "板块名称" [ref=e167] [cursor=pointer]
+                - columnheader "最新价" [ref=e169] [cursor=pointer]
+                - columnheader "涨跌幅 ▼" [ref=e171] [cursor=pointer]:
+                  - generic [ref=e172]:
+                    - text: 涨跌幅
+                    - generic [ref=e173]: ▼
+                - columnheader "涨跌额" [ref=e174] [cursor=pointer]
+            - rowgroup [ref=e176]:
+              - row [ref=e177]:
+                - cell "能源XLE" [ref=e178]
+                - cell "64.62" [ref=e179]
+                - cell "+1.03%" [ref=e180]
+                - cell "+0.66" [ref=e181]
+              - row [ref=e182]:
+                - cell "医疗XLV" [ref=e183]
+                - cell "171.39" [ref=e184]
+                - cell "+0.50%" [ref=e185]
+                - cell "+0.85" [ref=e186]
+              - row [ref=e187]:
+                - cell "金融XLF" [ref=e188]
+                - cell "57.29" [ref=e189]
+                - cell "-0.73%" [ref=e190]
+                - cell "-0.42" [ref=e191]
+              - row [ref=e192]:
+                - cell "工业XLI" [ref=e193]
+                - cell "172.46" [ref=e194]
+                - cell "-1.52%" [ref=e195]
+                - cell "-2.67" [ref=e196]
+              - row [ref=e197]:
+                - cell "科技XLK" [ref=e198]
+                - cell "183.59" [ref=e199]
+                - cell "-1.56%" [ref=e200]
+                - cell "-2.91" [ref=e201]
+              - row [ref=e202]:
+                - cell "消费XLY" [ref=e203]
+                - cell "114.71" [ref=e204]
+                - cell "-1.61%" [ref=e205]
+                - cell "-1.88" [ref=e206]
+        - generic [ref=e207]:
+          - heading "市场结构" [level=2] [ref=e209]
+          - generic [ref=e210]:
+            - generic [ref=e211]:
+              - heading "热门美股" [level=3] [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]:
+                  - generic [ref=e216]:
+                    - link "Apple Inc AAPL" [ref=e217] [cursor=pointer]:
+                      - /url: /stock/AAPL/
+                      - generic [ref=e218]: Apple Inc
+                      - generic [ref=e219]: AAPL
+                    - button "加自选" [ref=e220]
+                  - generic [ref=e221]:
+                    - generic [ref=e222]: "324.76"
+                    - generic [ref=e223]: +2.50%
+                - generic [ref=e224]:
+                  - generic [ref=e225]:
+                    - link "NVIDIA Corp NVDA" [ref=e226] [cursor=pointer]:
+                      - /url: /stock/NVDA/
+                      - generic [ref=e227]: NVIDIA Corp
+                      - generic [ref=e228]: NVDA
+                    - button "加自选" [ref=e229]
+                  - generic [ref=e230]:
+                    - generic [ref=e231]: "218.41"
+                    - generic [ref=e232]: "-1.07%"
+                - generic [ref=e233]:
+                  - generic [ref=e234]:
+                    - link "Microsoft Corp MSFT" [ref=e235] [cursor=pointer]:
+                      - /url: /stock/MSFT/
+                      - generic [ref=e236]: Microsoft Corp
+                      - generic [ref=e237]: MSFT
+                    - button "加自选" [ref=e238]
+                  - generic [ref=e239]:
+                    - generic [ref=e240]: "500.75"
+                    - generic [ref=e241]: "-1.29%"
+                - generic [ref=e242]:
+                  - generic [ref=e243]:
+                    - link "Alphabet Inc GOOGL" [ref=e244] [cursor=pointer]:
+                      - /url: /stock/GOOGL/
+                      - generic [ref=e245]: Alphabet Inc
+                      - generic [ref=e246]: GOOGL
+                    - button "加自选" [ref=e247]
+                  - generic [ref=e248]:
+                    - generic [ref=e249]: "335.11"
+                    - generic [ref=e250]: "-1.25%"
+                - generic [ref=e251]:
+                  - generic [ref=e252]:
+                    - link "Amazon.com Inc AMZN" [ref=e253] [cursor=pointer]:
+                      - /url: /stock/AMZN/
+                      - generic [ref=e254]: Amazon.com Inc
+                      - generic [ref=e255]: AMZN
+                    - button "加自选" [ref=e256]
+                  - generic [ref=e257]:
+                    - generic [ref=e258]: "254.42"
+                    - generic [ref=e259]: "-2.06%"
+                - generic [ref=e260]:
+                  - generic [ref=e261]:
+                    - link "Meta Platforms Inc META" [ref=e262] [cursor=pointer]:
+                      - /url: /stock/META/
+                      - generic [ref=e263]: Meta Platforms Inc
+                      - generic [ref=e264]: META
+                    - button "加自选" [ref=e265]
+                  - generic [ref=e266]:
+                    - generic [ref=e267]: "580.43"
+                    - generic [ref=e268]: +1.41%
+                - generic [ref=e269]:
+                  - generic [ref=e270]:
+                    - link "Tesla Inc TSLA" [ref=e271] [cursor=pointer]:
+                      - /url: /stock/TSLA/
+                      - generic [ref=e272]: Tesla Inc
+                      - generic [ref=e273]: TSLA
+                    - button "加自选" [ref=e274]
+                  - generic [ref=e275]:
+                    - generic [ref=e276]: "356.92"
+                    - generic [ref=e277]: "-3.00%"
+                - generic [ref=e278]:
+                  - generic [ref=e279]:
+                    - link "Netflix Inc NFLX" [ref=e280] [cursor=pointer]:
+                      - /url: /stock/NFLX/
+                      - generic [ref=e281]: Netflix Inc
+                      - generic [ref=e282]: NFLX
+                    - button "加自选" [ref=e283]
+                  - generic [ref=e284]:
+                    - generic [ref=e285]: "80.92"
+                    - generic [ref=e286]: "-0.16%"
+            - generic [ref=e287]:
+              - heading "市场资讯" [level=3] [ref=e289]
+              - generic [ref=e290]:
+                - link "CNBC 2026-09-02 00:19 吉姆·克莱默表示，因美国联邦贸易委员会（FTC）新诉讼而抛售亚马逊（Amazon）股票将是“荒谬的”" [ref=e291] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/cramer-selling-amazon-shares-over-new-ftc-lawsuit-would-be-hysterical.html
+                  - generic [ref=e292]:
+                    - generic [ref=e293]: CNBC
+                    - generic [ref=e294]: 2026-09-02 00:19
+                  - paragraph [ref=e295]: 吉姆·克莱默表示，因美国联邦贸易委员会（FTC）新诉讼而抛售亚马逊（Amazon）股票将是“荒谬的”
+                - link "CNBC 2026-09-02 00:17 受人工智能影响，学生正重新考虑专业、职业路径和行业：CNBC 调查" [ref=e296] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/students-are-reconsidering-majors-career-paths-due-to-ai-cnbc-survey.html
+                  - generic [ref=e297]:
+                    - generic [ref=e298]: CNBC
+                    - generic [ref=e299]: 2026-09-02 00:17
+                  - paragraph [ref=e300]: 受人工智能影响，学生正重新考虑专业、职业路径和行业：CNBC 调查
+                - link "CNBC 2026-09-02 00:08 AI 代币价格跌至历史新低" [ref=e301] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/ai-token-prices-lows.html
+                  - generic [ref=e302]:
+                    - generic [ref=e303]: CNBC
+                    - generic [ref=e304]: 2026-09-02 00:08
+                  - paragraph [ref=e305]: AI 代币价格跌至历史新低
+                - link "CNBC 2026-09-01 23:54 随着人工智能交易遭遇逆风，我们正减持数据中心股票以锁定丰厚利润" [ref=e306] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/were-exiting-a-data-center-stock-to-protect-big-gains-as-the-ai-trade-hits-a-rough-patch.html
+                  - generic [ref=e307]:
+                    - generic [ref=e308]: CNBC
+                    - generic [ref=e309]: 2026-09-01 23:54
+                  - paragraph [ref=e310]: 随着人工智能交易遭遇逆风，我们正减持数据中心股票以锁定丰厚利润
+                - link "CNBC 2026-09-01 21:51 美国众议院力求在共和党强硬派反对下避免政府停摆" [ref=e311] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/congress-government-shutdown-vote.html
+                  - generic [ref=e312]:
+                    - generic [ref=e313]: CNBC
+                    - generic [ref=e314]: 2026-09-01 21:51
+                  - paragraph [ref=e315]: 美国众议院力求在共和党强硬派反对下避免政府停摆
+                - link "CNBC 2026-09-01 20:59 吉姆·克莱默周二股市十大关注点" [ref=e316] [cursor=pointer]:
+                  - /url: https://www.cnbc.com/2026/09/01/jim-cramers-top-10-things-to-watch-in-the-stock-market-tuesday.html
+                  - generic [ref=e317]:
+                    - generic [ref=e318]: CNBC
+                    - generic [ref=e319]: 2026-09-01 20:59
+                  - paragraph [ref=e320]: 吉姆·克莱默周二股市十大关注点
+        - generic [ref=e321]:
+          - heading "AI 聚焦" [level=2] [ref=e323]
+          - generic [ref=e325]:
+            - generic [ref=e326]: 美股 AI 复盘
+            - generic [ref=e327]: 生成中…
+        - generic [ref=e333]:
+          - heading "近期财报" [level=2] [ref=e335]
+          - generic [ref=e337]:
+            - link "AAPL 2027-01-27 EPS 预估 $2.96" [ref=e338] [cursor=pointer]:
+              - /url: /stock/AAPL/
+              - generic [ref=e339]: AAPL
+              - generic [ref=e340]: 2027-01-27
+              - generic [ref=e341]: EPS 预估 $2.96
+            - link "NVDA 2027-02-23 EPS 预估 $2.77" [ref=e342] [cursor=pointer]:
+              - /url: /stock/NVDA/
+              - generic [ref=e343]: NVDA
+              - generic [ref=e344]: 2027-02-23
+              - generic [ref=e345]: EPS 预估 $2.77
+            - link "MSFT 2027-01-26 EPS 预估 $4.95" [ref=e346] [cursor=pointer]:
+              - /url: /stock/MSFT/
+              - generic [ref=e347]: MSFT
+              - generic [ref=e348]: 2027-01-26
+              - generic [ref=e349]: EPS 预估 $4.95
+            - link "GOOGL 2027-02-02 EPS 预估 $3.44" [ref=e350] [cursor=pointer]:
+              - /url: /stock/GOOGL/
+              - generic [ref=e351]: GOOGL
+              - generic [ref=e352]: 2027-02-02
+              - generic [ref=e353]: EPS 预估 $3.44
+            - link "AMZN 2027-02-03 EPS 预估 $2.49" [ref=e354] [cursor=pointer]:
+              - /url: /stock/AMZN/
+              - generic [ref=e355]: AMZN
+              - generic [ref=e356]: 2027-02-03
+              - generic [ref=e357]: EPS 预估 $2.49
+            - link "META 2027-01-26 EPS 预估 $8.40" [ref=e358] [cursor=pointer]:
+              - /url: /stock/META/
+              - generic [ref=e359]: META
+              - generic [ref=e360]: 2027-01-26
+              - generic [ref=e361]: EPS 预估 $8.40
+            - link "TSLA 2027-01-26 EPS 预估 $0.48" [ref=e362] [cursor=pointer]:
+              - /url: /stock/TSLA/
+              - generic [ref=e363]: TSLA
+              - generic [ref=e364]: 2027-01-26
+              - generic [ref=e365]: EPS 预估 $0.48
+            - link "NFLX 2027-01-18 EPS 预估 $0.75" [ref=e366] [cursor=pointer]:
+              - /url: /stock/NFLX/
+              - generic [ref=e367]: NFLX
+              - generic [ref=e368]: 2027-01-18
+              - generic [ref=e369]: EPS 预估 $0.75
+    - contentinfo [ref=e370]:
+      - generic [ref=e371]:
+        - generic [ref=e372]:
+          - generic [ref=e373]:
+            - generic [ref=e374]: 📊
+            - generic [ref=e376]: 爱看盘 · 每日复盘工具
+          - generic [ref=e377]:
+            - link "关于" [ref=e378] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e379] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e380] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e381] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e382] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e383]: 数据：东方财富
+        - paragraph [ref=e384]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e82]: 市场总览 · 爱看盘

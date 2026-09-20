@@ -1,0 +1,151 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e11]:
+          - link "升级 Pro" [ref=e12] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e15]: 会员
+          - link "登录 / 注册" [ref=e16] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e21]
+    - main [ref=e25]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - heading "搜索" [level=1] [ref=e30]
+          - generic [ref=e31]: 美股
+        - paragraph [ref=e32]: 按代码、名称或拼音查找股票
+      - generic [ref=e35]:
+        - textbox "输入美股代码或名称…" [ref=e36]
+        - button "搜索" [ref=e37]
+      - generic [ref=e38]:
+        - heading "美股热门" [level=2] [ref=e40]
+        - generic [ref=e41]:
+          - link "标普500 ETF 指数ETF SPY 761.78 -0.69%" [ref=e42] [cursor=pointer]:
+            - /url: /stock/SPY/
+            - generic [ref=e43]:
+              - generic [ref=e44]: 标普500 ETF
+              - generic [ref=e45]: 指数ETF
+            - generic [ref=e46]: SPY
+            - generic [ref=e47]:
+              - generic [ref=e48]: "761.78"
+              - generic [ref=e49]: "-0.69%"
+          - link "纳指100 ETF 指数ETF QQQ 707.64 -1.27%" [ref=e50] [cursor=pointer]:
+            - /url: /stock/QQQ/
+            - generic [ref=e51]:
+              - generic [ref=e52]: 纳指100 ETF
+              - generic [ref=e53]: 指数ETF
+            - generic [ref=e54]: QQQ
+            - generic [ref=e55]:
+              - generic [ref=e56]: "707.64"
+              - generic [ref=e57]: "-1.27%"
+          - link "道琼斯 ETF 指数ETF DIA 527.75 -0.72%" [ref=e58] [cursor=pointer]:
+            - /url: /stock/DIA/
+            - generic [ref=e59]:
+              - generic [ref=e60]: 道琼斯 ETF
+              - generic [ref=e61]: 指数ETF
+            - generic [ref=e62]: DIA
+            - generic [ref=e63]:
+              - generic [ref=e64]: "527.75"
+              - generic [ref=e65]: "-0.72%"
+        - generic [ref=e66]:
+          - link "Apple Inc 美股 AAPL 325.13 +2.61%" [ref=e67] [cursor=pointer]:
+            - /url: /stock/AAPL/
+            - generic [ref=e68]:
+              - generic [ref=e69]: Apple Inc
+              - generic [ref=e70]: 美股
+            - generic [ref=e71]: AAPL
+            - generic [ref=e72]:
+              - generic [ref=e73]: "325.13"
+              - generic [ref=e74]: +2.61%
+          - link "NVIDIA Corp 美股 NVDA 217.44 -1.51%" [ref=e75] [cursor=pointer]:
+            - /url: /stock/NVDA/
+            - generic [ref=e76]:
+              - generic [ref=e77]: NVIDIA Corp
+              - generic [ref=e78]: 美股
+            - generic [ref=e79]: NVDA
+            - generic [ref=e80]:
+              - generic [ref=e81]: "217.44"
+              - generic [ref=e82]: "-1.51%"
+          - link "Microsoft Corp 美股 MSFT 501.02 -1.24%" [ref=e83] [cursor=pointer]:
+            - /url: /stock/MSFT/
+            - generic [ref=e84]:
+              - generic [ref=e85]: Microsoft Corp
+              - generic [ref=e86]: 美股
+            - generic [ref=e87]: MSFT
+            - generic [ref=e88]:
+              - generic [ref=e89]: "501.02"
+              - generic [ref=e90]: "-1.24%"
+          - link "Alphabet Inc 美股 GOOGL 335.02 -1.28%" [ref=e91] [cursor=pointer]:
+            - /url: /stock/GOOGL/
+            - generic [ref=e92]:
+              - generic [ref=e93]: Alphabet Inc
+              - generic [ref=e94]: 美股
+            - generic [ref=e95]: GOOGL
+            - generic [ref=e96]:
+              - generic [ref=e97]: "335.02"
+              - generic [ref=e98]: "-1.28%"
+          - link "Amazon.com Inc 美股 AMZN 254.92 -1.87%" [ref=e99] [cursor=pointer]:
+            - /url: /stock/AMZN/
+            - generic [ref=e100]:
+              - generic [ref=e101]: Amazon.com Inc
+              - generic [ref=e102]: 美股
+            - generic [ref=e103]: AMZN
+            - generic [ref=e104]:
+              - generic [ref=e105]: "254.92"
+              - generic [ref=e106]: "-1.87%"
+          - link "Meta Platforms Inc 美股 META 578.54 +1.08%" [ref=e107] [cursor=pointer]:
+            - /url: /stock/META/
+            - generic [ref=e108]:
+              - generic [ref=e109]: Meta Platforms Inc
+              - generic [ref=e110]: 美股
+            - generic [ref=e111]: META
+            - generic [ref=e112]:
+              - generic [ref=e113]: "578.54"
+              - generic [ref=e114]: +1.08%
+          - link "Tesla Inc 美股 TSLA 356.09 -3.22%" [ref=e115] [cursor=pointer]:
+            - /url: /stock/TSLA/
+            - generic [ref=e116]:
+              - generic [ref=e117]: Tesla Inc
+              - generic [ref=e118]: 美股
+            - generic [ref=e119]: TSLA
+            - generic [ref=e120]:
+              - generic [ref=e121]: "356.09"
+              - generic [ref=e122]: "-3.22%"
+          - link "Netflix Inc 美股 NFLX 80.81 -0.30%" [ref=e123] [cursor=pointer]:
+            - /url: /stock/NFLX/
+            - generic [ref=e124]:
+              - generic [ref=e125]: Netflix Inc
+              - generic [ref=e126]: 美股
+            - generic [ref=e127]: NFLX
+            - generic [ref=e128]:
+              - generic [ref=e129]: "80.81"
+              - generic [ref=e130]: "-0.30%"
+      - generic [ref=e132]:
+        - heading "搜索技巧" [level=3] [ref=e133]
+        - list [ref=e134]:
+          - listitem [ref=e135]: • 输入美股代码可直接跳转，如 AAPL、NVDA、BRK.B
+          - listitem [ref=e136]: • 输入公司名称搜索，如 Apple、Nvidia
+          - listitem [ref=e137]: • 也可以从上方美股热门直接进入
+    - contentinfo [ref=e138]:
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - generic [ref=e142]: 📊
+            - generic [ref=e144]: 爱看盘 · 每日复盘工具
+          - generic [ref=e145]:
+            - link "关于" [ref=e146] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e147] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e148] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e149] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e150] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e151]: 数据：Finnhub
+        - paragraph [ref=e152]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e153]

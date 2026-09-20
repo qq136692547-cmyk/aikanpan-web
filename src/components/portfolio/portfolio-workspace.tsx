@@ -8,6 +8,9 @@ import { formatAmount, formatPct, formatPrice } from "@/lib/format";
 import { Sparkline } from "@/components/chart/sparkline";
 import { EmptyState, ErrorState } from "@/components/ui/state";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
+import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
+import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
+import { useAuth } from "@/lib/auth";
 
 const TX_TYPES = [
   { value: "buy", label: "买入" },
@@ -29,6 +32,8 @@ const TX_TYPE_CLASS: Record<string, string> = {
 
 export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) {
   const isUs = market === "us";
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [shares, setShares] = useState("");
@@ -48,17 +53,17 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
   const [editingTx, setEditingTx] = useState<TransactionItem | null>(null);
 
   const { data: positionsData, error, mutate } = useSWR(
-    isUs ? "us-portfolio-positions" : "portfolio-positions",
+    ready && user ? [isUs ? "us-portfolio-positions" : "portfolio-positions", user.user_id] : null,
     () => (isUs ? api.getUsPositions() : api.getPositions()),
     { refreshInterval: 30000 }
   );
   const { data: summary } = useSWR<PortfolioSummary | UsPortfolioSummary>(
-    isUs ? "us-portfolio-summary" : "portfolio-summary",
+    ready && user ? [isUs ? "us-portfolio-summary" : "portfolio-summary", user.user_id] : null,
     () => (isUs ? api.getUsPortfolioSummary() : api.getPortfolioSummary()),
     { refreshInterval: 30000 }
   );
   const { data: txData, mutate: mutateTx } = useSWR(
-    isUs ? "us-portfolio-transactions" : "portfolio-transactions",
+    ready && user ? [isUs ? "us-portfolio-transactions" : "portfolio-transactions", user.user_id] : null,
     () => (isUs ? api.getUsTransactions() : api.getTransactions()),
     { refreshInterval: 30000 }
   );
@@ -72,7 +77,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
 
   const codesKey = positions.map((p) => p.code).join(",");
   const { data: curve } = useSWR(
-    `portfolio-curve-${codesKey}`,
+    ready && user ? `portfolio-curve-${user.user_id}-${codesKey}` : null,
     async () => {
       if (positions.length === 0) return [];
       const settled = await Promise.allSettled(positions.map((p) => (isUs ? api.getUsHistory(p.code, 30) : api.getStockHistory(p.code))));
@@ -264,6 +269,22 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
     URL.revokeObjectURL(url);
   }
 
+  if (authLoading) {
+    return (
+      <div className="space-y-3">
+        <div className="neo-skeleton h-32 rounded-xl" />
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+          <div className="neo-skeleton h-56 rounded-xl lg:col-span-2" />
+          <div className="neo-skeleton h-56 rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <ErrorState title="账户初始化失败" description="请刷新页面后重试；当前不会展示匿名演示数据。" onRetry={() => window.location.reload()} />;
+  }
+
   if (!positionsData && !error) {
     return (
       <div className="space-y-3">
@@ -339,8 +360,11 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
         ) : (
           <p className="mt-3 text-[12px] text-neo-mid">暂无组合诊断，点击生成后展示集中度与风险分析</p>
         )}
+        <AIEvidencePanel evidence={portfolioReview?.evidence} />
         {portfolioReview && <AiDisclaimer className="mt-2" />}
       </section>
+
+      <AIHistoryPanel kind="portfolio_review" title="组合诊断历史" />
 
 
       <section className="neo-card p-5">

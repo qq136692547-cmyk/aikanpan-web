@@ -20,7 +20,7 @@ export function Navbar() {
   return (
     <header className="neo-navbar sticky top-0 z-50">
       <nav className="mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex shrink-0 items-center gap-2">
+        <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2">
           <div className="neo-card-sm flex h-7 w-7 items-center justify-center" style={{ borderRadius: 8 }}>
             <BarChart3 size={15} style={{ color: "var(--neo-primary)" }} />
           </div>
@@ -34,7 +34,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/upgrade"
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] font-medium ${
               isPro ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isPro ? "Pro 会员" : "升级 Pro"}
@@ -46,7 +46,7 @@ export function Navbar() {
 
           <Link
             href="/account"
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] font-medium ${
               pathname === "/account" ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isVerified ? "我的账户" : "登录 / 注册"}
@@ -57,7 +57,7 @@ export function Navbar() {
           </Link>
 
           <button
-            className="neo-card-sm hidden items-center justify-center p-2 md:flex"
+            className="neo-card-sm hidden h-11 w-11 items-center justify-center md:flex"
             style={{ borderRadius: 10 }}
             onClick={() => window.dispatchEvent(new CustomEvent("open-global-search"))}
             aria-label="全局搜索"
@@ -66,7 +66,7 @@ export function Navbar() {
           </button>
 
           <button
-            className="neo-card-sm flex items-center justify-center p-2 lg:hidden"
+            className="neo-card-sm flex h-11 w-11 items-center justify-center lg:hidden"
             style={{ borderRadius: 10 }}
             onClick={() => setMobileOpen((open) => !open)}
             aria-label="菜单"

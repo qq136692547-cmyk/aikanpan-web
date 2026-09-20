@@ -6,17 +6,47 @@ import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { StockTabs } from "@/components/stock/stock-tabs";
 import { StockTitleBar } from "@/components/stock/stock-title-bar";
-import { UsStockDetail } from "@/components/us/us-stock-detail";
+import { UsStockDetail, type UsStockDetailInitialData } from "@/components/us/us-stock-detail";
+import { HkStockDetail, type HkStockDetailInitialData } from "@/components/hk/hk-stock-detail";
 import { api } from "@/lib/api";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
+import {
+  canonicalStockCode,
+  isHkStockCode,
+  isIndexableStockCode,
+  isUsStockCode,
+  stockApiCode,
+  stockDisplayCode,
+} from "@/lib/stock-seo";
+import { usNameZh } from "@/lib/us-stock-names";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const revalidate = 30;
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
   const { code: rawCode } = await params;
-  const code = /^(sh|sz|bj)(\d{6})$/.test(rawCode) ? `${rawCode.slice(0, 2)}.${rawCode.slice(2)}` : rawCode;
-  return { title: `个股 ${code}` };
+  const routeCode = canonicalStockCode(rawCode);
+  const indexable = isIndexableStockCode(routeCode);
+  const isUs = isUsStockCode(routeCode);
+  const isHk = isHkStockCode(routeCode);
+  let displayName = isUs ? usNameZh(null, routeCode) : routeCode;
+  if (indexable && !isUs) {
+    try {
+      const quote = isHk ? await api.getHkQuote(routeCode) : await api.getStockQuote(stockApiCode(routeCode));
+      displayName = quote.name || displayName;
+    } catch {}
+  }
+  const displayCode = stockDisplayCode(routeCode);
+
+  return {
+    title: indexable ? `${displayName}（${displayCode}）股票行情与关键数据` : `个股 ${routeCode}`,
+    description: indexable
+      ? `${displayName}（${displayCode}）页面，汇总实时行情、关键指标、财报事件与相关新闻，数据来自公开行情接口。`
+      : undefined,
+    robots: { index: indexable, follow: true },
+    alternates: { canonical: `/stock/${routeCode}/` },
+  };
 }
 
 
@@ -32,17 +62,65 @@ function latestValue(value: number | number[] | null | undefined): number {
 
 export default async function StockPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = await params;
-  // 将路由参数 sh600519 转换为后端格式 sh.600519
-  const code = /^(sh|sz|bj)(\d{6})$/.test(rawCode) ? `${rawCode.slice(0, 2)}.${rawCode.slice(2)}` : rawCode;
-  const isUs = !/^(sh|sz|bj)(\d{6})$/.test(rawCode) && /^[A-Z][A-Z0-9.-]{0,9}$/.test(rawCode);
-  if (isUs) {
+  const routeCode = canonicalStockCode(rawCode);
+  const isCnStockCode = /^(sh|sz|bj)?\d{6}$/.test(routeCode.toLowerCase());
+  if (!isCnStockCode && !isHkStockCode(routeCode) && !isUsStockCode(routeCode)) {
+    notFound();
+  }
+  const code = stockApiCode(routeCode);
+  if (isHkStockCode(routeCode)) {
+    let initialData: HkStockDetailInitialData | undefined;
+    if (isIndexableStockCode(routeCode)) {
+      const settled = await Promise.allSettled([
+        api.getHkQuote(routeCode),
+        api.getHkHistory(routeCode, 120),
+        api.getHkFinancials(routeCode),
+        api.getHkNews(routeCode, 8),
+      ]);
+      initialData = {
+        quote: settled[0].status === "fulfilled" ? settled[0].value : null,
+        history: settled[1].status === "fulfilled" ? settled[1].value : null,
+        financials: settled[2].status === "fulfilled" ? settled[2].value : null,
+        news: settled[3].status === "fulfilled" ? settled[3].value.news : [],
+      };
+    }
     return (
       <div className="neo-page">
         <Navbar />
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
-          <UsStockDetail symbol={rawCode.toUpperCase()} />
+          <HkStockDetail symbol={routeCode} initialData={initialData} />
         </main>
-        <Footer dataSource="Finnhub" />
+        <Footer dataSource="腾讯行情 / 东方财富" />
+      </div>
+    );
+  }
+  if (isUsStockCode(routeCode)) {
+    let initialData: UsStockDetailInitialData | undefined;
+    if (isIndexableStockCode(routeCode)) {
+      const settled = await Promise.allSettled([
+        api.getUsQuote(routeCode),
+        api.getUsHistory(routeCode, 120),
+        api.getUsFinancials(routeCode),
+        api.getUsEarnings(routeCode),
+        api.getUsFilings(routeCode, 12),
+        api.getUsNews(routeCode, 8),
+      ]);
+      initialData = {
+        quote: settled[0].status === "fulfilled" ? settled[0].value : null,
+        history: settled[1].status === "fulfilled" ? settled[1].value : null,
+        financials: settled[2].status === "fulfilled" ? settled[2].value : null,
+        earnings: settled[3].status === "fulfilled" ? settled[3].value : null,
+        news: settled[5].status === "fulfilled" ? settled[5].value.news : [],
+        filings: settled[4].status === "fulfilled" ? settled[4].value : null,
+      };
+    }
+    return (
+      <div className="neo-page">
+        <Navbar />
+        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+          <UsStockDetail symbol={routeCode} initialData={initialData} />
+        </main>
+        <Footer dataSource="Finnhub / SEC EDGAR" />
       </div>
     );
   }
@@ -176,7 +254,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         </div>
 
         <div className="neo-fade-up mt-4" style={{ animationDelay: "160ms" }}>
-          <AIHistoryPanel code={code} />
+          <AIHistoryPanel code={code} kind="stock_comment" />
         </div>
 
         <StockThesisPanel code={code} />

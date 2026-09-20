@@ -21,12 +21,13 @@ export type MarketOverviewSection = {
 };
 
 export type MarketOverviewTemplateProps = {
-  market: "cn" | "us";
+  market: "cn" | "hk" | "us";
   title: string;
   subtitle: string;
   indices: MarketOverviewIndex[];
   sectors: MarketSectorRow[];
   sections: MarketOverviewSection[];
+  hideSectors?: boolean;
 };
 
 function trendClass(pct: number) {
@@ -48,6 +49,7 @@ export function MarketOverviewTemplate({
   indices,
   sectors,
   sections,
+  hideSectors = false,
 }: MarketOverviewTemplateProps) {
   const hasTurnover = sectors.some((sector) => typeof sector.turnover_rate === "number");
 
@@ -57,7 +59,7 @@ export function MarketOverviewTemplate({
         market={market}
         title={title}
         subtitle={subtitle}
-        image="/images/ai-art/market-heatmap.png"
+        image="/images/ai-art/market-heatmap-v3.png"
       />
 
       <section className="mt-3">
@@ -104,16 +106,18 @@ export function MarketOverviewTemplate({
         </div>
       </section>
 
-      <MarketPageSection
-        title="板块表现"
-        action={<span className="text-[11px] text-neo-dim">{sectors.length} 个</span>}
-      >
-        {sectors.length > 0 ? (
-          <SortableSectorTable sectors={sectors} showTurnover={hasTurnover} />
-        ) : (
-          <div className="neo-card-sm p-5 text-[12px] text-neo-mid">暂无板块数据</div>
-        )}
-      </MarketPageSection>
+      {!hideSectors && (
+        <MarketPageSection
+          title="板块表现"
+          action={<span className="text-[11px] text-neo-dim">{sectors.length} 个</span>}
+        >
+          {sectors.length > 0 ? (
+            <SortableSectorTable sectors={sectors} showTurnover={hasTurnover} />
+          ) : (
+            <div className="neo-card-sm p-5 text-[12px] text-neo-mid">暂无板块数据</div>
+          )}
+        </MarketPageSection>
+      )}
 
       {sections.map((section) => (
         <MarketPageSection

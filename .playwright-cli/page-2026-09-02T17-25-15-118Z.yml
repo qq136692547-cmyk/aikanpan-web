@@ -1,0 +1,273 @@
+- generic [active] [ref=f17e1]:
+  - generic [ref=f17e2]:
+    - banner [ref=f17e3]:
+      - navigation [ref=f17e4]:
+        - link "爱看盘" [ref=f17e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f17e10]:
+          - link "升级 Pro" [ref=f17e11] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f17e14] [cursor=pointer]:
+            - /url: /account/
+          - button "菜单" [ref=f17e18]
+    - main [ref=f17e21]:
+      - generic [ref=f17e25]:
+        - heading "每日复盘" [level=1] [ref=f17e26]
+        - generic [ref=f17e27]: 美股
+      - region "今日工作流" [ref=f17e28]:
+        - generic [ref=f17e29]:
+          - generic [ref=f17e30]:
+            - heading "今日工作流" [level=2] [ref=f17e31]
+            - paragraph [ref=f17e32]: 5 步完成当日看盘闭环，进度按天保存。
+          - generic [ref=f17e33]: 0/5 已完成
+        - generic [ref=f17e34]:
+          - link "第 1 步 看今日复盘 先看市场结构和 AI 结论" [ref=f17e35] [cursor=pointer]:
+            - /url: /review/?market=us
+            - generic [ref=f17e36]: 第 1 步
+            - generic [ref=f17e41]: 看今日复盘
+            - paragraph [ref=f17e42]: 先看市场结构和 AI 结论
+          - link "第 2 步 选 3 只重点股 从市场页挑出跟踪对象" [ref=f17e43] [cursor=pointer]:
+            - /url: /market/?market=us
+            - generic [ref=f17e44]: 第 2 步
+            - generic [ref=f17e49]: 选 3 只重点股
+            - paragraph [ref=f17e50]: 从市场页挑出跟踪对象
+          - link "第 3 步 写入自选/计划 记录观察点和操作预期" [ref=f17e51] [cursor=pointer]:
+            - /url: /research/?market=us
+            - generic [ref=f17e52]: 第 3 步
+            - generic [ref=f17e57]: 写入自选/计划
+            - paragraph [ref=f17e58]: 记录观察点和操作预期
+          - link "第 4 步 设置盯盘提醒 条件触发时自动提醒" [ref=f17e59] [cursor=pointer]:
+            - /url: /alerts/?market=us
+            - generic [ref=f17e60]: 第 4 步
+            - generic [ref=f17e67]: 设置盯盘提醒
+            - paragraph [ref=f17e68]: 条件触发时自动提醒
+          - link "第 5 步 AI 复盘归档 收盘后生成连续记录" [ref=f17e69] [cursor=pointer]:
+            - /url: /review/?market=us
+            - generic [ref=f17e70]: 第 5 步
+            - generic [ref=f17e75]: AI 复盘归档
+            - paragraph [ref=f17e76]: 收盘后生成连续记录
+      - region "今日决策闭环" [ref=f17e77]:
+        - generic [ref=f17e78]:
+          - generic [ref=f17e79]:
+            - heading "今日决策闭环" [level=2] [ref=f17e80]
+            - paragraph [ref=f17e81]: 先看结论，再定关注，最后落到一条提醒。
+          - link "设置提醒" [ref=f17e82] [cursor=pointer]:
+            - /url: /alerts/?market=us
+        - generic [ref=f17e88]:
+          - generic [ref=f17e89]:
+            - generic [ref=f17e90]: 今日结论
+            - paragraph [ref=f17e95]: 市场温度 56（中性偏多）
+          - generic [ref=f17e96]:
+            - generic [ref=f17e97]: 今日关注
+            - generic [ref=f17e98]:
+              - generic [ref=f17e99]: 科技
+              - generic [ref=f17e100]: 金融
+              - generic [ref=f17e101]: 医疗
+          - generic [ref=f17e102]:
+            - generic [ref=f17e103]: 风险提醒
+            - paragraph [ref=f17e107]: VIX -2.1%
+      - generic [ref=f17e108]:
+        - generic [ref=f17e111]:
+          - generic [ref=f17e112]: 美股 AI 复盘
+          - generic [ref=f17e113]: 生成中…
+        - generic [ref=f17e119]:
+          - heading "市场概览" [level=2] [ref=f17e121]
+          - generic [ref=f17e122]:
+            - link "标普500 ETF 764.77 +0.39%" [ref=f17e123] [cursor=pointer]:
+              - /url: /stock/SPY/
+              - generic [ref=f17e124]: 标普500 ETF
+              - generic [ref=f17e125]: "764.77"
+              - generic [ref=f17e126]: +0.39%
+            - link "纳指100 ETF 708.36 +0.10%" [ref=f17e127] [cursor=pointer]:
+              - /url: /stock/QQQ/
+              - generic [ref=f17e128]: 纳指100 ETF
+              - generic [ref=f17e129]: "708.36"
+              - generic [ref=f17e130]: +0.10%
+            - link "道琼斯 ETF 529.80 +0.39%" [ref=f17e131] [cursor=pointer]:
+              - /url: /stock/DIA/
+              - generic [ref=f17e132]: 道琼斯 ETF
+              - generic [ref=f17e133]: "529.80"
+              - generic [ref=f17e134]: +0.39%
+            - generic [ref=f17e135]:
+              - generic [ref=f17e136]: 市场情绪
+              - generic [ref=f17e137]: "56"
+              - generic [ref=f17e140]:
+                - generic [ref=f17e141]: 指数动量 +0.29%
+                - generic [ref=f17e142]: 上涨板块 3/6
+                - generic [ref=f17e143]: VIX -2.1%
+        - generic [ref=f17e144]:
+          - heading "行业/板块表现" [level=2] [ref=f17e146]
+          - generic [ref=f17e148]:
+            - link "科技-0.18%" [ref=f17e149] [cursor=pointer]:
+              - /url: /stock/XLK/
+            - link "金融+0.73%" [ref=f17e150] [cursor=pointer]:
+              - /url: /stock/XLF/
+            - link "医疗+0.63%" [ref=f17e151] [cursor=pointer]:
+              - /url: /stock/XLV/
+            - link "能源+0.28%" [ref=f17e152] [cursor=pointer]:
+              - /url: /stock/XLE/
+            - link "消费+0.00%" [ref=f17e153] [cursor=pointer]:
+              - /url: /stock/XLY/
+            - link "工业+0.00%" [ref=f17e154] [cursor=pointer]:
+              - /url: /stock/XLI/
+        - generic [ref=f17e155]:
+          - heading "市场资讯" [level=2] [ref=f17e156]
+          - generic [ref=f17e157]:
+            - link "CNBC 2026-09-03 00:19 我们开始建仓另外两只防御性股票，以平衡AI敞口" [ref=f17e158] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/were-starting-positions-in-2-more-defensive-stocks-to-balance-our-ai-exposure.html
+              - generic [ref=f17e159]:
+                - generic [ref=f17e160]: CNBC
+                - generic [ref=f17e161]: 2026-09-03 00:19
+              - paragraph [ref=f17e162]: 我们开始建仓另外两只防御性股票，以平衡AI敞口
+            - link "CNBC 2026-09-02 23:54 博通即将发布的财报看点——以及英伟达为何跑赢" [ref=f17e163] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/what-to-watch-in-broadcoms-upcoming-earnings-and-why-nvidia-is-running-.html
+              - generic [ref=f17e164]:
+                - generic [ref=f17e165]: CNBC
+                - generic [ref=f17e166]: 2026-09-02 23:54
+              - paragraph [ref=f17e167]: 博通即将发布的财报看点——以及英伟达为何跑赢
+            - link "CNBC 2026-09-02 22:08 近期私募股权基金跑输标普500指数——为何富人的投资未必更好" [ref=f17e168] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/why-funds-meant-for-wealthier-investors-dont-always-perform-better.html
+              - generic [ref=f17e169]:
+                - generic [ref=f17e170]: CNBC
+                - generic [ref=f17e171]: 2026-09-02 22:08
+              - paragraph [ref=f17e172]: 近期私募股权基金跑输标普500指数——为何富人的投资未必更好
+            - link "CNBC 2026-09-02 22:00 美国航空继续推进高端化战略，推出重新设计的波音飞机" [ref=f17e173] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/american-airlines-flagship-suite.html
+              - generic [ref=f17e174]:
+                - generic [ref=f17e175]: CNBC
+                - generic [ref=f17e176]: 2026-09-02 22:00
+              - paragraph [ref=f17e177]: 美国航空继续推进高端化战略，推出重新设计的波音飞机
+            - link "CNBC 2026-09-02 20:51 吉姆·克莱默周三股市十大关注点" [ref=f17e178] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/jim-cramers-top-10-things-to-watch-in-the-stock-market-wednesday.html
+              - generic [ref=f17e179]:
+                - generic [ref=f17e180]: CNBC
+                - generic [ref=f17e181]: 2026-09-02 20:51
+              - paragraph [ref=f17e182]: 吉姆·克莱默周三股市十大关注点
+            - link "CNBC 2026-09-02 20:10 苹果股价出现了20年来未见的情况。以下是原因" [ref=f17e183] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/02/apple-shares-are-doing-something-they-havent-done-in-20-years-heres-whats-happening.html
+              - generic [ref=f17e184]:
+                - generic [ref=f17e185]: CNBC
+                - generic [ref=f17e186]: 2026-09-02 20:10
+              - paragraph [ref=f17e187]: 苹果股价出现了20年来未见的情况。以下是原因
+        - generic [ref=f17e188]:
+          - heading "热门美股" [level=2] [ref=f17e190]
+          - generic [ref=f17e191]:
+            - generic [ref=f17e192]:
+              - generic [ref=f17e193]:
+                - link "Apple Inc AAPL" [ref=f17e194] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=f17e195]: Apple Inc
+                  - generic [ref=f17e196]: AAPL
+                - generic [ref=f17e197]: …
+              - generic [ref=f17e198]:
+                - generic [ref=f17e199]: "325.71"
+                - generic [ref=f17e200]: +0.18%
+            - generic [ref=f17e201]:
+              - generic [ref=f17e202]:
+                - link "NVIDIA Corp NVDA" [ref=f17e203] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=f17e204]: NVIDIA Corp
+                  - generic [ref=f17e205]: NVDA
+                - generic [ref=f17e206]: …
+              - generic [ref=f17e207]:
+                - generic [ref=f17e208]: "225.02"
+                - generic [ref=f17e209]: +3.49%
+            - generic [ref=f17e210]:
+              - generic [ref=f17e211]:
+                - link "Microsoft Corp MSFT" [ref=f17e212] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=f17e213]: Microsoft Corp
+                  - generic [ref=f17e214]: MSFT
+                - generic [ref=f17e215]: …
+              - generic [ref=f17e216]:
+                - generic [ref=f17e217]: "496.17"
+                - generic [ref=f17e218]: "-0.97%"
+            - generic [ref=f17e219]:
+              - generic [ref=f17e220]:
+                - link "Alphabet Inc GOOGL" [ref=f17e221] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=f17e222]: Alphabet Inc
+                  - generic [ref=f17e223]: GOOGL
+                - generic [ref=f17e224]: …
+              - generic [ref=f17e225]:
+                - generic [ref=f17e226]: "338.36"
+                - generic [ref=f17e227]: +1.00%
+            - generic [ref=f17e228]:
+              - generic [ref=f17e229]:
+                - link "AMZN AMZN" [ref=f17e230] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=f17e231]: AMZN
+                  - generic [ref=f17e232]: AMZN
+                - generic [ref=f17e233]: …
+              - generic [ref=f17e234]:
+                - generic [ref=f17e235]: "0.00"
+                - generic [ref=f17e236]: +0.00%
+            - generic [ref=f17e237]:
+              - generic [ref=f17e238]:
+                - link "META META" [ref=f17e239] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=f17e240]: META
+                  - generic [ref=f17e241]: META
+                - generic [ref=f17e242]: …
+              - generic [ref=f17e243]:
+                - generic [ref=f17e244]: "0.00"
+                - generic [ref=f17e245]: +0.00%
+            - generic [ref=f17e246]:
+              - generic [ref=f17e247]:
+                - link "TSLA TSLA" [ref=f17e248] [cursor=pointer]:
+                  - /url: /stock/TSLA/
+                  - generic [ref=f17e249]: TSLA
+                  - generic [ref=f17e250]: TSLA
+                - generic [ref=f17e251]: …
+              - generic [ref=f17e252]:
+                - generic [ref=f17e253]: "0.00"
+                - generic [ref=f17e254]: +0.00%
+            - generic [ref=f17e255]:
+              - generic [ref=f17e256]:
+                - link "NFLX NFLX" [ref=f17e257] [cursor=pointer]:
+                  - /url: /stock/NFLX/
+                  - generic [ref=f17e258]: NFLX
+                  - generic [ref=f17e259]: NFLX
+                - generic [ref=f17e260]: …
+              - generic [ref=f17e261]:
+                - generic [ref=f17e262]: "0.00"
+                - generic [ref=f17e263]: +0.00%
+    - contentinfo [ref=f17e264]:
+      - generic [ref=f17e265]:
+        - generic [ref=f17e266]:
+          - generic [ref=f17e267]:
+            - generic [ref=f17e268]: 📊
+            - generic [ref=f17e270]: 爱看盘 · 每日复盘工具
+          - generic [ref=f17e271]:
+            - link "关于" [ref=f17e272] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f17e273] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f17e274] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f17e275] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f17e276] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f17e277]: 数据：Finnhub
+        - paragraph [ref=f17e278]: ⚠ 本站数据仅供参考，不构成投资建议
+  - navigation [ref=f17e279]:
+    - generic [ref=f17e280]:
+      - generic [ref=f17e281]:
+        - link "全部" [ref=f17e282] [cursor=pointer]:
+          - /url: /
+        - link "A股" [ref=f17e283] [cursor=pointer]:
+          - /url: /review/?market=cn
+        - link "美股" [ref=f17e284] [cursor=pointer]:
+          - /url: /review/?market=us
+      - generic [ref=f17e285]:
+        - link "市场" [ref=f17e286] [cursor=pointer]:
+          - /url: /market/?market=us
+        - link "复盘" [ref=f17e291] [cursor=pointer]:
+          - /url: /review/?market=us
+        - link "研究" [ref=f17e296] [cursor=pointer]:
+          - /url: /research/?market=us
+        - link "搜索" [ref=f17e302] [cursor=pointer]:
+          - /url: /search/?market=us
+        - link "盯盘" [ref=f17e307] [cursor=pointer]:
+          - /url: /alerts/?market=us

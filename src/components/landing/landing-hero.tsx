@@ -35,7 +35,7 @@ export function LandingHero() {
     <div className="relative min-h-screen bg-[#08080c] font-inter">
       {/* Hero 背景图 */}
       <img loading="lazy"
-        src="/images/ai-art/landing-hero-bg.png"
+        src="/images/ai-art/landing-hero-bg-v3.png"
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40"
@@ -75,7 +75,7 @@ export function LandingHero() {
             <br />
             <span
               style={{
-                background: "linear-gradient(90deg, #6C63FF 0%, #8F7BFF 50%, #A79BFF 100%)",
+                background: "linear-gradient(90deg, #5B52E8 0%, #7D74FF 50%, #9A93FF 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -92,11 +92,11 @@ export function LandingHero() {
           <div className="mt-10 flex flex-col items-center gap-3">
             <Link
               href="/market/?market=cn"
-              className="inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
+              className="inline-block rounded-xl bg-[#5B52E8] px-8 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-[#635BEE] hover:shadow-[0_0_24px_-4px_rgba(91,82,232,0.6)]"
             >
               免费使用 →
             </Link>
-            <p className="text-[12px] text-white/30">无需注册 · 游客即可访问</p>
+            <p className="text-[12px] text-white/60">无需注册 · 游客即可访问</p>
           </div>
         </div>
       </section>
@@ -139,7 +139,7 @@ export function LandingHero() {
             { icon: "📊", title: "实时行情", desc: "三大指数、29 个行业板块、涨跌停实时统计，盘中数据 30 秒刷新" },
             { icon: "🤖", title: "AI 诊断", desc: "输入股票代码，AI 秒出诊断报告：趋势研判、风险提示、资金分析" },
             { icon: "📝", title: "每日复盘", desc: "AI 自动生成每日复盘报告，含市场评分、强势行业、资讯研报" },
-            { icon: "🔔", title: "智能盯盘", desc: "自然语言创建盯盘任务，AI 解析条件实时监控，到价自动提醒" },
+            { icon: "🔔", title: "智能盯盘", desc: "自然语言创建盯盘任务，页面打开时轮询触发记录，并支持浏览器通知" },
             { icon: "🔍", title: "快速搜索", desc: "热门股票一键直达，代码搜索跳转个股详情页" },
             { icon: "📈", title: "TradingView", desc: "专业 K 线图，支持日线/周线/月线，技术指标一目了然" },
           ].map((f) => (
@@ -149,7 +149,7 @@ export function LandingHero() {
             >
               <div className="text-[28px]">{f.icon}</div>
               <h3 className="mt-3 text-[18px] font-semibold text-white">{f.title}</h3>
-              <p className="mt-1.5 text-[14px] leading-relaxed text-[#6a6a72]">{f.desc}</p>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-[#8A8A92]">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -159,17 +159,17 @@ export function LandingHero() {
         <div className="mx-auto flex max-w-[1200px] items-center gap-12">
           <div className="flex-1 text-left">
             <h2 className="text-[42px] font-semibold tracking-tight text-white">开始你的 AI 复盘</h2>
-            <p className="mt-3 text-[16px] text-[#6a6a72]">免费使用 · 无需注册 · 数据实时</p>
+            <p className="mt-3 text-[16px] text-[#8A8A92]">免费使用 · 无需注册 · 数据实时</p>
             <Link
               href="/market/?market=cn"
-              className="mt-8 inline-block rounded-xl bg-[#6C63FF] px-8 py-3.5 text-[16px] font-semibold text-white transition-all hover:bg-[#5B52E8] hover:shadow-[0_0_24px_-4px_rgba(108,99,255,0.6)]"
+              className="mt-8 inline-block rounded-xl bg-[#5B52E8] px-8 py-3.5 text-[16px] font-semibold text-white transition-all hover:bg-[#635BEE] hover:shadow-[0_0_24px_-4px_rgba(91,82,232,0.6)]"
             >
               免费使用 →
             </Link>
           </div>
           <div className="hidden flex-1 md:block">
             <img loading="lazy"
-              src="/images/ai-art/landing-cta-decoration.png"
+              src="/images/ai-art/landing-cta-decoration-v3.png"
               alt=""
               aria-hidden
               className="w-full rounded-2xl opacity-80"

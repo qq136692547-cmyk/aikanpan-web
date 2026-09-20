@@ -1,0 +1,116 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [ref=e13]
+            - tab "美股" [selected] [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e17] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=e18] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=e19] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=e20] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=e21] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=e22]:
+          - link "升级 Pro" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e26]: 会员
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "研究" [level=1] [ref=e41]
+          - generic [ref=e42]: 美股
+        - paragraph [ref=e43]: 自选股、盘前计划、公司档案与投资论点
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e47]:
+            - link "持仓工具" [ref=e48] [cursor=pointer]:
+              - /url: /portfolio?market=us
+            - button "导出 Markdown" [ref=e49]
+          - generic [ref=e50]:
+            - button "自选" [ref=e51]
+            - button "盘前计划" [ref=e52]
+            - button "公司档案" [ref=e53]
+            - button "投资论点" [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - heading "自选股" [level=2] [ref=e57]
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - textbox "代码，如 AAPL" [ref=e60]
+                - textbox "名称（可选）" [ref=e61]
+                - button "添加" [ref=e62]
+              - button "自选加入计划" [ref=e63]
+              - button "AI 评分" [ref=e64]
+              - generic [ref=e65]: 0 只
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: 从热门股票开始，或直接输入代码添加
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - link "苹果 AAPL · 326.14 · +0.31%" [ref=e70] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=e71]: 苹果
+                  - generic [ref=e72]: AAPL · 326.14 · +0.31%
+                - button "加入" [ref=e73]
+              - generic [ref=e74]:
+                - link "英伟达 NVDA · 224.70 · +3.34%" [ref=e75] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=e76]: 英伟达
+                  - generic [ref=e77]: NVDA · 224.70 · +3.34%
+                - button "加入" [ref=e78]
+              - generic [ref=e79]:
+                - link "微软 MSFT · 497.75 · -0.65%" [ref=e80] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=e81]: 微软
+                  - generic [ref=e82]: MSFT · 497.75 · -0.65%
+                - button "加入" [ref=e83]
+              - generic [ref=e84]:
+                - link "谷歌 GOOGL · 338.01 · +0.89%" [ref=e85] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=e86]: 谷歌
+                  - generic [ref=e87]: GOOGL · 338.01 · +0.89%
+                - button "加入" [ref=e88]
+              - generic [ref=e89]:
+                - link "亚马逊 AMZN · 255.12 · +0.08%" [ref=e90] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=e91]: 亚马逊
+                  - generic [ref=e92]: AMZN · 255.12 · +0.08%
+                - button "加入" [ref=e93]
+              - generic [ref=e94]:
+                - link "Meta META · 592.43 · +2.40%" [ref=e95] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=e96]: Meta
+                  - generic [ref=e97]: META · 592.43 · +2.40%
+                - button "加入" [ref=e98]
+    - contentinfo [ref=e99]:
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]: 📊
+            - generic [ref=e105]: 爱看盘 · 每日复盘工具
+          - generic [ref=e106]:
+            - link "关于" [ref=e107] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e108] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e109] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e110] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e111] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e112]: 数据：Finnhub
+        - paragraph [ref=e113]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e114]

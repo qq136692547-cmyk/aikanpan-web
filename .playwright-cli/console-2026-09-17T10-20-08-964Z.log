@@ -1,0 +1,267 @@
+[    9918ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/daily-review' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9919ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/daily-review. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9975ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/workbench/temperature' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9975ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/workbench/temperature. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9976ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[    9976ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[    9977ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9978ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9980ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9980ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[    9982ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   19922ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/daily-review' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   19922ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/daily-review. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26699ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/daily-review' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26699ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/daily-review. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26703ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/workbench/temperature' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26703ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/workbench/temperature. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26704ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[   26704ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[   26705ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26706ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26706ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26707ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   26708ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   30546ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/0kp7zji6twp8w.js:0
+[   30547ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/0kp7zji6twp8w.js:0
+[   30548ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   30549ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   30551ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   34041ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   34041ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   34042ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38843ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/stocks/600519/quote' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38843ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/stocks/600519/quote. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38855ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/stocks/600519/history' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38856ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/stocks/600519/history. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38857ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38857ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   38860ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   42213ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   42214ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   42215ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   47258ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   47258ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   47259ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   53529ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/workbench/review-status' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   53530ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/workbench/review-status. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   53532ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/1ah_zd8yp652_.js:0
+[   53532ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/1ah_zd8yp652_.js:0
+[   53532ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   53533ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   53534ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   56997ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   56998ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   56999ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60337ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/daily-review' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60337ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/daily-review. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60339ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/workbench/temperature' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60340ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/workbench/temperature. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60340ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[   60341ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/1lthb6pla0k9a.js:0
+[   60341ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/us/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60342ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/us/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60342ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60343ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   60345ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   63647ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/0kp7zji6twp8w.js:0
+[   63648ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/0kp7zji6twp8w.js:0
+[   63649ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   63649ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   63651ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   66976ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   66976ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   66977ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70211ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/stocks/600519/history' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70212ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/stocks/600519/history. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70212ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70212ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70214ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70225ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/stocks/600519/quote' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   70225ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/stocks/600519/quote. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   73417ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   73418ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   73419ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   76613ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   76613ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   76615ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   79897ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/workbench/review-status' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   79898ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/workbench/review-status. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   79902ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/cn/earnings-calendar' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/1ah_zd8yp652_.js:0
+[   79903ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/cn/earnings-calendar. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/1ah_zd8yp652_.js:0
+[   79903ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   79904ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   79906ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   83195ms] [ERROR] Connecting to 'https://aikanpan.top/api/v1/auth/guest-login' violates the following Content Security Policy directive: "connect-src 'self' https://hm.baidu.com". The action has been blocked. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   83195ms] [ERROR] Fetch API cannot load https://aikanpan.top/api/v1/auth/guest-login. Refused to connect because it violates the document's Content Security Policy. @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0
+[   83196ms] [ERROR] [auth] guest login failed: TypeError: Failed to fetch
+    at o (http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29340)
+    at http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:1:29921
+    at iw (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:118602)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142744)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789)
+    at uh (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142406)
+    at ug (http://localhost:3100/_next/static/chunks/2n66mlnb34vjq.js:1:142789) @ http://localhost:3100/_next/static/chunks/2mhfr8wilo73g.js:0

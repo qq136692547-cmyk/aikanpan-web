@@ -4,7 +4,8 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
-import { api, type AIComment } from "@/lib/api";
+import { api, type AIComment, type StockReport } from "@/lib/api";
+import { AIEvidencePanel } from "./ai-evidence-panel";
 
 /** 从 content 末尾提取评分和状态 */
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
@@ -23,6 +24,29 @@ function stripTrailingMeta(content: string): string {
     .replace(/\n*\*\*评分\*\*[:：]\s*\d+\/10\s*/m, "")
     .replace(/\n*\*\*状态\*\*[:：]\s*.+$/m, "")
     .trim();
+}
+
+type ReportSection = {
+  key: string;
+  title: string;
+  body?: string | null;
+  items?: string[];
+};
+
+function buildReportSections(report: StockReport | null | undefined): ReportSection[] {
+  if (!report) return [];
+  const sections: ReportSection[] = [];
+  if (report.one_sentence) sections.push({ key: "conclusion", title: "核心结论", body: report.one_sentence });
+  if (report.trend) sections.push({ key: "trend", title: "趋势判断", body: report.trend });
+  if (report.technical) sections.push({ key: "technical", title: "技术面", body: report.technical });
+  if (report.valuation) sections.push({ key: "valuation", title: "估值与盘口", body: report.valuation });
+  if (report.risks?.length) sections.push({ key: "risks", title: "风险提示", items: report.risks });
+  if (report.positives?.length) sections.push({ key: "positives", title: "积极因素", items: report.positives });
+  const advice: string[] = [];
+  if (report.holders_advice) advice.push(`持有者：${report.holders_advice}`);
+  if (report.watchers_advice) advice.push(`观望者：${report.watchers_advice}`);
+  if (advice.length) sections.push({ key: "advice", title: "操作视角", items: advice });
+  return sections;
 }
 
 const scoreColor = (score: number): { bg: string; text: string } => {
@@ -55,7 +79,6 @@ export function AIComment({ code }: { code: string }) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setData(result);
       setState("done");
-      api.saveAIHistory({ code, name: result.name, content: result.content, model: result.model, generated_at: result.generated_at }).catch(() => {});
     } catch (e: unknown) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setError(e instanceof Error ? e.message : "AI 分析请求失败");
@@ -141,7 +164,11 @@ export function AIComment({ code }: { code: string }) {
   }
 
   // done
-  const { score, status } = parseScoreAndStatus(data!.content);
+  const parsed = parseScoreAndStatus(data!.content);
+  const report = data!.report ?? null;
+  const score = report?.score ?? parsed.score;
+  const status = report?.status ?? parsed.status;
+  const sections = buildReportSections(report);
   const body = stripTrailingMeta(data!.content);
   const sc = score !== null ? scoreColor(score) : null;
 
@@ -184,13 +211,39 @@ export function AIComment({ code }: { code: string }) {
         </div>
       )}
 
-      {/* Markdown 内容 */}
-      <div className="ai-markdown mt-4 text-sm leading-relaxed text-neo-ink">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
-      </div>
+      {/* 结构化报告优先，旧响应回退到 Markdown */}
+      {sections.length > 0 ? (
+        <div className="mt-4 space-y-4">
+          {sections.map((section) => (
+            <section key={section.key}>
+              <h3 className="mb-1.5 flex items-center gap-2 text-[13px] font-semibold text-neo-ink">
+                <span className="h-1.5 w-1.5 rounded-full bg-neo-primary" />
+                {section.title}
+              </h3>
+              {section.body && <p className="text-sm leading-relaxed text-neo-ink">{section.body}</p>}
+              {section.items && (
+                <ul className="space-y-1 text-sm leading-relaxed text-neo-ink">
+                  {section.items.map((item, index) => (
+                    <li key={index} className="flex gap-2">
+                      <span className="text-neo-primary">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="ai-markdown mt-4 text-sm leading-relaxed text-neo-ink">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+        </div>
+      )}
+
+      <AIEvidencePanel evidence={data!.evidence} />
 
       <p className="mt-4 pt-3 text-[11px] text-neo-dim">
-        ⚠ 本内容由 AI 生成，不构成投资建议
+        ⚠ {report?.disclaimer || "本内容由 AI 生成，不构成投资建议"}
       </p>
     </div>
   );

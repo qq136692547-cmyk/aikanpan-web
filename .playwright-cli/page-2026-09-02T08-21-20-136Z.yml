@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e10]:
+          - tablist "市场范围" [ref=e11]:
+            - tab "全部" [ref=e12]
+            - tab "A股" [selected] [ref=e13]
+            - tab "美股" [ref=e14]
+          - navigation "功能导航" [ref=e16]:
+            - link "市场" [ref=e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=e22]:
+          - link "升级 Pro" [ref=e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e26]: 会员
+          - link "登录 / 注册" [ref=e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e32]
+    - main [ref=e36]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "盯盘" [level=1] [ref=e41]
+          - generic [ref=e42]: A股
+        - paragraph [ref=e43]: 用自然语言创建盯盘条件，AI 自动解析并持续监控
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 智能盯盘
+          - heading "自然语言创建或组合条件" [level=3] [ref=e48]
+        - generic [ref=e49]:
+          - textbox "输入盯盘条件，如「茅台跌破1500且涨幅超2%」" [ref=e50]
+          - button "解析" [disabled] [ref=e51]
+        - generic [ref=e52]:
+          - button "帮我盯着茅台跌破1500" [ref=e53]
+          - button "宁德时代涨到250提醒我" [ref=e54]
+          - button "比亚迪涨幅超过5%通知我" [ref=e55]
+          - button "腾讯跌破300" [ref=e56]
+          - button "+ 手动组合条件" [ref=e146]
+        - generic [ref=e147]: ✅ 已创建盯盘任务：sh.600519（1 个条件）
+      - generic [ref=e59]:
+        - heading "通知设置" [level=3] [ref=e64]
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e70]:
+              - generic [ref=e71]: 浏览器通知
+              - generic [ref=e72]: 触发时在桌面弹出提醒
+            - checkbox "浏览器通知开关" [ref=e74]
+          - generic [ref=e76]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: 短信通知
+              - generic [ref=e82]: 绑定手机号后可开启
+            - checkbox "短信通知开关" [disabled] [ref=e84]
+      - generic [ref=e87]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - heading "盯盘任务" [level=3] [ref=e109]
+            - generic [ref=e110]: 实时
+            - generic [ref=e148]: (1)
+          - generic [ref=e151]:
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - link "贵州茅台" [ref=e154] [cursor=pointer]:
+                  - /url: /stock/sh600519/
+                - generic [ref=e155]: sh.600519
+                - generic [ref=e156]: 运行中
+              - generic [ref=e157]:
+                - text: 价格 ≤ 1500
+                - generic [ref=e158]: — 帮我盯着茅台跌破1500
+              - generic [ref=e159]: "创建: 2026-09-02T16:21:19"
+            - button "删除" [ref=e161]
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - heading "自然语言创建" [level=3] [ref=e116]
+            - paragraph [ref=e117]: 输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值
+          - generic [ref=e118]:
+            - heading "实时监控" [level=3] [ref=e119]
+            - paragraph [ref=e120]: 后台持续轮询行情数据，条件满足时立即触发通知
+          - generic [ref=e121]:
+            - heading "多渠道提醒" [level=3] [ref=e122]
+            - paragraph [ref=e123]: 支持微信订阅消息推送，触发记录可追溯
+    - contentinfo [ref=e91]:
+      - generic [ref=e92]:
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]: 📊
+            - generic [ref=e97]: 爱看盘 · 每日复盘工具
+          - generic [ref=e98]:
+            - link "关于" [ref=e99] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e100] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e101] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e102] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e103] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e104]: 数据：东方财富
+        - paragraph [ref=e105]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=e106]

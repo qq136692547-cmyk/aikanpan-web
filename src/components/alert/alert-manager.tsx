@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 import { api, type AlertItem } from "@/lib/api";
 import { type MarketScope } from "@/lib/market";
@@ -36,22 +36,30 @@ function conditionLabel(cond: string): string {
 }
 
 function stockHrefFor(item: { code: string; market?: string }): string {
+  if (item.market === "hk") return `/stock/${item.code.replace(/\.HK$/i, "").padStart(5, "0")}/`;
   return item.market === "us" ? `/stock/${item.code}/` : `/stock/${item.code.replace(/\./, "")}/`;
 }
 
 export function AlertManager({ market = "all" }: { market?: MarketScope }) {
-  const activeMarket: "cn" | "us" | undefined = market === "us" ? "us" : market === "cn" ? "cn" : undefined;
-  const { isAuthenticated } = useAuth();
+  const activeMarket: "cn" | "hk" | "us" | undefined = market === "us" ? "us" : market === "hk" ? "hk" : market === "cn" ? "cn" : undefined;
+  const marketLabel = market === "us" ? "美股" : market === "hk" ? "港股" : market === "cn" ? "A股" : "";
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
   const [deleting, setDeleting] = useState<string | null>(null);
-  const { data: alertData, error, isLoading, mutate } = useSWR(["alerts", market], () => api.getAlerts(activeMarket), { refreshInterval: 15000 });
-  const { data: historyData, mutate: mutateHistory } = useSWR(["alert-history", market], () =>
-    api.getAlertHistory(activeMarket).catch(() => ({ alerts: [], count: 0 })),
+  const { data: alertData, error, isLoading, mutate } = useSWR(
+    ready && user ? ["alerts", market, user.user_id] : null,
+    () => api.getAlerts(activeMarket),
     { refreshInterval: 15000 }
   );
-  const { data: settings } = useSWR(isAuthenticated ? "alert-settings" : null, () => api.getAlertSettings(), { refreshInterval: 30000 });
+  const { data: historyData, error: historyError, mutate: mutateHistory } = useSWR(
+    ready && user ? ["alert-history", market, user.user_id] : null,
+    () => api.getAlertHistory(activeMarket),
+    { refreshInterval: 15000 }
+  );
+  const { data: settings } = useSWR(ready && user ? ["alert-settings", user.user_id] : null, () => api.getAlertSettings(), { refreshInterval: 30000 });
 
   const alerts = alertData?.alerts || [];
-  const history = historyData?.alerts || [];
+  const history = useMemo(() => historyData?.alerts || [], [historyData]);
   const seenHistory = useRef<Set<string>>(new Set());
   const historyInitialized = useRef(false);
 
@@ -76,7 +84,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
       seenHistory.current.add(h.id);
       if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
         new Notification(`盯盘提醒：${h.name}`, {
-          body: `${h.code} ${h.conditions?.length ? "多条件" : h.condition} ${h.threshold}，最新价 ${h.last_value ?? h.price_at_trigger ?? "-"}${h.market === "us" ? " USD" : ""}`, 
+          body: `${h.code} ${h.conditions?.length ? "多条件" : h.condition} ${h.threshold}，最新价 ${h.last_value ?? h.price_at_trigger ?? "-"}${h.market === "us" ? " USD" : h.market === "hk" ? " HKD" : ""}`,
         });
       }
     }
@@ -96,7 +104,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     }
   }
 
-  if (isLoading) {
+  if (authLoading || isLoading) {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
@@ -104,6 +112,10 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
         ))}
       </div>
     );
+  }
+
+  if (!user) {
+    return <ErrorState title="账户初始化失败" description="请刷新页面后重试；当前不会读取匿名盯盘数据。" onRetry={() => window.location.reload()} />;
   }
 
   if (error) {
@@ -114,14 +126,14 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     <div className="space-y-4">
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <h3 className="text-sm font-semibold text-neo-ink">盯盘任务{market === "us" ? " · 美股" : ""}</h3>
-          <span className="text-[10px] font-medium text-neo-dim">实时</span>
+          <h3 className="text-sm font-semibold text-neo-ink">盯盘任务{marketLabel ? ` · ${marketLabel}` : ""}</h3>
+          <span className="text-[10px] font-medium text-neo-dim">页面轮询</span>
           {alerts.length > 0 && <span className="text-xs text-neo-dim">({alerts.length})</span>}
         </div>
         {alerts.length === 0 ? (
           <EmptyState title="暂无盯盘任务" description="在上方输入自然语言，或手动组合价格/涨跌幅/成交量条件" />
         ) : (
-          <div className="neo-card-sm overflow-hidden">
+          <div className="neo-card overflow-hidden rounded-2xl">
             <div className="divide-y divide-[var(--neo-edge)]">
               {alerts.map((alert) => {
                 const isActive = alert.active !== false && !alert.triggered_at;
@@ -135,7 +147,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
                           {alert.name}
                         </a>
                         <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{alert.code}</span>
-                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{alert.market === "us" ? "美股" : "A股"}</span>}
+                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{alert.market === "us" ? "美股" : alert.market === "hk" ? "港股" : "A股"}</span>}
                         <StatusBadge active={isActive} triggered={isTriggered} />
                       </div>
                       <div className="mt-0.5 text-xs text-neo-mid">
@@ -151,7 +163,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
                     <button
                       onClick={() => handleDelete(alert.id)}
                       disabled={deleting === alert.id}
-                      className="shrink-0 rounded-md px-2 py-1 text-xs text-neo-dim transition-colors hover:text-neo-down disabled:opacity-40"
+                      className="min-h-11 shrink-0 rounded-md px-2 py-1 text-xs text-neo-dim transition-colors hover:text-neo-down disabled:opacity-40"
                     >
                       {deleting === alert.id ? "删除中…" : "删除"}
                     </button>
@@ -163,13 +175,20 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
         )}
       </div>
 
+      {historyError && (
+        <div className="neo-card-sm flex flex-wrap items-center justify-between gap-2 px-4 py-3">
+          <span className="text-xs text-neo-down">触发历史加载失败</span>
+          <button onClick={() => mutateHistory()} className="inline-flex min-h-11 items-center text-xs text-neo-primary">重试</button>
+        </div>
+      )}
+
       {history.length > 0 && (
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <h3 className="text-sm font-semibold text-neo-ink">触发历史{market === "us" ? " · 美股" : ""}</h3>
+            <h3 className="text-sm font-semibold text-neo-ink">触发历史{marketLabel ? ` · ${marketLabel}` : ""}</h3>
             <span className="text-xs text-neo-dim">({history.length})</span>
           </div>
-          <div className="neo-card-sm overflow-hidden">
+          <div className="neo-card overflow-hidden rounded-2xl">
             <div className="divide-y divide-[var(--neo-edge)]">
               {history.map((h) => {
                 const stockHref = stockHrefFor(h);
@@ -181,7 +200,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
                           {h.name}
                         </a>
                         <span style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-[10px] text-neo-dim">{h.code}</span>
-                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{h.market === "us" ? "美股" : "A股"}</span>}
+                        {market === "all" && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">{h.market === "us" ? "美股" : h.market === "hk" ? "港股" : "A股"}</span>}
                       </div>
                       <div className="mt-0.5 text-xs text-neo-mid">
                         {h.conditions?.length
@@ -202,15 +221,15 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
       <section className="neo-card mt-4 grid grid-cols-1 gap-2 p-4 sm:grid-cols-3">
         <div className="neo-inset p-4">
           <h3 className="text-[12px] font-medium text-neo-ink">自然语言创建</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">{market === "us" ? "输入「苹果跌到180」，AI 自动解析股票代码、条件和阈值" : "输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值"}</p>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">{market === "us" ? "输入「苹果跌到180」，AI 自动解析股票代码、条件和阈值" : market === "hk" ? "输入「腾讯跌到400」，AI 自动解析股票代码、条件和阈值" : "输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值"}</p>
         </div>
         <div className="neo-inset p-4">
-          <h3 className="text-[12px] font-medium text-neo-ink">实时监控</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">后台持续轮询行情数据，条件满足时立即触发通知</p>
+          <h3 className="text-[12px] font-medium text-neo-ink">页面轮询</h3>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">页面打开时每 15 秒刷新触发记录；关闭页面后浏览器通知停止</p>
         </div>
         <div className="neo-inset p-4">
           <h3 className="text-[12px] font-medium text-neo-ink">多渠道提醒</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">支持微信订阅消息推送，触发记录可追溯</p>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">绑定手机号并开启短信后，可由服务端发送短信；触发记录保存在历史中</p>
         </div>
       </section>
     </div>
@@ -219,10 +238,26 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
 
 function StatusBadge({ active, triggered }: { active: boolean; triggered: boolean }) {
   if (triggered) {
-    return <span className="rounded px-1.5 py-0.5 text-[10px] font-medium neo-down-soft text-neo-down">已触发</span>;
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold bg-rose-50 text-rose-600 border border-rose-200/60 shadow-xs">
+        <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
+        已触发
+      </span>
+    );
   }
   if (active) {
-    return <span className="rounded px-1.5 py-0.5 text-[10px] font-medium neo-up-soft text-neo-up">运行中</span>;
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200/60 shadow-xs">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        监控中
+      </span>
+    );
   }
-  return <span className="rounded px-1.5 py-0.5 text-[10px] font-medium bg-[var(--neo-surface-inset)] text-neo-dim">已禁用</span>;
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-neo-bg-dim text-neo-dim border border-white/40">
+      <span className="h-1.5 w-1.5 rounded-full bg-neo-dim/40" />
+      已停用
+    </span>
+  );
 }
+

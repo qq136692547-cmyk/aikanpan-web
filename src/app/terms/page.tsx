@@ -7,6 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "用户协议",
   description: "爱看盘网站用户协议，说明服务内容、账号数据、AI 内容、数据授权与免责声明。",
+  alternates: { canonical: "/terms/" },
 };
 
 const sections = [
@@ -16,7 +17,11 @@ const sections = [
   },
   {
     title: "账号与数据",
-    content: "首次访问会自动创建游客账号，自选股、计划、持仓、复盘笔记等数据会同步至服务器（https://aikanpan.top/api/v1）。绑定手机号后可用于跨设备登录与恢复；未绑定手机号时，只能通过当前设备的登录状态访问。",
+    content: "首次访问会自动创建游客账号，自选股、计划、持仓、复盘笔记等数据会同步至服务器（https://aikanpan.top/api/v1）。绑定邮箱或手机号后可用于跨设备登录与恢复；未绑定邮箱或手机号时，只能通过当前设备的登录状态访问。",
+  },
+  {
+    title: "付费与激活",
+    content: "Pro 当前通过闲鱼人工购买时长卡激活码，非自动续费订阅。购买和激活前，用户须绑定邮箱或手机号；激活码一次性使用，开通后按自然日累计时长，不自动扣款，到期后回到免费版。未激活激活码的售后以商品页说明为准。",
   },
   {
     title: "AI 内容",
@@ -63,7 +68,7 @@ export default function TermsPage() {
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-6">
         <section className="neo-fade-up">
           <h1 className="text-xl font-bold text-neo-ink">用户协议</h1>
-          <p className="mt-2 text-sm text-neo-mid">更新日期：2026 年 8 月 8 日</p>
+          <p className="mt-2 text-sm text-neo-mid">更新日期：2026 年 9 月 12 日</p>
         </section>
 
         <section className="mt-6 space-y-4">

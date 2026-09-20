@@ -1,0 +1,282 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - navigation [ref=f1e4]:
+        - link "爱看盘" [ref=f1e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e10]:
+          - tablist "市场范围" [ref=f1e11]:
+            - tab "全部" [ref=f1e12]
+            - tab "A股" [ref=f1e13]
+            - tab "美股" [active] [selected] [ref=f1e14]
+          - navigation "功能导航" [ref=f1e16]:
+            - link "市场" [ref=f1e944] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=f1e945] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=f1e946] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=f1e947] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=f1e948] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=f1e22]:
+          - link "会员" [ref=f1e23] [cursor=pointer]:
+            - /url: /upgrade/
+          - link "登录 / 注册" [ref=f1e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f1e32]
+    - main [ref=f1e36]:
+      - generic [ref=f1e949]:
+        - generic [ref=f1e951]:
+          - generic [ref=f1e952]:
+            - generic [ref=f1e953]:
+              - generic [ref=f1e954]: 美股 AI 复盘
+              - generic [ref=f1e955]: 2026-09-01 21:57
+              - generic [ref=f1e956]: 缓存
+            - button "重新生成" [ref=f1e957]
+          - generic [ref=f1e963]:
+            - generic [ref=f1e964]:
+              - generic [ref=f1e965]: "7"
+              - generic [ref=f1e966]: /10
+            - generic [ref=f1e967]: 谨慎观望
+          - generic [ref=f1e968]:
+            - paragraph [ref=f1e969]: 今日美股三大指数全线收跌，科技权重股普遍承压，市场风险偏好明显回落。
+            - paragraph [ref=f1e970]:
+              - strong [ref=f1e971]: 指数表现
+              - text: 标普500跌0.69%，道指跌0.55%，纳指跌幅最大达1.29%。成长股领跌，显示资金对高估值板块的担忧加剧。
+            - paragraph [ref=f1e972]:
+              - strong [ref=f1e973]: 个股分化
+              - text: 苹果逆势上涨1.33%，成为科技巨头中唯一红盘，显示资金对部分龙头仍有配置意愿。特斯拉跌幅超2.5%居科技股首位，亚马逊、英伟达、微软均跌超1%。Netflix基本持平，防御属性相对突出。
+            - paragraph [ref=f1e974]:
+              - strong [ref=f1e975]: 核心驱动
+              - text: 10年期美债收益率升至2025年1月以来高位，对成长股估值形成压制。中东地缘冲突升级推动油价上涨，抵押贷款利率同步走高至2025年6月以来峰值，宏观环境对风险资产构成双重压力。Citadel提示当前风险收益比恶化，历史数据显示本月往往表现疲软。
+            - paragraph [ref=f1e976]:
+              - strong [ref=f1e977]: 操作参考
+              - text: 当前宏观扰动加大，建议控制仓位、避免追高，关注财报季中基本面扎实的个股。苹果今日相对强势，可观察其能否延续抗跌性。
+          - paragraph [ref=f1e978]: ⚠ 本内容由 AI 生成，不构成投资建议
+        - generic [ref=f1e979]:
+          - link "标普500 ETF 762.79 -0.56%" [ref=f1e980] [cursor=pointer]:
+            - /url: /stock/SPY/
+            - generic [ref=f1e981]: 标普500 ETF
+            - generic [ref=f1e982]: "762.79"
+            - generic [ref=f1e983]: "-0.56%"
+          - link "纳指100 ETF 708.27 -1.18%" [ref=f1e984] [cursor=pointer]:
+            - /url: /stock/QQQ/
+            - generic [ref=f1e985]: 纳指100 ETF
+            - generic [ref=f1e986]: "708.27"
+            - generic [ref=f1e987]: "-1.18%"
+          - link "道琼斯 ETF 529.55 -0.38%" [ref=f1e988] [cursor=pointer]:
+            - /url: /stock/DIA/
+            - generic [ref=f1e989]: 道琼斯 ETF
+            - generic [ref=f1e990]: "529.55"
+            - generic [ref=f1e991]: "-0.38%"
+          - generic [ref=f1e992]:
+            - generic [ref=f1e993]: 市场情绪
+            - generic [ref=f1e994]: "29"
+            - generic [ref=f1e997]:
+              - generic [ref=f1e998]: 指数动量 -0.71%
+              - generic [ref=f1e999]: 上涨板块 2/6
+              - generic [ref=f1e1000]: VIX +1.6%
+        - generic [ref=f1e1001]:
+          - generic [ref=f1e1002]:
+            - heading "板块表现" [level=2] [ref=f1e1003]
+            - generic [ref=f1e1004]: Sector ETF
+          - generic [ref=f1e1005]:
+            - link "科技-1.50%" [ref=f1e1006] [cursor=pointer]:
+              - /url: /stock/XLK/
+            - link "金融-0.12%" [ref=f1e1007] [cursor=pointer]:
+              - /url: /stock/XLF/
+            - link "医疗+0.84%" [ref=f1e1008] [cursor=pointer]:
+              - /url: /stock/XLV/
+            - link "能源+0.84%" [ref=f1e1009] [cursor=pointer]:
+              - /url: /stock/XLE/
+            - link "消费-1.37%" [ref=f1e1010] [cursor=pointer]:
+              - /url: /stock/XLY/
+            - link "工业-0.70%" [ref=f1e1011] [cursor=pointer]:
+              - /url: /stock/XLI/
+        - generic [ref=f1e1012]:
+          - heading "近期财报" [level=2] [ref=f1e1013]
+          - generic [ref=f1e1014]:
+            - link "AAPL 2027-01-27 EPS 预估 $2.96" [ref=f1e1015] [cursor=pointer]:
+              - /url: /stock/AAPL/
+              - generic [ref=f1e1016]: AAPL
+              - generic [ref=f1e1017]: 2027-01-27
+              - generic [ref=f1e1018]: EPS 预估 $2.96
+            - link "NVDA 2027-02-23 EPS 预估 $2.77" [ref=f1e1019] [cursor=pointer]:
+              - /url: /stock/NVDA/
+              - generic [ref=f1e1020]: NVDA
+              - generic [ref=f1e1021]: 2027-02-23
+              - generic [ref=f1e1022]: EPS 预估 $2.77
+            - link "MSFT 2027-01-26 EPS 预估 $4.95" [ref=f1e1023] [cursor=pointer]:
+              - /url: /stock/MSFT/
+              - generic [ref=f1e1024]: MSFT
+              - generic [ref=f1e1025]: 2027-01-26
+              - generic [ref=f1e1026]: EPS 预估 $4.95
+            - link "GOOGL 2027-02-02 EPS 预估 $3.44" [ref=f1e1027] [cursor=pointer]:
+              - /url: /stock/GOOGL/
+              - generic [ref=f1e1028]: GOOGL
+              - generic [ref=f1e1029]: 2027-02-02
+              - generic [ref=f1e1030]: EPS 预估 $3.44
+            - link "AMZN 2027-02-03 EPS 预估 $2.49" [ref=f1e1031] [cursor=pointer]:
+              - /url: /stock/AMZN/
+              - generic [ref=f1e1032]: AMZN
+              - generic [ref=f1e1033]: 2027-02-03
+              - generic [ref=f1e1034]: EPS 预估 $2.49
+            - link "META 2027-01-26 EPS 预估 $8.40" [ref=f1e1035] [cursor=pointer]:
+              - /url: /stock/META/
+              - generic [ref=f1e1036]: META
+              - generic [ref=f1e1037]: 2027-01-26
+              - generic [ref=f1e1038]: EPS 预估 $8.40
+            - link "TSLA 2027-01-26 EPS 预估 $0.48" [ref=f1e1039] [cursor=pointer]:
+              - /url: /stock/TSLA/
+              - generic [ref=f1e1040]: TSLA
+              - generic [ref=f1e1041]: 2027-01-26
+              - generic [ref=f1e1042]: EPS 预估 $0.48
+            - link "NFLX 2027-01-18 EPS 预估 $0.75" [ref=f1e1043] [cursor=pointer]:
+              - /url: /stock/NFLX/
+              - generic [ref=f1e1044]: NFLX
+              - generic [ref=f1e1045]: 2027-01-18
+              - generic [ref=f1e1046]: EPS 预估 $0.75
+        - generic [ref=f1e1047]:
+          - heading "市场资讯" [level=2] [ref=f1e1048]
+          - generic [ref=f1e1049]:
+            - link "CNBC 2026-09-01 20:59 吉姆·克莱默周二股市十大关注事项" [ref=f1e1050] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/jim-cramers-top-10-things-to-watch-in-the-stock-market-tuesday.html
+              - generic [ref=f1e1051]:
+                - generic [ref=f1e1052]: CNBC
+                - generic [ref=f1e1053]: 2026-09-01 20:59
+              - paragraph [ref=f1e1054]: 吉姆·克莱默周二股市十大关注事项
+            - link "CNBC 2026-09-01 18:47 中东紧张局势重回焦点，10年期收益率升至2025年1月以来最高" [ref=f1e1055] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/09/01/bonds-treasury-yields-middle-east-tensions.html
+              - generic [ref=f1e1056]:
+                - generic [ref=f1e1057]: CNBC
+                - generic [ref=f1e1058]: 2026-09-01 18:47
+              - paragraph [ref=f1e1059]: 中东紧张局势重回焦点，10年期收益率升至2025年1月以来最高
+            - link "CNBC 2026-09-01 03:09 Citadel称：随着历来艰难月份开启，股市风险收益前景恶化" [ref=f1e1060] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/08/31/risk-reward-outlook-for-stocks-is-getting-worse-says-citadel.html
+              - generic [ref=f1e1061]:
+                - generic [ref=f1e1062]: CNBC
+                - generic [ref=f1e1063]: 2026-09-01 03:09
+              - paragraph [ref=f1e1064]: Citadel称：随着历来艰难月份开启，股市风险收益前景恶化
+            - link "CNBC 2026-09-01 02:27 礼来利用肥胖药物红利加码并购；另，埃隆·马斯克言论拖累GE Vernova走低" [ref=f1e1065] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/08/31/lilly-taps-obesity-windfall-for-more-ma-plus-elon-musk-remarks-pull-ge-vernova-lower.html
+              - generic [ref=f1e1066]:
+                - generic [ref=f1e1067]: CNBC
+                - generic [ref=f1e1068]: 2026-09-01 02:27
+              - paragraph [ref=f1e1069]: 礼来利用肥胖药物红利加码并购；另，埃隆·马斯克言论拖累GE Vernova走低
+            - link "CNBC 2026-09-01 01:56 新一轮中东袭击推高油价，房贷利率升至2025年6月以来最高" [ref=f1e1070] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/08/31/mortgage-rates-surge-middle-east-attacks-oil.html
+              - generic [ref=f1e1071]:
+                - generic [ref=f1e1072]: CNBC
+                - generic [ref=f1e1073]: 2026-09-01 01:56
+              - paragraph [ref=f1e1074]: 新一轮中东袭击推高油价，房贷利率升至2025年6月以来最高
+            - link "CNBC 2026-09-01 01:20 特朗普据悉计划宣布与近十家药企达成新药品定价协议" [ref=f1e1075] [cursor=pointer]:
+              - /url: https://www.cnbc.com/2026/08/31/trump-drug-pricing-deals.html
+              - generic [ref=f1e1076]:
+                - generic [ref=f1e1077]: CNBC
+                - generic [ref=f1e1078]: 2026-09-01 01:20
+              - paragraph [ref=f1e1079]: 特朗普据悉计划宣布与近十家药企达成新药品定价协议
+        - generic [ref=f1e1080]:
+          - heading "热门美股" [level=2] [ref=f1e1082]
+          - generic [ref=f1e1083]:
+            - generic [ref=f1e1084]:
+              - generic [ref=f1e1085]:
+                - link "Apple Inc AAPL" [ref=f1e1086] [cursor=pointer]:
+                  - /url: /stock/AAPL/
+                  - generic [ref=f1e1087]: Apple Inc
+                  - generic [ref=f1e1088]: AAPL
+                - button "加自选" [ref=f1e1089]
+              - generic [ref=f1e1090]:
+                - generic [ref=f1e1091]: "322.53"
+                - generic [ref=f1e1092]: +1.79%
+            - generic [ref=f1e1093]:
+              - generic [ref=f1e1094]:
+                - link "NVIDIA Corp NVDA" [ref=f1e1095] [cursor=pointer]:
+                  - /url: /stock/NVDA/
+                  - generic [ref=f1e1096]: NVIDIA Corp
+                  - generic [ref=f1e1097]: NVDA
+                - button "加自选" [ref=f1e1098]
+              - generic [ref=f1e1099]:
+                - generic [ref=f1e1100]: "217.98"
+                - generic [ref=f1e1101]: "-1.27%"
+            - generic [ref=f1e1102]:
+              - generic [ref=f1e1103]:
+                - link "Microsoft Corp MSFT" [ref=f1e1104] [cursor=pointer]:
+                  - /url: /stock/MSFT/
+                  - generic [ref=f1e1105]: Microsoft Corp
+                  - generic [ref=f1e1106]: MSFT
+                - button "加自选" [ref=f1e1107]
+              - generic [ref=f1e1108]:
+                - generic [ref=f1e1109]: "503.64"
+                - generic [ref=f1e1110]: "-0.72%"
+            - generic [ref=f1e1111]:
+              - generic [ref=f1e1112]:
+                - link "Alphabet Inc GOOGL" [ref=f1e1113] [cursor=pointer]:
+                  - /url: /stock/GOOGL/
+                  - generic [ref=f1e1114]: Alphabet Inc
+                  - generic [ref=f1e1115]: GOOGL
+                - button "加自选" [ref=f1e1116]
+              - generic [ref=f1e1117]:
+                - generic [ref=f1e1118]: "336.27"
+                - generic [ref=f1e1119]: "-0.91%"
+            - generic [ref=f1e1120]:
+              - generic [ref=f1e1121]:
+                - link "Amazon.com Inc AMZN" [ref=f1e1122] [cursor=pointer]:
+                  - /url: /stock/AMZN/
+                  - generic [ref=f1e1123]: Amazon.com Inc
+                  - generic [ref=f1e1124]: AMZN
+                - button "加自选" [ref=f1e1125]
+              - generic [ref=f1e1126]:
+                - generic [ref=f1e1127]: "253.99"
+                - generic [ref=f1e1128]: "-2.23%"
+            - generic [ref=f1e1129]:
+              - generic [ref=f1e1130]:
+                - link "Meta Platforms Inc META" [ref=f1e1131] [cursor=pointer]:
+                  - /url: /stock/META/
+                  - generic [ref=f1e1132]: Meta Platforms Inc
+                  - generic [ref=f1e1133]: META
+                - button "加自选" [ref=f1e1134]
+              - generic [ref=f1e1135]:
+                - generic [ref=f1e1136]: "567.23"
+                - generic [ref=f1e1137]: "-0.89%"
+            - generic [ref=f1e1138]:
+              - generic [ref=f1e1139]:
+                - link "Tesla Inc TSLA" [ref=f1e1140] [cursor=pointer]:
+                  - /url: /stock/TSLA/
+                  - generic [ref=f1e1141]: Tesla Inc
+                  - generic [ref=f1e1142]: TSLA
+                - button "加自选" [ref=f1e1143]
+              - generic [ref=f1e1144]:
+                - generic [ref=f1e1145]: "358.95"
+                - generic [ref=f1e1146]: "-2.45%"
+            - generic [ref=f1e1147]:
+              - generic [ref=f1e1148]:
+                - link "Netflix Inc NFLX" [ref=f1e1149] [cursor=pointer]:
+                  - /url: /stock/NFLX/
+                  - generic [ref=f1e1150]: Netflix Inc
+                  - generic [ref=f1e1151]: NFLX
+                - button "加自选" [ref=f1e1152]
+              - generic [ref=f1e1153]:
+                - generic [ref=f1e1154]: "81.04"
+                - generic [ref=f1e1155]: "-0.01%"
+    - contentinfo [ref=f1e928]:
+      - generic [ref=f1e929]:
+        - generic [ref=f1e930]:
+          - generic [ref=f1e931]:
+            - generic [ref=f1e932]: 📊
+            - generic [ref=f1e934]: 爱看盘 · 每日复盘工具
+          - generic [ref=f1e935]:
+            - link "关于" [ref=f1e936] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f1e937] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f1e938] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f1e939] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f1e940] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f1e941]: 数据：东方财富
+        - paragraph [ref=f1e942]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f1e943]

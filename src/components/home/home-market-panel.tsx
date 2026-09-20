@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Activity, ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 import { formatPct, formatPrice } from "@/lib/format";
-import { api, type Dashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
+import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
-import { getUsDailyReviewExcerpt, useUsDailyReview } from "@/components/us/us-daily-review";
+import { getUsDailyReviewConclusion, getUsDailyReviewTakeaways, useUsDailyReview } from "@/components/us/us-daily-review";
+import { getHkDailyReviewConclusion, useHkDailyReview } from "@/components/hk/hk-daily-review";
 import { usNameZh } from "@/lib/us-stock-names";
 
-type MarketScope = "all" | "cn" | "us";
+type MarketScope = "all" | "cn" | "hk" | "us";
 type EarningsCalendarItem = UsEarningsCalendarItem;
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
@@ -55,14 +57,18 @@ function MetricCard({ name, code, last, changePct }: {
   );
 }
 
-function AiConclusion({ market, focus }: { market: "cn" | "us"; focus: string }) {
+function AiConclusion({ market, focus }: { market: "cn" | "hk" | "us"; focus: string }) {
+  const label = market === "cn" ? "A股 AI 结论" : market === "hk" ? "港股 AI 结论" : "美股 AI 结论";
   return (
     <div className="neo-ai p-4">
       <div className="flex items-center justify-between">
         <span className="rounded-md bg-neo-primary-soft px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">
-          {market === "cn" ? "A股 AI 结论" : "美股 AI 结论"}
+          {label}
         </span>
-        <a href={market === "cn" ? "/review/?market=cn" : "/review/?market=us"} className="text-[11px] text-neo-primary">
+        <a
+          href={`/review/?market=${market}`}
+          className="inline-flex min-h-11 items-center text-[11px] text-neo-primary"
+        >
           完整复盘
         </a>
       </div>
@@ -115,30 +121,119 @@ function CnEarningsCalendar() {
   );
 }
 
-function UsTemperatureCard({ temperature }: { temperature?: UsDashboard["temperature"] }) {
+function UsTemperatureCard({
+  temperature,
+  review,
+}: {
+  temperature?: UsDashboard["temperature"];
+  review?: AIReview | null;
+}) {
   if (!temperature) return null;
+  const score = Math.max(0, Math.min(100, temperature.score));
+  const hasUpRatio = Number.isFinite(temperature.up_ratio);
+  const upRatio = hasUpRatio ? Math.max(0, Math.min(100, temperature.up_ratio)) : 0;
+  const momentum = temperature.index_momentum ?? 0;
+  const vixChange = temperature.vix_change;
+  const sectorsUp = temperature.sectors_up ?? 0;
+  const sectorsTotal = temperature.sectors_total ?? 0;
+  const tone = score >= 65 ? "text-neo-up" : score >= 40 ? "text-neo-primary" : "text-neo-down";
+  const widthTone = !hasUpRatio ? "text-neo-dim" : upRatio >= 65 ? "text-neo-up" : upRatio >= 40 ? "text-neo-primary" : "text-neo-down";
+  const widthBarTone = !hasUpRatio ? "bg-neo-dim" : upRatio >= 65 ? "bg-neo-up" : upRatio >= 40 ? "bg-neo-primary" : "bg-neo-down";
+  const widthLabel = !hasUpRatio ? "市场宽度待确认" : upRatio >= 65 ? "市场宽度偏强" : upRatio >= 40 ? "多空分布均衡" : "市场宽度偏弱";
+  const riskLabel = vixChange == null ? "波动待确认" : vixChange > 5 ? "波动升温" : vixChange < -5 ? "波动降温" : "波动平稳";
+  const riskTone = vixChange == null ? "text-neo-dim" : vixChange > 5 ? "text-neo-up" : vixChange < -5 ? "text-neo-down" : "text-neo-mid";
+  const takeaways = review ? getUsDailyReviewTakeaways(review.content) : [];
   return (
     <div className="neo-card p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-[13px] font-semibold text-neo-ink">市场温度</h3>
         <span className="neo-chip px-2 py-0.5 text-[10px] text-neo-mid">{temperature.label}</span>
       </div>
-      <div className="mt-3 flex items-center gap-3">
-        <div className="text-[28px] font-bold leading-none" style={{ fontFamily: "var(--font-inter), system-ui" }}>
-          {temperature.score}
-        </div>
-        <div className="flex-1">
-          <div className="neo-inset h-1.5 overflow-hidden rounded-full">
-            <div
-              className={`h-full rounded-full ${temperature.score >= 60 ? "bg-neo-up" : temperature.score >= 35 ? "bg-neo-primary" : "bg-neo-down"}`}
-              style={{ width: `${Math.max(0, Math.min(100, temperature.score))}%` }}
-            />
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className={`flex h-14 w-14 items-center justify-center rounded-full border border-current/20 bg-[var(--neo-surface-inset)] ${tone}`}>
+            <span className="text-[26px] font-bold leading-none" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+              {score}
+            </span>
           </div>
-          <div className="mt-2 space-y-0.5 text-[10px] text-neo-dim">
-            <div>指数动量 {(temperature.index_momentum ?? 0) > 0 ? "+" : ""}{(temperature.index_momentum ?? 0).toFixed(2)}%</div>
-            <div>上涨板块 {temperature.sectors_up ?? 0}/{temperature.sectors_total ?? 0}</div>
+          <div>
+            <div className="text-[12px] font-medium text-neo-ink">综合温度 / 100</div>
+            <div className="mt-0.5 text-[11px] text-neo-dim">{widthLabel}</div>
           </div>
         </div>
+        <div className="text-right">
+          <div className="text-[10px] uppercase tracking-wider text-neo-dim">风险状态</div>
+          <div className={`mt-1 text-[12px] font-semibold ${riskTone}`}>{riskLabel}</div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <div className="flex items-center justify-between gap-2 text-[11px]">
+          <span className="text-neo-dim">上涨板块</span>
+          <span className="text-neo-mid">
+            {sectorsUp}/{sectorsTotal} · {hasUpRatio ? `${upRatio.toFixed(0)}%` : "--"}
+          </span>
+        </div>
+        <div className="neo-inset mt-1.5 h-2 overflow-hidden rounded-full">
+          <div
+            className={`h-full rounded-full ${widthBarTone}`}
+            style={{ width: `${upRatio}%` }}
+          />
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="neo-inset-sm px-2.5 py-2">
+          <div className="flex items-center gap-1 text-[10px] text-neo-dim">
+            <TrendingUp size={11} />
+            指数动量
+          </div>
+          <div className={`mt-1 text-[13px] font-semibold ${momentum >= 0 ? "text-neo-up" : "text-neo-down"}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+            {formatPct(momentum)}
+          </div>
+        </div>
+        <div className="neo-inset-sm px-2.5 py-2">
+          <div className="flex items-center gap-1 text-[10px] text-neo-dim">
+            <ShieldAlert size={11} />
+            VIX 变动
+          </div>
+          <div className={`mt-1 text-[13px] font-semibold ${riskTone}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+            {vixChange == null ? "--" : formatPct(vixChange)}
+          </div>
+        </div>
+        <div className="neo-inset-sm px-2.5 py-2">
+          <div className="flex items-center gap-1 text-[10px] text-neo-dim">
+            <Activity size={11} />
+            市场宽度
+          </div>
+          <div className={`mt-1 text-[13px] font-semibold ${widthTone}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+            {hasUpRatio ? `${upRatio.toFixed(0)}%` : "--"}
+          </div>
+        </div>
+      </div>
+      <div className="mt-4 border-t border-[var(--neo-border)] pt-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 text-[12px] font-semibold text-neo-ink">
+            <Sparkles size={13} className="text-neo-primary" />
+            AI 深度解读
+          </div>
+          <a href="/review/?market=us" className="inline-flex min-h-11 items-center text-[11px] text-neo-primary">
+            查看完整解析
+          </a>
+        </div>
+        {takeaways.length > 0 ? (
+          <div className="space-y-2">
+            {takeaways.map((item) => (
+              <div key={item.label} className="flex gap-2">
+                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-neo-primary" />
+                <p className="line-clamp-2 text-[11px] leading-relaxed text-neo-mid" title={item.text}>
+                  <span className="mr-1 font-semibold text-neo-ink">{item.label}</span>
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[11px] leading-relaxed text-neo-dim">AI 正在提炼市场驱动、主要风险与操作倾向。</p>
+        )}
       </div>
     </div>
   );
@@ -167,7 +262,7 @@ export function CnMarketPanel({ dashboard, insights }: { dashboard: Dashboard; i
         <SectionShell title="行业强度">
           <div className="space-y-1">
             {dashboard.strong_industries.slice(0, 5).map((item) => (
-              <a key={item.name} href="/market/?market=cn" className="flex items-center justify-between rounded-md px-1 py-1.5 text-[12px] hover-neo-inset">
+              <a key={item.name} href="/market/?market=cn" className="flex min-h-11 items-center justify-between rounded-md px-1 py-1.5 text-[12px] hover-neo-inset">
                 <span className="truncate text-neo-ink">{item.name}</span>
                 <span className={trendClass(item.change_pct)} style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {formatPct(item.change_pct)}
@@ -189,12 +284,13 @@ export function CnMarketPanel({ dashboard, insights }: { dashboard: Dashboard; i
 
 export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
   const { data: review } = useUsDailyReview();
+  const conclusion = review ? getUsDailyReviewConclusion(review.content) : "";
 
   return (
     <div>
       <PanelLabel label="美股市场" color="var(--neo-amber)" />
       <div className="space-y-3">
-        <AiConclusion market="us" focus={review ? getUsDailyReviewExcerpt(review.content) : ""} />
+        <AiConclusion market="us" focus={conclusion} />
         <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {dashboard.indices.slice(0, 3).map((idx) => (
             <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
@@ -211,7 +307,7 @@ export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
         <SectionShell title="板块表现">
           <div className="flex flex-wrap gap-1.5">
             {(dashboard.sectors || []).slice(0, 8).map((item) => (
-              <a key={item.code} href={`/stock/${item.code}/`} className={`neo-chip px-2.5 py-1 text-[11px] ${trendClass(item.change_pct)}`}>
+              <a key={item.code} href={`/stock/${item.code}/`} className={`neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] ${trendClass(item.change_pct)}`}>
                 {item.name}
                 <span className="ml-1" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPct(item.change_pct ?? 0)}</span>
               </a>
@@ -219,7 +315,7 @@ export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
           </div>
         </SectionShell>
 
-        <UsTemperatureCard temperature={dashboard.temperature} />
+        <UsTemperatureCard temperature={dashboard.temperature} review={review} />
 
         <UsEarningsCalendar />
       </div>
@@ -261,16 +357,58 @@ function UsEarningsCalendar() {
   );
 }
 
+export function HkMarketPanel({ dashboard }: { dashboard: HkDashboard }) {
+  const { data: review } = useHkDailyReview();
+  const conclusion = review ? getHkDailyReviewConclusion(review.content) : "";
+
+  return (
+    <div>
+      <PanelLabel label="港股市场" color="var(--neo-primary)" />
+      <div className="space-y-3">
+        <AiConclusion market="hk" focus={conclusion} />
+        <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {dashboard.indices.slice(0, 3).map((idx) => (
+            <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
+          ))}
+          <a href="/market/?market=hk" className="neo-card-sm p-3">
+            <div className="text-[10px] uppercase tracking-wider text-neo-dim">领涨 / 领跌</div>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-[18px] font-bold text-neo-up">{dashboard.top_gainers?.length ?? 0}</span>
+              <span className="text-[12px] text-neo-dim">/</span>
+              <span className="text-[18px] font-bold text-neo-down">{dashboard.top_losers?.length ?? 0}</span>
+            </div>
+          </a>
+        </section>
+
+        <SectionShell title="热门港股">
+          <div className="space-y-1">
+            {(dashboard.hot_stocks || []).slice(0, 5).map((item) => (
+              <a key={item.code} href={`/stock/${item.code}/`} className="flex min-h-11 items-center justify-between rounded-md px-1 py-1.5 text-[12px] hover-neo-inset">
+                <span className="truncate text-neo-ink">{item.name || item.code}</span>
+                <span className={trendClass(item.change_pct)} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                  {formatPct(item.change_pct ?? 0)}
+                </span>
+              </a>
+            ))}
+          </div>
+        </SectionShell>
+      </div>
+    </div>
+  );
+}
+
 export function HomeMarketPanels({
   scope,
   dashboard,
   insights,
   usDashboard,
+  hkDashboard,
 }: {
   scope: MarketScope;
   dashboard: Dashboard | null;
   insights: Insights | null;
   usDashboard: UsDashboard | null;
+  hkDashboard: HkDashboard | null;
 }) {
   if (scope === "cn") {
     return dashboard ? <CnMarketPanel dashboard={dashboard} insights={insights} /> : null;
@@ -278,11 +416,15 @@ export function HomeMarketPanels({
   if (scope === "us") {
     return usDashboard ? <UsMarketPanel dashboard={usDashboard} /> : null;
   }
+  if (scope === "hk") {
+    return hkDashboard ? <HkMarketPanel dashboard={hkDashboard} /> : null;
+  }
 
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
       {dashboard && <CnMarketPanel dashboard={dashboard} insights={insights} />}
       {usDashboard && <UsMarketPanel dashboard={usDashboard} />}
+      {hkDashboard && <HkMarketPanel dashboard={hkDashboard} />}
     </div>
   );
 }

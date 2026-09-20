@@ -1,0 +1,172 @@
+- generic [ref=f15e2]:
+  - banner [ref=f15e4]:
+    - generic [ref=f15e5]:
+      - generic [ref=f15e6]:
+        - button "主菜单" [ref=f15e7] [cursor=pointer]
+        - link "Google Search Console" [ref=f15e12] [cursor=pointer]:
+          - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+      - generic [ref=f15e14]:
+        - search [ref=f15e16]:
+          - generic [ref=f15e22]:
+            - textbox [disabled] [aria-hidden] [ref=f15e23]: 检查“https://aikanpan.top/”中的任何网址
+            - combobox "检查 https://aikanpan.top/ 中的任何网址" [ref=f15e24]
+          - button "搜索" [ref=f15e25] [cursor=pointer]
+        - generic [ref=f15e29]:
+          - generic [ref=f15e31]:
+            - generic [ref=f15e33]:
+              - button "帮助" [ref=f15e34] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e36]: help_outline
+              - tooltip [aria-hidden] [ref=f15e38]: 帮助
+            - generic [ref=f15e40]:
+              - button "用户设置" [ref=f15e41] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e43]: manage_accounts
+              - tooltip [aria-hidden] [ref=f15e45]: 用户设置
+          - generic [ref=f15e48]:
+            - generic [ref=f15e49]:
+              - button "未读消息：1 条" [ref=f15e50] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e52]: notifications
+              - tooltip [aria-hidden] [ref=f15e54]: 留言
+            - generic: "1"
+      - generic [ref=f15e56]:
+        - button "Google 应用" [ref=f15e60] [cursor=pointer]
+        - button "Google 账号： L D (qq136692547@gmail.com), Google One 会员" [ref=f15e66] [cursor=pointer]
+  - dialog "navigational drawer" [ref=f15e73]:
+    - navigation "主要" [ref=f15e76]:
+      - button "搜索资源" [ref=f15e80] [cursor=pointer]:
+        - img "网站图标" [ref=f15e82]
+        - combobox "https://aikanpan.top/" [ref=f15e90]
+        - generic [aria-hidden] [ref=f15e91]: 
+      - generic [ref=f15e92]:
+        - generic [ref=f15e93]:
+          - generic [ref=f15e94]:
+            - link "概述" [ref=f15e96] [cursor=pointer]:
+              - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e98]: home
+            - link "数据洞见" [ref=f15e103] [cursor=pointer]:
+              - /url: ./search-console/performance/insights?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e105]: lightbulb_2
+            - link "效果" [ref=f15e110] [cursor=pointer]:
+              - /url: ./search-console/performance/search-analytics?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e112]: trending_up
+            - button "网址检查" [ref=f15e117] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f15e119]: search
+          - generic [ref=f15e125]:
+            - generic [ref=f15e127]:
+              - generic [ref=f15e128]: 编制索引
+              - button "“编制索引”报告部分" [expanded] [ref=f15e132] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e134]: keyboard_arrow_up
+            - generic [ref=f15e138]:
+              - link "网页" [ref=f15e140] [cursor=pointer]:
+                - /url: ./search-console/index?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e142]: file_copy
+              - link "站点地图" [ref=f15e147] [cursor=pointer]:
+                - /url: ./search-console/sitemaps?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e149]: account_tree
+              - link "移除" [ref=f15e154] [cursor=pointer]:
+                - /url: ./search-console/removals?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e156]: visibility_off
+          - generic [ref=f15e162]:
+            - generic [ref=f15e164]:
+              - generic [ref=f15e165]: 体验
+              - button "“体验”报告部分" [expanded] [ref=f15e169] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e171]: keyboard_arrow_up
+            - link "核心网页指标" [ref=f15e177] [cursor=pointer]:
+              - /url: ./search-console/core-web-vitals?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e179]: speed
+          - generic [ref=f15e187]:
+            - generic [ref=f15e188]: 安全问题和人工处置措施
+            - button "“安全问题和人工处置措施”报告部分" [ref=f15e192] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f15e194]: keyboard_arrow_down
+          - generic [ref=f15e195]:
+            - link "“链接”报告" [ref=f15e197] [cursor=pointer]:
+              - /url: ./search-console/links?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e199]: link_2
+              - generic [ref=f15e200]: 链接数量
+            - link "成就" [ref=f15e204] [cursor=pointer]:
+              - /url: ./search-console/achievements?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e206]: trophy
+            - link "设置" [ref=f15e211] [cursor=pointer]:
+              - /url: ./search-console/settings?resource_id=https%3A%2F%2Faikanpan.top%2F
+              - generic [aria-hidden] [ref=f15e213]: settings
+        - generic [ref=f15e217]:
+          - generic [ref=f15e219]:
+            - button "提交反馈" [ref=f15e221] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f15e223]: feedback
+            - button "Search Console 简介" [ref=f15e228] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f15e230]: info
+          - generic [ref=f15e236]:
+            - link "隐私权" [ref=f15e237] [cursor=pointer]:
+              - /url: https://myaccount.google.com/privacypolicy?hl=zh-CN
+            - link "条款" [ref=f15e238] [cursor=pointer]:
+              - /url: https://myaccount.google.com/termsofservice?hl=zh-CN
+  - generic [ref=f15e240]:
+    - navigation "路径" [ref=f15e245]:
+      - heading "站点地图" [level=1] [ref=f15e248]
+    - main [ref=f15e252]:
+      - generic [ref=f15e255]:
+        - generic [ref=f15e256]: 添加新的站点地图
+        - generic [ref=f15e257]:
+          - generic [ref=f15e258]:
+            - generic [ref=f15e259]: https://aikanpan.top/
+            - generic [ref=f15e264]:
+              - textbox "输入站点地图网址" [active] [ref=f15e265]
+              - generic [aria-hidden]: 输入站点地图网址
+          - button "提交" [disabled] [ref=f15e269]
+      - generic [ref=f15e276]:
+        - generic [ref=f15e277]:
+          - heading "已提交的站点地图" [level=1] [ref=f15e278]
+          - button "过滤表格行" [ref=f15e282] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f15e285]: 
+        - table [ref=f15e287]:
+          - rowgroup [ref=f15e288]:
+            - row [ref=f15e289]:
+              - columnheader "站点地图" [ref=f15e290]:
+                - text: 站点地图
+                - generic [aria-hidden] [ref=f15e291] [cursor=pointer]
+              - columnheader "类型" [ref=f15e294]:
+                - text: 类型
+                - generic [aria-hidden] [ref=f15e295] [cursor=pointer]
+              - columnheader "已提交的网址数" [ref=f15e298]:
+                - text: 已提交的网址数
+                - generic [aria-hidden] [ref=f15e299] [cursor=pointer]
+              - columnheader "上次读取时间" [ref=f15e302]:
+                - text: 上次读取时间
+                - generic [aria-hidden] [ref=f15e303] [cursor=pointer]
+              - columnheader "状态" [ref=f15e306]:
+                - text: 状态
+                - generic [aria-hidden] [ref=f15e307] [cursor=pointer]
+              - columnheader "已发现的网页" [ref=f15e310]:
+                - generic [aria-hidden] [ref=f15e311] [cursor=pointer]
+                - text: 已发现的网页
+              - columnheader "已发现的视频" [ref=f15e314]:
+                - generic [aria-hidden] [ref=f15e315] [cursor=pointer]
+                - text: 已发现的视频
+              - columnheader [ref=f15e318]
+          - rowgroup [ref=f15e319]:
+            - row [ref=f15e320] [cursor=pointer]:
+              - cell "/sitemap.xml" [ref=f15e321]
+              - cell "未知" [ref=f15e322]
+              - cell "2026年9月11日" [ref=f15e323]
+              - cell [ref=f15e324]
+              - cell "无法抓取" [ref=f15e325]
+              - cell "0" [ref=f15e327]
+              - cell "0" [ref=f15e328]
+              - cell [ref=f15e329]:
+                - button [ref=f15e331]:
+                  - generic [aria-hidden] [ref=f15e334]: 
+        - generic [ref=f15e337]:
+          - generic [ref=f15e339]:
+            - generic [ref=f15e340]: 每页行数：
+            - listbox "每页行数" [ref=f15e341] [cursor=pointer]:
+              - option "5"
+              - option "10" [selected] [ref=f15e342]
+              - option "25"
+              - option "50"
+              - option "100"
+              - option "250"
+              - option "500"
+          - generic [ref=f15e343]:
+            - generic [ref=f15e344]: 第 1-1 行，共 1 行
+            - generic [ref=f15e345]:
+              - generic [aria-hidden] [ref=f15e347]: 
+              - generic [aria-hidden] [ref=f15e349]: 

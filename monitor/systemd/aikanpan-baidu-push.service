@@ -1,0 +1,9 @@
+[Unit]
+Description=Submit new aikanpan.top URLs to Baidu
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/aikanpan-baidu-push.env
+ExecStart=/usr/bin/python3 /opt/aikanpan-ops/bin/baidu_push.py

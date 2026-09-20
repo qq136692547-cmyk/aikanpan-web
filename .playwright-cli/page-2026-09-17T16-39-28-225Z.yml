@@ -1,0 +1,161 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation [ref=e4]:
+        - link "爱看盘" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e11]:
+          - link "升级 Pro" [ref=e12] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=e15]: 会员
+          - link "登录 / 注册" [ref=e16] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=e21]
+    - main [ref=e25]:
+      - generic [ref=e27]:
+        - heading "美股复盘" [level=1] [ref=e28]
+        - paragraph [ref=e29]: AI 结论 · 核心数字 · 板块强度 · 市场温度 · 近期财报
+      - generic [ref=e32]:
+        - generic [ref=e40]:
+          - generic [ref=e41]:
+            - heading "AI 盘前早报 · 隔夜外盘与看盘线索" [level=3] [ref=e42]
+            - generic [ref=e43]: 开盘前必读
+          - paragraph [ref=e44]: 基于隔夜美股三大指数、热门中概股与重磅宏观要闻，提炼今日 A 股 3 条关键线索
+        - button "生成早报" [ref=e46]
+      - generic [ref=e52]:
+        - generic [ref=e53]: 美股市场
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: 美股 AI 结论
+              - link "完整复盘" [ref=e61] [cursor=pointer]:
+                - /url: /review/?market=us
+            - paragraph [ref=e62]: AI 结论生成中，请稍后刷新。
+          - generic [ref=e63]:
+            - link "标普500 ETF 761.93 +1.04%" [ref=e64] [cursor=pointer]:
+              - /url: /stock/SPY/
+              - generic [ref=e65]: 标普500 ETF
+              - generic [ref=e66]: "761.93"
+              - generic [ref=e67]: +1.04%
+            - link "纳指100 ETF 716.06 +1.61%" [ref=e68] [cursor=pointer]:
+              - /url: /stock/QQQ/
+              - generic [ref=e69]: 纳指100 ETF
+              - generic [ref=e70]: "716.06"
+              - generic [ref=e71]: +1.61%
+            - link "道琼斯 ETF 518.27 +0.59%" [ref=e72] [cursor=pointer]:
+              - /url: /stock/DIA/
+              - generic [ref=e73]: 道琼斯 ETF
+              - generic [ref=e74]: "518.27"
+              - generic [ref=e75]: +0.59%
+            - link "VIX 变动 -3.34% 风险情绪" [ref=e76] [cursor=pointer]:
+              - /url: /market/?market=us
+              - generic [ref=e77]: VIX 变动
+              - generic [ref=e78]: "-3.34%"
+              - generic [ref=e79]: 风险情绪
+          - generic [ref=e80]:
+            - heading "板块表现" [level=3] [ref=e81]
+            - generic [ref=e82]:
+              - link "科技 +2.22%" [ref=e83] [cursor=pointer]:
+                - /url: /stock/XLK/
+                - text: 科技
+                - generic [ref=e84]: +2.22%
+              - link "金融 -0.02%" [ref=e85] [cursor=pointer]:
+                - /url: /stock/XLF/
+                - text: 金融
+                - generic [ref=e86]: "-0.02%"
+              - link "医疗 +0.45%" [ref=e87] [cursor=pointer]:
+                - /url: /stock/XLV/
+                - text: 医疗
+                - generic [ref=e88]: +0.45%
+              - link "能源 -0.02%" [ref=e89] [cursor=pointer]:
+                - /url: /stock/XLE/
+                - text: 能源
+                - generic [ref=e90]: "-0.02%"
+              - link "消费 +1.46%" [ref=e91] [cursor=pointer]:
+                - /url: /stock/XLY/
+                - text: 消费
+                - generic [ref=e92]: +1.46%
+              - link "工业 +0.22%" [ref=e93] [cursor=pointer]:
+                - /url: /stock/XLI/
+                - text: 工业
+                - generic [ref=e94]: +0.22%
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - heading "市场温度" [level=3] [ref=e97]
+              - generic [ref=e98]: 偏多
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]: "77"
+                - generic [ref=e103]:
+                  - generic [ref=e104]: 综合温度 / 100
+                  - generic [ref=e105]: 市场宽度偏强
+              - generic [ref=e106]:
+                - generic [ref=e107]: 风险状态
+                - generic [ref=e108]: 波动平稳
+            - generic [ref=e110]:
+              - generic [ref=e111]: 上涨板块
+              - generic [ref=e112]: 4/6 · 67%
+            - generic [ref=e115]:
+              - generic [ref=e116]:
+                - generic [ref=e117]: 指数动量
+                - generic [ref=e121]: +1.08%
+              - generic [ref=e122]:
+                - generic [ref=e123]: VIX 变动
+                - generic [ref=e126]: "-3.34%"
+              - generic [ref=e127]:
+                - generic [ref=e128]: 市场宽度
+                - generic [ref=e131]: 67%
+      - region "今日工作流" [ref=e132]:
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - heading "今日工作流" [level=2] [ref=e135]
+            - paragraph [ref=e136]: 5 步完成当日看盘闭环，进度按天保存。
+          - generic [ref=e137]: 0/5 已完成
+        - generic [ref=e138]:
+          - link "第 1 步 看今日复盘 先看市场结构和 AI 结论" [ref=e139] [cursor=pointer]:
+            - /url: /review/?market=cn
+            - generic [ref=e140]: 第 1 步
+            - generic [ref=e145]: 看今日复盘
+            - paragraph [ref=e146]: 先看市场结构和 AI 结论
+          - link "第 2 步 选 3 只重点股 从市场页挑出跟踪对象" [ref=e147] [cursor=pointer]:
+            - /url: /market/?market=cn
+            - generic [ref=e148]: 第 2 步
+            - generic [ref=e153]: 选 3 只重点股
+            - paragraph [ref=e154]: 从市场页挑出跟踪对象
+          - link "第 3 步 写入自选/计划 记录观察点和操作预期" [ref=e155] [cursor=pointer]:
+            - /url: /research/?market=cn
+            - generic [ref=e156]: 第 3 步
+            - generic [ref=e161]: 写入自选/计划
+            - paragraph [ref=e162]: 记录观察点和操作预期
+          - link "第 4 步 设置盯盘提醒 条件触发后在已开启的渠道提醒" [ref=e163] [cursor=pointer]:
+            - /url: /alerts/?market=cn
+            - generic [ref=e164]: 第 4 步
+            - generic [ref=e171]: 设置盯盘提醒
+            - paragraph [ref=e172]: 条件触发后在已开启的渠道提醒
+          - link "第 5 步 AI 复盘归档 收盘后生成连续记录" [ref=e173] [cursor=pointer]:
+            - /url: /review/?market=cn
+            - generic [ref=e174]: 第 5 步
+            - generic [ref=e179]: AI 复盘归档
+            - paragraph [ref=e180]: 收盘后生成连续记录
+    - contentinfo [ref=e181]:
+      - generic [ref=e182]:
+        - generic [ref=e183]:
+          - generic [ref=e184]: 爱看盘 · 每日复盘工具
+          - generic [ref=e189]:
+            - link "关于" [ref=e190] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=e191] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=e192] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=e193] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=e194] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=e195]: 数据：东方财富
+        - generic [ref=e196]:
+          - generic [ref=e197]: 微信：denglio0
+          - link "qq136692547@gmail.com" [ref=e198] [cursor=pointer]:
+            - /url: mailto:qq136692547@gmail.com
+        - paragraph [ref=e199]: 本站数据仅供参考，不构成投资建议
+  - alert [ref=e200]

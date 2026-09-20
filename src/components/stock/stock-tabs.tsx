@@ -5,7 +5,7 @@ import type { StockEvents, StockFinancials } from "@/lib/api";
 
 const TABS = [
   { key: "news", label: "新闻/事件" },
-  { key: "announcements", label: "公告/研报" },
+  { key: "announcements", label: "研报" },
   { key: "financials", label: "财务数据" },
 ] as const;
 
@@ -39,7 +39,7 @@ export function StockTabs({
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all duration-200 ${
+            className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 py-2 text-[12px] font-medium transition-all duration-200 ${
               tab === t.key ? "neo-chip-active" : "neo-chip"
             }`}
           >
@@ -95,7 +95,7 @@ export function StockTabs({
               ))}
             </div>
           ) : (
-            <div className="py-6 text-center text-xs text-neo-dim">暂无公告/研报</div>
+            <div className="py-6 text-center text-xs text-neo-dim">暂无研报</div>
           )}
         </div>
       )}

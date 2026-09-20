@@ -1,7 +1,7 @@
 import { MarketPageFrame, MarketPageHeader } from "@/components/market/market-page-shell";
 import { ResearchWorkspace } from "@/components/research/research-workspace";
 import { marketFromSearchParams } from "@/lib/market";
-import { api, type Dashboard, type UsDashboard } from "@/lib/api";
+import { api, type Dashboard, type HkDashboard, type UsDashboard } from "@/lib/api";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -10,6 +10,7 @@ export const revalidate = 30;
 export const metadata: Metadata = {
   title: "研究",
   description: "自选股、盘前计划、公司档案与投资论点研究台。",
+  alternates: { canonical: "/research/" },
 };
 
 export default async function ResearchPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
@@ -19,11 +20,14 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
     redirect("/research/?market=cn");
   }
   const isUs = scope === "us";
-  let dashboard: Dashboard | UsDashboard | null = null;
+  const isHk = scope === "hk";
+  let dashboard: Dashboard | UsDashboard | HkDashboard | null = null;
 
   try {
     if (isUs) {
       dashboard = await api.getUsDashboard().catch(() => null);
+    } else if (isHk) {
+      dashboard = await api.getHkDashboard().catch(() => null);
     } else {
       dashboard = await api.getDashboard().catch(() => null);
     }
@@ -37,7 +41,7 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
         market={scope}
         title="研究"
         subtitle="自选股、盘前计划、公司档案与投资论点"
-        image="/images/ai-art/market-overview-decoration.png"
+        image="/images/ai-art/market-overview-decoration-v3.png"
       />
       <ResearchWorkspace dashboard={dashboard} market={scope} />
     </MarketPageFrame>

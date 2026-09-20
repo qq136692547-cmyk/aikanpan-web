@@ -7,14 +7,15 @@ import { useAuth } from "@/lib/auth";
 import { normalizeStockCode } from "@/lib/format";
 
 export function useLimitPersonalization() {
-  const { isAuthenticated } = useAuth();
+  const { user, loading } = useAuth();
+  const ready = !loading && !!user;
   const { data: watchData } = useSWR(
-    isAuthenticated ? "limit-personal-watchlist" : null,
+    ready && user ? ["limit-personal-watchlist", user.user_id] : null,
     () => api.getWatchlist(),
     { refreshInterval: 30000 }
   );
   const { data: positionsData } = useSWR(
-    isAuthenticated ? "limit-personal-positions" : null,
+    ready && user ? ["limit-personal-positions", user.user_id] : null,
     () => api.getPositions(),
     { refreshInterval: 30000 }
   );
@@ -47,5 +48,5 @@ export function useLimitPersonalization() {
     [watchCodes, holdingCodes]
   );
 
-  return { isAuthenticated, isMine, badges };
+  return { isAuthenticated: ready, isMine, badges };
 }

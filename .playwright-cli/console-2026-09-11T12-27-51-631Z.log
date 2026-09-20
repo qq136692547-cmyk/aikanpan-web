@@ -1,0 +1,4 @@
+[    2510ms] [LOG] %c%s color: red; background: yellow; font-size: 24px; WARNING! @ /_/scs/mss-static/_/js/k=boq-search-console.SearchConsoleAggReportUi.zh_CN.acl9xwl-t_E.2018.O/am=AAAAAJDHOIEGg_PlzESELpcg/d=1/excm=_b,_tp,sitemapsview/ed=1/dg=0/wt=2/ujg=1/rs=AB4_AlWDqzZ_xBWkVMXd9Wdupe3mJ1RVlA/dti=1/m=_b,_tp:464
+[    2510ms] [LOG] %c%s font-size: 18px; Using this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS.
+Do not enter or paste code that you do not understand. @ /_/scs/mss-static/_/js/k=boq-search-console.SearchConsoleAggReportUi.zh_CN.acl9xwl-t_E.2018.O/am=AAAAAJDHOIEGg_PlzESELpcg/d=1/excm=_b,_tp,sitemapsview/ed=1/dg=0/wt=2/ujg=1/rs=AB4_AlWDqzZ_xBWkVMXd9Wdupe3mJ1RVlA/dti=1/m=_b,_tp:464
+[    3782ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://aikanpan.top/&size=32:0

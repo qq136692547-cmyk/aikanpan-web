@@ -1,3 +1,54 @@
+
+export interface AIEvidence {
+  schema_version?: string;
+  generated_at?: string;
+  model?: string;
+  prompt_version?: string;
+  data_as_of?: string;
+  sources?: AIEvidenceSource[];
+  calculations?: AIEvidenceCalculation[];
+  citations?: AIEvidenceCitation[];
+  warnings?: string[];
+}
+
+export interface AIEvidenceSource {
+  id: string;
+  kind?: string;
+  name: string;
+  provider?: string;
+  as_of?: string;
+  url?: string;
+  updated_at?: string;
+  fields?: string[];
+}
+
+export interface AIEvidenceCalculation {
+  id: string;
+  label: string;
+  value?: string | number;
+  formula?: string;
+  unit?: string;
+  source_ids?: string[];
+}
+
+export interface AIEvidenceCitation {
+  id: string;
+  label: string;
+  source_ids?: string[];
+  calculation_ids?: string[];
+}
+
+/** AI 涨停题材归因 / 盘前早报的统一响应结构 */
+export interface LimitAnalysis {
+  content: string;
+  model: string;
+  generated_at: string;
+  cached: boolean;
+  market: string;
+  disclaimer: string;
+}
+
+export type PremarketBriefing = LimitAnalysis;
 /**
  * 爱看盘 Web — API Client
  * 后端: https://aikanpan.top/api/v1
@@ -6,6 +57,7 @@
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 import { reportConversionEvent } from "./analytics";
+import type { AlipayOrderStatus } from "./payment";
 
 /** 获取认证 token（客户端侧，从 localStorage） */
 function getAuthToken(): string | null {
@@ -21,7 +73,7 @@ function getAuthToken(): string | null {
 }
 
 const AI_QUOTA_PATHS = [
-  "/ai/", "/us/daily-review", "/portfolio-review", "/plan-focus", "/news-radar", "/alerts/parse"
+  "/ai/", "/us/daily-review", "/hk/daily-review", "/portfolio-review", "/plan-focus", "/news-radar", "/alerts/parse"
 ];
 
 function isAiQuotaPath(path: string): boolean {
@@ -105,10 +157,33 @@ export class ApiClient {
     return this.request<NewsRadar>("/ai/news-radar", { method: "POST", body: "{}", next: { revalidate: 900 } });
   }
 
+  /** AI 涨停题材归因与短线情绪 */
+  getLimitAnalysis(date?: string) {
+    return this.request<LimitAnalysis>("/ai/limit-analysis", {
+      method: "POST",
+      body: JSON.stringify(date ? { date } : {}),
+    });
+  }
+
+  /** AI 盘前早报与隔夜外盘线索 */
+  getPremarketBriefing() {
+    return this.request<PremarketBriefing>("/ai/premarket-briefing", {
+      method: "POST",
+      body: "{}",
+    });
+  }
+
   /** 板块行情 */
   getSectors() {
     return this.request<{ sectors: Sector[]; count: number }>("/market/sectors", {
       next: { revalidate: 60 },
+    });
+  }
+
+  /** 北向资金概览 */
+  getNorthbound() {
+    return this.request<Northbound>("/market/northbound", {
+      next: { revalidate: 300 },
     });
   }
 
@@ -212,6 +287,19 @@ export class ApiClient {
   }
 
   /** 人工收款后使用激活码开通/续费 Pro */
+  createAlipayOrder(planType: 'monthly' | 'yearly') {
+    return this.request<{ ok: boolean; data: { out_trade_no: string; pay_url: string } }>('/pay/alipay/create-order', {
+      method: 'POST',
+      body: JSON.stringify({ plan_type: planType }),
+    });
+  }
+
+  checkAlipayOrderStatus(outTradeNo: string) {
+    return this.request<{ ok: boolean; data: { out_trade_no: string; status: AlipayOrderStatus } }>(
+      '/pay/alipay/order-status?out_trade_no=' + encodeURIComponent(outTradeNo)
+    );
+  }
+
   activateMembership(code: string) {
     return this.request<MembershipStatus>("/membership/activate", { method: "POST", body: JSON.stringify({ code }) });
   }
@@ -351,6 +439,57 @@ export class ApiClient {
     return this.request<AIReview>("/us/daily-review", { method: "POST", body: JSON.stringify({}) });
   }
 
+  // ============================================
+  // HK Market
+  // ============================================
+
+  getHkDashboard() {
+    return this.request<HkDashboard>("/hk/dashboard", { next: { revalidate: 30 } });
+  }
+
+  getHkQuote(symbol: string) {
+    return this.request<HkQuote>(`/hk/stocks/${encodeURIComponent(symbol)}/quote`, { next: { revalidate: 30 } });
+  }
+
+  getHkHistory(symbol: string, days = 120) {
+    return this.request<HkHistory>(`/hk/stocks/${encodeURIComponent(symbol)}/history?days=${days}`, { next: { revalidate: 60 } });
+  }
+
+  getHkFinancials(symbol: string) {
+    return this.request<HkFinancials>(`/hk/stocks/${encodeURIComponent(symbol)}/financials`, { next: { revalidate: 3600 } });
+  }
+
+  getHkNews(symbol: string, limit = 8) {
+    return this.request<{ news: HkNewsItem[]; count: number }>(`/hk/stocks/${encodeURIComponent(symbol)}/news?limit=${limit}`, { next: { revalidate: 900 } });
+  }
+
+  searchHkStocks(q: string) {
+    return this.request<{ list: HkSearchResult[]; total: number }>(`/hk/stocks/search?q=${encodeURIComponent(q)}`, { next: { revalidate: 600 } });
+  }
+
+  getHkWatchlist() {
+    return this.request<{ watchlist: HkQuote[]; count: number }>("/hk/watchlist", { cache: "no-store" as RequestCache });
+  }
+
+  addHkWatchlist(code: string, name?: string) {
+    return this.request<{ ok: boolean; code: string; count: number }>("/hk/watchlist", {
+      method: "POST",
+      body: JSON.stringify({ code, name }),
+    });
+  }
+
+  removeHkWatchlist(code: string) {
+    return this.request<{ deleted: boolean; code: string; count: number }>(`/hk/watchlist/${encodeURIComponent(code)}`, { method: "DELETE" });
+  }
+
+  getHkAI(symbol: string) {
+    return this.request<AIComment>(`/hk/stocks/${encodeURIComponent(symbol)}/ai`, { method: "POST", body: JSON.stringify({}) });
+  }
+
+  getHkDailyReview() {
+    return this.request<AIReview>("/hk/daily-review", { method: "POST", body: JSON.stringify({}) });
+  }
+
   /** 新增/更新持仓 */
   upsertPosition(data: { code: string; name?: string; shares: number; cost_price: number }) {
     return this.request<PositionUpsert>("/portfolio/positions", {
@@ -401,12 +540,29 @@ export class ApiClient {
   getAIComment(code: string) {
     return this.request<AIComment>("/ai/comment", {
       method: "POST",
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ code, full_report: true }),
+    });
+  }
+
+  /** AI 异步任务列表 */
+  getAITasks(params?: { kind?: AITaskKind; limit?: number }) {
+    const query = new URLSearchParams();
+    if (params?.kind) query.set("kind", params.kind);
+    if (params?.limit) query.set("limit", String(params.limit));
+    const qs = query.toString();
+    return this.request<{ tasks: AITask[]; count: number }>(`/ai/tasks${qs ? `?${qs}` : ""}`);
+  }
+
+  /** 重试失败的 AI 任务 */
+  retryAITask<T = unknown>(taskId: string) {
+    return this.request<T>(`/ai/tasks/${encodeURIComponent(taskId)}/retry`, {
+      method: "POST",
+      body: "{}",
     });
   }
 
   /** AI 批量评分 — 并发评分 */
-  async getAIScoreBatch(codes: string[], market: "cn" | "us" = "cn") {
+  async getAIScoreBatch(codes: string[], market: "cn" | "hk" | "us" = "cn") {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 40_000);
 
@@ -443,7 +599,7 @@ export class ApiClient {
   }
 
   /** AI 盘前计划关注要点 */
-  async getPlanFocus(plans: Array<Record<string, unknown>>, market: "cn" | "us" = "cn") {
+  async getPlanFocus(plans: Array<Record<string, unknown>>, market: "cn" | "hk" | "us" = "cn") {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 55_000);
 
@@ -464,8 +620,12 @@ export class ApiClient {
   }
 
   /** AI 诊断历史列表 */
-  getAIHistory(code: string) {
-    return this.request<{ history: AIHistoryItem[]; count: number }>(`/ai/history?code=${encodeURIComponent(code)}`, { cache: "no-store" as RequestCache });
+  getAIHistory(params: { code?: string; kind?: AITaskKind; limit?: number }) {
+    const query = new URLSearchParams();
+    if (params.code) query.set("code", params.code);
+    if (params.kind) query.set("kind", params.kind);
+    if (params.limit) query.set("limit", String(params.limit));
+    return this.request<{ history: AIHistoryItem[]; count: number }>(`/ai/history?${query.toString()}`, { cache: "no-store" as RequestCache });
   }
 
   /** 保存 AI 诊断历史 */
@@ -488,7 +648,7 @@ export class ApiClient {
   // ============================================
 
   /** NLP 解析盯盘条件 — 自然语言 → 结构化条件 */
-  async parseAlert(text: string, market: "cn" | "us" = "cn") {
+  async parseAlert(text: string, market: "cn" | "hk" | "us" = "cn") {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 20_000);
 
@@ -509,7 +669,7 @@ export class ApiClient {
   }
 
   /** 获取盯盘任务列表 */
-  getAlerts(market?: "cn" | "us") {
+  getAlerts(market?: "cn" | "hk" | "us") {
     const qs = market ? `?market=${market}` : "";
     return this.request<{ alerts: AlertItem[]; count: number }>(`/alerts${qs}`, {
       cache: "no-store" as RequestCache,
@@ -523,7 +683,7 @@ export class ApiClient {
     condition?: string;
     threshold?: number;
     conditions?: AlertCondition[];
-    market?: "cn" | "us";
+    market?: "cn" | "hk" | "us";
     note?: string;
   }) {
     const body: Record<string, unknown> = { code: data.code, note: data.note };
@@ -548,7 +708,7 @@ export class ApiClient {
   }
 
   /** 获取盯盘触发历史 */
-  getAlertHistory(market?: "cn" | "us") {
+  getAlertHistory(market?: "cn" | "hk" | "us") {
     const qs = market ? `?market=${market}` : "";
     return this.request<{ alerts: AlertHistoryItem[]; count: number }>(`/alerts/triggered${qs}`, {
       cache: "no-store" as RequestCache,
@@ -560,7 +720,12 @@ export class ApiClient {
     return this.request<AlertSettings>("/alerts/settings", { cache: "no-store" as RequestCache });
   }
 
-  /** 更新通知设置 */
+  
+  getUsFilings(symbol: string, limit = 12) {
+    return this.request<UsFilings>(`/us/stocks/${encodeURIComponent(symbol)}/filings?limit=${limit}`);
+  }
+
+/** 更新通知设置 */
   updateAlertSettings(data: { browser_enabled?: boolean; sms_enabled?: boolean }) {
     return this.request<AlertSettings>("/alerts/settings", { method: "PATCH", body: JSON.stringify(data) });
   }
@@ -623,6 +788,27 @@ export interface Sector {
   change_pct: number;
   change: number;
   turnover_rate: number;
+  main_net_inflow?: number;
+  main_net_inflow_pct?: number;
+}
+
+export interface NorthboundLeg {
+  net_amt: number;
+  buy_amt: number;
+  sell_amt: number;
+  turnover: number;
+  total: number;
+}
+
+export interface Northbound {
+  available: boolean;
+  source: string;
+  date: string;
+  net_disclosed: boolean;
+  sh: NorthboundLeg;
+  sz: NorthboundLeg;
+  south_sh: number;
+  south_sz: number;
 }
 
 /** 每日复盘 */
@@ -631,6 +817,7 @@ export interface DailyReview {
   dashboard: Dashboard;
   cached?: boolean;
   historical?: boolean;
+  ai_available?: boolean;
 }
 
 /** 市场洞察 */
@@ -667,6 +854,7 @@ export interface MarketTemperature {
     model: string;
     generated_at: string;
     cached: boolean;
+    evidence?: AIEvidence;
   };
 }
 
@@ -676,6 +864,7 @@ export interface NewsRadar {
   model: string;
   generated_at: string;
   cached: boolean;
+  evidence?: AIEvidence;
 }
 
 export interface NewsItem {
@@ -976,6 +1165,32 @@ export interface UsFinancials {
   };
 }
 
+export interface UsFilingItem {
+  id: string;
+  form: string;
+  filing_date: string;
+  report_date?: string;
+  acceptance_datetime?: string;
+  description?: string;
+  items?: string;
+  primary_document?: string;
+  document_url: string;
+  filing_index_url?: string;
+  source?: string;
+}
+
+export interface UsFilings {
+  code: string;
+  company_name?: string;
+  cik?: string;
+  available: boolean;
+  filings: UsFilingItem[];
+  count: number;
+  source?: string;
+  source_url?: string;
+  generated_at?: string;
+}
+
 export interface UsEarningsItem {
   period: string;
   year?: number;
@@ -1039,6 +1254,82 @@ export interface UsSearchResult {
   market?: string;
 }
 
+export interface HkQuote {
+  code: string;
+  name?: string;
+  last: number;
+  change: number;
+  change_pct: number;
+  open?: number;
+  high?: number;
+  low?: number;
+  prev_close?: number;
+  volume?: number;
+  amount?: number;
+  pe?: number | null;
+  pb?: number | null;
+  market_cap?: number | null;
+  high_52w?: number | null;
+  low_52w?: number | null;
+  shares?: number | null;
+  currency?: string;
+  source?: string;
+  available?: boolean;
+}
+
+export interface HkHistory {
+  code: string;
+  name?: string;
+  bars: KlineData[];
+  closes: number[];
+  source?: string;
+}
+
+export interface HkFinancials {
+  code: string;
+  name?: string;
+  available: boolean;
+  source?: string;
+  metrics?: {
+    pe?: number | null;
+    pb?: number | null;
+    market_cap?: number | null;
+    high_52w?: number | null;
+    low_52w?: number | null;
+    currency?: string;
+  };
+  statements?: unknown[];
+}
+
+export interface HkNewsItem {
+  id?: string;
+  title: string;
+  summary?: string;
+  source?: string;
+  time?: string;
+  url?: string;
+}
+
+export interface HkSearchResult {
+  code: string;
+  name: string;
+  type?: string;
+  market?: string;
+  pinyin?: string;
+}
+
+export interface HkDashboard {
+  market: string;
+  trade_date: string;
+  market_status: string;
+  indices: HkQuote[];
+  hot_stocks: HkQuote[];
+  top_gainers: HkQuote[];
+  top_losers: HkQuote[];
+  market_news?: HkNewsItem[];
+  source?: string;
+}
+
 export interface UsPosition {
   id: string;
   code: string;
@@ -1076,6 +1367,21 @@ export interface PortfolioSummary {
 // AI Types
 // ============================================
 
+/** AI 个股结构化报告 */
+export interface StockReport {
+  score: number | null;
+  status: string | null;
+  one_sentence: string | null;
+  trend: string | null;
+  technical: string | null;
+  valuation: string | null;
+  risks: string[];
+  positives: string[];
+  holders_advice: string | null;
+  watchers_advice: string | null;
+  disclaimer: string | null;
+}
+
 /** AI 个股诊断响应 */
 export interface AIComment {
   code: string;
@@ -1084,6 +1390,9 @@ export interface AIComment {
   model: string;
   generated_at: string;
   cached: boolean;
+  task_id?: string;
+  evidence?: AIEvidence;
+  report?: StockReport | null;
 }
 
 /** AI 诊断历史条目 */
@@ -1094,6 +1403,35 @@ export interface AIHistoryItem {
   content: string;
   model: string;
   generated_at: string;
+  updated_at?: string;
+  kind?: string;
+  title?: string;
+  evidence?: AIEvidence;
+}
+
+/** AI 异步任务类型 */
+export type AITaskKind =
+  | "stock_comment"
+  | "us_stock_ai"
+  | "hk_stock_ai"
+  | "daily_review"
+  | "us_daily_review"
+  | "hk_daily_review"
+  | "score_batch"
+  | "portfolio_review"
+  | "plan_focus"
+  | "news_radar";
+
+/** AI 异步任务 */
+export interface AITask {
+  id: string;
+  kind: AITaskKind;
+  title: string;
+  status: string;
+  stage?: string;
+  progress?: number;
+  error?: string;
+  created_at?: string;
   updated_at?: string;
 }
 
@@ -1106,6 +1444,7 @@ export interface AIScoreItem {
   note: string;
   cached: boolean;
   updated_at?: string;
+  evidence?: AIEvidence;
 }
 
 /** AI 批量评分响应 */
@@ -1120,6 +1459,7 @@ export interface AIReview {
   model: string;
   generated_at: string;
   cached: boolean;
+  evidence?: AIEvidence;
 }
 
 /** 定时复盘任务状态 */
@@ -1137,6 +1477,7 @@ export interface PortfolioReview {
   generated_at: string;
   cached: boolean;
   items: Position[];
+  evidence?: AIEvidence;
 }
 
 /** AI 盘前计划关注要点 */
@@ -1145,6 +1486,7 @@ export interface PlanFocus {
   model: string;
   generated_at: string;
   cached: boolean;
+  evidence?: AIEvidence;
 }
 
 // ============================================
@@ -1162,7 +1504,7 @@ export interface AlertCondition {
 export interface AlertParseResult {
   code: string;
   name: string;
-  market?: "cn" | "us";
+  market?: "cn" | "hk" | "us";
   condition?: string;
   threshold: number;
   conditions?: AlertCondition[];
@@ -1178,7 +1520,7 @@ export interface AlertItem {
   id: string;
   code: string;
   name: string;
-  market?: "cn" | "us";
+  market?: "cn" | "hk" | "us";
   condition: string;
   threshold: number;
   conditions?: AlertCondition[];
@@ -1196,7 +1538,7 @@ export interface AlertHistoryItem {
   alert_id?: string;
   code: string;
   name: string;
-  market?: "cn" | "us";
+  market?: "cn" | "hk" | "us";
   condition: string;
   threshold: number;
   conditions?: AlertCondition[];

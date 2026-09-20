@@ -7,25 +7,23 @@ import { useAuth } from "@/lib/auth";
 export function UsWatchlistButton({ code, name }: { code: string; name?: string }) {
   const [state, setState] = useState<"loading" | "in" | "out">("loading");
   const [busy, setBusy] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const ready = !authLoading && !!user;
 
   const load = useCallback(() => {
-    if (!isAuthenticated) {
-      setState("out");
-      return;
-    }
+    if (!ready) return;
     api
       .getUsWatchlist()
       .then((d) => setState(d.watchlist.some((w) => w.code === code) ? "in" : "out"))
       .catch(() => setState("out"));
-  }, [code, isAuthenticated]);
+  }, [code, ready]);
 
   useEffect(() => {
     load();
   }, [load]);
 
   async function toggle() {
-    if (busy) return;
+    if (busy || !ready) return;
     setBusy(true);
     try {
       if (state === "in") {
@@ -42,8 +40,12 @@ export function UsWatchlistButton({ code, name }: { code: string; name?: string 
     }
   }
 
-  if (state === "loading") {
+  if (authLoading || (ready && state === "loading")) {
     return <span className="neo-chip px-2 py-1 text-[10px] text-neo-dim">…</span>;
+  }
+
+  if (!ready) {
+    return <button type="button" disabled className="neo-chip shrink-0 px-2 py-1 text-[10px] text-neo-dim opacity-60">暂不可用</button>;
   }
 
   return (

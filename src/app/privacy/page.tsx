@@ -7,6 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "隐私政策",
   description: "爱看盘网站的隐私政策，说明信息收集、使用、存储、统计分析与用户权利。",
+  alternates: { canonical: "/privacy/" },
 };
 
 const sections = [

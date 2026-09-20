@@ -1,0 +1,100 @@
+- generic [ref=e2]:
+  - generic [ref=e5]:
+    - link [ref=e7] [cursor=pointer]:
+      - /url: /
+      - img "logo" [ref=e8]
+    - list [ref=e10] [cursor=pointer]:
+      - listitem [ref=e11]:
+        - link "搜索学堂" [ref=e12]:
+          - /url: /college#/type=1&cate=newcontent
+      - listitem [ref=e13]:
+        - link "搜索服务" [ref=e14]:
+          - /url: /dashboard/index
+      - listitem [ref=e15]: 互动交流
+      - listitem [ref=e16]:
+        - link "资源合作" [ref=e17]:
+          - /url: /cooperateresource/index
+      - listitem [ref=e18]:
+        - link "用户中心" [ref=e19]:
+          - /url: /site/index
+    - link "登录" [ref=e21] [cursor=pointer]:
+      - /url: https://ziyuan.baidu.com/login/index?u=/site/index
+  - list [ref=e22]:
+    - link "" [ref=e23] [cursor=pointer]:
+      - /url: https://zhiqiu.baidu.com/imcswebchat/roulette/in?id=16606&token=i7mdgusjlsnblnfm10iehei4cs56v5p4&domainID=zhanzhang&type=2
+      - listitem [ref=e24]:
+        - generic [ref=e25]: 
+    - link "" [ref=e26] [cursor=pointer]:
+      - /url: /feedback/index
+      - listitem [ref=e27]:
+        - generic [ref=e28]: 
+    - link:
+      - /url: "#top"
+      - text: 
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - term [ref=e33]:
+        - generic [ref=e34]: 
+        - link "站点管理" [ref=e35] [cursor=pointer]:
+          - /url: /site/index
+      - term [ref=e36]:
+        - generic [ref=e37]: 
+        - link "消息提醒" [ref=e38] [cursor=pointer]:
+          - /url: /prompt/index
+      - term [ref=e39]:
+        - generic [ref=e40]: 
+        - link "联系方式" [ref=e41] [cursor=pointer]:
+          - /url: /usercfg/editaccount
+      - term [ref=e42]:
+        - generic [ref=e43]: 
+        - link "管理员设置" [ref=e44] [cursor=pointer]:
+          - /url: /user/index
+      - term [ref=e45]:
+        - generic [ref=e46]: 
+        - link "安全防护" [ref=e47] [cursor=pointer]:
+          - /url: /wafproduct/index
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - text:  因您未登录，只可以浏览部分内容，查看更多，请
+        - generic [ref=e50] [cursor=pointer]: 登录
+      - heading "欢迎来到百度搜索资源平台" [level=1] [ref=e52]
+      - generic [ref=e53]:
+        - paragraph [ref=e54]: 使用站长工具可以帮助您：
+        - list [ref=e55]:
+          - listitem [ref=e56]: 了解网站的流量及用户数据
+          - listitem [ref=e57]: 监控网站是否存在异常问题
+          - listitem [ref=e58]: 对网站进行优化，提交数据
+        - paragraph [ref=e59]: 让百度更了解您的网站，并让用户更好的找到您的网站！
+        - paragraph [ref=e60]: 现在就添加网站，开始使用全部站长工具吧！
+        - paragraph [ref=e61]: 推荐添加www主站，验证后可获取域名所有权，并快捷添加子站点，查看所有子站数据。
+        - separator [ref=e62]
+        - generic [ref=e63] [cursor=pointer]: 登录
+  - generic [ref=e65]:
+    - generic [ref=e67]:
+      - link "智能小程序" [ref=e68] [cursor=pointer]:
+        - /url: https://smartprogram.baidu.com/developer/index.html
+      - link "投诉平台" [ref=e69] [cursor=pointer]:
+        - /url: //help.baidu.com/newadd?prod_id=1&category=1
+      - link "百度统计" [ref=e70] [cursor=pointer]:
+        - /url: https://tongji.baidu.com/web/welcome/login
+      - link "百度智能云" [ref=e71] [cursor=pointer]:
+        - /url: https://cloud.baidu.com/
+      - link "百度云加速" [ref=e72] [cursor=pointer]:
+        - /url: https://su.baidu.com/
+      - link "百度安全" [ref=e73] [cursor=pointer]:
+        - /url: http://anquan.baidu.com/
+      - link "百度大脑" [ref=e74] [cursor=pointer]:
+        - /url: https://ai.baidu.com/
+      - link "百度保障" [ref=e75] [cursor=pointer]:
+        - /url: https://baozhang.baidu.com/guarantee/?from=ziyuan
+      - link "百度开发者中心" [ref=e76] [cursor=pointer]:
+        - /url: https://developer.baidu.com/?hmsr=站长平台&hmpl=&hmcu=&hmkw=&hmci
+      - link "联系我们" [ref=e77] [cursor=pointer]:
+        - /url: //ziyuan.baidu.com/college/articleinfo?id=2114
+      - link "微信公众号" [ref=e78] [cursor=pointer]:
+        - /url: //ziyuan.baidu.com/wiki/3148
+    - generic [ref=e79]:
+      - text: ©2026 Baidu
+      - link "使用百度前必读" [ref=e80] [cursor=pointer]:
+        - /url: https://www.baidu.com/duty/
+      - text: 京ICP证030173号

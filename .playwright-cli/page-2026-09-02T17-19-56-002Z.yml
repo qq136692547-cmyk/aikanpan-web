@@ -1,0 +1,116 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e2]:
+    - banner [ref=f5e3]:
+      - navigation [ref=f5e4]:
+        - link "爱看盘" [ref=f5e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f5e10]:
+          - tablist "市场范围" [ref=f5e11]:
+            - tab "全部" [ref=f5e12]
+            - tab "A股" [selected] [ref=f5e13]
+            - tab "美股" [ref=f5e14]
+          - navigation "功能导航" [ref=f5e16]:
+            - link "市场" [ref=f5e17] [cursor=pointer]:
+              - /url: /market/?market=cn
+            - link "复盘" [ref=f5e18] [cursor=pointer]:
+              - /url: /review/?market=cn
+            - link "研究" [ref=f5e19] [cursor=pointer]:
+              - /url: /research/?market=cn
+            - link "搜索" [ref=f5e20] [cursor=pointer]:
+              - /url: /search/?market=cn
+            - link "盯盘" [ref=f5e21] [cursor=pointer]:
+              - /url: /alerts/?market=cn
+        - generic [ref=f5e22]:
+          - link "升级 Pro" [ref=f5e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=f5e26]: 会员
+          - link "登录 / 注册" [ref=f5e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f5e32]
+    - main [ref=f5e36]:
+      - generic [ref=f5e39]:
+        - generic [ref=f5e40]:
+          - heading "研究" [level=1] [ref=f5e41]
+          - generic [ref=f5e42]: A股
+        - paragraph [ref=f5e43]: 自选股、盘前计划、公司档案与投资论点
+      - generic [ref=f5e44]:
+        - generic [ref=f5e45]:
+          - generic [ref=f5e47]:
+            - link "持仓工具" [ref=f5e48] [cursor=pointer]:
+              - /url: /portfolio/
+            - button "导出 Markdown" [ref=f5e49]
+          - generic [ref=f5e50]:
+            - button "自选" [ref=f5e51]
+            - button "盘前计划" [ref=f5e52]
+            - button "公司档案" [ref=f5e53]
+            - button "投资论点" [ref=f5e54]
+        - generic [ref=f5e55]:
+          - generic [ref=f5e56]:
+            - heading "自选股" [level=2] [ref=f5e57]
+            - generic [ref=f5e58]:
+              - generic [ref=f5e59]:
+                - textbox "代码，如 sh.600519" [ref=f5e60]
+                - textbox "名称（可选）" [ref=f5e61]
+                - button "添加" [ref=f5e62]
+              - button "自选加入计划" [ref=f5e63]
+              - button "AI 评分" [ref=f5e64]
+              - generic [ref=f5e65]: 0 只
+          - generic [ref=f5e66]:
+            - paragraph [ref=f5e67]: 从热门股票开始，或直接输入代码添加
+            - generic [ref=f5e68]:
+              - generic [ref=f5e69]:
+                - link "维琪科技 bj.920176 · 70.66 · +29.98%" [ref=f5e70] [cursor=pointer]:
+                  - /url: /stock/bj920176/
+                  - generic [ref=f5e71]: 维琪科技
+                  - generic [ref=f5e72]: bj.920176 · 70.66 · +29.98%
+                - button "加入" [ref=f5e73]
+              - generic [ref=f5e74]:
+                - link "晟楠科技 bj.920006 · 22.21 · +29.96%" [ref=f5e75] [cursor=pointer]:
+                  - /url: /stock/bj920006/
+                  - generic [ref=f5e76]: 晟楠科技
+                  - generic [ref=f5e77]: bj.920006 · 22.21 · +29.96%
+                - button "加入" [ref=f5e78]
+              - generic [ref=f5e79]:
+                - link "智新电子 bj.920212 · 14.10 · +29.95%" [ref=f5e80] [cursor=pointer]:
+                  - /url: /stock/bj920212/
+                  - generic [ref=f5e81]: 智新电子
+                  - generic [ref=f5e82]: bj.920212 · 14.10 · +29.95%
+                - button "加入" [ref=f5e83]
+              - generic [ref=f5e84]:
+                - link "*ST宝馨 sz.002514 · 2.27 · +10.19%" [ref=f5e85] [cursor=pointer]:
+                  - /url: /stock/sz002514/
+                  - generic [ref=f5e86]: "*ST宝馨"
+                  - generic [ref=f5e87]: sz.002514 · 2.27 · +10.19%
+                - button "加入" [ref=f5e88]
+              - generic [ref=f5e89]:
+                - link "信达地产 sh.600657 · 3.05 · +10.11%" [ref=f5e90] [cursor=pointer]:
+                  - /url: /stock/sh600657/
+                  - generic [ref=f5e91]: 信达地产
+                  - generic [ref=f5e92]: sh.600657 · 3.05 · +10.11%
+                - button "加入" [ref=f5e93]
+              - generic [ref=f5e94]:
+                - link "大晟文化 sh.600892 · 5.35 · +10.08%" [ref=f5e95] [cursor=pointer]:
+                  - /url: /stock/sh600892/
+                  - generic [ref=f5e96]: 大晟文化
+                  - generic [ref=f5e97]: sh.600892 · 5.35 · +10.08%
+                - button "加入" [ref=f5e98]
+    - contentinfo [ref=f5e99]:
+      - generic [ref=f5e100]:
+        - generic [ref=f5e101]:
+          - generic [ref=f5e102]:
+            - generic [ref=f5e103]: 📊
+            - generic [ref=f5e105]: 爱看盘 · 每日复盘工具
+          - generic [ref=f5e106]:
+            - link "关于" [ref=f5e107] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f5e108] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f5e109] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f5e110] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f5e111] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f5e112]: 数据：东方财富
+        - paragraph [ref=f5e113]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f5e114]

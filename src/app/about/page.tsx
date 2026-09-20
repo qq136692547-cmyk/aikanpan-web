@@ -8,6 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "关于爱看盘",
   description: "爱看盘是一款AI驱动的股票复盘工具，提供A股行情、AI复盘、个股分析等功能。",
+  alternates: { canonical: "/about/" },
 };
 
 export default function AboutPage() {
@@ -46,7 +47,7 @@ export default function AboutPage() {
               { title: "AI 复盘", desc: "AI 生成市场摘要与风险提示" },
               { title: "AI 个股诊断", desc: "LLM 生成结构化分析、评分与决策参考" },
               { title: "AI 批量评分", desc: "涨停跌停板一键 AI 评分，快速筛选" },
-              { title: "智能盯盘", desc: "自然语言创建盯盘任务，到价自动提醒" },
+              { title: "智能盯盘", desc: "自然语言创建盯盘任务，页面轮询、浏览器通知与可选短信" },
               { title: "个股详情", desc: "报价、资金流向、信号面板、AI 诊断" },
               { title: "市场总览", desc: "板块行情、强势行业排名" },
               { title: "资讯研报", desc: "实时市场新闻与研报精选" },
@@ -100,11 +101,11 @@ export default function AboutPage() {
           <h2 className="mb-3 text-sm font-semibold text-neo-mid">常见问题</h2>
           <div className="neo-card divide-y divide-[var(--neo-edge)]">
             {[
-              { q: "爱看盘是什么？", a: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" },
-              { q: "爱看盘的数据来源是什么？", a: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，AI 内容由大语言模型生成。" },
-              { q: "爱看盘是否收费？", a: "当前为免费测试期，网站不收费；后续如有会员或数据增值服务会提前公示。" },
+              { q: "爱看盘是什么？", a: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股、港股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" },
+              { q: "爱看盘的数据来源是什么？", a: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，美股官方披露来自 SEC EDGAR，AI 内容由大语言模型生成。" },
+              { q: "爱看盘是否收费？", a: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" },
               { q: "美股支持哪些功能？", a: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" },
-              { q: "盯盘提醒如何工作？", a: "用户用自然语言或手动条件创建盯盘任务，后端定期轮询行情，满足条件后触发浏览器通知并记录触发历史。" },
+              { q: "盯盘提醒如何工作？", a: "用户创建盯盘任务后，页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后可开启短信提醒。" },
             ].map((item) => (
               <div key={item.q} className="px-4 py-3">
                 <div className="text-sm font-medium text-neo-ink">{item.q}</div>
@@ -139,7 +140,7 @@ export default function AboutPage() {
               <div className="space-y-2 text-sm text-neo-mid">
                 <p>微信号：<span className="font-medium text-neo-ink">denglio0</span></p>
                 <p>邮箱：<a href="mailto:qq136692547@gmail.com" className="text-brand hover:opacity-80">qq136692547@gmail.com</a></p>
-                <p className="text-xs text-neo-dim">AI 会员激活码可在闲鱼搜索"爱看盘"购买，或通过微信/邮箱联系我们。</p>
+                <p className="text-xs text-neo-dim">AI 会员激活码可在闲鱼搜索「爱看盘」购买，或通过微信/邮箱联系我们。</p>
               </div>
               <h2 className="mb-3 mt-6 text-sm font-semibold text-neo-mid">链接</h2>
               <div className="flex flex-wrap gap-4 text-sm">
@@ -176,11 +177,11 @@ export default function AboutPage() {
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
-              { "@type": "Question", name: "爱看盘是什么？", acceptedAnswer: { "@type": "Answer", text: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" } },
-              { "@type": "Question", name: "爱看盘的数据来源是什么？", acceptedAnswer: { "@type": "Answer", text: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，AI 内容由大语言模型生成。" } },
-              { "@type": "Question", name: "爱看盘是否收费？", acceptedAnswer: { "@type": "Answer", text: "当前为免费测试期，网站不收费；后续如有会员或数据增值服务会提前公示。" } },
+              { "@type": "Question", name: "爱看盘是什么？", acceptedAnswer: { "@type": "Answer", text: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股、港股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" } },
+              { "@type": "Question", name: "爱看盘的数据来源是什么？", acceptedAnswer: { "@type": "Answer", text: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，美股官方披露来自 SEC EDGAR，AI 内容由大语言模型生成。" } },
+              { "@type": "Question", name: "爱看盘是否收费？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" } },
               { "@type": "Question", name: "美股支持哪些功能？", acceptedAnswer: { "@type": "Answer", text: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
-              { "@type": "Question", name: "盯盘提醒如何工作？", acceptedAnswer: { "@type": "Answer", text: "用户用自然语言或手动条件创建盯盘任务，后端定期轮询行情，满足条件后触发浏览器通知并记录触发历史。" } },
+              { "@type": "Question", name: "盯盘提醒如何工作？", acceptedAnswer: { "@type": "Answer", text: "用户创建盯盘任务后，页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后可开启短信提醒。" } },
             ],
           }),
         }}

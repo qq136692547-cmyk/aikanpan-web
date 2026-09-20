@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bot, RefreshCw, Sparkles } from "lucide-react";
-import { api, type MarketTemperature } from "@/lib/api";
+import { api, type AIEvidence, type MarketTemperature } from "@/lib/api";
 import { formatPct } from "@/lib/format";
 import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
+import { AIEvidencePanel } from "./ai-evidence-panel";
 
 const DIM_ORDER: (keyof MarketTemperature["dimensions"])[] = ["index", "sector", "limit", "ai"];
 
@@ -37,6 +38,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
   const [aiLoading, setAiLoading] = useState(false);
   const [aiText, setAiText] = useState<string | null>(null);
   const [aiMeta, setAiMeta] = useState<{ model: string; generated_at: string; cached: boolean } | null>(null);
+  const [aiEvidence, setAiEvidence] = useState<AIEvidence>();
 
   useEffect(() => {
     let cancelled = false;
@@ -64,6 +66,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
       setData(d);
       setAiText(d.ai?.summary ?? null);
       setAiMeta(d.ai ? { model: d.ai.model, generated_at: d.ai.generated_at, cached: d.ai.cached } : null);
+      setAiEvidence(d.ai?.evidence);
     } catch {
       setAiText(null);
     } finally {
@@ -156,7 +159,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
         <button
           onClick={loadAI}
           disabled={aiLoading}
-          className="neo-btn-primary flex w-full items-center justify-center gap-1.5 rounded-md px-4 py-2 text-[12px] font-medium disabled:opacity-60"
+          className="neo-btn-primary flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md px-4 py-2 text-[12px] font-medium disabled:opacity-60"
         >
           {aiLoading ? <RefreshCw size={13} className="animate-spin" /> : <Bot size={13} />}
           {aiLoading ? "AI 生成中…" : aiText ? "重新生成 AI 温度解读" : "AI 深度解读"}
@@ -171,6 +174,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
                 <span>{aiMeta.generated_at.slice(5, 16).replace("T", " ")}</span>
               </div>
             )}
+            <AIEvidencePanel evidence={aiEvidence} />
           </div>
         )}
       </div>

@@ -5,6 +5,7 @@ import { RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api, type AIReview } from "@/lib/api";
+import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
 
 const US_DAILY_REVIEW_KEY = "us-daily-review";
 
@@ -28,6 +29,45 @@ export function getUsDailyReviewExcerpt(content: string) {
   return paragraph || "";
 }
 
+export function getUsDailyReviewTakeaways(content: string) {
+  const body = stripTrailingMeta(content);
+  const clean = (value: string) =>
+    value
+      .replace(/^\s*\d+[.、]\s*/, "")
+      .replace(/^\s*[-+*]\s+/, "")
+      .replace(/^\*\*[^*]+\*\*[:：]?\s*/, "")
+      .replace(/^[>:：\s]+/, "")
+      .replace(/\*\*/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  const blocks = body
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map(clean)
+    .filter(Boolean);
+  const marketText =
+    blocks.find(
+      (block) =>
+        !/^(?:今日美股复盘|美股复盘|评分|状态)/.test(block) &&
+        block.length >= 16,
+    ) || getUsDailyReviewExcerpt(body);
+  const riskPattern = /风险|警惕|留意|关注|下跌|回调|压力|波动|不确定|谨慎|利空/;
+  const actionPattern = /操作|建议|不宜|保持|控制|等待|持有|空仓|仓位|介入|观望|回踩|止盈|止损/;
+  const riskText =
+    blocks.find((block) => block !== marketText && riskPattern.test(block)) || "";
+  const actionText =
+    blocks
+      .filter((block) => block !== marketText && block !== riskText && actionPattern.test(block))
+      .at(-1) || "";
+
+  return [
+    { label: "市场驱动", text: marketText },
+    { label: "主要风险", text: riskText },
+    { label: "操作倾向", text: actionText },
+  ].filter((item) => item.text);
+}
+
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
   const statusMatch = content.match(/\*\*状态\*\*[:：]\s*(.+)/);
@@ -35,6 +75,11 @@ function parseScoreAndStatus(content: string): { score: number | null; status: s
     score: scoreMatch ? parseInt(scoreMatch[1], 10) : null,
     status: statusMatch ? statusMatch[1].trim() : null,
   };
+}
+
+export function getUsDailyReviewConclusion(content: string) {
+  const { score, status } = parseScoreAndStatus(content);
+  return [status, score !== null ? `评分 ${score}/10` : ""].filter(Boolean).join(" · ");
 }
 
 function stripTrailingMeta(content: string): string {
@@ -126,6 +171,8 @@ export function UsDailyReview() {
       <div className="ai-markdown mt-4 text-sm leading-relaxed text-neo-ink">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
       </div>
+
+      <AIEvidencePanel evidence={data.evidence} />
 
       <p className="mt-4 pt-3 text-[11px] text-neo-dim">
         ⚠ 本内容由 AI 生成，不构成投资建议

@@ -1,29 +1,35 @@
+import { BarChart3 } from "lucide-react";
+
 export function Footer({ dataSource = "东方财富" }: { dataSource?: string }) {
   return (
     <footer className="neo-page border-t border-[var(--neo-surface-inset)]">
-      <div className="mx-auto w-full max-w-[1440px] px-6 py-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="neo-card-sm flex h-6 w-6 items-center justify-center" style={{ borderRadius: 8 }}>
-              <span className="text-[11px]">📊</span>
+      <div className="mx-auto w-full max-w-[1440px] px-4 py-4 sm:px-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex min-h-11 items-center gap-2">
+            <div className="neo-card-sm flex h-8 w-8 items-center justify-center" style={{ borderRadius: 9 }}>
+              <BarChart3 size={15} style={{ color: "var(--neo-primary)" }} aria-hidden />
             </div>
             <span className="text-[12px] text-neo-mid">爱看盘 · 每日复盘工具</span>
           </div>
-          <div className="flex items-center gap-4 text-[12px] text-neo-dim">
-            <a href="/about/" className="transition-colors hover:text-neo-primary">关于</a>
-            <a href="/api-docs/" className="transition-colors hover:text-neo-primary">API</a>
-            <a href="/privacy/" className="transition-colors hover:text-neo-primary">隐私</a>
-            <a href="/terms/" className="transition-colors hover:text-neo-primary">协议</a>
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-neo-primary">渝ICP备2026014729号-1</a>
-            <span>数据：{dataSource}</span>
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] text-neo-dim">
+            <a href="/stocks/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">热门股票</a>
+            <a href="/market/limit-up/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">涨停复盘</a>
+            <a href="/market/fund-flow/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">资金流向</a>
+            <a href="/market/temperature/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">市场温度</a>
+            <a href="/about/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">关于</a>
+            <a href="/api-docs/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">API</a>
+            <a href="/privacy/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">隐私</a>
+            <a href="/terms/" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">协议</a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center px-2 transition-colors hover:text-neo-primary md:min-h-8">渝ICP备2026014729号-1</a>
+            <span className="inline-flex min-h-11 items-center px-2 md:min-h-8">数据：{dataSource}</span>
           </div>
         </div>
-        <div className="mt-2 flex items-center gap-4 text-[11px] text-neo-dim">
-            <span>微信：denglio0</span>
-            <a href="mailto:qq136692547@gmail.com" className="transition-colors hover:text-neo-primary">qq136692547@gmail.com</a>
-          </div>
-          <p className="mt-2 text-[11px] text-neo-mid opacity-70">
-          ⚠ 本站数据仅供参考，不构成投资建议
+        <div className="mt-2 flex flex-col gap-1 border-t border-[var(--neo-surface-inset)] pt-3 text-[12px] text-neo-dim sm:flex-row sm:items-center sm:gap-4">
+          <span>微信：denglio0</span>
+          <a href="mailto:qq136692547@gmail.com" className="inline-flex min-h-11 items-center transition-colors hover:text-neo-primary sm:min-h-8">qq136692547@gmail.com</a>
+        </div>
+        <p className="mt-1 text-[12px] text-neo-mid opacity-80">
+          本站数据仅供参考，不构成投资建议
         </p>
       </div>
     </footer>

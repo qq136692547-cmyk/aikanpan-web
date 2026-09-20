@@ -22,7 +22,7 @@ function cnStockRoute(symbol: string) {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 
-export function MarketEarningsCalendar({ market }: { market: "cn" | "us" }) {
+export function MarketEarningsCalendar({ market }: { market: "cn" | "hk" | "us" }) {
   const [items, setItems] = useState<EarningsCalendarItem[] | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +36,9 @@ export function MarketEarningsCalendar({ market }: { market: "cn" | "us" }) {
           if (!res.ok) throw new Error(`earnings ${res.status}`);
           const data = (await res.json()) as { calendar?: EarningsCalendarItem[] };
           if (!cancelled) setItems(data.calendar || []);
+        } else if (market === "hk") {
+          // 港股暂无免费财报日历数据源，保持与其他市场一致的占位。
+          if (!cancelled) setItems([]);
         } else {
           const data = await api.getUsEarningsCalendar();
           if (!cancelled) setItems(data.calendar || []);

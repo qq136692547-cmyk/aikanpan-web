@@ -1,0 +1,187 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - banner [ref=f15e4]:
+      - generic [ref=f15e5]:
+        - generic [ref=f15e6]:
+          - button "主菜单" [ref=f15e761] [cursor=pointer]
+          - link "Google Search Console" [ref=f15e762] [cursor=pointer]:
+            - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+        - generic [ref=f15e14]:
+          - search [ref=f15e16]:
+            - generic [ref=f15e22]:
+              - textbox [disabled] [aria-hidden] [ref=f15e23]: 检查“https://aikanpan.top/”中的任何网址
+              - combobox "检查 https://aikanpan.top/ 中的任何网址" [ref=f15e763]
+            - button "搜索" [ref=f15e764] [cursor=pointer]
+          - generic [ref=f15e29]:
+            - generic [ref=f15e31]:
+              - generic [ref=f15e33]:
+                - button "帮助" [ref=f15e765] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e36]: help_outline
+                - tooltip [aria-hidden] [ref=f15e38]: 帮助
+              - generic [ref=f15e40]:
+                - button "用户设置" [ref=f15e766] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e43]: manage_accounts
+                - tooltip [aria-hidden] [ref=f15e45]: 用户设置
+            - generic [ref=f15e48]:
+              - generic [ref=f15e49]:
+                - button "未读消息：1 条" [ref=f15e767] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e52]: notifications
+                - tooltip [aria-hidden] [ref=f15e54]: 留言
+              - generic: "1"
+        - generic [ref=f15e56]:
+          - button "Google 应用" [ref=f15e768] [cursor=pointer]
+          - button "Google 账号： L D (qq136692547@gmail.com), Google One 会员" [ref=f15e769] [cursor=pointer]
+    - dialog "navigational drawer" [ref=f15e770]:
+      - navigation "主要" [ref=f15e771]:
+        - button "搜索资源" [ref=f15e772] [cursor=pointer]:
+          - img "网站图标" [ref=f15e773]
+          - combobox "https://aikanpan.top/" [ref=f15e774]
+          - generic [aria-hidden] [ref=f15e91]: 
+        - generic [ref=f15e92]:
+          - generic [ref=f15e93]:
+            - generic [ref=f15e94]:
+              - link "概述" [ref=f15e775] [cursor=pointer]:
+                - /url: ./search-console?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e98]: home
+              - link "数据洞见" [ref=f15e776] [cursor=pointer]:
+                - /url: ./search-console/performance/insights?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e105]: lightbulb_2
+              - link "效果" [ref=f15e777] [cursor=pointer]:
+                - /url: ./search-console/performance/search-analytics?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e112]: trending_up
+              - button "网址检查" [ref=f15e778] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e119]: search
+            - generic [ref=f15e125]:
+              - generic [ref=f15e127]:
+                - generic [ref=f15e128]: 编制索引
+                - button "“编制索引”报告部分" [expanded] [ref=f15e779] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e134]: keyboard_arrow_up
+              - generic [ref=f15e138]:
+                - link "网页" [ref=f15e780] [cursor=pointer]:
+                  - /url: ./search-console/index?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic [aria-hidden] [ref=f15e142]: file_copy
+                - link "站点地图" [ref=f15e781] [cursor=pointer]:
+                  - /url: ./search-console/sitemaps?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic [aria-hidden] [ref=f15e149]: account_tree
+                - link "移除" [ref=f15e782] [cursor=pointer]:
+                  - /url: ./search-console/removals?resource_id=https%3A%2F%2Faikanpan.top%2F
+                  - generic [aria-hidden] [ref=f15e156]: visibility_off
+            - generic [ref=f15e162]:
+              - generic [ref=f15e164]:
+                - generic [ref=f15e165]: 体验
+                - button "“体验”报告部分" [expanded] [ref=f15e783] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f15e171]: keyboard_arrow_up
+              - link "核心网页指标" [ref=f15e784] [cursor=pointer]:
+                - /url: ./search-console/core-web-vitals?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e179]: speed
+            - generic [ref=f15e187]:
+              - generic [ref=f15e188]: 安全问题和人工处置措施
+              - button "“安全问题和人工处置措施”报告部分" [ref=f15e785] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e194]: keyboard_arrow_down
+            - generic [ref=f15e195]:
+              - link "“链接”报告" [ref=f15e786] [cursor=pointer]:
+                - /url: ./search-console/links?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e199]: link_2
+                - generic [ref=f15e200]: 链接数量
+              - link "成就" [ref=f15e787] [cursor=pointer]:
+                - /url: ./search-console/achievements?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e206]: trophy
+              - link "设置" [ref=f15e788] [cursor=pointer]:
+                - /url: ./search-console/settings?resource_id=https%3A%2F%2Faikanpan.top%2F
+                - generic [aria-hidden] [ref=f15e213]: settings
+          - generic [ref=f15e217]:
+            - generic [ref=f15e219]:
+              - button "提交反馈" [ref=f15e789] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e223]: feedback
+              - button "Search Console 简介" [ref=f15e790] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e230]: info
+            - generic [ref=f15e236]:
+              - link "隐私权" [ref=f15e791] [cursor=pointer]:
+                - /url: https://myaccount.google.com/privacypolicy?hl=zh-CN
+              - link "条款" [ref=f15e792] [cursor=pointer]:
+                - /url: https://myaccount.google.com/termsofservice?hl=zh-CN
+    - generic [ref=f15e794]:
+      - generic [ref=f15e795]: https://aikanpan.top/
+      - generic [ref=f15e803]:
+        - generic [ref=f15e805]:
+          - navigation "路径" [ref=f15e807]:
+            - heading "网址检查" [level=1] [ref=f15e810]
+          - generic [ref=f15e814]:
+            - link "Google 索引" [ref=f15e815] [cursor=pointer]:
+              - /url: ./search-console/inspect?resource_id=https%3A%2F%2Faikanpan.top%2F&id=nUTsCByGVIsEvdYE0cKhFQ&alt_id=6fkJ5hBKMbZTMJRPv_rQ1Q
+            - button "测试实际版本" [disabled] [ref=f15e819]
+        - main [ref=f15e824]:
+          - generic [ref=f15e825]:
+            - generic [ref=f15e826]:
+              - generic [ref=f15e827]: 测试时间：2026年9月11日，17:30
+              - button "重新测试网址" [ref=f15e829] [cursor=pointer]:
+                - generic [aria-hidden] [ref=f15e832]: 
+            - generic [ref=f15e834]:
+              - generic [ref=f15e835]:
+                - generic [aria-hidden] [ref=f15e836]: error
+                - generic [ref=f15e837]:
+                  - generic [ref=f15e838]: 网址无法编入 Google 索引
+                  - generic [ref=f15e839]:
+                    - text: 此网页无法编入索引。未编入索引的网页无法显示在 Google 搜索结果中。请查看下述详情，了解为何不能编入索引。
+                    - link "了解详情" [ref=f15e841] [cursor=pointer]:
+                      - /url: https://support.google.com/webmasters/answer/9012289#url_cannot_be_on_google
+              - generic [ref=f15e843]:
+                - button "查看被测试的网页" [disabled] [ref=f15e847]
+                - generic [ref=f15e853]:
+                  - generic [ref=f15e854]: 更改了网页？
+                  - button "请求编入索引再次提交请求" [disabled] [ref=f15e857]:
+                    - generic [ref=f15e859]: 请求编入索引
+            - generic [ref=f15e868]:
+              - button "网页可用性 网页无法编入索引：发生网站级问题，因此无法显示这个网页" [expanded] [ref=f15e869] [cursor=pointer]:
+                - generic [ref=f15e870]:
+                  - generic [ref=f15e872]:
+                    - generic [aria-hidden] [ref=f15e874]: error
+                    - generic [ref=f15e875]:
+                      - generic [ref=f15e876]: 网页可用性
+                      - generic [ref=f15e877]: 网页无法编入索引：发生网站级问题，因此无法显示这个网页
+                  - generic [aria-hidden] [ref=f15e880]: 
+              - generic [ref=f15e884]:
+                - generic [ref=f15e885]:
+                  - text: 仅当满足
+                  - link "特定条件" [ref=f15e886] [cursor=pointer]:
+                    - /url: https://support.google.com/webmasters/answer/9012289#will_i_be_indexed
+                  - text: 时，网址才能被编入索引
+                - generic [ref=f15e887]:
+                  - generic [ref=f15e888]:
+                    - generic [ref=f15e889]: 发现
+                    - generic [ref=f15e890]: 未在实际版本测试中检查
+                  - generic [ref=f15e892]:
+                    - generic [ref=f15e893]: 抓取
+                    - generic [ref=f15e894]:
+                      - generic [ref=f15e895]: 时间
+                      - generic [ref=f15e896]: 2026年9月11日 17:30:25
+                    - generic [ref=f15e898]:
+                      - generic [ref=f15e899]: 当时所用的用户代理
+                      - generic [ref=f15e900]: Google 检查工具智能手机版
+                    - generic [ref=f15e902]:
+                      - generic [ref=f15e903]: 是否允许抓取？
+                      - generic [ref=f15e904]: 是
+                    - generic [ref=f15e906]:
+                      - generic [ref=f15e907]: 网页抓取
+                      - generic [aria-hidden] [ref=f15e909]: error
+                      - generic [ref=f15e910]: 失败：Robots.txt 无法访问
+                    - generic [ref=f15e912]:
+                      - generic [ref=f15e913]: 是否允许编入索引？
+                      - generic [ref=f15e914]: 不适用
+                  - generic [ref=f15e916]:
+                    - generic [ref=f15e917]: 编制索引
+                    - generic [ref=f15e918]:
+                      - generic [ref=f15e919]: 用户声明的规范网址
+                      - generic [ref=f15e920]: 不适用
+                    - generic [ref=f15e922]:
+                      - generic [ref=f15e924]:
+                        - generic [ref=f15e925]: Google 选择的规范网址
+                        - button "null" [ref=f15e928] [cursor=pointer]:
+                          - generic [aria-hidden] [ref=f15e929]: 
+                      - generic [ref=f15e930]: 要等到编入索引后才能确定
+                - link "链接至更详尽的文档" [ref=f15e935] [cursor=pointer]:
+                  - /url: https://support.google.com/webmasters/answer/12211501
+                  - generic [ref=f15e937]: 了解详情
+            - generic [ref=f15e941]: 增强功能和体验
+            - generic [ref=f15e942]: 仅已编入索引的网址有增强选项
+  - generic [ref=f15e432]: 网址检查

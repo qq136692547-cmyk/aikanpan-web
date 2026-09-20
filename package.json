@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs tests/navigation.test.mjs",
+    "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs tests/navigation.test.mjs tests/seo.test.mjs tests/payment.test.mjs tests/research-storage.test.mjs",
     "monitor:perf": "node monitor/perf-baseline.mjs",
     "audit:site": "node monitor/site-audit.mjs",
     "test:unit": "node --experimental-strip-types --test tests/format.test.mjs",
     "monitor:retention": "node monitor/retention.mjs",
-    "monitor:sources": "node monitor/sources.mjs"
+    "monitor:sources": "node monitor/sources.mjs",
+    "monitor:funnel": "node monitor/funnel.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

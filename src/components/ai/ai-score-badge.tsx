@@ -28,6 +28,12 @@ export function AIScoreBadge({ item }: { item: AIScoreItem }) {
         {item.cached && (
           <span className="mt-1 block text-[10px] text-neo-dim">缓存命中</span>
         )}
+        {item.evidence && (
+          <div className="mt-1 border-t border-[var(--neo-edge)] pt-1 text-[10px] text-neo-dim">
+            数据依据 {item.evidence.sources?.length ?? 0} 个来源 · {item.evidence.calculations?.length ?? 0} 项计算
+            {(item.evidence.warnings?.length ?? 0) > 0 && <span className="mt-0.5 block text-neo-down">{item.evidence.warnings?.length ?? 0} 条数据提示</span>}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,81 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - banner [ref=f10e3]:
+      - navigation [ref=f10e4]:
+        - link "爱看盘" [ref=f10e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f10e10]:
+          - tablist "市场范围" [ref=f10e11]:
+            - tab "全部" [ref=f10e12]
+            - tab "A股" [ref=f10e13]
+            - tab "美股" [selected] [ref=f10e14]
+          - navigation "功能导航" [ref=f10e16]:
+            - link "市场" [ref=f10e17] [cursor=pointer]:
+              - /url: /market/?market=us
+            - link "复盘" [ref=f10e18] [cursor=pointer]:
+              - /url: /review/?market=us
+            - link "研究" [ref=f10e19] [cursor=pointer]:
+              - /url: /research/?market=us
+            - link "搜索" [ref=f10e20] [cursor=pointer]:
+              - /url: /search/?market=us
+            - link "盯盘" [ref=f10e21] [cursor=pointer]:
+              - /url: /alerts/?market=us
+        - generic [ref=f10e22]:
+          - link "升级 Pro" [ref=f10e23] [cursor=pointer]:
+            - /url: /upgrade/
+            - generic [ref=f10e26]: 会员
+          - link "登录 / 注册" [ref=f10e27] [cursor=pointer]:
+            - /url: /account/
+          - button "全局搜索" [ref=f10e32]
+    - main [ref=f10e36]:
+      - generic [ref=f10e39]:
+        - generic [ref=f10e40]:
+          - heading "盯盘" [level=1] [ref=f10e41]
+          - generic [ref=f10e42]: 美股
+        - paragraph [ref=f10e43]: 用自然语言创建盯盘条件，AI 自动解析并持续监控
+      - generic [ref=f10e45]:
+        - generic [ref=f10e46]:
+          - generic [ref=f10e47]: 智能盯盘
+          - heading "自然语言创建或组合条件" [level=3] [ref=f10e48]
+        - generic [ref=f10e49]:
+          - textbox "输入盯盘条件，如「苹果跌到180提醒我」" [ref=f10e50]
+          - button "解析" [disabled] [ref=f10e51]
+        - generic [ref=f10e52]:
+          - button "苹果跌到180提醒我" [ref=f10e53]
+          - button "英伟达涨到150通知我" [ref=f10e54]
+          - button "特斯拉涨幅超过3%提醒我" [ref=f10e55]
+          - button "微软跌破400" [ref=f10e56]
+          - button "+ 手动组合条件" [ref=f10e57]
+      - generic [ref=f10e59]:
+        - heading "通知设置" [level=3] [ref=f10e64]
+        - generic [ref=f10e65]:
+          - generic [ref=f10e66]:
+            - generic [ref=f10e70]:
+              - generic [ref=f10e71]: 浏览器通知
+              - generic [ref=f10e72]: 触发时在桌面弹出提醒
+            - checkbox "浏览器通知开关" [ref=f10e74]
+          - generic [ref=f10e76]:
+            - generic [ref=f10e80]:
+              - generic [ref=f10e81]: 短信通知
+              - generic [ref=f10e82]: 绑定手机号后可开启
+            - checkbox "短信通知开关" [disabled] [ref=f10e84]
+    - contentinfo [ref=f10e91]:
+      - generic [ref=f10e92]:
+        - generic [ref=f10e93]:
+          - generic [ref=f10e94]:
+            - generic [ref=f10e95]: 📊
+            - generic [ref=f10e97]: 爱看盘 · 每日复盘工具
+          - generic [ref=f10e98]:
+            - link "关于" [ref=f10e99] [cursor=pointer]:
+              - /url: /about/
+            - link "API" [ref=f10e100] [cursor=pointer]:
+              - /url: /api-docs/
+            - link "隐私" [ref=f10e101] [cursor=pointer]:
+              - /url: /privacy/
+            - link "协议" [ref=f10e102] [cursor=pointer]:
+              - /url: /terms/
+            - link "渝ICP备2026014729号-1" [ref=f10e103] [cursor=pointer]:
+              - /url: https://beian.miit.gov.cn/
+            - generic [ref=f10e104]: 数据：Finnhub
+        - paragraph [ref=f10e105]: ⚠ 本站数据仅供参考，不构成投资建议
+  - alert [ref=f10e106]

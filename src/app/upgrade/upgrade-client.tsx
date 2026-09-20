@@ -1,479 +1,426 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import {
-  BadgeCheck,
-  BookOpenCheck,
   Crown,
-  Gauge,
-  GraduationCap,
-  KeyRound,
-  ListChecks,
-  MessageCircle,
-  ShieldCheck,
-  ShoppingBag,
-  Sparkles,
-  X,
   Zap,
+  CheckCircle2,
+  Clock3,
+  ShieldCheck,
+  TriangleAlert,
+  KeyRound,
+  ExternalLink,
+  MessageCircle,
+  Loader2,
+  ArrowRight,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
 import { useAuth } from "@/lib/auth";
-import { reportConversionEvent, type UpgradeProfile } from "@/lib/analytics";
+import { isAlipayOrderPaid } from "@/lib/payment";
 
-const FREE_FEATURES = [
-  "基础行情与市场结构",
-  "每日 AI 复盘（缓存可用时）",
-  "每天 5 次有效 AI 调用",
-];
+type PaymentConfirmation = "idle" | "checking" | "success" | "pending" | "error";
 
-const PRO_FEATURES = [
-  "每日 AI 复盘与解读",
-  "个股、组合与盘前计划 AI 诊断",
-  "AI 批量评分与历史归档",
-  "更高每日 AI 额度",
-];
-const QR_CARDS = [
-  { key: "monthly" as const, src: "/images/xianyu-qr-monthly.png", alt: "闲鱼月卡商品二维码", title: "月卡 ¥29 · 扫码直达闲鱼" },
-  { key: "annual" as const, src: "/images/xianyu-qr-annual.png", alt: "闲鱼年卡商品二维码", title: "年卡 ¥299 · 扫码直达闲鱼" },
-];
-const COMPARE_ROWS = [
-  { label: "每日有效 AI 调用", free: "5 次", pro: "500 次" },
-  { label: "每日 AI 复盘", free: "缓存可用时", pro: "每日更新" },
-  { label: "个股 / 组合 / 盘前计划 AI 诊断", free: "—", pro: "✓" },
-  { label: "AI 批量评分与历史归档", free: "—", pro: "✓" },
-  { label: "有效期", free: "—", pro: "30 天 / 365 天，可叠加" },
-];
+export function UpgradePageClient({
+  market = "cn",
+  paySuccess = false,
+  outTradeNo = "",
+}: {
+  market?: "cn" | "us";
+  paySuccess?: boolean;
+  outTradeNo?: string;
+}) {
+  const { user, isAuthenticated } = useAuth();
 
-const USER_PROFILES = [
-  {
-    id: "intraday" as UpgradeProfile,
-    title: "短线盯盘",
-    icon: Gauge,
-    summary: "聚焦盘面结构、涨跌停变化和盯盘提醒。",
-    free: ["涨跌停与市场结构", "盯盘提醒管理", "自选股联动"],
-    pro: ["AI 批量评分", "盘前计划诊断", "更高 AI 复盘额度"],
-    href: "/alerts",
-    action: "进入盯盘",
-  },
-  {
-    id: "longterm" as UpgradeProfile,
-    title: "中长线研究",
-    icon: BookOpenCheck,
-    summary: "围绕财务、事件、论点和组合做连续研究。",
-    free: ["基础财务与历史行情", "研究论点记录", "组合持仓管理"],
-    pro: ["个股 AI 深度解读", "组合 AI 复盘", "研究计划 AI 梳理"],
-    href: "/research/",
-    action: "进入研究",
-  },
-  {
-    id: "beginner" as UpgradeProfile,
-    title: "新手学习",
-    icon: GraduationCap,
-    summary: "从每日结构和复盘框架开始，降低理解门槛。",
-    free: ["每日复盘结构", "市场温度概览", "基础行情检索"],
-    pro: ["AI 复盘通俗解读", "个股 AI 诊断示例", "更多学习式分析"],
-    href: "/review/",
-    action: "进入复盘",
-  },
-];
+  // 只有手机号/邮箱等真实注册用户才能付款，游客不算
+  const isRealUser = isAuthenticated && !!user?.type && user.type !== "guest";
 
-export function UpgradePageClient({ market }: { market: "cn" | "us" }) {
-  const { membership, loading, refresh } = useMembership();
-  const { user } = useAuth();
-  const [profile, setProfile] = useState<UpgradeProfile>("intraday");
+  const { membership, refresh } = useMembership();
+
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState("");
+  const [paymentConfirmation, setPaymentConfirmation] = useState<PaymentConfirmation>(
+    paySuccess ? (outTradeNo ? "checking" : "error") : "idle"
+  );
+  const [paymentMessage, setPaymentMessage] = useState(
+    paySuccess && !outTradeNo ? "支付回跳缺少订单号，暂时无法确认到账结果。" : ""
+  );
+
   const [code, setCode] = useState("");
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<"ok" | "error">("ok");
-  const [busy, setBusy] = useState(false);
-  const [qrPreview, setQrPreview] = useState<"monthly" | "annual" | null>(null);
-  const exposureReported = useRef(false);
+  const [activating, setActivating] = useState(false);
+  const [activateMsg, setActivateMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   useEffect(() => {
-    if (exposureReported.current) return;
-    exposureReported.current = true;
-    reportConversionEvent("upgrade_exposure", { profile });
-  }, [profile]);
+    if (!paySuccess || !outTradeNo) return;
 
-  function selectProfile(next: UpgradeProfile) {
-    setProfile(next);
-    reportConversionEvent("upgrade_profile_select", { profile: next });
-  }
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-  async function activate(e: FormEvent) {
-    e.preventDefault();
-    if (!code.trim()) {
-      setMessage("请输入激活码");
-      setMessageType("error");
-      return;
-    }
-    reportConversionEvent("upgrade_click", { profile });
-    setBusy(true);
-    setMessage("");
+    const verifyOrder = async (attempt: number) => {
+      try {
+        const res = await api.checkAlipayOrderStatus(outTradeNo);
+        if (cancelled) return;
+        if (isAlipayOrderPaid(res.data?.status)) {
+          setPaymentConfirmation("success");
+          setPaymentMessage("");
+          refresh();
+          return;
+        }
+        if (attempt < 5) {
+          timer = setTimeout(() => verifyOrder(attempt + 1), 1500);
+          return;
+        }
+        setPaymentConfirmation("pending");
+        setPaymentMessage("支付结果仍在确认中。若已扣款，到账后会自动增加会员时长。");
+      } catch (error: unknown) {
+        if (cancelled) return;
+        if (attempt < 2) {
+          timer = setTimeout(() => verifyOrder(attempt + 1), 2000);
+          return;
+        }
+        setPaymentConfirmation("error");
+        setPaymentMessage(
+          error instanceof Error && error.message
+            ? error.message
+            : "暂时无法确认支付结果，请稍后刷新页面。"
+        );
+      }
+    };
+
+    verifyOrder(0);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [paySuccess, outTradeNo, refresh]);
+
+  const handleAlipay = async () => {
+    setPayError("");
+    setPaying(true);
     try {
-      const result = await api.activateMembership(code.trim());
-      await refresh(result, { revalidate: false });
-      if (result.plan === "pro") {
-        reportConversionEvent("activation_success", { profile });
-        const expiry = result.expires_at ? `，${result.expires_at.slice(0, 10)} 到期` : "";
-        setMessage(`Pro 已开通/续费成功${expiry}，时长自动叠加`);
-        setMessageType("ok");
-        setCode("");
+      const res = await api.createAlipayOrder("monthly");
+      if (res && res.data && res.data.pay_url) {
+        window.location.href = res.data.pay_url;
       } else {
-        setMessage("激活结果异常，请刷新后重试");
-        setMessageType("error");
+        setPayError("创建支付订单失败，请稍后重试");
+        setPaying(false);
       }
-    } catch (err) {
-      const raw = err instanceof Error ? err.message : "";
-      if (/401|authorization|token/i.test(raw)) {
-        setMessage("请先登录后再激活，登录后重新输入激活码即可");
-      } else {
-        setMessage(raw || "激活码无效");
-      }
-      setMessageType("error");
-    } finally {
-      setBusy(false);
+    } catch (error: unknown) {
+      setPayError(
+        error instanceof Error && error.message
+          ? error.message
+          : "支付服务暂时不可用，请稍后重试"
+      );
+      setPaying(false);
     }
-  }
+  };
+
+  const handleActivate = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!code.trim()) return;
+    setActivating(true);
+    setActivateMsg(null);
+    try {
+      await api.activateMembership(code.trim().toUpperCase());
+      setActivateMsg({ type: "ok", text: "激活成功！Pro 会员时长已生效。" });
+      setCode("");
+      refresh();
+    } catch (error: unknown) {
+      setActivateMsg({
+        type: "err",
+        text:
+          error instanceof Error && error.message
+            ? error.message
+            : "激活码无效或已被使用",
+      });
+    } finally {
+      setActivating(false);
+    }
+  };
 
   const isPro = membership?.plan === "pro";
+  const paymentTone =
+    paymentConfirmation === "success"
+      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+      : paymentConfirmation === "error"
+        ? "border-rose-500/30 bg-rose-500/10 text-rose-400"
+        : paymentConfirmation === "pending"
+          ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+          : "border-blue-500/30 bg-blue-500/10 text-blue-400";
+  const paymentTitle =
+    paymentConfirmation === "success"
+      ? "支付成功，Pro 会员已自动激活！"
+      : paymentConfirmation === "error"
+        ? "暂时无法确认支付结果"
+        : paymentConfirmation === "pending"
+          ? "支付结果确认中"
+          : "正在确认支付结果";
+  const paymentDescription =
+    paymentConfirmation === "success"
+      ? "您的有效时长已实时更新，感谢您的支持。"
+      : paymentMessage || "请勿重复付款，通常几秒内即可完成确认。";
 
   return (
-    <div className="neo-page">
+    <div className="flex min-h-screen flex-col bg-neutral-950 text-neutral-100">
       <Navbar />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-6">
-        <section className="neo-card neo-fade-up p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <h1 className="text-[24px] font-bold tracking-tight text-neo-ink">爱看盘 Pro</h1>
-              <p className="mt-1 max-w-xl text-[13px] leading-relaxed text-neo-dim">
-                为复盘、研究、盯盘建立连续的 AI 工作流。订阅制按自然日重置额度，会员到期后自动回到免费版。
-              </p>
-            </div>
-            <div className="neo-inset-sm min-w-[190px] rounded-md px-4 py-3">
-              <div className="text-[11px] text-neo-dim">当前状态</div>
-              <div className="mt-1 flex items-center gap-2 text-[14px] font-semibold text-neo-ink">
-                <Crown size={16} style={{ color: isPro ? "var(--neo-primary)" : "var(--neo-dim)" }} />
-                {loading && !membership ? "加载中…" : isPro ? "Pro 会员" : "免费版"}
-              </div>
-              {membership && (
-                <div className="mt-1 text-[11px] text-neo-dim">
-                  今日 AI：{membership.ai_used_today}/{membership.ai_daily_limit}
-                  {isPro && membership.expires_at ? ` · ${membership.expires_at.slice(0, 10)} 到期` : ""}
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
 
-        <section aria-label="用户画像" className="mt-4">
-        {!isPro && membership && membership.ai_used_today >= membership.ai_daily_limit && (
-          <section className="neo-card mt-4 flex flex-wrap items-center gap-3 p-4" style={{ borderColor: "var(--neo-primary)" }}>
-            <Zap size={16} style={{ color: "var(--neo-primary)" }} />
-            <span className="text-[13px] text-neo-ink">
-              今日免费额度已用完（{membership.ai_used_today}/{membership.ai_daily_limit}），升级 Pro 解锁每日 500 次 AI 调用。
-            </span>
-            <a href="#plans" className="neo-btn-primary ml-auto rounded-md px-3 py-1.5 text-[12px] font-medium">查看方案</a>
-          </section>
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
+        {paymentConfirmation !== "idle" && (
+          <div className={`mb-6 flex items-center justify-between rounded-lg border p-4 ${paymentTone}`}>
+            <div className="flex items-center gap-3">
+              {paymentConfirmation === "checking" && (
+                <Loader2 className="h-6 w-6 shrink-0 animate-spin" />
+              )}
+              {paymentConfirmation === "success" && (
+                <CheckCircle2 className="h-6 w-6 shrink-0" />
+              )}
+              {paymentConfirmation === "pending" && (
+                <Clock3 className="h-6 w-6 shrink-0" />
+              )}
+              {paymentConfirmation === "error" && (
+                <TriangleAlert className="h-6 w-6 shrink-0" />
+              )}
+              <div>
+                <p className="font-semibold text-sm">{paymentTitle}</p>
+                <p className="text-xs opacity-90">{paymentDescription}</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setPaymentConfirmation("idle")}
+              className="inline-flex min-h-11 items-center px-2 text-xs underline hover:opacity-80"
+            >
+              关闭
+            </button>
+          </div>
         )}
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            {USER_PROFILES.map((item) => {
-              const selected = profile === item.id;
-              const Icon = item.icon;
-              return (
-                <article
-                  key={item.id}
-                  className="neo-card flex h-full flex-col p-5"
-                  style={selected ? { borderColor: "var(--neo-primary)" } : undefined}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon size={17} style={{ color: selected ? "var(--neo-primary)" : "var(--neo-dim)" }} />
-                    <h2 className="text-[17px] font-semibold text-neo-ink">{item.title}</h2>
-                  </div>
-                  <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">{item.summary}</p>
+        <div className="text-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-400">
+            <Crown className="h-3.5 w-3.5" /> 软件增值分析权限
+          </span>
+          <h1 className="mt-3.5 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            升级爱看盘 Pro 会员
+          </h1>
+          <p className="mt-2 text-sm text-neutral-400">
+            每日 500 次深度 AI 研判、多空量化盘中监控与主力资金流向
+          </p>
+        </div>
 
-                  <div className="mt-4">
-                    <div className="text-[11px] font-medium text-neo-dim">免费可用</div>
-                    <ul className="mt-2 space-y-1.5">
-                      {item.free.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-[12px] text-neo-ink">
-                          <BadgeCheck size={13} className="mt-0.5 shrink-0" style={{ color: "var(--neo-dim)" }} />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-4">
-                    <div className="text-[11px] font-medium text-neo-primary">Pro 加值</div>
-                    <ul className="mt-2 space-y-1.5">
-                      {item.pro.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-[12px] text-neo-ink">
-                          <BadgeCheck size={13} className="mt-0.5 shrink-0" style={{ color: "var(--neo-primary)" }} />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-5 flex items-center gap-2 border-t border-[var(--neo-border)] pt-4">
-                    <button
-                      type="button"
-                      onClick={() => selectProfile(item.id)}
-                      className={`rounded-md px-3 py-2 text-[12px] font-medium transition-all ${selected ? "neo-chip-active" : "neo-chip"}`}
-                    >
-                      {selected ? "当前画像" : "选择画像"}
-                    </button>
-                    <Link
-                      href={`${item.href}${item.href.includes("?") ? "&" : "?"}market=${market}`}
-                      onClick={() => reportConversionEvent("upgrade_click", { profile: item.id })}
-                      className="neo-btn-primary ml-auto rounded-md px-3 py-2 text-[12px] font-medium"
-                    >
-                      {item.action}
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <div className="neo-card p-6">
-            <div className="flex items-center gap-2">
-              <Sparkles size={17} style={{ color: "var(--neo-dim)" }} />
-              <h2 className="text-[17px] font-semibold text-neo-ink">免费版</h2>
+        <div className="mt-8 rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 font-bold text-base">
+                {isRealUser ? (user?.user_id?.[0]?.toUpperCase() || "U") : "?"}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-white">
+                    {isRealUser ? "已登录用户" : "游客 (未注册)"}
+                  </span>
+                  {isPro ? (
+                    <span className="rounded bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-400 border border-amber-500/30">
+                      PRO 尊享会员
+                  </span>
+                ) : (
+                  <span className="rounded bg-neutral-800 px-2 py-0.5 text-xs text-neutral-400">
+                    免费版
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-neutral-400 mt-1">
+                {isRealUser
+                  ? isPro && membership?.expires_at
+                    ? "会员有效期至：" + membership.expires_at.replace("T", " ").slice(0, 16)
+                  : "当前为免费额度（每日 5 次调用），支付成功后时长将自动绑定到此账号"
+                : "请先登录或注册账号，付款后会员时长将自动绑定到您的账号"}
+              </p>
             </div>
-            <p className="mt-3 text-[13px] text-neo-mid">适合先体验看盘与复盘结构。</p>
-            <ul className="mt-4 space-y-2.5">
-              {FREE_FEATURES.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-[13px] text-neo-ink">
-                  <BadgeCheck size={15} className="mt-0.5 shrink-0" style={{ color: "var(--neo-dim)" }} />
-                  <span>{item}</span>
+            </div>
+
+            {!isRealUser && (
+              <Link
+                href="/account"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-blue-600 px-4 text-xs font-semibold text-white shadow hover:bg-blue-500 transition"
+              >
+                登录 / 注册 <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="relative flex flex-col justify-between rounded-xl border-2 border-blue-600 bg-neutral-900 p-6 shadow-xl">
+            <div className="absolute -top-3 right-4 rounded-full bg-blue-600 px-2.5 py-0.5 text-[11px] font-semibold text-white">
+              支付宝直付 · 自动到账
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-blue-500" />
+                <h2 className="text-lg font-bold text-white">Pro 月度会员</h2>
+              </div>
+              <p className="mt-1 text-xs text-neutral-400">低门槛尝鲜，日常复盘与个股研判首选</p>
+
+              <div className="mt-5 flex items-baseline gap-1.5">
+                <span className="text-4xl font-extrabold text-white">¥19</span>
+                <span className="text-xs text-neutral-400">/ 30天 (不自动续费)</span>
+              </div>
+
+              <ul className="mt-6 space-y-3 text-xs text-neutral-300">
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>每日 500 次有效深度 AI 研判与个股打分</span>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="neo-card relative overflow-hidden p-6" style={{ borderColor: "var(--neo-primary)" }}>
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Zap size={17} style={{ color: "var(--neo-primary)" }} />
-                <h2 className="text-[17px] font-semibold text-neo-ink">Pro 会员</h2>
-              </div>
-              <span className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">订阅制</span>
-            </div>
-            <div className="mt-4 flex items-baseline gap-1.5">
-              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>29</span>
-              <span className="text-[13px] text-neo-dim">元 / 30 天</span>
-            </div>
-            <ul className="mt-4 space-y-2.5">
-              {PRO_FEATURES.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-[13px] text-neo-ink">
-                  <BadgeCheck size={15} className="mt-0.5 shrink-0" style={{ color: "var(--neo-primary)" }} />
-                  <span>{item}</span>
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>全市场盘中异动与主力资金流向实时监控</span>
                 </li>
-              ))}
-            </ul>
-            <p className="mt-4 rounded-md bg-[var(--neo-surface-inset)] px-3 py-2.5 text-[12px] leading-relaxed text-neo-dim">
-              可在闲鱼搜索"爱看盘激活码"购买，或加微信 denglio0 获取。开通后立即生效。
-            </p>
-          </div>
-        </section>
-        <section id="plans" className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div className="neo-card p-6">
-            <div className="flex items-center gap-2">
-              <Sparkles size={17} style={{ color: "var(--neo-dim)" }} />
-              <h2 className="text-[17px] font-semibold text-neo-ink">免费版</h2>
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <span>多设备实时同步，支持导出专属 Markdown 研报</span>
+                </li>
+              </ul>
             </div>
-            <div className="mt-4 flex items-baseline gap-1.5">
-              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>0</span>
-              <span className="text-[13px] text-neo-dim">元</span>
-            </div>
-            <p className="mt-3 text-[13px] text-neo-mid">适合先体验看盘与复盘结构。</p>
-          </div>
 
-          <div className="neo-card relative overflow-hidden p-6">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Zap size={17} style={{ color: "var(--neo-primary)" }} />
-                <h2 className="text-[17px] font-semibold text-neo-ink">Pro 月卡</h2>
-              </div>
-              <span className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">订阅制</span>
-            </div>
-            <div className="mt-4 flex items-baseline gap-1.5">
-              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>29</span>
-              <span className="text-[13px] text-neo-dim">元 / 30 天</span>
-            </div>
-            <p className="mt-3 text-[13px] text-neo-mid">短线盯盘与日常复盘的主力选择。</p>
-          </div>
+            <div className="mt-8 pt-5 border-t border-neutral-800">
+              {payError && (
+                <p className="mb-3 text-xs text-rose-400 text-center font-medium">{payError}</p>
+              )}
 
-          <div className="neo-card relative overflow-hidden p-6" style={{ borderColor: "var(--neo-primary)" }}>
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Crown size={17} style={{ color: "var(--neo-primary)" }} />
-                <h2 className="text-[17px] font-semibold text-neo-ink">Pro 年卡</h2>
-              </div>
-              <span className="neo-chip px-2.5 py-1 text-[11px] text-neo-primary">主推</span>
-            </div>
-            <div className="mt-4 flex items-baseline gap-1.5">
-              <span className="text-[30px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>299</span>
-              <span className="text-[13px] text-neo-dim">元 / 365 天</span>
-            </div>
-            <p className="mt-1.5 text-[12px] text-neo-dim">≈ ¥24.9/月 · 较月卡立省 ¥149</p>
-            <p className="mt-3 text-[13px] text-neo-mid">中长线研究与连续学习的首选。</p>
-          </div>
-        </section>
-
-        <section className="neo-card mt-4 p-6">
-          <div className="flex items-center gap-2">
-            <ListChecks size={17} style={{ color: "var(--neo-primary)" }} />
-            <h2 className="text-[17px] font-semibold text-neo-ink">权益对照</h2>
-          </div>
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-[13px]">
-              <thead>
-                <tr className="text-left text-[12px] text-neo-dim">
-                  <th className="py-2 pr-4 font-medium">权益</th>
-                  <th className="py-2 pr-4 font-medium">免费版</th>
-                  <th className="py-2 font-medium text-neo-primary">Pro</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARE_ROWS.map((row) => (
-                  <tr key={row.label} className="border-t border-[var(--neo-border)]">
-                    <td className="py-2.5 pr-4 text-neo-ink">{row.label}</td>
-                    <td className="py-2.5 pr-4 text-neo-dim">{row.free}</td>
-                    <td className="py-2.5 text-neo-ink">{row.pro}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="neo-card mt-4 p-6">
-          <div className="flex items-center gap-2">
-            <ShoppingBag size={17} style={{ color: "var(--neo-primary)" }} />
-            <h2 className="text-[17px] font-semibold text-neo-ink">如何购买</h2>
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {[
-              { icon: ShoppingBag, title: "闲鱼拍下", desc: "搜索「爱看盘激活码」，按需选择月卡 ¥29/30天 或 年卡 ¥299/365天。" },
-              { icon: MessageCircle, title: "获取激活码", desc: "付款后在闲鱼聊天或微信（denglio0）收到激活码。" },
-              { icon: KeyRound, title: "本页兑换", desc: "在下方输入激活码立即开通，时长自动叠加。" },
-            ].map((step) => {
-              const StepIcon = step.icon;
-              return (
-                <div key={step.title} className="neo-inset-sm rounded-md p-4">
-                  <div className="flex items-center gap-2">
-                    <StepIcon size={15} style={{ color: "var(--neo-primary)" }} />
-                    <span className="text-[13px] font-semibold text-neo-ink">{step.title}</span>
-                  </div>
-                  <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">{step.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-          <p className="mt-3 text-[12px] text-neo-dim">激活码不区分大小写；兑换前请先登录，会员状态与账号绑定。</p>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {QR_CARDS.map((card) => (
-              <div key={card.key} className="neo-inset-sm flex items-center gap-4 rounded-md p-4">
+              {isRealUser ? (
                 <button
-                  type="button"
-                  onClick={() => setQrPreview(card.key)}
-                  className="shrink-0 cursor-zoom-in"
-                  aria-label={`放大${card.alt}`}
+                  onClick={handleAlipay}
+                  disabled={paying}
+                  className="w-full flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#0958D9] hover:bg-[#0748B8] py-3.5 text-sm font-semibold text-white shadow transition disabled:opacity-60 cursor-pointer"
                 >
-                  <img loading="lazy" src={card.src} alt={card.alt} className="w-24 rounded-md" />
+                  {paying ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      正在跳转支付宝安全收银台…
+                    </>
+                  ) : (
+                    <>
+                      <span>使用支付宝付款 ¥19</span>
+                      <ExternalLink className="h-4 w-4 opacity-80" />
+                    </>
+                  )}
                 </button>
-                <div>
-                  <div className="text-[13px] font-semibold text-neo-ink">{card.title}</div>
-                  <p className="mt-1 text-[12px] leading-relaxed text-neo-mid">保存图片到相册，打开闲鱼「扫一扫」进入商品页。</p>
-                  <p className="mt-1 text-[11px] text-neo-dim">点击图片可放大</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+              ) : (
+                <Link
+                  href="/account"
+                  className="w-full flex min-h-12 items-center justify-center gap-1.5 rounded-lg bg-neutral-800 py-3.5 text-sm font-semibold text-neutral-200 hover:bg-neutral-700 transition"
+                >
+                  请先登录 / 注册账号后支付
+                </Link>
+              )}
 
-        <section className="neo-card mt-4 p-6">
-          <div className="flex items-center gap-2">
-            <KeyRound size={17} style={{ color: "var(--neo-primary)" }} />
-            <h2 className="text-[17px] font-semibold text-neo-ink">激活码开通</h2>
+              <p className="mt-2.5 text-center text-[11px] text-neutral-400">
+                🔒 支付宝官方直连安全支付 · 付款后自动增加 30 天会员
+              </p>
+            </div>
           </div>
-          <form onSubmit={activate} className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_150px]">
+
+          <div className="flex flex-col justify-between rounded-xl border border-amber-500/30 bg-amber-500/5 p-6 shadow-sm">
+            <div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-amber-500" />
+                  <h2 className="text-lg font-bold text-white">Pro 年度尊享</h2>
+                </div>
+                <span className="rounded bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[11px] font-medium text-amber-400">
+                  立省 ¥29 · 每日仅需 0.5 元
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-neutral-400">全年陪伴与量化技术工具首选，超高性价比</p>
+
+              <div className="mt-5 flex items-baseline gap-1.5">
+                <span className="text-4xl font-extrabold text-amber-400">¥199</span>
+                <span className="text-xs text-neutral-400">/ 365天</span>
+              </div>
+
+              <ul className="mt-6 space-y-3 text-xs text-neutral-300">
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span>包含月度版所有功能，全年无限制连续使用</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span>限时加赠 30 天会员时长（共 395 天）</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <CheckCircle2 className="h-4 w-4 text-amber-500 shrink-0" />
+                  <span>官方技术支持与产品新功能优先体验权</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-8 pt-5 border-t border-amber-500/20">
+              <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-center">
+                <p className="text-xs font-semibold text-amber-300 flex items-center justify-center gap-1.5">
+                  <MessageCircle className="h-4 w-4 text-amber-400" />
+                  需要年卡请添加微信：
+                  <span className="font-bold underline decoration-dashed select-all text-white text-sm">
+                    denglio0
+                  </span>
+                </p>
+                <p className="mt-1 text-[11px] text-neutral-400">
+                  添加好友请备注：<b className="text-amber-300">爱看盘</b>（专人快速发码，即时开通）
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm">
+          <div className="flex items-center gap-2">
+            <KeyRound className="h-4 w-4 text-blue-500" />
+            <h3 className="text-sm font-semibold text-white">已有激活码？（年卡付款后获取或好友赠送）</h3>
+          </div>
+
+          <form onSubmit={handleActivate} className="mt-3.5 flex flex-col sm:flex-row gap-2.5">
             <input
+              type="text"
+              aria-label="输入激活码"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="输入 Pro 激活码"
-              className="neo-input w-full rounded-md px-3 py-2.5 text-[13px]"
+              placeholder="请输入激活码（如 AKP-XXXX-XXXX）"
+              className="flex-1 rounded-md border border-neutral-800 bg-neutral-950 px-3.5 py-2.5 text-base text-white outline-none focus:border-blue-500 sm:text-xs"
               autoComplete="off"
             />
             <button
               type="submit"
-              disabled={busy}
-              className="neo-btn-primary rounded-md px-5 py-2.5 text-[13px] font-medium disabled:opacity-60"
+              disabled={activating || !code.trim() || !isRealUser}
+              className="min-h-11 rounded-md bg-blue-600 px-5 text-xs font-semibold text-white shadow hover:bg-blue-500 disabled:opacity-50 transition shrink-0 cursor-pointer"
             >
-              {busy ? "激活中…" : "立即激活"}
+              {activating ? "正在验证…" : "立即激活"}
             </button>
           </form>
-          {message && (
-            <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-up" : "text-neo-down"}`}>{message}</p>
-          )}
-          {!user && (
-            <p className="mt-3 text-[12px] text-neo-down">激活前请先登录，登录后重新输入激活码即可。</p>
-          )}
-          <p className="mt-3 text-[12px] text-neo-dim">
-            可在闲鱼搜索"爱看盘激活码"购买，或加微信 denglio0 获取。开通后立即生效，时长自动叠加。
-          </p>
-          {!isPro && (
-            <p className="mt-3 text-[12px] text-neo-dim">
-              还没有绑定手机号？先到 <Link href="/account" className="text-neo-primary">账户页</Link> 绑定，便于跨设备保留会员状态。
+
+          {activateMsg && (
+            <p className={"mt-2.5 text-xs font-medium " + (activateMsg.type === "ok" ? "text-emerald-400" : "text-rose-400")}>
+              {activateMsg.text}
             </p>
           )}
-        </section>
 
-        <section className="neo-card mt-4 p-6">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={17} style={{ color: "var(--neo-dim)" }} />
-            <h2 className="text-[17px] font-semibold text-neo-ink">合规说明</h2>
-          </div>
-          <p className="mt-3 text-[13px] leading-relaxed text-neo-dim">
-            Pro 提供的是研究效率工具，不提供荐股、代客理财或收益保证。AI 输出可能存在偏差，重要决策请独立核实数据并自主判断。
-          </p>
-          <p className="mt-3 text-[11px] text-neo-dim">⚠ 本站 AI 内容由 AI 生成，不构成投资建议。</p>
-        </section>
-      </main>
-      <Footer />
-      {qrPreview && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setQrPreview(null)}
-        >
-          <div className="relative" onClick={(event) => event.stopPropagation()}>
-            <img
-              src={qrPreview === "monthly" ? "/images/xianyu-qr-monthly.png" : "/images/xianyu-qr-annual.png"}
-              alt={qrPreview === "monthly" ? "闲鱼月卡商品二维码" : "闲鱼年卡商品二维码"}
-              className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-            />
-            <button
-              type="button"
-              onClick={() => setQrPreview(null)}
-              aria-label="关闭"
-              className="absolute -right-2 -top-2 rounded-full bg-white p-1.5 shadow"
-            >
-              <X size={16} />
-            </button>
-          </div>
+          {!isRealUser && (
+            <p className="mt-2 text-[11px] text-amber-400">
+              * 提示：激活前请先登录账号，激活成功后权益将直接绑定至当前账号。
+            </p>
+          )}
         </div>
-      )}
+
+        <div className="mt-8 rounded-lg border border-neutral-800/80 p-4 text-center text-xs text-neutral-400">
+          <p className="flex items-center justify-center gap-1.5">
+            <ShieldCheck className="h-4 w-4 text-neutral-400" />
+            服务说明：爱看盘为行情数据与研究辅助工具软件，不提供任何投资收益保证，请自主决策。
+          </p>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
