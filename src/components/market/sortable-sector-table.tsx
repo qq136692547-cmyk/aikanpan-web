@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { formatPct, formatPrice } from "@/lib/format";
 
 export type MarketSectorRow = {
@@ -22,6 +23,7 @@ function SortHeader({
   sortKey,
   sortDir,
   onSort,
+  isSticky = false,
 }: {
   label: string;
   keyName: SortKey;
@@ -29,17 +31,24 @@ function SortHeader({
   sortKey: SortKey;
   sortDir: SortDir;
   onSort: (key: SortKey) => void;
+  isSticky?: boolean;
 }) {
   return (
     <th
       className={`px-4 py-3 text-[11px] uppercase tracking-wide font-medium cursor-pointer select-none transition-colors hover:text-neo-primary ${
         align === "right" ? "text-right" : "text-left"
-      } ${sortKey === keyName ? "text-neo-primary" : "text-neo-dim"}`}
+      } ${sortKey === keyName ? "text-neo-primary" : "text-neo-dim"} ${
+        isSticky
+          ? "sticky left-0 z-20 bg-[var(--neo-surface-card)] shadow-[2px_0_6px_-2px_rgba(0,0,0,0.12)]"
+          : ""
+      }`}
       onClick={() => onSort(keyName)}
     >
       <span className="inline-flex items-center gap-1">
         {label}
-        {sortKey === keyName && <span className="text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>}
+        {sortKey === keyName && (
+          sortDir === "asc" ? <ArrowUp className="w-3 h-3 text-neo-primary inline" /> : <ArrowDown className="w-3 h-3 text-neo-primary inline" />
+        )}
       </span>
     </th>
   );
@@ -81,10 +90,10 @@ export function SortableSectorTable({
   return (
     <div className="neo-card-sm overflow-hidden">
       <div className="overflow-x-auto neo-scrollbar">
-        <table className="w-full">
+        <table className="w-full min-w-[500px] border-collapse">
           <thead>
             <tr className="border-b border-[var(--neo-surface-active)]">
-              <SortHeader label="板块名称" keyName="name" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
+              <SortHeader label="板块名称" keyName="name" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} isSticky />
               <SortHeader label="最新价" keyName="price" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortHeader label="涨跌幅" keyName="change_pct" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortHeader label="涨跌额" keyName="change" align="right" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
@@ -99,7 +108,7 @@ export function SortableSectorTable({
                 key={s.code}
                 className={`transition-colors hover-neo-inset ${i < sorted.length - 1 ? "border-b border-[var(--neo-surface-inset)]" : ""}`}
               >
-                <td className="px-4 py-2.5">
+                <td className="px-4 py-2.5 sticky left-0 z-10 bg-[var(--neo-surface-card)] shadow-[2px_0_6px_-2px_rgba(0,0,0,0.12)]">
                   <span className="text-[13px] font-medium text-neo-ink">{s.name ?? s.code}</span>
                   <span className="ml-2 text-[10px] text-neo-mid" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                     {s.code}
