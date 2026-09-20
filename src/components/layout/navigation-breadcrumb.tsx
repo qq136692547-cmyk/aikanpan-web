@@ -22,11 +22,14 @@ function BreadcrumbContent() {
             <span key={`${crumb.label}-${index}`} className="flex shrink-0 items-center gap-1">
               {index > 0 && <ChevronRight size={10} aria-hidden />}
               {crumb.href && !isLast ? (
-                <Link href={crumb.href} className="inline-flex min-h-11 items-center transition-colors hover:text-neo-primary">
+                <Link href={crumb.href} className="inline-flex min-h-11 items-center gap-1 transition-colors hover:text-neo-primary">
+                  {index === 0 && context.scope === "cn" && <span className="h-1.5 w-1.5 rounded-full bg-red-500" aria-hidden />}
+                  {index === 0 && context.scope === "hk" && <span className="h-1.5 w-1.5 rounded-full bg-purple-500" aria-hidden />}
+                  {index === 0 && context.scope === "us" && <span className="h-1.5 w-1.5 rounded-full bg-blue-500" aria-hidden />}
                   {crumb.label}
                 </Link>
               ) : (
-                <span className={isLast ? "font-medium text-neo-ink" : undefined}>{crumb.label}</span>
+                <span className={isLast ? "font-semibold text-neo-ink" : undefined}>{crumb.label}</span>
               )}
             </span>
           );

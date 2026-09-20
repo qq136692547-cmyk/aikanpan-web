@@ -397,6 +397,108 @@ export function HkMarketPanel({ dashboard }: { dashboard: HkDashboard }) {
   );
 }
 
+function GlobalMarketPulse({
+  dashboard,
+  hkDashboard,
+  usDashboard,
+}: {
+  dashboard: Dashboard | null;
+  hkDashboard: HkDashboard | null;
+  usDashboard: UsDashboard | null;
+}) {
+  const cnLeader = dashboard?.indices?.[0]; // 上证指数
+  const hkLeader = hkDashboard?.indices?.[0]; // 恒生指数
+  const usLeader = usDashboard?.indices?.[0]; // 标普500 ETF
+
+  const cards = [
+    {
+      region: "A股",
+      badge: "CN",
+      badgeClass: "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20",
+      name: cnLeader?.name || "上证指数",
+      last: cnLeader ? formatPrice(cnLeader.last) : "--",
+      pct: cnLeader?.change_pct,
+      subInfo: dashboard ? `${dashboard.limit_up_count || 0} 涨停 / ${dashboard.limit_down_count || 0} 跌停` : "沪深京",
+      status: dashboard?.market_status || "A股盘口",
+      href: "/?market=cn",
+    },
+    {
+      region: "港股",
+      badge: "HK",
+      badgeClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+      name: hkLeader?.name || "恒生指数",
+      last: hkLeader ? formatPrice(hkLeader.last) : "--",
+      pct: hkLeader?.change_pct,
+      subInfo: hkDashboard?.trade_date ? `${hkDashboard.trade_date}` : "港交所",
+      status: hkDashboard?.market_status || "港股交易",
+      href: "/?market=hk",
+    },
+    {
+      region: "美股",
+      badge: "US",
+      badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+      name: usLeader?.name || "标普500 ETF",
+      last: usLeader ? formatPrice(usLeader.last) : "--",
+      pct: usLeader?.change_pct ? usLeader.change_pct * 100 : undefined,
+      subInfo: usDashboard?.temperature ? `市场温度: ${usDashboard.temperature.score}分` : "纽交所/纳斯达克",
+      status: usDashboard?.temperature?.label || "美股交易",
+      href: "/?market=us",
+    },
+  ];
+
+  return (
+    <div className="neo-card col-span-full p-4 mb-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--neo-surface-inset)] pb-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[var(--neo-primary-light)] text-neo-primary">
+            <TrendingUp size={14} />
+          </div>
+          <span className="text-[14px] font-bold tracking-tight text-neo-ink">全球市场脉搏看板 (A股 · 港股 · 美股)</span>
+        </div>
+        <span className="text-[11px] text-neo-dim">点击板块直达对应市场</span>
+      </div>
+
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {cards.map((c) => {
+          const isUp = (c.pct || 0) > 0;
+          const pctText = c.pct !== undefined ? `${isUp ? "+" : ""}${c.pct.toFixed(2)}%` : "--";
+          return (
+            <a
+              key={c.region}
+              href={c.href}
+              className="group flex flex-col justify-between rounded-xl border border-[var(--neo-edge)] bg-[var(--neo-surface)] p-3 transition-all hover:border-neo-primary hover:shadow-sm"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold border ${c.badgeClass}`}>
+                    {c.badge}
+                  </span>
+                  <span className="text-[13px] font-bold text-neo-ink group-hover:text-neo-primary transition-colors">
+                    {c.name}
+                  </span>
+                </div>
+                <span className="text-[11px] text-neo-dim">{c.subInfo}</span>
+              </div>
+              <div className="mt-3 flex items-baseline justify-between">
+                <span className="text-[18px] font-extrabold tracking-tight text-neo-ink font-mono">
+                  {c.last}
+                </span>
+                <span className={`text-[13px] font-bold font-mono ${trendClass(c.pct)}`}>
+                  {pctText}
+                </span>
+              </div>
+              <div className="mt-2 flex items-center justify-between border-t border-[var(--neo-surface-inset)] pt-1.5 text-[11px] text-neo-dim">
+                <span>{c.subInfo}</span>
+                <span className="font-mono text-neo-ink-mid">{c.status}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function HomeMarketPanels({
   scope,
   dashboard,
@@ -422,6 +524,11 @@ export function HomeMarketPanels({
 
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+      <GlobalMarketPulse
+        dashboard={dashboard}
+        hkDashboard={hkDashboard}
+        usDashboard={usDashboard}
+      />
       {dashboard && <CnMarketPanel dashboard={dashboard} insights={insights} />}
       {usDashboard && <UsMarketPanel dashboard={usDashboard} />}
       {hkDashboard && <HkMarketPanel dashboard={hkDashboard} />}

@@ -40,10 +40,19 @@ export function PrimaryNavigation() {
             role="tab"
             aria-selected={context.scope === item.value}
             onClick={() => selectMode(item.value)}
-            className={`inline-flex min-h-11 items-center rounded-full px-3.5 text-[13px] font-semibold transition-all duration-200 ${
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition-all duration-200 ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
+            {item.value === "cn" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "cn" ? "bg-red-500" : "bg-red-400/50"}`} aria-hidden />
+            )}
+            {item.value === "hk" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "hk" ? "bg-purple-500" : "bg-purple-400/50"}`} aria-hidden />
+            )}
+            {item.value === "us" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "us" ? "bg-blue-500" : "bg-blue-400/50"}`} aria-hidden />
+            )}
             {item.label}
           </button>
         ))}
@@ -94,10 +103,19 @@ export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
             type="button"
             aria-pressed={context.scope === item.value}
             onClick={() => go(item.value)}
-            className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[13px] font-semibold ${
+            className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-4 text-[13px] font-semibold ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
+            {item.value === "cn" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "cn" ? "bg-red-500" : "bg-red-400/50"}`} aria-hidden />
+            )}
+            {item.value === "hk" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "hk" ? "bg-purple-500" : "bg-purple-400/50"}`} aria-hidden />
+            )}
+            {item.value === "us" && (
+              <span className={`h-1.5 w-1.5 rounded-full ${context.scope === "us" ? "bg-blue-500" : "bg-blue-400/50"}`} aria-hidden />
+            )}
             {item.label}
           </button>
         ))}
