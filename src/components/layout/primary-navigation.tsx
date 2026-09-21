@@ -41,7 +41,7 @@ export function PrimaryNavigation() {
             role="tab"
             aria-selected={context.scope === item.value}
             onClick={() => selectMode(item.value)}
-            className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition-all duration-200 ${
+            className={`inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-3.5 text-[13px] font-semibold transition-all duration-200 ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
@@ -69,7 +69,7 @@ export function PrimaryNavigation() {
             <Link
               key={`${context.scope}-${item.path}`}
               href={href}
-              className={`inline-flex min-h-11 items-center rounded-full px-3 text-[13px] font-medium transition-all duration-200 ${
+              className={`inline-flex min-h-11 items-center rounded-[10px] px-3 text-[13px] font-medium transition-all duration-200 ${
                 active ? "neo-chip-active" : "neo-chip"
               }`}
             >
@@ -104,7 +104,7 @@ export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
             type="button"
             aria-pressed={context.scope === item.value}
             onClick={() => go(item.value)}
-            className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-4 text-[13px] font-semibold ${
+            className={`inline-flex min-h-11 items-center justify-center gap-1.5 rounded-[10px] px-4 text-[13px] font-semibold ${
               context.scope === item.value ? "neo-chip-active" : "neo-chip"
             }`}
           >
@@ -130,7 +130,7 @@ export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
               key={`${context.scope}-${item.path}-mobile`}
               href={href}
               onClick={onNavigate}
-              className={`inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[13px] ${active ? "neo-chip-active" : "neo-chip"}`}
+              className={`inline-flex min-h-11 items-center justify-center rounded-[10px] px-4 text-[13px] ${active ? "neo-chip-active" : "neo-chip"}`}
             >
               {item.label}
             </Link>

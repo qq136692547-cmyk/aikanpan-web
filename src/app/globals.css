@@ -607,7 +607,7 @@
 .neo-chip {
   background: var(--neo-surface);
   color: var(--neo-ink-mid);
-  border-radius: 999px;
+  border-radius: 10px;
   box-shadow: var(--neo-raised-sm);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 500;
@@ -622,6 +622,7 @@
 .neo-chip-active {
   background: var(--neo-primary-fill);
   color: #FFFFFF;
+  border-radius: 10px;
   box-shadow: -2px -2px 6px var(--neo-shadow-light), 2px 2px 6px rgba(91,82,232,0.35);
 }
 

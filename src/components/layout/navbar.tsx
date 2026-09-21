@@ -27,14 +27,14 @@ export function Navbar() {
           <span className="text-[15px] font-bold tracking-tight text-neo-ink">爱看盘</span>
         </Link>
 
-        <Suspense fallback={<div className="hidden h-7 w-[520px] neo-skeleton rounded-full lg:block" />}>
+        <Suspense fallback={<div className="hidden h-7 w-[520px] neo-skeleton rounded-[10px] lg:block" />}>
           <PrimaryNavigation />
         </Suspense>
 
         <div className="flex items-center gap-2">
           <Link
             href="/upgrade"
-            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] font-medium ${
+            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-[10px] px-3 text-[12px] font-medium ${
               isPro ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isPro ? "Pro 会员" : "升级 Pro"}
@@ -46,7 +46,7 @@ export function Navbar() {
 
           <Link
             href="/account"
-            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 text-[12px] font-medium ${
+            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-[10px] px-3 text-[12px] font-medium ${
               pathname === "/account" ? "neo-chip-active" : "neo-chip text-neo-ink-mid"
             }`}
             title={isVerified ? "我的账户" : "登录 / 注册"}
