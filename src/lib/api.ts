@@ -1276,6 +1276,7 @@ export interface HkQuote {
   high_52w?: number | null;
   low_52w?: number | null;
   shares?: number | null;
+  date?: string;
   currency?: string;
   amplitude?: number | null;
   dividend_yield?: number | null;
