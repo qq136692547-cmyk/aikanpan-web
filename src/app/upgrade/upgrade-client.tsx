@@ -234,7 +234,7 @@ export function UpgradePageClient({
                 {isRealUser
                   ? isPro && membership?.expires_at
                     ? "会员有效期至：" + membership.expires_at.replace("T", " ").slice(0, 16)
-                  : "当前为免费额度（每日 5 次调用），支付成功后时长将自动绑定到此账号"
+                  : "当前为免费额度（每日 10 次调用），支付成功后时长将自动绑定到此账号"
                 : "请先登录或注册账号，付款后会员时长将自动绑定到您的账号"}
               </p>
             </div>
