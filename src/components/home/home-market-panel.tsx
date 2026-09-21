@@ -488,7 +488,7 @@ function GlobalMarketPulse({
                 </span>
               </div>
               <div className="mt-2 flex items-center justify-between border-t border-[var(--neo-surface-inset)] pt-1.5 text-[11px] text-neo-dim">
-                <span>{c.subInfo}</span>
+                <span>{c.region === "A股" ? "沪深主板/创科" : c.region === "港股" ? "主板/恒生科技" : "美股核心宽基"}</span>
                 <span className="font-mono text-neo-ink-mid">{c.status}</span>
               </div>
             </a>

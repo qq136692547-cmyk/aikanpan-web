@@ -286,7 +286,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   return (
     <div className="neo-ai p-5 space-y-4">
       {/* 头部状态与时间 */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--neo-edge)] pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1 rounded-full bg-neo-primary-soft px-2.5 py-0.5 text-[11px] font-semibold text-neo-primary">
             <Sparkles size={12} />
@@ -296,7 +296,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             {data!.generated_at?.slice(0, 16).replace("T", " ")}
           </span>
           {data!.cached && (
-            <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.2 text-[10px] text-neo-dim border border-[var(--neo-edge)]">
+            <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.2 text-[10px] text-neo-dim border border-white/[0.08]">
               快照缓存
             </span>
           )}
@@ -354,7 +354,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
           )}
 
           {status && (
-            <div className="rounded bg-[var(--neo-surface)] px-2 py-1 text-center text-[11px] font-medium text-neo-mid border border-[var(--neo-edge)]">
+            <div className="rounded bg-[var(--neo-surface)] px-2 py-1 text-center text-[11px] font-medium text-neo-mid border border-white/[0.08]">
               当前状态：{status}
             </div>
           )}
@@ -392,7 +392,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             {dimensions.map((dim) => (
               <div
                 key={dim.key}
-                className="rounded-lg border border-[var(--neo-edge)] bg-[var(--neo-surface)] p-3 transition-colors hover:border-neo-primary/40"
+                className="rounded-lg border border-white/[0.08] bg-[var(--neo-surface)] p-3 transition-colors hover:border-neo-primary/40"
               >
                 <div className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-neo-ink">
                   <dim.icon size={13} className="text-neo-primary shrink-0" />
