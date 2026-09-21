@@ -14,8 +14,9 @@ import {
 function isActive(pathname: string, activePath: string | null): boolean {
   if (!activePath) return false;
   const current = normalizeNavigationPath(pathname);
-  if (activePath === "/") return current === "/";
-  return current === activePath || current.startsWith(`${activePath}/`);
+  const target = normalizeNavigationPath(activePath);
+  if (target === "/") return current === "/";
+  return current === target || current.startsWith(`${target}/`);
 }
 
 export function PrimaryNavigation() {
