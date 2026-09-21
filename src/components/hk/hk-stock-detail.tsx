@@ -11,13 +11,14 @@ import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
 import { AIComment as StockAIComment } from "@/components/ai/ai-comment";
 import { formatPct, formatPrice, formatVolume } from "@/lib/format";
 import { useAuth } from "@/lib/auth";
-import { api, type AIComment, type HkFinancials, type HkHistory, type HkNewsItem, type HkQuote } from "@/lib/api";
+import { api, type AIComment, type HkFinancials, type HkHistory, type HkNewsItem, type HkQuote, type StockIndicators } from "@/lib/api";
 
 export type HkStockDetailInitialData = {
   quote?: HkQuote | null;
   history?: HkHistory | null;
   financials?: HkFinancials | null;
   news?: HkNewsItem[];
+  indicators?: StockIndicators | null;
 };
 
 function formatHkMarketCap(value?: number | null) {
@@ -27,11 +28,21 @@ function formatHkMarketCap(value?: number | null) {
   return `HK$${Math.round(value).toLocaleString()}`;
 }
 
+function latestValue(value: number | number[] | null | undefined): number {
+  if (value == null) return 0;
+  if (Array.isArray(value)) {
+    const vals = value.filter((v) => typeof v === "number" && Number.isFinite(v));
+    return vals.length ? vals[vals.length - 1] : 0;
+  }
+  return Number.isFinite(value) ? value : 0;
+}
+
 export function HkStockDetail({ symbol, initialData }: { symbol: string; initialData?: HkStockDetailInitialData }) {
   const [quote, setQuote] = useState<HkQuote | null>(initialData?.quote ?? null);
   const [history, setHistory] = useState<HkHistory | null>(initialData?.history ?? null);
   const [financials, setFinancials] = useState<HkFinancials | null>(initialData?.financials ?? null);
   const [news, setNews] = useState<HkNewsItem[]>(initialData?.news ?? []);
+  const [indicators, setIndicators] = useState<StockIndicators | null>(initialData?.indicators ?? null);
   const [ai, setAi] = useState<AIComment | null>(null);
   const [aiLoading, setAiLoading] = useState(true);
   const { isAuthenticated } = useAuth();
@@ -46,13 +57,15 @@ export function HkStockDetail({ symbol, initialData }: { symbol: string; initial
       api.getHkHistory(symbol, 120),
       api.getHkFinancials(symbol),
       api.getHkNews(symbol, 8),
+      api.getHkIndicators(symbol, 120),
       isAuthenticated ? api.getHkAI(symbol) : Promise.resolve(null),
-    ]).then(([q, h, f, n, a]) => {
+    ]).then(([q, h, f, n, ind, a]) => {
       if (cancelled) return;
       if (q.status === "fulfilled") setQuote(q.value);
       if (h.status === "fulfilled") setHistory(h.value);
       if (f.status === "fulfilled") setFinancials(f.value);
       if (n.status === "fulfilled") setNews(n.value.news);
+      if (ind.status === "fulfilled") setIndicators(ind.value);
       if (a.status === "fulfilled") setAi(a.value);
       setAiLoading(false);
     });
@@ -115,26 +128,88 @@ export function HkStockDetail({ symbol, initialData }: { symbol: string; initial
 
       {financials?.available && metrics && (
         <section className="neo-card p-5">
-          <h2 className="text-[14px] font-semibold text-neo-ink">关键指标</h2>
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <h2 className="text-[14px] font-semibold text-neo-ink">关键估值与财务</h2>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
             <div className="neo-card-sm p-3">
               <div className="text-[10px] text-neo-dim">市盈率 PE</div>
-              <div className="mt-1 text-[15px] font-semibold text-neo-ink">{metrics.pe ?? "--"}</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-ink font-mono">{metrics.pe ?? "--"}</div>
             </div>
             <div className="neo-card-sm p-3">
               <div className="text-[10px] text-neo-dim">市净率 PB</div>
-              <div className="mt-1 text-[15px] font-semibold text-neo-ink">{metrics.pb ?? "--"}</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-ink font-mono">{metrics.pb ?? "--"}</div>
             </div>
             <div className="neo-card-sm p-3">
-              <div className="text-[10px] text-neo-dim">52 周最高</div>
-              <div className="mt-1 text-[15px] font-semibold text-neo-ink">{metrics.high_52w != null ? formatPrice(metrics.high_52w) : "--"}</div>
+              <div className="text-[10px] text-neo-dim">股息率</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-up font-mono">{metrics.dividend_yield != null ? `${metrics.dividend_yield.toFixed(2)}%` : (quote?.dividend_yield != null ? `${quote.dividend_yield.toFixed(2)}%` : "--")}</div>
             </div>
             <div className="neo-card-sm p-3">
-              <div className="text-[10px] text-neo-dim">52 周最低</div>
-              <div className="mt-1 text-[15px] font-semibold text-neo-ink">{metrics.low_52w != null ? formatPrice(metrics.low_52w) : "--"}</div>
+              <div className="text-[10px] text-neo-dim">每股收益 EPS</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-ink font-mono">{metrics.eps != null ? `HK$${metrics.eps.toFixed(3)}` : (quote?.eps != null ? `HK$${quote.eps.toFixed(3)}` : "--")}</div>
+            </div>
+            <div className="neo-card-sm p-3">
+              <div className="text-[10px] text-neo-dim">每股净资产 BPS</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-ink font-mono">{metrics.bps != null ? `HK$${metrics.bps.toFixed(3)}` : (quote?.bps != null ? `HK$${quote.bps.toFixed(3)}` : "--")}</div>
+            </div>
+            <div className="neo-card-sm p-3">
+              <div className="text-[10px] text-neo-dim">日振幅</div>
+              <div className="mt-1 text-[15px] font-semibold text-neo-amber font-mono">{metrics.amplitude != null ? `${metrics.amplitude.toFixed(2)}%` : (quote?.amplitude != null ? `${quote.amplitude.toFixed(2)}%` : "--")}</div>
             </div>
           </div>
-          <p className="mt-2 text-[10px] text-neo-dim">市值 {formatHkMarketCap(metrics.market_cap)} · 来源 腾讯行情</p>
+          <div className="mt-2 flex items-center justify-between text-[10px] text-neo-dim">
+            <span>52周范围: {metrics.low_52w != null ? formatPrice(metrics.low_52w) : "--"} ~ {metrics.high_52w != null ? formatPrice(metrics.high_52w) : "--"}</span>
+            <span>市值 {formatHkMarketCap(metrics.market_cap)} · 来源 腾讯行情</span>
+          </div>
+        </section>
+      )}
+
+      {/* 港股技术指标网格 */}
+      {indicators && (
+        <section className="neo-card p-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[14px] font-semibold text-neo-ink">技术指标分析</h2>
+            <span className="text-[11px] text-neo-dim">日线级别 · 120日K线测算</span>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {indicators.macd && (
+              <div className="neo-card-sm p-3">
+                <div className="text-[10px] font-semibold text-neo-dim">MACD (12, 26, 9)</div>
+                <div className="mt-1 space-y-0.5 text-[12px] font-mono">
+                  <div className="flex justify-between"><span className="text-neo-dim">DIF</span><span>{latestValue(indicators.macd.dif).toFixed(3)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">DEA</span><span>{latestValue(indicators.macd.dea).toFixed(3)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">柱</span><span className={latestValue(indicators.macd.macd) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.macd.macd).toFixed(3)}</span></div>
+                </div>
+              </div>
+            )}
+            {indicators.kdj && (
+              <div className="neo-card-sm p-3">
+                <div className="text-[10px] font-semibold text-neo-dim">KDJ (9, 3, 3)</div>
+                <div className="mt-1 space-y-0.5 text-[12px] font-mono">
+                  <div className="flex justify-between"><span className="text-neo-dim">K</span><span>{latestValue(indicators.kdj.k).toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">D</span><span>{latestValue(indicators.kdj.d).toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">J</span><span className={latestValue(indicators.kdj.j) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.kdj.j).toFixed(2)}</span></div>
+                </div>
+              </div>
+            )}
+            {indicators.rsi != null && (
+              <div className="neo-card-sm p-3">
+                <div className="text-[10px] font-semibold text-neo-dim">RSI 强弱指标 (14)</div>
+                <div className="mt-2 text-[18px] font-extrabold text-neo-ink font-mono">{latestValue(indicators.rsi).toFixed(2)}</div>
+                <div className="mt-1 text-[10px] text-neo-dim">
+                  {latestValue(indicators.rsi) >= 80 ? "严重超买" : latestValue(indicators.rsi) <= 20 ? "严重超卖" : "中性震荡区间"}
+                </div>
+              </div>
+            )}
+            {indicators.boll && (
+              <div className="neo-card-sm p-3">
+                <div className="text-[10px] font-semibold text-neo-dim">BOLL 布林带 (20, 2)</div>
+                <div className="mt-1 space-y-0.5 text-[11px] font-mono">
+                  <div className="flex justify-between"><span className="text-neo-dim">上轨</span><span>{latestValue(indicators.boll.upper).toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">中轨</span><span>{latestValue(indicators.boll.mid).toFixed(2)}</span></div>
+                  <div className="flex justify-between"><span className="text-neo-dim">下轨</span><span>{latestValue(indicators.boll.lower).toFixed(2)}</span></div>
+                </div>
+              </div>
+            )}
+          </div>
         </section>
       )}
 

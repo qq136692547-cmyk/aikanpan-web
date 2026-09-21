@@ -76,12 +76,14 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         api.getHkHistory(routeCode, 120),
         api.getHkFinancials(routeCode),
         api.getHkNews(routeCode, 8),
+        api.getHkIndicators(routeCode, 120),
       ]);
       initialData = {
         quote: settled[0].status === "fulfilled" ? settled[0].value : null,
         history: settled[1].status === "fulfilled" ? settled[1].value : null,
         financials: settled[2].status === "fulfilled" ? settled[2].value : null,
         news: settled[3].status === "fulfilled" ? settled[3].value.news : [],
+        indicators: settled[4].status === "fulfilled" ? settled[4].value : null,
       };
     }
     return (

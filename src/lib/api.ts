@@ -455,6 +455,10 @@ export class ApiClient {
     return this.request<HkHistory>(`/hk/stocks/${encodeURIComponent(symbol)}/history?days=${days}`, { next: { revalidate: 60 } });
   }
 
+  getHkIndicators(symbol: string, days = 120) {
+    return this.request<StockIndicators>(`/hk/stocks/${encodeURIComponent(symbol)}/indicators?days=${days}`, { next: { revalidate: 60 } });
+  }
+
   getHkFinancials(symbol: string) {
     return this.request<HkFinancials>(`/hk/stocks/${encodeURIComponent(symbol)}/financials`, { next: { revalidate: 3600 } });
   }
@@ -1273,6 +1277,10 @@ export interface HkQuote {
   low_52w?: number | null;
   shares?: number | null;
   currency?: string;
+  amplitude?: number | null;
+  dividend_yield?: number | null;
+  eps?: number | null;
+  bps?: number | null;
   source?: string;
   available?: boolean;
 }
@@ -1297,6 +1305,10 @@ export interface HkFinancials {
     high_52w?: number | null;
     low_52w?: number | null;
     currency?: string;
+    amplitude?: number | null;
+    dividend_yield?: number | null;
+    eps?: number | null;
+    bps?: number | null;
   };
   statements?: unknown[];
 }
