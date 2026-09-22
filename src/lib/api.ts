@@ -287,7 +287,7 @@ export class ApiClient {
   }
 
   /** 人工收款后使用激活码开通/续费 Pro */
-  createAlipayOrder(planType: 'monthly' | 'yearly') {
+  createAlipayOrder(planType: 'trial' | 'monthly' | 'quarterly' | 'yearly') {
     return this.request<{ ok: boolean; data: { out_trade_no: string; pay_url: string } }>('/pay/alipay/create-order', {
       method: 'POST',
       body: JSON.stringify({ plan_type: planType }),

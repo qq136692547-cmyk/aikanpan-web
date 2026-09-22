@@ -21,6 +21,8 @@ import {
   Info
 } from "lucide-react";
 import { api, type AIComment, type StockReport } from "@/lib/api";
+import { useMembership } from "@/lib/membership";
+import { Lock, Zap } from "lucide-react";
 import { AIEvidencePanel } from "./ai-evidence-panel";
 
 /** 从 content 末尾提取评分、状态与多空倾向 (兼容纯文本降级) */
@@ -122,6 +124,8 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   }, [initialData]);
   const [error, setError] = useState<string>("");
   const [showRisks, setShowRisks] = useState<boolean>(true);
+  const { membership } = useMembership();
+  const isPro = membership?.plan === "pro";
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleGenerate = useCallback(async () => {
@@ -419,37 +423,79 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
       )}
 
-      {/* 持有者 vs 观望者 双视角决策卡片 (开源特色设计) */}
+      {/* 持有者 vs 观望者 双视角决策卡片 (含 Pro 专属解锁钩子) */}
       {hasAdvice && (
-        <div className="space-y-2">
-          <div className="text-xs font-semibold text-neo-ink flex items-center gap-1.5">
-            <UserCheck size={13} className="text-neo-primary" />
-            <span>操作策略参考</span>
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-semibold text-neo-ink flex items-center gap-1.5">
+              <UserCheck size={13} className="text-neo-primary" />
+              <span>操作策略参考</span>
+            </div>
+            {!isPro && (
+              <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-amber-500/20">
+                <Lock size={10} /> 核心目标位与防守线已遮罩
+              </span>
+            )}
           </div>
+
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {holderAdvice && (
-              <div className="rounded-lg neo-inset p-3 border-l-2 border-l-neo-primary">
+              <div className="relative overflow-hidden rounded-lg neo-inset p-3 border-l-2 border-l-neo-primary">
                 <div className="flex items-center gap-1 text-xs font-semibold text-neo-ink mb-1">
                   <UserCheck size={12} className="text-neo-primary" />
                   <span>已持仓用户策略</span>
                 </div>
-                <p className="text-xs leading-relaxed text-neo-mid">
+                <p className={`text-xs leading-relaxed ${isPro ? "text-neo-mid" : "text-neo-mid line-clamp-2"}`}>
                   {holderAdvice}
                 </p>
+
+                {!isPro && (
+                  <div className="mt-2.5 rounded border border-white/[0.06] bg-gradient-to-b from-neutral-900/60 to-neutral-950 p-2.5 text-center">
+                    <div className="flex items-center justify-center gap-1 text-[11px] font-medium text-amber-400">
+                      <Lock size={11} />
+                      <span>精准目标止盈与防守止损位</span>
+                    </div>
+                    <Link
+                      href="/upgrade"
+                      className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
+                    >
+                      <Zap size={12} className="fill-black" />
+                      <span>¥1.9 立即解锁策略 (7天体验)</span>
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
+
             {watcherAdvice && (
-              <div className="rounded-lg neo-inset p-3 border-l-2 border-l-amber-500">
+              <div className="relative overflow-hidden rounded-lg neo-inset p-3 border-l-2 border-l-amber-500">
                 <div className="flex items-center gap-1 text-xs font-semibold text-neo-ink mb-1">
                   <Eye size={12} className="text-amber-500" />
                   <span>持币观望者指引</span>
                 </div>
-                <p className="text-xs leading-relaxed text-neo-mid">
+                <p className={`text-xs leading-relaxed ${isPro ? "text-neo-mid" : "text-neo-mid line-clamp-2"}`}>
                   {watcherAdvice}
                 </p>
+
+                {!isPro && (
+                  <div className="mt-2.5 rounded border border-white/[0.06] bg-gradient-to-b from-neutral-900/60 to-neutral-950 p-2.5 text-center">
+                    <div className="flex items-center justify-center gap-1 text-[11px] font-medium text-amber-400">
+                      <Lock size={11} />
+                      <span>最佳建仓入场与支撑区间</span>
+                    </div>
+                    <Link
+                      href="/upgrade"
+                      className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
+                    >
+                      <Zap size={12} className="fill-black" />
+                      <span>¥1.9 立即解锁建仓区间</span>
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
           </div>
+
           {report?.operation_advice && !holderAdvice && !watcherAdvice && (
             <div className="rounded-lg neo-inset p-3 text-xs leading-relaxed text-neo-mid">
               {report.operation_advice}
