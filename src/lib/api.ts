@@ -295,8 +295,18 @@ export class ApiClient {
   }
 
   checkAlipayOrderStatus(outTradeNo: string) {
-    return this.request<{ ok: boolean; data: { out_trade_no: string; status: AlipayOrderStatus } }>(
+    return this.request<{ ok: boolean; data: { out_trade_no: string; status: AlipayOrderStatus; recovery_code?: string } }>(
       '/pay/alipay/order-status?out_trade_no=' + encodeURIComponent(outTradeNo)
+    );
+  }
+
+  recoverMembership(credential: string) {
+    return this.request<{ ok: boolean; success: boolean; message: string; recovery_code?: string; membership?: MembershipStatus }>(
+      '/pay/alipay/recover',
+      {
+        method: 'POST',
+        body: JSON.stringify({ credential }),
+      }
     );
   }
 
