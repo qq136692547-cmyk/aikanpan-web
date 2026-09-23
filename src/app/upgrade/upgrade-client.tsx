@@ -381,14 +381,24 @@ export function UpgradePageClient({
             </div>
 
             <div className="mt-6 pt-4 border-t border-neutral-800/80">
-              <button
-                onClick={() => handleAlipay("trial")}
-                disabled={paying}
-                className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
-              >
-                {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-emerald-400" />}
-                ¥1.9 体验 7 天
-              </button>
+              {membership?.has_used_trial ? (
+                <button
+                  disabled
+                  className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2.5 text-xs font-medium text-neutral-500 cursor-not-allowed opacity-80"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 text-neutral-500" />
+                  已享受新客特惠 (限购1次)
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleAlipay("trial")}
+                  disabled={paying}
+                  className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+                >
+                  {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-emerald-400" />}
+                  ¥1.9 体验 7 天
+                </button>
+              )}
             </div>
           </div>
 

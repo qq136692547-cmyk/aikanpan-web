@@ -1107,6 +1107,7 @@ export interface EmailVerifyResp {
 export interface MembershipStatus {
   user_id: string;
   plan: "free" | "pro";
+  has_used_trial?: boolean;
   expires_at: string;
   ai_daily_limit: number;
   ai_used_today: number;
