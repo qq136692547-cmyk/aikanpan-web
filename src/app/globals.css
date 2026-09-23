@@ -740,6 +740,20 @@
   }
 }
 
+/* === Mobile Native Touch & Gesture Polish === */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overscroll-behavior-y: none;
+}
+
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
 /* === Mission Vision Dynamic Background === */
 .mission-panel {
   position: relative;

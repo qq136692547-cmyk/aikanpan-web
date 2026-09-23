@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
 import { AuthProvider } from "@/lib/auth";
 import { BottomNav } from "@/components/layout/bottom-nav";
@@ -8,6 +8,16 @@ import { AnalyticsReporter } from "@/components/system/analytics-reporter";
 import { BaiduTongji } from "@/components/system/baidu-tongji";
 import "./globals.css";
 
+
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+  themeColor: "#05070A",
+};
 
 export const metadata: Metadata = {
   title: {
