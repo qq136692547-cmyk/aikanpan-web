@@ -83,7 +83,7 @@ export function UpgradePageClient({
           return;
         }
 
-        if (attempt < 8) {
+        if (attempt < 45) {
           setPaymentConfirmation("checking");
           timer = setTimeout(() => verifyOrder(attempt + 1), 2000);
           return;
