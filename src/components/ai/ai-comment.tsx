@@ -282,7 +282,6 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   const theme = score !== null ? getScoreTheme(score) : null;
   const body = stripTrailingMeta(data!.content);
   const qLevels = extractQuantitativeLevels(data!.content, report);
-  const [activeStrategyTab, setActiveStrategyTab] = useState<"holder" | "watcher">("holder");
 
   // 四维量化卡片提炼
   const dimensions = [
