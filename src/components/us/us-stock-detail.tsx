@@ -22,6 +22,7 @@ export type UsStockDetailInitialData = {
   earnings?: UsEarnings | null;
   news?: UsNewsItem[];
   filings?: UsFilings | null;
+  ai?: AIComment | null;
 };
 
 function formatUsMarketCap(millions?: number) {
@@ -338,7 +339,12 @@ export function UsStockDetail({ symbol, initialData }: { symbol: string; initial
         </BentoCard>
       )}
 
-      {/* AI 深度量化诊断面板 */}
+      {/* AI 深度个股智能诊断面板 */}
+      <section>
+        <StockAIComment code={symbol} market="us" initialData={initialData?.ai} />
+      </section>
+
+      {/* 我的投资观点 */}
       <StockThesisPanel code={symbol} market="us" />
 
       {/* 历史复盘研报沉淀 */}

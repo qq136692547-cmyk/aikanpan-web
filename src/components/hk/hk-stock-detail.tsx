@@ -303,6 +303,17 @@ export function HkStockDetail({
           </div>
         </BentoCard>
       )}
+
+      {/* AI 深度个股智能诊断面板 */}
+      <section>
+        <StockAIComment code={symbol} market="hk" initialData={initialData?.ai} />
+      </section>
+
+      {/* 我的投资观点 */}
+      <StockThesisPanel code={symbol} market="hk" />
+
+      {/* 历史复盘研报沉淀 */}
+      <AIHistoryPanel code={symbol} kind="hk_stock_ai" />
     </div>
   );
 }
