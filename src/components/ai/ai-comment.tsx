@@ -18,8 +18,10 @@ import {
   ChevronDown,
   ChevronUp,
   RefreshCw,
-  Info
+  Info,
+  Share2
 } from "lucide-react";
+import { AISharePosterModal } from "./ai-share-poster-modal";
 import { api, type AIComment, type StockReport } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
 import { Lock, Zap, Target, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
@@ -159,6 +161,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   }, [initialData]);
   const [error, setError] = useState<string>("");
   const [showRisks, setShowRisks] = useState<boolean>(true);
+  const [showPosterModal, setShowPosterModal] = useState<boolean>(false);
   const { membership } = useMembership();
   const isPro = membership?.plan === "pro";
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -341,13 +344,22 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             </span>
           )}
         </div>
-        <button
-          onClick={handleGenerate}
-          className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-neo-mid transition-all hover-neo-inset hover:text-neo-primary"
-        >
-          <RefreshCw size={12} />
-          重新分析
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPosterModal(true)}
+            className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-[#14171D] px-2.5 py-1 text-xs font-medium text-sky-400 transition-all hover:bg-white/[0.08] hover:text-sky-300 active:scale-[0.98]"
+          >
+            <Share2 size={12} />
+            <span>分享体检单</span>
+          </button>
+          <button
+            onClick={handleGenerate}
+            className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-neo-mid transition-all hover-neo-inset hover:text-neo-primary"
+          >
+            <RefreshCw size={12} />
+            重新分析
+          </button>
+        </div>
       </div>
 
       {/* 核心结论与多空评级徽章 (仿开源仪表盘布局) */}
