@@ -17,7 +17,8 @@ import {
   type HkQuote,
   type StockIndicators,
 } from "@/lib/api";
-import { TrendingUp, TrendingDown, Activity, ArrowUpRight, ShieldAlert, BarChart3, LineChart } from "lucide-react";
+import { BentoCard, BentoCell } from "@/components/stock/bento";
+import { TrendingUp, TrendingDown, Activity, ArrowUpRight, ShieldAlert, BarChart3, LineChart, Newspaper } from "lucide-react";
 
 export type HkStockDetailInitialData = {
   quote?: HkQuote | null;
@@ -38,11 +39,8 @@ function formatHkMarketCap(val: number | null | undefined): string {
 
 function latestValue(value: number | number[] | null | undefined): number {
   if (value == null) return 0;
-  if (Array.isArray(value)) {
-    const vals = value.filter((v) => typeof v === "number" && Number.isFinite(v));
-    return vals.length ? vals[vals.length - 1] : 0;
-  }
-  return Number.isFinite(value) ? value : 0;
+  if (Array.isArray(value)) return value.length ? value[value.length - 1] ?? 0 : 0;
+  return value;
 }
 
 export function HkStockDetail({
@@ -58,31 +56,39 @@ export function HkStockDetail({
   const [financials, setFinancials] = useState<HkFinancials | null>(initialData?.financials ?? null);
   const [news, setNews] = useState<HkNewsItem[]>(initialData?.news ?? []);
   const [indicators, setIndicators] = useState<StockIndicators | null>(initialData?.indicators ?? null);
-  const [ai, setAi] = useState<AIComment | null>(initialData?.ai ?? null);
-  const [, setAiLoading] = useState(false);
+  const [aiThesis, setAiThesis] = useState<AIComment | null>(initialData?.ai ?? null);
+  const [aiLoading, setAiLoading] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    setAiLoading(true);
-    Promise.allSettled([
-      api.getHkQuote(symbol),
-      api.getHkHistory(symbol, 120),
-      api.getHkFinancials(symbol),
-      api.getHkNews(symbol, 8),
-      api.getHkIndicators(symbol, 120),
-      isAuthenticated ? api.getHkAI(symbol) : Promise.resolve(null),
-    ]).then(([q, h, f, n, ind, a]) => {
-      if (cancelled) return;
-      if (q.status === "fulfilled") setQuote(q.value);
-      if (h.status === "fulfilled") setHistory(h.value);
-      if (f.status === "fulfilled") setFinancials(f.value);
-      if (n.status === "fulfilled") setNews(n.value.news);
-      if (ind.status === "fulfilled") setIndicators(ind.value);
-      if (a.status === "fulfilled") setAi(a.value);
-      setAiLoading(false);
-    });
+    let mounted = true;
+
+    async function loadData() {
+      try {
+        const [q, h, f, n, ind] = await Promise.all([
+          api.getHkQuote(symbol),
+          api.getHkHistory(symbol, 120),
+          api.getHkFinancials(symbol),
+          api.getHkNews(symbol, 8),
+          api.getHkIndicators(symbol, 120),
+        ]);
+        if (!mounted) return;
+        setQuote(q);
+        setHistory(h);
+        setFinancials(f);
+        setNews(n?.news ?? []);
+        setIndicators(ind);
+      } catch (e) {
+        console.error("Failed to load HK stock data", e);
+      }
+    }
+
+
+
+    loadData();
+    
+
     return () => {
-      cancelled = true;
+      mounted = false;
     };
   }, [symbol, isAuthenticated]);
 
@@ -91,9 +97,8 @@ export function HkStockDetail({
 
   return (
     <div className="space-y-4">
-      {/* 顶部行情核心看板：采用现代金融终端 Hero Bento 布局 */}
-      <section className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#101216]/90 p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/[0.12]">
-        {/* 背景微光氛围光环 */}
+      {/* 顶部行情 Hero 便当盒 (1:1 镜像 Figma 原版) */}
+      <BentoCard className="p-6">
         <div
           className={`pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full blur-3xl transition-opacity duration-700 ${
             trend > 0 ? "bg-red-500/10" : trend < 0 ? "bg-emerald-500/10" : "bg-indigo-500/5"
@@ -119,290 +124,185 @@ export function HkStockDetail({
                 {formatPrice(quote?.last ?? 0)}
               </span>
 
-              {/* 涨跌幅胶囊微标 */}
               <div
                 className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 font-mono text-sm font-bold tracking-tight shadow-sm ${
                   trend > 0
-                    ? "border border-red-500/25 bg-red-500/15 text-red-400"
+                    ? "bg-red-500/15 text-red-400 border border-red-500/20"
                     : trend < 0
-                    ? "border border-emerald-500/25 bg-emerald-500/15 text-emerald-400"
-                    : "border border-white/10 bg-white/5 text-neutral-300"
+                    ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
+                    : "bg-neutral-800 text-neutral-300 border border-neutral-700"
                 }`}
               >
-                {trend > 0 ? <TrendingUp size={15} /> : trend < 0 ? <TrendingDown size={15} /> : null}
-                <span>
-                  {quote?.change != null ? (quote.change >= 0 ? `+${quote.change.toFixed(2)}` : quote.change.toFixed(2)) : "--"}
-                </span>
-                <span className="opacity-80">({formatPct(quote?.change_pct ?? 0)})</span>
+                {trend > 0 ? <TrendingUp className="h-4 w-4" /> : trend < 0 ? <TrendingDown className="h-4 w-4" /> : null}
+                <span>{quote?.change ? (quote.change > 0 ? `+${formatPrice(quote.change)}` : formatPrice(quote.change)) : "--"}</span>
+                <span>({formatPct(quote?.change_pct ?? 0)})</span>
               </div>
             </div>
 
-            <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
-              <span>{quote?.source === "unavailable" ? "数据暂不可用" : `实时源：${quote?.source ?? "腾讯行情"}`}</span>
-              <span>•</span>
-              <span>{quote?.date ? `最后交易日：${quote.date}` : "日内实时更新"}</span>
+            <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-neutral-400 font-mono">
+              <span>{quote?.source === "unavailable" ? "行情数据不可用" : `实时源：${quote?.source ?? "腾讯行情"}`}</span>
+              <span className="text-neutral-600">•</span>
+              <span>{quote?.date ? `交易日：${quote.date}` : "交易中"}</span>
+              <span className="text-neutral-600">•</span>
+              <span className="text-neutral-400">港币结算</span>
             </div>
           </div>
 
-          <HkWatchlistButton code={symbol} name={quote?.name || symbol} />
+          <div className="flex items-center gap-3">
+            <HkWatchlistButton code={symbol} />
+          </div>
         </div>
 
-        {/* 优雅平滑走势图 */}
-        <div className="mt-5 pt-2">
-          <Sparkline data={history?.closes ?? []} trend={trend} height={52} className="w-full opacity-90 transition-opacity hover:opacity-100" />
-        </div>
-      </section>
-
-      {/* 六宫格日内盘口指标网格 (Bento Inset Grid) */}
-      {quote && (
-        <section className="rounded-2xl border border-white/[0.08] bg-[#101216]/80 p-5 shadow-xl backdrop-blur-md">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-            <Activity size={14} className="text-indigo-400" />
-            <span>日内核心盘口</span>
-          </div>
-
-          <div className="mt-3.5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
-            {[
-              { label: "今开", value: quote.open ?? 0, fmt: formatPrice, raw: quote.open },
-              { label: "最高", value: quote.high ?? 0, fmt: formatPrice, color: "text-red-400", raw: quote.high },
-              { label: "最低", value: quote.low ?? 0, fmt: formatPrice, color: "text-emerald-400", raw: quote.low },
-              { label: "昨收", value: quote.prev_close ?? 0, fmt: formatPrice, raw: quote.prev_close },
-              { label: "成交量", value: quote.volume ?? 0, fmt: formatVolume, raw: quote.volume },
-              { label: "成交额", value: quote.amount ?? 0, fmt: formatHkMarketCap, raw: quote.amount },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="group rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 px-3.5 py-3 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]"
-              >
-                <div className="text-[11px] font-medium text-neutral-500 group-hover:text-neutral-400">{item.label}</div>
-                <div className={`mt-1 font-mono text-[15px] font-bold tracking-tight ${item.color || "text-neutral-100"} tabular-nums`}>
-                  {item.raw ? item.fmt(item.value) : "--"}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 港股专属深度估值与财务看板 (含股息率/EPS/BPS/振幅) */}
-      {financials?.available && metrics && (
-        <section className="rounded-2xl border border-white/[0.08] bg-[#101216]/80 p-5 shadow-xl backdrop-blur-md">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-              <BarChart3 size={14} className="text-purple-400" />
-              <span>港股特色财务与估值</span>
+        {/* 底部全宽平滑微光走势 Sparkline */}
+        {history?.closes && history.closes.length > 0 && (
+          <div className="mt-5 border-t border-white/[0.06] pt-4">
+            <div className="mb-2 flex items-center justify-between text-xs text-neutral-400">
+              <span className="font-medium text-neutral-300">近 120 日趋势走势 (收盘价波形)</span>
+              <span className="font-mono text-[11px] text-neutral-400">
+                区间: {formatPrice(Math.min(...history.closes))} - {formatPrice(Math.max(...history.closes))}
+              </span>
             </div>
-            <span className="font-mono text-[11px] text-neutral-500">
-              总市值：{formatHkMarketCap(metrics.market_cap)}
-            </span>
-          </div>
-
-          <div className="mt-3.5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
-            {/* 股息率微标高亮 */}
-            <div className="group rounded-xl border border-purple-500/20 bg-purple-500/[0.04] px-3.5 py-3 transition-all duration-200 hover:border-purple-500/40 hover:bg-purple-500/[0.08]">
-              <div className="flex items-center justify-between text-[11px] font-semibold text-purple-300">
-                <span>股息率 (TTM)</span>
-                <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-              </div>
-              <div className="mt-1 font-mono text-[16px] font-black text-purple-300 tabular-nums">
-                {metrics.dividend_yield != null
-                  ? `${metrics.dividend_yield.toFixed(2)}%`
-                  : quote?.dividend_yield != null
-                  ? `${quote.dividend_yield.toFixed(2)}%`
-                  : "--"}
-              </div>
-            </div>
-
-            <div className="group rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 px-3.5 py-3 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]">
-              <div className="text-[11px] font-medium text-neutral-500">市盈率 (PE)</div>
-              <div className="mt-1 font-mono text-[15px] font-bold text-neutral-100 tabular-nums">{metrics.pe ?? "--"}</div>
-            </div>
-
-            <div className="group rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 px-3.5 py-3 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]">
-              <div className="text-[11px] font-medium text-neutral-500">市净率 (PB)</div>
-              <div className="mt-1 font-mono text-[15px] font-bold text-neutral-100 tabular-nums">{metrics.pb ?? "--"}</div>
-            </div>
-
-            <div className="group rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 px-3.5 py-3 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]">
-              <div className="text-[11px] font-medium text-neutral-500">每股收益 EPS</div>
-              <div className="mt-1 font-mono text-[15px] font-bold text-neutral-200 tabular-nums">
-                {metrics.eps != null ? `HK$${metrics.eps.toFixed(3)}` : quote?.eps != null ? `HK$${quote.eps.toFixed(3)}` : "--"}
-              </div>
-            </div>
-
-            <div className="group rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 px-3.5 py-3 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]">
-              <div className="text-[11px] font-medium text-neutral-500">每股净资产 BPS</div>
-              <div className="mt-1 font-mono text-[15px] font-bold text-neutral-200 tabular-nums">
-                {metrics.bps != null ? `HK$${metrics.bps.toFixed(3)}` : quote?.bps != null ? `HK$${quote.bps.toFixed(3)}` : "--"}
-              </div>
-            </div>
-
-            <div className="group rounded-xl border border-amber-500/20 bg-amber-500/[0.04] px-3.5 py-3 transition-all duration-200 hover:border-amber-500/40 hover:bg-amber-500/[0.08]">
-              <div className="text-[11px] font-medium text-amber-400/80">日振幅 (Amp)</div>
-              <div className="mt-1 font-mono text-[15px] font-bold text-amber-300 tabular-nums">
-                {metrics.amplitude != null
-                  ? `${metrics.amplitude.toFixed(2)}%`
-                  : quote?.amplitude != null
-                  ? `${quote.amplitude.toFixed(2)}%`
-                  : "--"}
-              </div>
+            <div className="h-14 w-full">
+              <Sparkline
+                data={history.closes}
+                trend={trend}
+                height={56}
+              />
             </div>
           </div>
+        )}
+      </BentoCard>
 
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.05] pt-2.5 text-[11px] text-neutral-500">
-            <span>
-              52周波动区间：
-              <strong className="font-mono font-normal text-neutral-300">
-                {metrics.low_52w != null ? formatPrice(metrics.low_52w) : "--"} ~ {metrics.high_52w != null ? formatPrice(metrics.high_52w) : "--"}
-              </strong>
-            </span>
-            <span>财报及盘口数据源：腾讯行情（实时同步）</span>
+      {/* 双列错落便当盒：日内核心盘口 + 深度财务估值 (1:1 镜像 Figma Bento Grid) */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* 左便当盒：日内核心盘口 3x2 矩阵 */}
+        <BentoCard
+          title="日内核心盘口"
+          icon={<Activity className="h-4 w-4 text-purple-400" />}
+          subtitle="实时报价与交易量能"
+        >
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <BentoCell label="今开" value={formatPrice(quote?.open ?? 0)} />
+            <BentoCell label="最高" value={formatPrice(quote?.high ?? 0)} trend="up" />
+            <BentoCell label="最低" value={formatPrice(quote?.low ?? 0)} trend="down" />
+            <BentoCell label="昨收" value={formatPrice(quote?.prev_close ?? 0)} />
+            <BentoCell label="成交量" value={formatVolume(quote?.volume ?? 0)} />
+            <BentoCell label="成交额" value={formatHkMarketCap(quote?.amount)} trend="purple" />
           </div>
-        </section>
-      )}
+        </BentoCard>
 
-      {/* 港股量化技术指标诊断网格 (MACD / KDJ / RSI / BOLL) */}
+        {/* 右便当盒：港股特色高股息与估值矩阵 */}
+        <BentoCard
+          title="高股息与估值指标"
+          icon={<BarChart3 className="h-4 w-4 text-amber-400" />}
+          subtitle="港股核心价值红利与回报"
+        >
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <BentoCell
+              label="股息率 (TTM)"
+              value={metrics?.dividend_yield != null ? `${metrics.dividend_yield.toFixed(2)}%` : "--"}
+              trend="purple"
+              sub="现金分红保障"
+            />
+            <BentoCell
+              label="市盈率 (PE)"
+              value={metrics?.pe != null ? `${metrics.pe.toFixed(2)}x` : "--"}
+              trend="highlight"
+            />
+            <BentoCell
+              label="市净率 (PB)"
+              value={metrics?.pb != null ? `${metrics.pb.toFixed(2)}x` : "--"}
+            />
+            <BentoCell
+              label="每股收益 (EPS)"
+              value={metrics?.eps != null ? `HK$${metrics.eps.toFixed(2)}` : "--"}
+            />
+            <BentoCell
+              label="每股净资产 (BPS)"
+              value={metrics?.bps != null ? `HK$${metrics.bps.toFixed(2)}` : "--"}
+            />
+            <BentoCell
+              label="日内振幅"
+              value={metrics?.amplitude != null ? `${metrics.amplitude.toFixed(2)}%` : "--"}
+              trend="amber"
+            />
+          </div>
+        </BentoCard>
+      </div>
+
+      {/* 技术指标四联盒 (MACD / KDJ / RSI / BOLL) */}
       {indicators && (
-        <section className="rounded-2xl border border-white/[0.08] bg-[#101216]/80 p-5 shadow-xl backdrop-blur-md">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-              <LineChart size={14} className="text-cyan-400" />
-              <span>量化技术指标分析</span>
-            </div>
-            <span className="font-mono text-[11px] text-neutral-500">日线级别 · 120日 K 线推演</span>
+        <BentoCard
+          title="量化技术指标诊断"
+          icon={<LineChart className="h-4 w-4 text-cyan-400" />}
+          subtitle="MACD · KDJ · RSI · BOLL 多周期模型"
+        >
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <BentoCell
+              label="MACD (12, 26, 9)"
+              value={latestValue(indicators.macd?.macd).toFixed(2)}
+              trend={latestValue(indicators.macd?.macd) >= 0 ? "up" : "down"}
+              sub={`DIF: ${latestValue(indicators.macd?.dif).toFixed(2)} | DEA: ${latestValue(indicators.macd?.dea).toFixed(2)}`}
+            />
+            <BentoCell
+              label="KDJ (9, 3, 3)"
+              value={`K:${latestValue(indicators.kdj?.k).toFixed(0)} D:${latestValue(indicators.kdj?.d).toFixed(0)}`}
+              trend="amber"
+              sub={`J值: ${latestValue(indicators.kdj?.j).toFixed(0)}`}
+            />
+            <BentoCell
+              label="RSI (6, 12, 24)"
+              value={latestValue(indicators.rsi).toFixed(1)}
+              trend={latestValue(indicators.rsi) > 70 ? "up" : latestValue(indicators.rsi) < 30 ? "down" : "neutral"}
+              sub={`RSI12: ${latestValue(indicators.rsi).toFixed(1)}`}
+            />
+            <BentoCell
+              label="BOLL (20, 2)"
+              value={latestValue(indicators.boll?.mid).toFixed(2)}
+              sub={`上:${latestValue(indicators.boll?.upper).toFixed(2)} 下:${latestValue(indicators.boll?.lower).toFixed(2)}`}
+            />
           </div>
-
-          <div className="mt-3.5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            {indicators.macd && (
-              <div className="rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 p-3.5">
-                <div className="text-[11px] font-bold text-neutral-400">MACD (12, 26, 9)</div>
-                <div className="mt-2 space-y-1 font-mono text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">DIF</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.macd.dif).toFixed(3)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">DEA</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.macd.dea).toFixed(3)}</span>
-                  </div>
-                  <div className="flex justify-between border-t border-white/[0.04] pt-1 font-semibold">
-                    <span className="text-neutral-500">MACD 柱</span>
-                    <span
-                      className={`tabular-nums ${
-                        latestValue(indicators.macd.macd) >= 0 ? "text-red-400" : "text-emerald-400"
-                      }`}
-                    >
-                      {latestValue(indicators.macd.macd).toFixed(3)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {indicators.kdj && (
-              <div className="rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 p-3.5">
-                <div className="text-[11px] font-bold text-neutral-400">KDJ (9, 3, 3)</div>
-                <div className="mt-2 space-y-1 font-mono text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">K</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.kdj.k).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">D</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.kdj.d).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between border-t border-white/[0.04] pt-1 font-semibold">
-                    <span className="text-neutral-500">J</span>
-                    <span
-                      className={`tabular-nums ${
-                        latestValue(indicators.kdj.j) >= 0 ? "text-red-400" : "text-emerald-400"
-                      }`}
-                    >
-                      {latestValue(indicators.kdj.j).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {indicators.rsi != null && (
-              <div className="rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 p-3.5">
-                <div className="text-[11px] font-bold text-neutral-400">RSI 相对强弱 (14)</div>
-                <div className="mt-2 font-mono text-2xl font-black text-neutral-100 tabular-nums">
-                  {latestValue(indicators.rsi).toFixed(2)}
-                </div>
-                <div className="mt-1 text-[11px] font-medium text-neutral-500">
-                  {latestValue(indicators.rsi) >= 80 ? (
-                    <span className="text-red-400">超买区间 (警惕调整)</span>
-                  ) : latestValue(indicators.rsi) <= 20 ? (
-                    <span className="text-emerald-400">超卖区间 (逢低关注)</span>
-                  ) : (
-                    "中性蓄势运行"
-                  )}
-                </div>
-              </div>
-            )}
-
-            {indicators.boll && (
-              <div className="rounded-xl border border-white/[0.05] bg-[#0C0E11]/80 p-3.5">
-                <div className="text-[11px] font-bold text-neutral-400">BOLL 布林带 (20, 2)</div>
-                <div className="mt-2 space-y-1 font-mono text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">上轨</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.boll.upper).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">中轨</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.boll.mid).toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">下轨</span>
-                    <span className="text-neutral-200 tabular-nums">{latestValue(indicators.boll.lower).toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+        </BentoCard>
       )}
 
-      {/* 相关资讯流 (Bento News List) */}
-      {news.length > 0 && (
-        <section className="rounded-2xl border border-white/[0.08] bg-[#101216]/80 p-5 shadow-xl backdrop-blur-md">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-400">港股权威研报与快讯</h2>
-          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {news.slice(0, 6).map((n) => (
+      {/* AI 深度量化诊断面板 */}
+      <StockThesisPanel code={symbol} market="hk" />
+
+      {/* 历史复盘研报沉淀 */}
+      <AIHistoryPanel code={symbol} kind="hk_stock_ai" />
+
+      {/* 港股关联快讯流 */}
+      {news && news.length > 0 && (
+        <BentoCard
+          title="实时关联资讯"
+          icon={<Newspaper className="h-4 w-4 text-neutral-400" />}
+          subtitle="港股通与公告动态"
+        >
+          <div className="space-y-3">
+            {news.slice(0, 5).map((item, idx) => (
               <a
-                key={n.id || n.title}
-                href={n.url || "#"}
+                key={idx}
+                href={item.url || "#"}
                 target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl border border-white/[0.04] bg-[#0C0E11]/70 p-3.5 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#14171C]"
+                rel="noreferrer"
+                className="group flex flex-col justify-between gap-1 rounded-xl border border-white/[0.04] bg-[#0C0E11]/60 p-3.5 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#12151B]"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-[13px] font-semibold text-neutral-200 group-hover:text-indigo-400 line-clamp-1 transition-colors">
-                    {n.title}
-                  </h3>
-                  <ArrowUpRight size={14} className="shrink-0 text-neutral-600 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-indigo-400" />
+                  <h4 className="text-sm font-medium text-neutral-200 group-hover:text-purple-400 transition-colors line-clamp-1">
+                    {item.title}
+                  </h4>
+                  <ArrowUpRight className="h-4 w-4 text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                 </div>
-                {n.summary && <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-neutral-400">{n.summary}</p>}
-                <div className="mt-2 font-mono text-[10px] text-neutral-500">
-                  {n.source} · {n.time}
+                <div className="flex items-center gap-3 text-xs text-neutral-400 font-mono">
+                  <span>{item.source || "港股电报"}</span>
+                  <span>•</span>
+                  <span>{item.time || "刚刚"}</span>
                 </div>
               </a>
             ))}
           </div>
-        </section>
+        </BentoCard>
       )}
-
-      {/* 投资论点分析抽屉 */}
-      <StockThesisPanel code={symbol} market="hk" />
-
-      {/* 统一架构的高级量化 AI 终端解读面板 */}
-      <StockAIComment code={symbol} market="hk" initialData={ai} />
-
-      {/* AI 历史回顾面板 */}
-      <AIHistoryPanel code={symbol} kind="hk_stock_ai" />
     </div>
   );
 }

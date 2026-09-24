@@ -1,3 +1,5 @@
+import { BentoCard, BentoCell } from "@/components/stock/bento";
+import { Activity, BarChart3, LineChart } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TradingViewChart } from "@/components/chart/tradingview-chart";
@@ -154,94 +156,113 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
         <StockTitleBar code={code} initial={quote} />
 
-        {/* 统计数据网格 */}
+        {/* 统计数据网格 (1:1 镜像 Figma Bento Grid 核心盘口 + 主力资金) */}
         {quote && (
-          <div className="neo-card p-5 mb-4 neo-fade-up" style={{ animationDelay: "30ms" }}>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-              {[
-                { label: "今开", value: quote.open, fmt: formatPrice },
-                { label: "最高", value: quote.high, fmt: formatPrice, color: "text-neo-up" },
-                { label: "最低", value: quote.low, fmt: formatPrice, color: "text-neo-down" },
-                { label: "昨收", value: quote.prev_close, fmt: formatPrice },
-                { label: "成交量", value: quote.volume, fmt: formatVolume },
-                { label: "成交额", value: quote.amount || quote.volume * quote.last, fmt: formatAmount },
-              ].map((item) => (
-                <div key={item.label} className="neo-inset-sm px-3 py-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-neo-dim">{item.label}</div>
-                  <div className={`mt-1 text-[15px] font-semibold ${item.color || "text-neo-ink"}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    {item.fmt(item.value)}
-                  </div>
-                </div>
-              ))}
-            </div>
-            {moneyflow && (
-              <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--neo-surface-active)' }}>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {[
-                    { label: "主力净流入", value: Number(moneyflow.main_net_inflow || 0), fmt: formatAmount, color: Number(moneyflow.main_net_inflow) >= 0 ? "text-neo-up" : "text-neo-down" },
-                    { label: "净流入占比", value: Number(moneyflow.main_net_inflow_pct || 0), fmt: (v: number) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`, color: Number(moneyflow.main_net_inflow_pct) >= 0 ? "text-neo-up" : "text-neo-down" },
-                    { label: "超大单比", value: Number(moneyflow.super_large_ratio || 0), fmt: (v: number) => `${v.toFixed(2)}%` },
-                    { label: "大单比", value: Number(moneyflow.large_ratio || 0), fmt: (v: number) => `${v.toFixed(2)}%` },
-                  ].map((item) => (
-                    <div key={item.label} className="neo-inset-sm px-3 py-2">
-                      <div className="text-[10px] uppercase tracking-wider text-neo-dim">{item.label}</div>
-                      <div className={`mt-1 text-[14px] font-semibold ${item.color || "text-neo-ink"}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                        {item.fmt(item.value)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2 neo-fade-up">
+            {/* 左便当盒：日内核心盘口 3x2 矩阵 */}
+            <BentoCard
+              title="核心交易盘口"
+              icon={<Activity className="h-4 w-4 text-purple-400" />}
+              subtitle="实时撮合与量能规模"
+            >
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                <BentoCell label="今开" value={formatPrice(quote.open)} />
+                <BentoCell label="最高" value={formatPrice(quote.high)} trend="up" />
+                <BentoCell label="最低" value={formatPrice(quote.low)} trend="down" />
+                <BentoCell label="昨收" value={formatPrice(quote.prev_close)} />
+                <BentoCell label="成交量" value={formatVolume(quote.volume)} />
+                <BentoCell label="成交额" value={formatAmount(quote.amount || quote.volume * quote.last)} trend="purple" />
               </div>
+            </BentoCard>
+
+            {/* 右便当盒：主力资金多空博弈 */}
+            {moneyflow ? (
+              <BentoCard
+                title="主力资金博弈"
+                icon={<BarChart3 className="h-4 w-4 text-amber-400" />}
+                subtitle="机构与超大单博弈动能"
+              >
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-2">
+                  <BentoCell
+                    label="主力净流入"
+                    value={formatAmount(Number(moneyflow.main_net_inflow || 0))}
+                    trend={Number(moneyflow.main_net_inflow || 0) >= 0 ? "up" : "down"}
+                    sub={`占成交额 ${Number(moneyflow.main_net_inflow_pct || 0).toFixed(2)}%`}
+                  />
+                  <BentoCell
+                    label="净流入占比"
+                    value={`${Number(moneyflow.main_net_inflow_pct || 0) >= 0 ? "+" : ""}${Number(moneyflow.main_net_inflow_pct || 0).toFixed(2)}%`}
+                    trend={Number(moneyflow.main_net_inflow_pct || 0) >= 0 ? "up" : "down"}
+                    sub="多空净流向强度"
+                  />
+                  <BentoCell
+                    label="超大单比例"
+                    value={`${Number(moneyflow.super_large_ratio || 0).toFixed(2)}%`}
+                    trend="purple"
+                    sub="主力机构挂单"
+                  />
+                  <BentoCell
+                    label="大单比例"
+                    value={`${Number(moneyflow.large_ratio || 0).toFixed(2)}%`}
+                    trend="amber"
+                    sub="大资金跟进活跃度"
+                  />
+                </div>
+              </BentoCard>
+            ) : (
+              <BentoCard title="资金流向" icon={<BarChart3 className="h-4 w-4 text-amber-400" />}>
+                <div className="flex h-32 items-center justify-center text-xs text-neutral-500 font-mono">
+                  资金流向数据撮合中
+                </div>
+              </BentoCard>
             )}
           </div>
         )}
 
         <StockTabs events={events} financials={financials} />
 
-        {/* 技术指标 */}
+        {/* 技术指标四联盒 (1:1 镜像 Figma Bento Grid) */}
         {indicators && (
-          <div className="neo-card p-5 mb-4 neo-fade-up" style={{ animationDelay: "60ms" }}>
-            <h3 className="mb-3 text-[14px] font-semibold text-neo-ink">技术指标</h3>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {indicators.macd && (
-                <div className="neo-inset-sm px-3 py-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-neo-dim">MACD</div>
-                  <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">DIF</span><span className="text-neo-ink">{latestValue(indicators.macd.dif).toFixed(3)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">DEA</span><span className="text-neo-ink">{latestValue(indicators.macd.dea).toFixed(3)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">MACD</span><span className={latestValue(indicators.macd.macd) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.macd.macd).toFixed(3)}</span></div>
-                  </div>
-                </div>
-              )}
-              {indicators.kdj && (
-                <div className="neo-inset-sm px-3 py-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-neo-dim">KDJ</div>
-                  <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">K</span><span className="text-neo-ink">{latestValue(indicators.kdj.k).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">D</span><span className="text-neo-ink">{latestValue(indicators.kdj.d).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">J</span><span className={latestValue(indicators.kdj.j) >= 0 ? "text-neo-up" : "text-neo-down"}>{latestValue(indicators.kdj.j).toFixed(2)}</span></div>
-                  </div>
-                </div>
-              )}
-              {indicators.rsi && (
-                <div className="neo-inset-sm px-3 py-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-neo-dim">RSI</div>
-                  <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">RSI</span><span className="text-neo-ink">{latestValue(indicators.rsi).toFixed(2)}</span></div>
-                  </div>
-                </div>
-              )}
-              {indicators.boll && (
-                <div className="neo-inset-sm px-3 py-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-neo-dim">BOLL</div>
-                  <div className="mt-1 space-y-0.5 text-[12px]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
-                    <div className="flex justify-between"><span className="text-neo-dim">UP</span><span className="text-neo-ink">{latestValue(indicators.boll.upper).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">MID</span><span className="text-neo-ink">{latestValue(indicators.boll.mid).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span className="text-neo-dim">LOW</span><span className="text-neo-ink">{latestValue(indicators.boll.lower).toFixed(2)}</span></div>
-                  </div>
-                </div>
-              )}
-            </div>
+          <div className="mb-4 neo-fade-up">
+            <BentoCard
+              title="量化技术指标诊断"
+              icon={<LineChart className="h-4 w-4 text-cyan-400" />}
+              subtitle="MACD · KDJ · RSI · BOLL 多周期模型"
+            >
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {indicators.macd && (
+                  <BentoCell
+                    label="MACD (12, 26, 9)"
+                    value={latestValue(indicators.macd.macd).toFixed(3)}
+                    trend={latestValue(indicators.macd.macd) >= 0 ? "up" : "down"}
+                    sub={`DIF: ${latestValue(indicators.macd.dif).toFixed(3)} | DEA: ${latestValue(indicators.macd.dea).toFixed(3)}`}
+                  />
+                )}
+                {indicators.kdj && (
+                  <BentoCell
+                    label="KDJ (9, 3, 3)"
+                    value={`K:${latestValue(indicators.kdj.k).toFixed(1)} D:${latestValue(indicators.kdj.d).toFixed(1)}`}
+                    trend="amber"
+                    sub={`J值: ${latestValue(indicators.kdj.j).toFixed(1)}`}
+                  />
+                )}
+                {indicators.rsi && (
+                  <BentoCell
+                    label="RSI (14)"
+                    value={latestValue(indicators.rsi).toFixed(2)}
+                    trend={latestValue(indicators.rsi) > 70 ? "up" : latestValue(indicators.rsi) < 30 ? "down" : "neutral"}
+                    sub="相对强弱动能"
+                  />
+                )}
+                {indicators.boll && (
+                  <BentoCell
+                    label="BOLL (20, 2)"
+                    value={latestValue(indicators.boll.mid).toFixed(2)}
+                    sub={`上:${latestValue(indicators.boll.upper).toFixed(2)} 下:${latestValue(indicators.boll.lower).toFixed(2)}`}
+                  />
+                )}
+              </div>
+            </BentoCard>
           </div>
         )}
 
