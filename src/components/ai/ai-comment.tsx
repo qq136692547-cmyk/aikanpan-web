@@ -22,8 +22,43 @@ import {
 } from "lucide-react";
 import { api, type AIComment, type StockReport } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
-import { Lock, Zap } from "lucide-react";
+import { Lock, Zap, Target, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
 import { AIEvidencePanel } from "./ai-evidence-panel";
+import { BentoCard, BentoCell } from "@/components/stock/bento";
+
+
+/** 智能提取量化点位 (支撑、压力、止损、仓位) */
+function extractQuantitativeLevels(content: string, report: StockReport | null) {
+  let support = report?.support_level ? String(report.support_level) : null;
+  let resistance = report?.resistance_level ? String(report.resistance_level) : null;
+  let stopLoss = report?.stop_loss ? String(report.stop_loss) : null;
+  let ratio = report?.risk_reward_ratio || "1 : 2.5";
+  let position = report?.suggested_position || "20% ~ 30% 仓位";
+
+  // 正则兜底解析
+  if (!support) {
+    const m = content.match(/(?:支撑位?|防守位?|下方支撑)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
+    if (m) support = m[1];
+  }
+  if (!resistance) {
+    const m = content.match(/(?:压力位?|阻力位?|上方压力)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
+    if (m) resistance = m[1];
+  }
+  if (!stopLoss) {
+    const m = content.match(/(?:止损位?|跌破)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
+    if (m) stopLoss = m[1];
+  }
+  if (!support && stopLoss) support = stopLoss;
+  if (!stopLoss && support) stopLoss = support;
+
+  return {
+    support: support || "--",
+    resistance: resistance || "--",
+    stopLoss: stopLoss || "--",
+    ratio,
+    position
+  };
+}
 
 /** 从 content 末尾提取评分、状态与多空倾向 (兼容纯文本降级) */
 function parseScoreAndStatus(content: string): {
@@ -246,6 +281,8 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   const biasInfo = getBiasBadge(report?.bias || parsed.bias, score);
   const theme = score !== null ? getScoreTheme(score) : null;
   const body = stripTrailingMeta(data!.content);
+  const qLevels = extractQuantitativeLevels(data!.content, report);
+  const [activeStrategyTab, setActiveStrategyTab] = useState<"holder" | "watcher">("holder");
 
   // 四维量化卡片提炼
   const dimensions = [
@@ -288,7 +325,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   const risks = report?.risks || [];
 
   return (
-    <div className="neo-ai p-5 space-y-4">
+    <BentoCard className="space-y-4">
       {/* 头部状态与时间 */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-2">
@@ -383,6 +420,71 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             </div>
           )}
         </div>
+      </div>
+
+      {/* 【新增核心点位便当盒】量化防守与进攻点位矩阵 */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-neo-ink">
+            <Target size={13} className="text-neo-primary" />
+            <span>核心量化防守与进攻点位</span>
+          </div>
+          {!isPro && (
+            <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-amber-500/20">
+              <Lock size={10} /> 关键防守止损位已遮罩
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+          {/* 支撑/止损点位 */}
+          <BentoCell
+            label="核心防守 / 止损位"
+            value={isPro ? qLevels.stopLoss : "¥ ***.**"}
+            sub={isPro ? "跌破形态走坏，坚决防守" : "升级 Pro 即可直接查看"}
+            trend="down"
+          />
+
+          {/* 上方压力点位 */}
+          <BentoCell
+            label="短期第一压力位"
+            value={isPro ? qLevels.resistance : "¥ ***.**"}
+            sub={isPro ? "逼近此位注意抛压与分歧" : "升级 Pro 即可直接查看"}
+            trend="up"
+          />
+
+          {/* 盈亏比与仓位上限 */}
+          <BentoCell
+            label="建议仓位上限 / 盈亏比"
+            value={isPro ? qLevels.position : "**% ~ **%"}
+            sub={isPro ? `推荐盈亏性价比 ${qLevels.ratio}` : "精准仓位控制模型"}
+            trend="purple"
+          />
+        </div>
+
+        {/* 未解锁 Pro 时的微光极速转化悬浮条 */}
+        {!isPro && (
+          <div className="relative overflow-hidden rounded-[10px] border border-amber-500/20 bg-gradient-to-r from-amber-500/10 via-neutral-900/60 to-amber-500/10 p-3 text-center backdrop-blur-md">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-left">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
+                  <ShieldCheck size={16} />
+                </div>
+                <div>
+                  <div className="text-[12px] font-bold text-amber-300">解锁今日关键防御止损与主力点位</div>
+                  <div className="text-[10px] text-neo-dim">精准把控风险收益比，不盲目追涨杀跌</div>
+                </div>
+              </div>
+              <Link
+                href="/upgrade"
+                className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-[11px] font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
+              >
+                <Zap size={12} className="fill-black" />
+                <span>¥1.90 极速解锁 (7天体验卡)</span>
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 四维量化卡片组 (技术面、盘口、估值、亮点) */}
@@ -547,7 +649,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
       <p className="pt-1 text-[10px] text-neo-dim leading-normal">
         ⚠ {report?.disclaimer || "本内容由 AI 大模型结合量化规则生成，仅供参考，不构成任何投资建议与决策依据。"}
       </p>
-    </div>
+    </BentoCard>
   );
 }
 

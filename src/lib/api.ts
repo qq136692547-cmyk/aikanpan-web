@@ -1410,6 +1410,11 @@ export interface StockReport {
   holder_advice?: string[] | null;
   watcher_advice?: string[] | null;
   operation_advice?: string | null;
+  support_level?: number | string | null;
+  resistance_level?: number | string | null;
+  stop_loss?: number | string | null;
+  risk_reward_ratio?: string | null;
+  suggested_position?: string | null;
 }
 
 /** AI 个股诊断响应 */
