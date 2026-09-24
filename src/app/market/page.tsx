@@ -416,18 +416,21 @@ function HkHotStocksCard({ dashboard }: { dashboard: HkDashboard | null }) {
       </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {stocks.slice(0, 8).map((stock) => (
-          <div key={stock.code} className="neo-card-sm p-3">
-            <div className="flex items-center justify-between gap-2">
-              <a href={`/stock/${stock.code}/`} className="flex min-h-11 min-w-0 flex-col justify-center">
-                <span className="block truncate text-[13px] font-medium text-neo-ink">{stock.name || stock.code}</span>
+          <div key={stock.code} className="group relative neo-card-sm p-3 transition-all duration-200 hover:border-white/[0.16] hover:bg-[#14171C]">
+            <a href={`/stock/${stock.code}/`} className="absolute inset-0 z-0 rounded-lg" aria-label={stock.name || stock.code} />
+            <div className="relative z-10 flex items-center justify-between gap-2 pointer-events-none">
+              <div className="flex min-w-0 flex-col justify-center">
+                <span className="block truncate text-[13px] font-medium text-neo-ink group-hover:text-white transition-colors">{stock.name || stock.code}</span>
                 <span className="block text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {stock.code}
                 </span>
-              </a>
-              <HkWatchlistButton code={stock.code} name={stock.name || stock.code} />
+              </div>
+              <div className="pointer-events-auto">
+                <HkWatchlistButton code={stock.code} name={stock.name || stock.code} />
+              </div>
             </div>
-            <div className="mt-2 flex items-baseline justify-between gap-2">
-              <span className="text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+            <div className="relative z-10 mt-2 flex items-baseline justify-between gap-2 pointer-events-none">
+              <span className="text-[18px] font-bold text-neo-ink group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                 {formatPrice(stock.last)}
               </span>
               <span className={`text-[12px] font-semibold ${trendClass(stock.change_pct ?? 0)}`}>
@@ -486,18 +489,21 @@ function UsHotStocksCard({ dashboard }: { dashboard: UsDashboard | null }) {
       </div>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {stocks.slice(0, 8).map((stock) => (
-          <div key={stock.code} className="neo-card-sm p-3">
-            <div className="flex items-center justify-between gap-2">
-              <a href={`/stock/${stock.code}/`} className="flex min-h-11 min-w-0 flex-col justify-center">
-                <span className="block truncate text-[13px] font-medium text-neo-ink">{usNameZh(stock.name, stock.code)}</span>
+          <div key={stock.code} className="group relative neo-card-sm p-3 transition-all duration-200 hover:border-white/[0.16] hover:bg-[#14171C]">
+            <a href={`/stock/${stock.code}/`} className="absolute inset-0 z-0 rounded-lg" aria-label={usNameZh(stock.name, stock.code)} />
+            <div className="relative z-10 flex items-center justify-between gap-2 pointer-events-none">
+              <div className="flex min-w-0 flex-col justify-center">
+                <span className="block truncate text-[13px] font-medium text-neo-ink group-hover:text-white transition-colors">{usNameZh(stock.name, stock.code)}</span>
                 <span className="block text-[10px] text-neo-dim" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                   {stock.code}
                 </span>
-              </a>
-              <UsWatchlistButton code={stock.code} name={usNameZh(stock.name, stock.code)} />
+              </div>
+              <div className="pointer-events-auto">
+                <UsWatchlistButton code={stock.code} name={usNameZh(stock.name, stock.code)} />
+              </div>
             </div>
-            <div className="mt-2 flex items-baseline justify-between gap-2">
-              <span className="text-[18px] font-bold text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
+            <div className="relative z-10 mt-2 flex items-baseline justify-between gap-2 pointer-events-none">
+              <span className="text-[18px] font-bold text-neo-ink group-hover:text-white transition-colors" style={{ fontFamily: "var(--font-inter), system-ui" }}>
                 {formatPrice(stock.last)}
               </span>
               <span className={`text-[12px] font-semibold ${trendClass(stock.change_pct ?? 0)}`}>
