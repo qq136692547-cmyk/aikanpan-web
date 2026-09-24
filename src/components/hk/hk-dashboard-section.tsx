@@ -93,16 +93,19 @@ export function HkDashboardSection({ dashboard, showReview = true }: { dashboard
         </div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {(dashboard.hot_stocks || []).map((s) => (
-            <div key={s.code} className="neo-card-sm p-3">
-              <div className="flex items-center justify-between gap-2">
-                <a href={`/stock/${s.code}/`} className="min-w-0">
-                  <span className="block truncate text-[13px] font-medium text-neo-ink">{s.name || s.code}</span>
+            <div key={s.code} className="group relative neo-card-sm p-3 transition-all duration-200 hover:border-white/[0.16] hover:bg-[#14171C]">
+              <a href={`/stock/${s.code}/`} className="absolute inset-0 z-0 rounded-lg" aria-label={s.name || s.code} />
+              <div className="relative z-10 flex items-center justify-between gap-2 pointer-events-none">
+                <div className="flex min-w-0 flex-col justify-center">
+                  <span className="block truncate text-[13px] font-medium text-neo-ink group-hover:text-white transition-colors">{s.name || s.code}</span>
                   <span className="block text-[10px] text-neo-dim">{s.code}</span>
-                </a>
-                <HkWatchlistButton code={s.code} name={s.name || s.code} />
+                </div>
+                <div className="pointer-events-auto">
+                  <HkWatchlistButton code={s.code} name={s.name || s.code} />
+                </div>
               </div>
-              <div className="mt-2 flex items-baseline justify-between gap-2">
-                <span className="text-[18px] font-bold text-neo-ink">{formatPrice(s.last)}</span>
+              <div className="relative z-10 mt-2 flex items-baseline justify-between gap-2 pointer-events-none">
+                <span className="text-[18px] font-bold text-neo-ink group-hover:text-white transition-colors">{formatPrice(s.last)}</span>
                 <span className={`text-[12px] font-semibold ${trendClass(s.change_pct)}`}>
                   {formatPct(s.change_pct)}
                 </span>
