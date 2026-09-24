@@ -269,49 +269,92 @@ export default async function ReviewPage({
         </div>
       </section>
 
-      {/* 市场概览 */}
-      <section className="mt-4">
-        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">市场概览</h2>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <div className="neo-card-sm p-3">
-            <div className="text-[11px] text-neo-mid">涨停</div>
-            <div className="mt-1.5 text-xl font-semibold text-neo-up" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{upCount}</div>
-            <div className="mt-0.5 text-[10px] text-neo-dim">占比 {upRatio}%</div>
+      {/* 市场概览 Bento Grid */}
+      <section 
+        className="mt-4 relative overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#101216] p-4 sm:p-5 transition-all duration-300"
+        style={{
+          boxShadow: "-6px -6px 16px rgba(255, 255, 255, 0.045), 8px 8px 20px rgba(0, 0, 0, 0.65)"
+        }}
+      >
+        <h2 className="mb-3.5 text-[14px] font-semibold text-[#EDEFF3] flex items-center justify-between">
+          <span>市场情绪与多空全景</span>
+          <span className="text-[11px] font-normal text-[#9AA3B2]">A股全市场截面</span>
+        </h2>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+          <div 
+            className="flex flex-col justify-between rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3"
+            style={{ boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)" }}
+          >
+            <div className="text-[11px] text-[#9AA3B2]">涨停连板</div>
+            <div className="mt-1.5 text-2xl font-bold text-[#FF5C61]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{upCount}</div>
+            <div className="mt-0.5 text-[10px] text-[#7C8595]">占比 {upRatio}%</div>
           </div>
-          <div className="neo-card-sm p-3">
-            <div className="text-[11px] text-neo-mid">跌停</div>
-            <div className="mt-1.5 text-xl font-semibold text-neo-down" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{downCount}</div>
-            <div className="mt-0.5 text-[10px] text-neo-dim">占比 {(100 - parseFloat(upRatio)).toFixed(1)}%</div>
+          <div 
+            className="flex flex-col justify-between rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3"
+            style={{ boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)" }}
+          >
+            <div className="text-[11px] text-[#9AA3B2]">跌停封板</div>
+            <div className="mt-1.5 text-2xl font-bold text-[#46D993]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{downCount}</div>
+            <div className="mt-0.5 text-[10px] text-[#7C8595]">占比 {(100 - parseFloat(upRatio)).toFixed(1)}%</div>
           </div>
-          <div className="neo-card-sm p-3">
-            <div className="text-[11px] text-neo-mid">涨跌比</div>
-            <div className="mt-1.5 text-xl font-semibold text-neo-ink" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
+          <div 
+            className="flex flex-col justify-between rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3"
+            style={{ boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)" }}
+          >
+            <div className="text-[11px] text-[#9AA3B2]">多空博弈比</div>
+            <div className="mt-1.5 text-2xl font-bold text-[#EDEFF3]" style={{ fontFamily: 'var(--font-inter), system-ui' }}>
               {upCount > 0 && downCount > 0 ? (upCount / downCount).toFixed(2) : "-"}
             </div>
-            <div className="mt-0.5 text-[10px] text-neo-dim">{upCount > downCount ? "多头占优" : "空头占优"}</div>
+            <div className="mt-0.5 text-[10px] text-[#A7B6FA]">{upCount > downCount ? "多头主导" : "空头避险"}</div>
           </div>
-          <div className="neo-card-sm p-3">
-            <div className="text-[11px] text-neo-mid">市场情绪</div>
-            <div className="mt-1.5 text-xl font-semibold text-neo-ink">{sentiment}</div>
+          <div 
+            className="flex flex-col justify-between rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3"
+            style={{ boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)" }}
+          >
+            <div className="text-[11px] text-[#9AA3B2]">综合市场情绪</div>
+            <div className="mt-1.5 text-xl font-bold text-[#F5A623]">{sentiment}</div>
+            <div className="mt-0.5 text-[10px] text-[#7C8595]">量化模型评级</div>
           </div>
         </div>
       </section>
 
-      {/* 指数表现 */}
-      <section className="mt-4">
-        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">指数表现</h2>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+      {/* 指数表现 Bento Grid */}
+      <section 
+        className="mt-4 relative overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#101216] p-4 sm:p-5 transition-all duration-300"
+        style={{
+          boxShadow: "-6px -6px 16px rgba(255, 255, 255, 0.045), 8px 8px 20px rgba(0, 0, 0, 0.65)"
+        }}
+      >
+        <h2 className="mb-3.5 text-[14px] font-semibold text-[#EDEFF3] flex items-center justify-between">
+          <span>核心大盘指数表现</span>
+          <span className="text-[11px] font-normal text-[#9AA3B2]">实时行情与点位</span>
+        </h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {dashboard.indices.map((idx) => {
-            const t = neoTrendClass(idx.change_pct);
-            const bgT = neoTrendBgClass(idx.change_pct);
+            const isUp = idx.change_pct >= 0;
+            const tColor = isUp ? "text-[#FF5C61]" : "text-[#46D993]";
+            const bgBadge = isUp ? "bg-red-500/10 border-red-500/20 text-[#FF5C61]" : "bg-emerald-500/10 border-emerald-500/20 text-[#46D993]";
             return (
-              <div key={idx.code} className="neo-card-sm p-3">
+              <div 
+                key={idx.code} 
+                className="group relative flex flex-col justify-between rounded-[12px] border border-white/[0.05] bg-[#0C0E11] p-3.5 transition-all duration-200 hover:border-white/[0.12] hover:bg-[#14171D]"
+                style={{
+                  boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)"
+                }}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-[13px] text-neo-mid">{idx.name}</span>
-                  <span className={`px-1.5 py-0.5 text-[11px] ${bgT} ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPct(idx.change_pct)}</span>
+                  <span className="text-[13px] font-semibold text-[#EDEFF3] group-hover:text-white transition-colors">{idx.name}</span>
+                  <span className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${bgBadge}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
+                    {formatPct(idx.change_pct)}
+                  </span>
                 </div>
-                <div className={`mt-1.5 text-xl font-semibold ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{formatPrice(idx.last)}</div>
-                <div className={`mt-0.5 text-[12px] ${t}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>{idx.change >= 0 ? "+" : ""}{idx.change.toFixed(2)}</div>
+                <div className={`mt-2 text-2xl font-bold tracking-tight ${tColor}`} style={{ fontFamily: 'var(--font-inter), system-ui' }}>
+                  {formatPrice(idx.last)}
+                </div>
+                <div className="mt-1 flex items-center justify-between text-[11px] text-[#7C8595]">
+                  <span>涨跌点位</span>
+                  <span className={`font-mono font-medium ${tColor}`}>{idx.change >= 0 ? "+" : ""}{idx.change.toFixed(2)}</span>
+                </div>
               </div>
             );
           })}

@@ -31,8 +31,16 @@ function PanelLabel({ label, color }: { label: string; color: string }) {
 
 function SectionShell({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="neo-card p-4">
-      <h3 className="mb-3 text-[13px] font-semibold text-neo-ink">{title}</h3>
+    <section 
+      className="relative overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#101216] p-4 sm:p-5 transition-all duration-300 hover:border-white/[0.14]"
+      style={{
+        boxShadow: "-6px -6px 16px rgba(255, 255, 255, 0.045), 8px 8px 20px rgba(0, 0, 0, 0.65)"
+      }}
+    >
+      <h3 className="mb-3.5 text-[13px] font-semibold text-[#EDEFF3] flex items-center justify-between">
+        <span>{title}</span>
+        <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+      </h3>
       {children}
     </section>
   );
@@ -45,13 +53,22 @@ function MetricCard({ name, code, last, changePct }: {
   changePct: number;
 }) {
   return (
-    <a href={`/stock/${code}/`} className="neo-card-sm p-3">
-      <div className="text-[10px] uppercase tracking-wider text-neo-dim">{name || code}</div>
-      <div className={`mt-1 text-[18px] font-bold ${trendClass(changePct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+    <a 
+      href={`/stock/${code}/`} 
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3 transition-all duration-200 hover:border-white/[0.14] hover:bg-[#14171D] active:scale-[0.98]"
+      style={{
+        boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)"
+      }}
+    >
+      <div className="text-[11px] font-medium text-[#9AA3B2] group-hover:text-white transition-colors">{name || code}</div>
+      <div className={`mt-1 text-[18px] font-bold tracking-tight ${trendClass(changePct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
         {formatPrice(last)}
       </div>
-      <div className={`text-[11px] ${trendClass(changePct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
-        {formatPct(changePct)}
+      <div className="mt-0.5 flex items-center justify-between">
+        <span className={`text-[11px] font-semibold ${trendClass(changePct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+          {formatPct(changePct)}
+        </span>
+        <span className="text-[10px] text-[#7C8595] font-mono">{code}</span>
       </div>
     </a>
   );
