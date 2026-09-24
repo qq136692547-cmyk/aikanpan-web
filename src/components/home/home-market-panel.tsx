@@ -414,6 +414,36 @@ export function HkMarketPanel({ dashboard }: { dashboard: HkDashboard }) {
   );
 }
 
+
+function getHkMarketTemperature(hkDashboard: HkDashboard | null): { score: number; label: string } {
+  if (!hkDashboard) return { score: 50, label: "港股中性" };
+  const hsi = hkDashboard.indices?.find((i) => i.code === "HSI" || i.name?.includes("恒生指数"));
+  const hstech = hkDashboard.indices?.find((i) => i.code === "HSTECH" || i.name?.includes("恒生科技"));
+  const gainers = hkDashboard.top_gainers?.length || 0;
+  const losers = hkDashboard.top_losers?.length || 0;
+  
+  let score = 50;
+  if (hsi && hsi.change_pct != null) {
+    score += Math.max(-25, Math.min(25, hsi.change_pct * 12.5));
+  }
+  if (hstech && hstech.change_pct != null) {
+    score += Math.max(-15, Math.min(15, hstech.change_pct * 7.5));
+  }
+  const totalGl = gainers + losers;
+  if (totalGl > 0) {
+    const ratio = gainers / totalGl;
+    score += (ratio - 0.5) * 20;
+  }
+  
+  const finalScore = Math.round(Math.max(10, Math.min(95, score)));
+  let label = "港股中性";
+  if (finalScore >= 75) label = "港股偏强";
+  else if (finalScore >= 60) label = "多头回暖";
+  else if (finalScore <= 30) label = "空头承压";
+  else if (finalScore <= 42) label = "震荡偏弱";
+  return { score: finalScore, label };
+}
+
 function GlobalMarketPulse({
   dashboard,
   hkDashboard,
@@ -439,17 +469,20 @@ function GlobalMarketPulse({
       status: dashboard?.market_status || "A股盘口",
       href: "/?market=cn",
     },
-    {
-      region: "港股",
-      badge: "HK",
-      badgeClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
-      name: hkLeader?.name || "恒生指数",
-      last: hkLeader ? formatPrice(hkLeader.last) : "--",
-      pct: hkLeader?.change_pct,
-      subInfo: hkDashboard?.trade_date ? `${hkDashboard.trade_date}` : "港交所",
-      status: hkDashboard?.market_status || "港股交易",
-      href: "/?market=hk",
-    },
+    (() => {
+      const hkTemp = getHkMarketTemperature(hkDashboard);
+      return {
+        region: "港股",
+        badge: "HK",
+        badgeClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+        name: hkLeader?.name || "恒生指数",
+        last: hkLeader ? formatPrice(hkLeader.last) : "--",
+        pct: hkLeader?.change_pct,
+        subInfo: hkDashboard ? `市场温度: ${hkTemp.score}分` : "港交所",
+        status: hkTemp.label,
+        href: "/?market=hk",
+      };
+    })(),
     {
       region: "美股",
       badge: "US",
