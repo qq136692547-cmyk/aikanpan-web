@@ -96,6 +96,13 @@ export class ApiClient {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
+    // P0-3: 站点级 API Key。条件式 —— 环境变量存在才带，
+    // 缺省时不带头走匿名档，避免带错 Key 触发后端 401。
+    const siteKey = process.env.NEXT_PUBLIC_API_KEY;
+    if (siteKey) {
+      headers["X-API-Key"] = siteKey;
+    }
+
     const res = await fetch(url, {
       ...options,
       headers,
