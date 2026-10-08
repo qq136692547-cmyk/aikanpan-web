@@ -57,7 +57,8 @@ export type PremarketBriefing = LimitAnalysis;
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 import { reportConversionEvent } from "./analytics";
-import type { AlipayOrderStatus } from "./payment";
+import type { AlipayOrderStatus, AlipayNormalizedStatus } from "./payment";
+import { shouldReportAiQuotaHit } from "./ai-quota";
 
 /** 获取认证 token（客户端侧，从 localStorage） */
 function getAuthToken(): string | null {
@@ -70,15 +71,6 @@ function getAuthToken(): string | null {
   } catch {
     return null;
   }
-}
-
-const AI_QUOTA_PATHS = [
-  "/ai/", "/us/daily-review", "/hk/daily-review", "/portfolio-review", "/plan-focus", "/news-radar", "/alerts/parse"
-];
-
-function isAiQuotaPath(path: string): boolean {
-  const normalized = path.toLowerCase();
-  return AI_QUOTA_PATHS.some((prefix) => normalized.includes(prefix)) || (normalized.startsWith("/workbench/temperature") && normalized.includes("ai=true"));
 }
 
 export class ApiClient {
@@ -110,7 +102,7 @@ export class ApiClient {
     });
 
     if (!res.ok) {
-      if (res.status === 429 && isAiQuotaPath(path)) {
+      if (shouldReportAiQuotaHit(res.status, res.headers, path)) {
         reportConversionEvent("ai_quota_hit", { source: path.split("?")[0] });
       }
       const errorText = await res.text();
@@ -295,7 +287,21 @@ export class ApiClient {
   }
 
   checkAlipayOrderStatus(outTradeNo: string) {
-    return this.request<{ ok: boolean; data: { out_trade_no: string; status: AlipayOrderStatus; recovery_code?: string } }>(
+    return this.request<{
+      ok: boolean;
+      data: {
+        out_trade_no: string;
+        /** 归一化对外状态：PAID / REFUSED / WAIT_BUYER_PAY */
+        status: AlipayNormalizedStatus;
+        /** 支付宝原始状态：TRADE_SUCCESS / TRADE_FINISHED / REFUSED_TRIAL_LIMIT / WAIT_BUYER_PAY */
+        raw_status?: AlipayOrderStatus;
+        recovery_code?: string | null;
+        /** 已实付但被拒发，等待原路退回 */
+        refund_pending?: boolean;
+        /** 后端给出的用户可读说明（被拒时为退款口径） */
+        message?: string | null;
+      };
+    }>(
       '/pay/alipay/order-status?out_trade_no=' + encodeURIComponent(outTradeNo)
     );
   }

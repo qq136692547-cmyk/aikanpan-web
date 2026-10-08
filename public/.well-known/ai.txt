@@ -1,6 +1,6 @@
 # AI crawler discovery for https://aikanpan.top
 
-爱看盘是一款开源投资决策辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。
+爱看盘是一款开源行情数据与研究辅助工具，覆盖 A 股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。
 
 Machine-readable summaries:
 - https://aikanpan.top/ai/summary.json

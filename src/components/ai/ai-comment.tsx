@@ -18,10 +18,8 @@ import {
   ChevronDown,
   ChevronUp,
   RefreshCw,
-  Info,
-  Share2
+  Info
 } from "lucide-react";
-import { AISharePosterModal } from "./ai-share-poster-modal";
 import { api, type AIComment, type StockReport } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
 import { Lock, Zap, Target, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
@@ -29,13 +27,13 @@ import { AIEvidencePanel } from "./ai-evidence-panel";
 import { BentoCard, BentoCell } from "@/components/stock/bento";
 
 
-/** 智能提取量化点位 (支撑、压力、止损、仓位) */
+/** 提取行情区间统计值（无操作时点含义） */
 function extractQuantitativeLevels(content: string, report: StockReport | null) {
   let support = report?.support_level ? String(report.support_level) : null;
   let resistance = report?.resistance_level ? String(report.resistance_level) : null;
   let stopLoss = report?.stop_loss ? String(report.stop_loss) : null;
-  let ratio = report?.risk_reward_ratio || "1 : 2.5";
-  let position = report?.suggested_position || "20% ~ 30% 仓位";
+  let ratio = report?.risk_reward_ratio || "--";
+  let position = report?.suggested_position || "--";
 
   // 正则兜底解析
   if (!support) {
@@ -161,7 +159,6 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   }, [initialData]);
   const [error, setError] = useState<string>("");
   const [showRisks, setShowRisks] = useState<boolean>(true);
-  const [showPosterModal, setShowPosterModal] = useState<boolean>(false);
   const { membership } = useMembership();
   const isPro = membership?.plan === "pro";
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -221,7 +218,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
           </button>
         </div>
         <p className="mt-3 text-xs leading-relaxed text-neo-dim">
-          系统将实时汇总标的的技术走势、量能主力、估值偏度及基本面要点，出具结构化评级报告与针对性操作指引。
+          系统将汇总标的的技术指标、量能、估值与基本面数据要点，生成一份仅供研究参考的结构化数据摘要。
         </p>
       </div>
     );
@@ -346,13 +343,6 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setShowPosterModal(true)}
-            className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-[#14171D] px-2.5 py-1 text-xs font-medium text-sky-400 transition-all hover:bg-white/[0.08] hover:text-sky-300 active:scale-[0.98]"
-          >
-            <Share2 size={12} />
-            <span>分享体检单</span>
-          </button>
-          <button
             onClick={handleGenerate}
             className="flex items-center gap-1 rounded-md px-2.5 py-1 text-xs text-neo-mid transition-all hover-neo-inset hover:text-neo-primary"
           >
@@ -362,12 +352,12 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
       </div>
 
-      {/* 核心结论与多空评级徽章 (仿开源仪表盘布局) */}
+      {/* 核心结论与量化评分徽章 */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-12">
         {/* 左侧：多空倾向与量化评分 */}
         <div className="sm:col-span-4 rounded-xl neo-inset p-3.5 flex flex-col justify-between gap-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-medium text-neo-dim">量化多空评级</span>
+            <span className="text-[11px] font-medium text-neo-dim">量化指标评分（非评级）</span>
             <div className={`flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${biasInfo.color}`}>
               <biasInfo.icon size={12} />
               <span>{biasInfo.text}</span>
@@ -433,26 +423,26 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
       </div>
 
-      {/* 【新增核心点位便当盒】量化防守与进攻点位矩阵 */}
+      {/* 核心统计价位区间 */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-neo-ink">
             <Target size={13} className="text-neo-primary" />
-            <span>核心量化防守与进攻点位</span>
+            <span>核心统计价位区间</span>
           </div>
           {!isPro && (
             <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-amber-500/20">
-              <Lock size={10} /> 关键防守止损位已遮罩
+              <Lock size={10} /> 部分扩展数据字段仅 Pro 可见
             </span>
           )}
         </div>
 
         <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-          {/* 支撑/止损点位 */}
+          {/* 下方参考价位 */}
           <BentoCell
-            label="核心防守 / 止损位"
+            label="下方参考价位"
             value={isPro ? qLevels.stopLoss : "¥ ***.**"}
-            sub={isPro ? "跌破形态走坏，坚决防守" : "升级 Pro 即可直接查看"}
+            sub={isPro ? "取自公开行情，非操作建议" : "开通 Pro 后可见"}
             trend="down"
           />
 
@@ -464,11 +454,11 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             trend="up"
           />
 
-          {/* 盈亏比与仓位上限 */}
+          {/* 区间统计与风险参考比值 */}
           <BentoCell
-            label="建议仓位上限 / 盈亏比"
+            label="区间统计 / 风险参考比值"
             value={isPro ? qLevels.position : "**% ~ **%"}
-            sub={isPro ? `推荐盈亏性价比 ${qLevels.ratio}` : "精准仓位控制模型"}
+            sub={isPro ? `风险参考比值 ${qLevels.ratio}` : "更多量化字段"}
             trend="purple"
           />
         </div>
@@ -482,8 +472,8 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                   <ShieldCheck size={16} />
                 </div>
                 <div>
-                  <div className="text-[12px] font-bold text-amber-300">解锁今日关键防御止损与主力点位</div>
-                  <div className="text-[10px] text-neo-dim">精准把控风险收益比，不盲目追涨杀跌</div>
+                  <div className="text-[12px] font-bold text-amber-300">解锁更多维度的数据字段与历史快照</div>
+                  <div className="text-[10px] text-neo-dim">查看更完整的量化统计与历史对照</div>
                 </div>
               </div>
               <Link
@@ -491,7 +481,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                 className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-[11px] font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
               >
                 <Zap size={12} className="fill-black" />
-                <span>¥1.90 极速解锁 (7天体验卡)</span>
+                <span>¥1.90 开通 7 天数据权限</span>
               </Link>
             </div>
           </div>
@@ -536,17 +526,17 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
       )}
 
-      {/* 持有者 vs 观望者 双视角决策卡片 (含 Pro 专属解锁钩子) */}
+      {/* 双视角数据要点卡片 */}
       {hasAdvice && (
         <div className="space-y-2.5">
           <div className="flex items-center justify-between">
             <div className="text-xs font-semibold text-neo-ink flex items-center gap-1.5">
               <UserCheck size={13} className="text-neo-primary" />
-              <span>操作策略参考</span>
+              <span>数据要点与风险提示</span>
             </div>
             {!isPro && (
               <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-amber-500/20">
-                <Lock size={10} /> 核心目标位与防守线已遮罩
+                <Lock size={10} /> 部分扩展数据字段仅 Pro 可见
               </span>
             )}
           </div>
@@ -556,7 +546,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
               <div className="relative overflow-hidden rounded-lg neo-inset p-3 border-l-2 border-l-neo-primary">
                 <div className="flex items-center gap-1 text-xs font-semibold text-neo-ink mb-1">
                   <UserCheck size={12} className="text-neo-primary" />
-                  <span>已持仓用户策略</span>
+                  <span>已持仓视角的数据要点</span>
                 </div>
                 <p className={`text-xs leading-relaxed ${isPro ? "text-neo-mid" : "text-neo-mid line-clamp-2"}`}>
                   {holderAdvice}
@@ -566,14 +556,14 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                   <div className="mt-2.5 rounded border border-white/[0.06] bg-gradient-to-b from-neutral-900/60 to-neutral-950 p-2.5 text-center">
                     <div className="flex items-center justify-center gap-1 text-[11px] font-medium text-amber-400">
                       <Lock size={11} />
-                      <span>精准目标止盈与防守止损位</span>
+                      <span>更多量化字段与历史对照</span>
                     </div>
                     <Link
                       href="/upgrade"
                       className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
                     >
                       <Zap size={12} className="fill-black" />
-                      <span>¥1.9 立即解锁策略 (7天体验)</span>
+                      <span>¥1.9 开通 7 天数据权限</span>
                     </Link>
                   </div>
                 )}
@@ -584,7 +574,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
               <div className="relative overflow-hidden rounded-lg neo-inset p-3 border-l-2 border-l-amber-500">
                 <div className="flex items-center gap-1 text-xs font-semibold text-neo-ink mb-1">
                   <Eye size={12} className="text-amber-500" />
-                  <span>持币观望者指引</span>
+                  <span>未持仓视角的数据要点</span>
                 </div>
                 <p className={`text-xs leading-relaxed ${isPro ? "text-neo-mid" : "text-neo-mid line-clamp-2"}`}>
                   {watcherAdvice}
@@ -594,14 +584,14 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                   <div className="mt-2.5 rounded border border-white/[0.06] bg-gradient-to-b from-neutral-900/60 to-neutral-950 p-2.5 text-center">
                     <div className="flex items-center justify-center gap-1 text-[11px] font-medium text-amber-400">
                       <Lock size={11} />
-                      <span>最佳建仓入场与支撑区间</span>
+                      <span>更多量化指标与区间统计</span>
                     </div>
                     <Link
                       href="/upgrade"
                       className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
                     >
                       <Zap size={12} className="fill-black" />
-                      <span>¥1.9 立即解锁建仓区间</span>
+                      <span>¥1.9 开通 7 天数据权限</span>
                     </Link>
                   </div>
                 )}
@@ -657,8 +647,8 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
       <AIEvidencePanel evidence={data!.evidence} />
 
       {/* 免责声明 */}
-      <p className="pt-1 text-[10px] text-neo-dim leading-normal">
-        ⚠ {report?.disclaimer || "本内容由 AI 大模型结合量化规则生成，仅供参考，不构成任何投资建议与决策依据。"}
+      <p className="pt-1 text-[11px] text-neo-mid leading-relaxed">
+        ⚠ AI 生成内容声明：本段内容由大语言模型自动生成，数据来自第三方公开接口，可能存在延迟、缺失或与事实不符的情形（模型幻觉）。本内容仅为对公开信息的整理与描述，不构成证券投资建议、买卖推荐或价格预测；运营方不具备证券投资咨询业务资格。请勿将本内容作为任何投资决策依据，据此操作的一切盈亏由你自行承担。
       </p>
     </BentoCard>
   );

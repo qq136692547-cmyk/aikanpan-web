@@ -1,5 +1,6 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import { api, type LimitStock } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import {
@@ -134,7 +135,18 @@ export default async function ReviewDatePage({ params }: { params: Promise<{ dat
   return (
     <MarketPageFrame
       market="cn"
-      scripts={<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />}
+      scripts={
+        <>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+          <BreadcrumbSchema
+            items={[
+              { name: "首页", path: "/" },
+              { name: "每日复盘", path: "/review/" },
+              { name: `${date} A股复盘`, path: `/review/${date}/` },
+            ]}
+          />
+        </>
+      }
     >
       <MarketPageHeader
         market="cn"

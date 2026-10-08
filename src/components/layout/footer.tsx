@@ -29,7 +29,8 @@ export function Footer({ dataSource = "东方财富" }: { dataSource?: string })
           <a href="mailto:qq136692547@gmail.com" className="inline-flex min-h-11 items-center transition-colors hover:text-neo-primary sm:min-h-8">qq136692547@gmail.com</a>
         </div>
         <p className="mt-1 text-[12px] text-neo-mid opacity-80">
-          本站数据仅供参考，不构成投资建议
+          本站为行情数据与研究辅助工具，不具备证券投资咨询资格；数据取自第三方公开接口，可能存在延迟，AI 内容可能存在错误。仅供参考，不构成投资建议，盈亏自负。
+          <a href="/terms/" className="ml-1 underline hover:text-neo-primary">完整免责条款</a>
         </p>
       </div>
     </footer>

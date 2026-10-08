@@ -26,7 +26,10 @@ function todayLocal(): string {
 export const metadata: Metadata = {
   title: "每日复盘",
   description: "AI驱动的每日复盘报告，支持A股、港股与美股市场数据。",
-  alternates: { canonical: "/review/" },
+  alternates: {
+    canonical: "/review/",
+    types: { "application/rss+xml": "https://aikanpan.top/rss.xml" },
+  },
 };
 
 const reviewJsonLd = {

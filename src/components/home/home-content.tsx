@@ -26,7 +26,7 @@ export function HomeContent() {
         <ul className="mt-3 space-y-2 text-sm text-neo-mid">
           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">实时行情</strong>：三大指数、涨跌停个股、强势行业板块，一屏概览</span></li>
           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">AI 复盘</strong>：收盘后自动生成市场摘要、风险提示与明日关注点</span></li>
-          <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">个股诊断</strong>：输入代码即可获得 AI 结构化评分、状态判断与决策参考</span></li>
+          <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">个股诊断</strong>：输入代码即可获得 AI 结构化评分与状态判断</span></li>
           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">智能盯盘</strong>：用自然语言创建盯盘任务（「贵州茅台跌破 1600 就提醒我」），页面打开时轮询触发记录</span></li>
           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">美股研究台</strong>：自选股、盘前计划、公司档案、投资论点与 AI 评分</span></li>
         </ul>
@@ -35,7 +35,7 @@ export function HomeContent() {
       <div className="neo-card p-6">
         <h2 className="text-base font-bold text-neo-ink">如何用爱看盘做每日复盘</h2>
         <ol className="mt-3 space-y-3 text-sm text-neo-mid">
-          <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">1</span><span><strong className="text-neo-ink">开盘前</strong>：打开首页查看市场温度和隔夜美股表现，判断今日仓位倾向</span></li>
+          <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">1</span><span><strong className="text-neo-ink">开盘前</strong>：打开首页查看市场温度和隔夜美股表现，判断今日市场环境</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">2</span><span><strong className="text-neo-ink">盘中</strong>：在盯盘页设置条件提醒，页面打开时接收浏览器通知，也可绑定手机号开启短信</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">3</span><span><strong className="text-neo-ink">收盘后</strong>：打开复盘页，读 AI 生成的当日市场总结和涨跌停分析</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">4</span><span><strong className="text-neo-ink">选股时</strong>：在搜索页输入股票代码，获取 AI 结构化诊断和评分</span></li>
@@ -57,9 +57,9 @@ export function HomeContent() {
             <tbody className="divide-y divide-white/5">
               <tr><td className="py-2 pr-4">实时行情</td><td className="py-2 px-4">✓</td><td className="py-2 px-4">✓</td></tr>
               <tr><td className="py-2 pr-4">研究记录与导出</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td></tr>
-              <tr><td className="py-2 pr-4">AI 复盘 / 个股诊断 / 批量评分</td><td className="py-2 px-4">每天 5 次有效调用</td><td className="py-2 px-4">每天 500 次有效调用</td></tr>
+              <tr><td className="py-2 pr-4">AI 复盘 / 个股诊断 / 批量评分</td><td className="py-2 px-4">每天可完成 5 次 AI 分析</td><td className="py-2 px-4">每日可反复复盘、诊断与批量评分（上限 500 次）</td></tr>
               <tr><td className="py-2 pr-4">智能盯盘提醒</td><td className="py-2 px-4">浏览器通知 / 可选短信</td><td className="py-2 px-4">浏览器通知 / 可选短信</td></tr>
-              <tr><td className="py-2 pr-4">Pro 时长卡</td><td className="py-2 px-4">—</td><td className="py-2 px-4">30 天 / 365 天，不自动续费</td></tr>
+              <tr><td className="py-2 pr-4">Pro 时长卡</td><td className="py-2 px-4">—</td><td className="py-2 px-4">7 天 / 30 天 / 90 天，不自动续费</td></tr>
             </tbody>
           </table>
         </div>
@@ -91,7 +91,7 @@ export function HomeContent() {
           <div>
             <h3 className="text-sm font-medium text-neo-ink">爱看盘收费吗？</h3>
             <p className="mt-1 text-xs leading-relaxed text-neo-dim">
-              基础功能免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
+              基础功能免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：7 天体验卡 ¥1.9、30 天 ¥19、季卡 ¥49/90 天；年卡累计方案实付 ¥147/365 天，均不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
             </p>
           </div>
         </div>

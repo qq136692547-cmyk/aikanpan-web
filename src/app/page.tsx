@@ -5,23 +5,29 @@ import { PremarketBriefingCard } from "@/components/ai/premarket-briefing-card";
 import { HomeMarketPanels } from "@/components/home/home-market-panel";
 import { HomeContent } from "@/components/home/home-content";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
-import { api, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
+import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
+import { getDailyReviewForSSR } from "@/lib/daily-review-ssr";
 import { marketFromSearchParams } from "@/lib/market";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
 
 export const metadata: Metadata = {
-  title: "爱看盘 · AI 复盘工作台",
+  // 用 absolute 绕开 layout 的 "%s · 爱看盘" 模板，避免品牌词重复出现，
+  // 保证 <title>、og:title、twitter:title、og:image:alt 与首页 h1 完全一致。
+  title: { absolute: "爱看盘 · A股/港股/美股 AI 复盘工作台" },
   description: "A股、港股与美股实时行情、市场温度、AI 复盘与财报日历，一屏看懂的市场复盘工作台。",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: { "application/rss+xml": "https://aikanpan.top/rss.xml" },
+  },
 };
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "爱看盘：AI 驱动的 A 股、港股与美股每日复盘工作台",
-  description: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股沪深京市场与美股主流标的，提供实时行情、AI 复盘、个股诊断、智能盯盘与研究台。",
+  description: "爱看盘是一款开源行情数据与研究辅助工具，覆盖 A 股沪深京市场与美股主流标的，提供实时行情、AI 复盘、个股诊断、智能盯盘与研究台。",
   author: { "@type": "Person", name: "爱看盘团队" },
   publisher: { "@id": "https://aikanpan.top/#organization" },
   datePublished: "2026-08-10",
@@ -36,7 +42,7 @@ const faqSchema = {
     { "@type": "Question", name: "爱看盘的数据可靠吗？", acceptedAnswer: { "@type": "Answer", text: "行情数据来自东方财富、新浪财经、Finnhub、EODHD 等公开接口，直接呈现原始数值。AI 内容由大语言模型生成，仅供参考，不构成投资建议。" } },
     { "@type": "Question", name: "爱看盘支持美股吗？", acceptedAnswer: { "@type": "Answer", text: "支持。美股覆盖真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
     { "@type": "Question", name: "盯盘提醒怎么用？", acceptedAnswer: { "@type": "Answer", text: "在盯盘页用自然语言输入条件，例如「贵州茅台跌破 1600 就提醒我」，系统自动解析并记录触发历史。页面打开时每 15 秒刷新并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后还可开启短信提醒。" } },
-    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" } },
+    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：7 天体验卡 ¥1.9、30 天 ¥19、季卡 ¥49/90 天；年卡累计方案实付 ¥147/365 天，均不自动续费。购买前需绑定邮箱或手机号。" } },
   ],
 };
 
@@ -45,7 +51,7 @@ const howToSchema = {
   "@type": "HowTo",
   name: "如何用爱看盘做每日复盘",
   step: [
-    { "@type": "HowToStep", position: 1, name: "开盘前查看市场温度", text: "打开首页查看市场温度和隔夜美股表现，判断今日仓位倾向" },
+    { "@type": "HowToStep", position: 1, name: "开盘前查看市场温度", text: "打开首页查看市场温度和隔夜美股表现，了解今日市场环境" },
     { "@type": "HowToStep", position: 2, name: "盘中设置盯盘提醒", text: "在盯盘页设置条件提醒，页面打开时接收浏览器通知，也可绑定手机号开启短信" },
     { "@type": "HowToStep", position: 3, name: "收盘后阅读 AI 复盘", text: "打开复盘页，读 AI 生成的当日市场总结和涨跌停分析" },
     { "@type": "HowToStep", position: 4, name: "选股时使用 AI 诊断", text: "在搜索页输入股票代码，获取 AI 结构化诊断和评分" },
@@ -71,6 +77,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   let insights: Insights | null = null;
   let usDashboard: UsDashboard | null = null;
   let hkDashboard: HkDashboard | null = null;
+  let usDailyReview: AIReview | null = null;
+  let hkDailyReview: AIReview | null = null;
 
   try {
     if (scope === "all" || scope === "cn") {
@@ -80,10 +88,16 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       ]);
     }
     if (scope === "all" || scope === "us") {
-      usDashboard = await api.getUsDashboard();
+      [usDashboard, usDailyReview] = await Promise.all([
+        api.getUsDashboard(),
+        getDailyReviewForSSR("us"),
+      ]);
     }
     if (scope === "all" || scope === "hk") {
-      hkDashboard = await api.getHkDashboard();
+      [hkDashboard, hkDailyReview] = await Promise.all([
+        api.getHkDashboard(),
+        getDailyReviewForSSR("hk"),
+      ]);
     }
   } catch (error) {
     console.error("Failed to fetch home data:", error);
@@ -97,7 +111,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <section className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-[18px] font-bold tracking-tight text-neo-ink">
-              {scope === "all" ? "全部市场" : scope === "cn" ? "A股复盘" : scope === "hk" ? "港股复盘" : "美股复盘"}
+              {scope === "all" ? "爱看盘 · A股/港股/美股 AI 复盘工作台" : scope === "cn" ? "A股复盘" : scope === "hk" ? "港股复盘" : "美股复盘"}
             </h1>
             <p className="mt-0.5 text-[12px] text-neo-dim">
               {scope === "all" ? "并排呈现 A股、港股与美股的每日决策视图" : "AI 结论 · 核心数字 · 板块强度 · 市场温度 · 近期财报"}
@@ -109,7 +123,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <PremarketBriefingCard />
         </section>
 
-        <HomeMarketPanels scope={scope} dashboard={dashboard} insights={insights} usDashboard={usDashboard} hkDashboard={hkDashboard} />
+        <HomeMarketPanels
+          scope={scope}
+          dashboard={dashboard}
+          insights={insights}
+          usDashboard={usDashboard}
+          hkDashboard={hkDashboard}
+          usDailyReview={usDailyReview}
+          hkDailyReview={hkDailyReview}
+        />
 
         {scope !== "all" && <DailyWorkflow className="mt-4" market={scope} />}
 

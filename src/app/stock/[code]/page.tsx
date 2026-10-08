@@ -10,10 +10,12 @@ import { StockTabs } from "@/components/stock/stock-tabs";
 import { StockTitleBar } from "@/components/stock/stock-title-bar";
 import { UsStockDetail, type UsStockDetailInitialData } from "@/components/us/us-stock-detail";
 import { HkStockDetail, type HkStockDetailInitialData } from "@/components/hk/hk-stock-detail";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import { api } from "@/lib/api";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import {
   canonicalStockCode,
+  INDEXABLE_STOCKS,
   isHkStockCode,
   isIndexableStockCode,
   isUsStockCode,
@@ -25,6 +27,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const revalidate = 30;
+
+/** 已在 INDEXABLE_STOCKS 里登记的名称，直接用来做面包屑，避免为了取名字再发一次行情请求 */
+const STOCK_NAME_BY_CODE = new Map<string, string>(
+  INDEXABLE_STOCKS.map((stock) => [stock.code, stock.name] as [string, string]),
+);
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
   const { code: rawCode } = await params;
@@ -70,6 +77,18 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
     notFound();
   }
   const code = stockApiCode(routeCode);
+  const breadcrumbName =
+    STOCK_NAME_BY_CODE.get(routeCode) ??
+    (isUsStockCode(routeCode) ? usNameZh(null, routeCode) : stockDisplayCode(routeCode));
+  const breadcrumb = (
+    <BreadcrumbSchema
+      items={[
+        { name: "首页", path: "/" },
+        { name: "热门股票行情", path: "/stocks/" },
+        { name: breadcrumbName, path: `/stock/${routeCode}/` },
+      ]}
+    />
+  );
   if (isHkStockCode(routeCode)) {
     let initialData: HkStockDetailInitialData | undefined;
     if (isIndexableStockCode(routeCode)) {
@@ -90,6 +109,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
     }
     return (
       <div className="neo-page">
+        {breadcrumb}
         <Navbar />
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <HkStockDetail symbol={routeCode} initialData={initialData} />
@@ -120,6 +140,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
     }
     return (
       <div className="neo-page">
+        {breadcrumb}
         <Navbar />
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <UsStockDetail symbol={routeCode} initialData={initialData} />
@@ -152,6 +173,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
 
   return (
     <div className="neo-page">
+      {breadcrumb}
       <Navbar />
       <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
         <StockTitleBar code={code} initial={quote} />

@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "爱看盘 · 每日复盘工具",
+    default: "爱看盘 · A股/港股/美股 AI 复盘工作台",
     template: "%s · 爱看盘",
   },
   description: "A股、港股与美股 复盘工具 — 实时行情、个股诊断、智能盯盘",
@@ -30,17 +30,26 @@ export const metadata: Metadata = {
   publisher: "爱看盘",
   metadataBase: new URL("https://aikanpan.top"),
   openGraph: {
-    title: "爱看盘 · 每日复盘工具",
+    title: "爱看盘 · A股/港股/美股 AI 复盘工作台",
     description: "爱看盘是一款开源 A 股、港股与美股复盘工具，提供实时行情、市场温度、涨跌停池、个股诊断与批量评分、自然语言智能盯盘、研究台、持仓管理与交易流水，数据来自东方财富、新浪财经、腾讯行情、Finnhub、EODHD 等公开接口。",
     url: "https://aikanpan.top",
     siteName: "爱看盘",
     locale: "zh_CN",
     type: "website",
+    images: [
+      {
+        url: "/og-cover.png",
+        width: 1200,
+        height: 630,
+        alt: "爱看盘 · A股/港股/美股 AI 复盘工作台",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "爱看盘 · 每日复盘工具",
+    title: "爱看盘 · A股/港股/美股 AI 复盘工作台",
     description: "爱看盘是一款开源 A 股、港股与美股复盘工具，提供实时行情、市场温度、涨跌停池、个股诊断与批量评分、自然语言智能盯盘、研究台、持仓管理与交易流水，数据来自东方财富、新浪财经、腾讯行情、Finnhub、EODHD 等公开接口。",
+    images: ["/og-cover.png"],
   },
   other: { dateModified: "2026-08-10" },
 };

@@ -1,0 +1,1662 @@
+diff --git a/Caddyfile b/Caddyfile
+index 2d345fd..d68b078 100644
+--- a/Caddyfile
++++ b/Caddyfile
+@@ -2,7 +2,7 @@
+ 	email admin@aikanpan.top
+ }
+ 
+-aikanpan.top, www.aikanpan.top {
++aikanpan.top {
+ 	encode gzip
+ 
+ 	header {
+@@ -37,3 +37,7 @@ aikanpan.top, www.aikanpan.top {
+ 		}
+ 	}
+ }
++
++www.aikanpan.top {
++	redir https://aikanpan.top{uri} permanent
++}
+diff --git a/public/ai/faq.json b/public/ai/faq.json
+index c9cf20a..2fcc9ab 100644
+--- a/public/ai/faq.json
++++ b/public/ai/faq.json
+@@ -10,7 +10,7 @@
+     },
+     {
+       "question": "爱看盘是否收费？",
+-      "answer": "基础功能免费；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 29 元/30 天、年卡 299 元/365 天，不自动续费，购买前需绑定邮箱或手机号。"
++      "answer": "基础功能免费；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通，季卡 49 元/90 天，不自动续费，购买前需绑定邮箱或手机号。"
+     },
+     {
+       "question": "美股支持哪些功能？",
+diff --git a/public/og-cover.png b/public/og-cover.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f9747a4ef49d6e33eca34661fe9c8f6912e7437
+GIT binary patch
+literal 46397
+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
+
+literal 0
+HcmV?d00001
+
+diff --git a/src/app/about/page.tsx b/src/app/about/page.tsx
+index 99c8b00..bd81aa6 100644
+--- a/src/app/about/page.tsx
++++ b/src/app/about/page.tsx
+@@ -45,7 +45,7 @@ export default function AboutPage() {
+             {[
+               { title: "实时行情", desc: "三大指数、涨跌停个股、行业板块" },
+               { title: "AI 复盘", desc: "AI 生成市场摘要与风险提示" },
+-              { title: "AI 个股诊断", desc: "LLM 生成结构化分析、评分与决策参考" },
++              { title: "AI 个股诊断", desc: "LLM 生成结构化分析与评分" },
+               { title: "AI 批量评分", desc: "涨停跌停板一键 AI 评分，快速筛选" },
+               { title: "智能盯盘", desc: "自然语言创建盯盘任务，页面轮询、浏览器通知与可选短信" },
+               { title: "个股详情", desc: "报价、资金流向、信号面板、AI 诊断" },
+@@ -103,7 +103,7 @@ export default function AboutPage() {
+             {[
+               { q: "爱看盘是什么？", a: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股、港股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" },
+               { q: "爱看盘的数据来源是什么？", a: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，美股官方披露来自 SEC EDGAR，AI 内容由大语言模型生成。" },
+-              { q: "爱看盘是否收费？", a: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" },
++              { q: "爱看盘是否收费？", a: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通，季卡 ¥49/90 天，不自动续费。购买前需绑定邮箱或手机号。" },
+               { q: "美股支持哪些功能？", a: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" },
+               { q: "盯盘提醒如何工作？", a: "用户创建盯盘任务后，页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后可开启短信提醒。" },
+             ].map((item) => (
+@@ -140,7 +140,7 @@ export default function AboutPage() {
+               <div className="space-y-2 text-sm text-neo-mid">
+                 <p>微信号：<span className="font-medium text-neo-ink">denglio0</span></p>
+                 <p>邮箱：<a href="mailto:qq136692547@gmail.com" className="text-brand hover:opacity-80">qq136692547@gmail.com</a></p>
+-                <p className="text-xs text-neo-dim">AI 会员激活码可在闲鱼搜索「爱看盘」购买，或通过微信/邮箱联系我们。</p>
++                <p className="text-xs text-neo-dim">Pro 激活码在支付宝付款后自动发放，如有问题可通过微信/邮箱联系我们。</p>
+               </div>
+               <h2 className="mb-3 mt-6 text-sm font-semibold text-neo-mid">链接</h2>
+               <div className="flex flex-wrap gap-4 text-sm">
+@@ -179,7 +179,7 @@ export default function AboutPage() {
+             mainEntity: [
+               { "@type": "Question", name: "爱看盘是什么？", acceptedAnswer: { "@type": "Answer", text: "爱看盘是一款开源投资决策辅助工具，覆盖 A 股、港股与美股，提供实时行情、AI 复盘、个股诊断、智能盯盘和研究台。" } },
+               { "@type": "Question", name: "爱看盘的数据来源是什么？", acceptedAnswer: { "@type": "Answer", text: "行情与资讯来自东方财富、新浪财经、Finnhub、EODHD 等公开数据接口，美股官方披露来自 SEC EDGAR，AI 内容由大语言模型生成。" } },
+-              { "@type": "Question", name: "爱看盘是否收费？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" } },
++              { "@type": "Question", name: "爱看盘是否收费？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通，季卡 ¥49/90 天，不自动续费。购买前需绑定邮箱或手机号。" } },
+               { "@type": "Question", name: "美股支持哪些功能？", acceptedAnswer: { "@type": "Answer", text: "美股支持真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
+               { "@type": "Question", name: "盯盘提醒如何工作？", acceptedAnswer: { "@type": "Answer", text: "用户创建盯盘任务后，页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后可开启短信提醒。" } },
+             ],
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 2812cbd..806b377 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -36,11 +36,20 @@ export const metadata: Metadata = {
+     siteName: "爱看盘",
+     locale: "zh_CN",
+     type: "website",
++    images: [
++      {
++        url: "/og-cover.png",
++        width: 1200,
++        height: 630,
++        alt: "爱看盘 · A股/港股/美股 AI 复盘工作台",
++      },
++    ],
+   },
+   twitter: {
+     card: "summary_large_image",
+     title: "爱看盘 · 每日复盘工具",
+     description: "爱看盘是一款开源 A 股、港股与美股复盘工具，提供实时行情、市场温度、涨跌停池、个股诊断与批量评分、自然语言智能盯盘、研究台、持仓管理与交易流水，数据来自东方财富、新浪财经、腾讯行情、Finnhub、EODHD 等公开接口。",
++    images: ["/og-cover.png"],
+   },
+   other: { dateModified: "2026-08-10" },
+ };
+diff --git a/src/app/market/fund-flow/page.tsx b/src/app/market/fund-flow/page.tsx
+index befa1c9..cdcb6d7 100644
+--- a/src/app/market/fund-flow/page.tsx
++++ b/src/app/market/fund-flow/page.tsx
+@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/componen
+ import { api } from "@/lib/api";
+ import { formatAmount, formatPct } from "@/lib/format";
+ import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
++import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+ import type { Metadata } from "next";
+ 
+ export const revalidate = 60;
+@@ -49,6 +50,13 @@ export default async function FundFlowPage() {
+             datePublished={`${northbound.date || new Date().toISOString().slice(0, 10)}T15:30:00+08:00`}
+             dateModified={updatedAt}
+           />
++          <BreadcrumbSchema
++            items={[
++              { name: "首页", path: "/" },
++              { name: "市场总览", path: "/market/" },
++              { name: "资金流向", path: "/market/fund-flow/" },
++            ]}
++          />
+         </>
+       }
+     >
+diff --git a/src/app/market/limit-up/page.tsx b/src/app/market/limit-up/page.tsx
+index 82ab0d8..2698945 100644
+--- a/src/app/market/limit-up/page.tsx
++++ b/src/app/market/limit-up/page.tsx
+@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/componen
+ import { api } from "@/lib/api";
+ import { formatPct, formatPrice } from "@/lib/format";
+ import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
++import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+ import type { Metadata } from "next";
+ import Link from "next/link";
+ 
+@@ -56,6 +57,13 @@ export default async function LimitUpPage() {
+             datePublished={`${dashboard.index.date}T15:30:00+08:00`}
+             dateModified={updatedAt}
+           />
++          <BreadcrumbSchema
++            items={[
++              { name: "首页", path: "/" },
++              { name: "市场总览", path: "/market/" },
++              { name: "涨停复盘", path: "/market/limit-up/" },
++            ]}
++          />
+         </>
+       }
+     >
+diff --git a/src/app/market/page.tsx b/src/app/market/page.tsx
+index 128af7f..9d647a5 100644
+--- a/src/app/market/page.tsx
++++ b/src/app/market/page.tsx
+@@ -3,6 +3,7 @@ import { LimitAnalysisCard } from "@/components/ai/limit-analysis-card";
+ import { AutoRefresh } from "@/components/system/auto-refresh";
+ import { MarketOverviewTemplate, type MarketOverviewIndex, type MarketOverviewSection } from "@/components/market/market-overview-template";
+ import { MarketEarningsCalendar } from "@/components/market/market-earnings-calendar";
++import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+ import { UsDailyReview } from "@/components/us/us-daily-review";
+ import { UsWatchlistButton } from "@/components/us/us-watchlist-button";
+ import { HkDailyReview } from "@/components/hk/hk-daily-review";
+@@ -210,10 +211,18 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
+     <MarketPageFrame
+       market={scope}
+       scripts={
+-        <script
+-          type="application/ld+json"
+-          dangerouslySetInnerHTML={{ __html: JSON.stringify(marketJsonLd) }}
+-        />
++        <>
++          <script
++            type="application/ld+json"
++            dangerouslySetInnerHTML={{ __html: JSON.stringify(marketJsonLd) }}
++          />
++          <BreadcrumbSchema
++            items={[
++              { name: "首页", path: "/" },
++              { name: "市场总览", path: "/market/" },
++            ]}
++          />
++        </>
+       }
+     >
+         <AutoRefresh />
+diff --git a/src/app/market/temperature/page.tsx b/src/app/market/temperature/page.tsx
+index 92537b1..278b167 100644
+--- a/src/app/market/temperature/page.tsx
++++ b/src/app/market/temperature/page.tsx
+@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/componen
+ import { api } from "@/lib/api";
+ import { formatPct } from "@/lib/format";
+ import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
++import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+ import type { Metadata } from "next";
+ import Link from "next/link";
+ 
+@@ -51,6 +52,13 @@ export default async function MarketTemperaturePage() {
+             datePublished={`${new Date().toISOString().slice(0, 10)}T09:30:00+08:00`}
+             dateModified={updatedAt}
+           />
++          <BreadcrumbSchema
++            items={[
++              { name: "首页", path: "/" },
++              { name: "市场总览", path: "/market/" },
++              { name: "市场温度", path: "/market/temperature/" },
++            ]}
++          />
+         </>
+       }
+     >
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index 2406021..8efedac 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -5,7 +5,8 @@ import { PremarketBriefingCard } from "@/components/ai/premarket-briefing-card";
+ import { HomeMarketPanels } from "@/components/home/home-market-panel";
+ import { HomeContent } from "@/components/home/home-content";
+ import { DailyWorkflow } from "@/components/workflow/daily-workflow";
+-import { api, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
++import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
++import { getDailyReviewForSSR } from "@/lib/daily-review-ssr";
+ import { marketFromSearchParams } from "@/lib/market";
+ import type { Metadata } from "next";
+ 
+@@ -36,7 +37,7 @@ const faqSchema = {
+     { "@type": "Question", name: "爱看盘的数据可靠吗？", acceptedAnswer: { "@type": "Answer", text: "行情数据来自东方财富、新浪财经、Finnhub、EODHD 等公开接口，直接呈现原始数值。AI 内容由大语言模型生成，仅供参考，不构成投资建议。" } },
+     { "@type": "Question", name: "爱看盘支持美股吗？", acceptedAnswer: { "@type": "Answer", text: "支持。美股覆盖真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
+     { "@type": "Question", name: "盯盘提醒怎么用？", acceptedAnswer: { "@type": "Answer", text: "在盯盘页用自然语言输入条件，例如「贵州茅台跌破 1600 就提醒我」，系统自动解析并记录触发历史。页面打开时每 15 秒刷新并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后还可开启短信提醒。" } },
+-    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。" } },
++    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通，季卡 ¥49/90 天，不自动续费。购买前需绑定邮箱或手机号。" } },
+   ],
+ };
+ 
+@@ -71,6 +72,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
+   let insights: Insights | null = null;
+   let usDashboard: UsDashboard | null = null;
+   let hkDashboard: HkDashboard | null = null;
++  let usDailyReview: AIReview | null = null;
++  let hkDailyReview: AIReview | null = null;
+ 
+   try {
+     if (scope === "all" || scope === "cn") {
+@@ -80,10 +83,16 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
+       ]);
+     }
+     if (scope === "all" || scope === "us") {
+-      usDashboard = await api.getUsDashboard();
++      [usDashboard, usDailyReview] = await Promise.all([
++        api.getUsDashboard(),
++        getDailyReviewForSSR("us"),
++      ]);
+     }
+     if (scope === "all" || scope === "hk") {
+-      hkDashboard = await api.getHkDashboard();
++      [hkDashboard, hkDailyReview] = await Promise.all([
++        api.getHkDashboard(),
++        getDailyReviewForSSR("hk"),
++      ]);
+     }
+   } catch (error) {
+     console.error("Failed to fetch home data:", error);
+@@ -97,7 +106,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
+         <section className="mb-3 flex flex-wrap items-center justify-between gap-3">
+           <div>
+             <h1 className="text-[18px] font-bold tracking-tight text-neo-ink">
+-              {scope === "all" ? "全部市场" : scope === "cn" ? "A股复盘" : scope === "hk" ? "港股复盘" : "美股复盘"}
++              {scope === "all" ? "爱看盘 · A股/港股/美股 AI 复盘工作台" : scope === "cn" ? "A股复盘" : scope === "hk" ? "港股复盘" : "美股复盘"}
+             </h1>
+             <p className="mt-0.5 text-[12px] text-neo-dim">
+               {scope === "all" ? "并排呈现 A股、港股与美股的每日决策视图" : "AI 结论 · 核心数字 · 板块强度 · 市场温度 · 近期财报"}
+@@ -109,7 +118,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
+           <PremarketBriefingCard />
+         </section>
+ 
+-        <HomeMarketPanels scope={scope} dashboard={dashboard} insights={insights} usDashboard={usDashboard} hkDashboard={hkDashboard} />
++        <HomeMarketPanels
++          scope={scope}
++          dashboard={dashboard}
++          insights={insights}
++          usDashboard={usDashboard}
++          hkDashboard={hkDashboard}
++          usDailyReview={usDailyReview}
++          hkDailyReview={hkDailyReview}
++        />
+ 
+         {scope !== "all" && <DailyWorkflow className="mt-4" market={scope} />}
+ 
+diff --git a/src/app/review/[date]/page.tsx b/src/app/review/[date]/page.tsx
+index 6c908f2..12e0ba8 100644
+--- a/src/app/review/[date]/page.tsx
++++ b/src/app/review/[date]/page.tsx
+@@ -1,5 +1,6 @@
+ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
+ import { GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
++import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
+ import { api, type LimitStock } from "@/lib/api";
+ import { formatPct, formatPrice } from "@/lib/format";
+ import {
+@@ -134,7 +135,18 @@ export default async function ReviewDatePage({ params }: { params: Promise<{ dat
+   return (
+     <MarketPageFrame
+       market="cn"
+-      scripts={<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />}
++      scripts={
++        <>
++          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
++          <BreadcrumbSchema
++            items={[
++              { name: "首页", path: "/" },
++              { name: "每日复盘", path: "/review/" },
++              { name: `${date} A股复盘`, path: `/review/${date}/` },
++            ]}
++          />
++        </>
++      }
+     >
+       <MarketPageHeader
+         market="cn"
+diff --git a/src/app/terms/page.tsx b/src/app/terms/page.tsx
+index ed4f205..cbc541b 100644
+--- a/src/app/terms/page.tsx
++++ b/src/app/terms/page.tsx
+@@ -21,7 +21,7 @@ const sections = [
+   },
+   {
+     title: "付费与激活",
+-    content: "Pro 当前通过闲鱼人工购买时长卡激活码，非自动续费订阅。购买和激活前，用户须绑定邮箱或手机号；激活码一次性使用，开通后按自然日累计时长，不自动扣款，到期后回到免费版。未激活激活码的售后以商品页说明为准。",
++    content: "Pro 时长卡通过支付宝付款购买，系统自动发放激活码，非自动续费订阅。购买和激活前，用户须绑定邮箱或手机号；激活码一次性使用，开通后按自然日累计时长，不自动扣款，到期后回到免费版。未激活激活码的售后以商品页说明为准。",
+   },
+   {
+     title: "AI 内容",
+diff --git a/src/app/upgrade/upgrade-client.tsx b/src/app/upgrade/upgrade-client.tsx
+index 66769b3..a9d03e3 100644
+--- a/src/app/upgrade/upgrade-client.tsx
++++ b/src/app/upgrade/upgrade-client.tsx
+@@ -202,6 +202,8 @@ export function UpgradePageClient({
+   };
+ 
+   const isPro = membership?.plan === "pro";
++  const freeDailyLimit = membership?.ai_daily_limit ?? 5;
++  const freeRemaining = Math.max(0, freeDailyLimit - (membership?.ai_used_today ?? 0));
+   const paymentTone =
+     paymentConfirmation === "success"
+       ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+@@ -292,7 +294,7 @@ export function UpgradePageClient({
+             升级爱看盘 Pro 会员
+           </h1>
+           <p className="mx-auto mt-2 max-w-xl text-xs text-neutral-400 sm:text-sm">
+-            解锁三地市场专属深度 AI 研判、多空评级、量化雷达与主力资金监控
++            解锁三地市场专属深度 AI 摘要、多空信号、量化雷达与主力资金监控
+           </p>
+         </div>
+ 
+@@ -305,21 +307,21 @@ export function UpgradePageClient({
+               </div>
+               <div>
+                 <div className="flex items-center gap-2">
+-                  <span className="text-sm font-semibold text-white">当前状态：</span>
++                  <span className="text-sm font-semibold text-white">当前：</span>
+                   {isPro ? (
+                     <span className="inline-flex items-center gap-1 rounded bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-400">
+                       <Crown className="h-3 w-3" /> Pro 会员 (有效)
+                     </span>
+                   ) : (
+                     <span className="inline-flex items-center gap-1 rounded bg-neutral-800 px-2 py-0.5 text-xs font-medium text-neutral-400">
+-                      免费体验模式
++                      免费版 · 今日剩余 {freeRemaining} 次
+                     </span>
+                   )}
+                 </div>
+                 <p className="mt-1 text-xs text-neutral-400">
+                   {isPro && membership?.expires_at
+                     ? `会员有效期至：${membership.expires_at.replace("T", " ").slice(0, 16)} · 每日 500 次有效调用`
+-                    : "免费用户每日享 10 次深度 AI 研判额度，升级后立即扩充至每日 500 次"}
++                    : "免费用户每日享 5 次深度 AI 研判额度，升级后立即扩充至每日 500 次"}
+                 </p>
+               </div>
+             </div>
+@@ -346,7 +348,7 @@ export function UpgradePageClient({
+         </div>
+ 
+         {/* 定价卡片 */}
+-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
++        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+           {/* 1. 7天体验卡 */}
+           <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
+             <div>
+@@ -371,7 +373,7 @@ export function UpgradePageClient({
+                 </li>
+                 <li className="flex items-center gap-2">
+                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+-                  <span>解锁持仓精准买卖与止损策略</span>
++                  <span>持仓结构诊断与风险提示</span>
+                 </li>
+                 <li className="flex items-center gap-2">
+                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+@@ -396,59 +398,16 @@ export function UpgradePageClient({
+                   className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+                 >
+                   {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-emerald-400" />}
+-                  ¥1.9 体验 7 天
++                  ¥1.9 开通 7 天
+                 </button>
+               )}
+             </div>
+           </div>
+ 
+-          {/* 2. 月度会员 */}
+-          <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
+-            <div>
+-              <div className="flex items-center justify-between">
+-                <h2 className="text-base font-bold text-white">月度会员</h2>
+-                <span className="text-xs text-neutral-400">30天标准版</span>
+-              </div>
+-              <div className="mt-3 flex items-baseline gap-1">
+-                <span className="text-2xl font-extrabold text-white font-mono">¥19</span>
+-                <span className="text-xs text-neutral-400">/ 月</span>
+-                <span className="ml-1 text-[11px] text-neutral-500 font-mono">约0.63元/天</span>
+-              </div>
+-              <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
+-                高频量化看盘标配，全月随时复盘与策略跟踪。
+-              </p>
+-              <ul className="mt-4 space-y-2 text-xs text-neutral-300">
+-                <li className="flex items-center gap-2">
+-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+-                  <span>包含体验卡全部权益</span>
+-                </li>
+-                <li className="flex items-center gap-2">
+-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+-                  <span>自然语言实时盯盘策略</span>
+-                </li>
+-                <li className="flex items-center gap-2">
+-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+-                  <span>个股投资论点与跟踪看板</span>
+-                </li>
+-              </ul>
+-            </div>
+-
+-            <div className="mt-6 pt-4 border-t border-neutral-800/80">
+-              <button
+-                onClick={() => handleAlipay("monthly")}
+-                disabled={paying}
+-                className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+-              >
+-                {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-blue-400" />}
+-                ¥19.0 开通月卡
+-              </button>
+-            </div>
+-          </div>
+-
+-          {/* 3. 季度会员 (爆款推荐) */}
++          {/* 2. 季度会员（爆款推荐 · C 位主推） */}
+           <div className="relative flex flex-col justify-between rounded-2xl border-2 border-amber-500/60 bg-gradient-to-b from-amber-950/20 to-neutral-900/80 p-5 shadow-xl shadow-amber-500/5 scale-[1.02]">
+             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-0.5 text-[10px] font-bold text-black tracking-wide uppercase shadow">
+-              🔥 性价比之王 · 80%用户的选择
++              最多人选择
+             </div>
+ 
+             <div>
+@@ -492,12 +451,62 @@ export function UpgradePageClient({
+                 className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+               >
+                 {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 fill-black" />}
+-                ¥49.0 极速开通季度卡
++                ¥49 开通 90 天
++              </button>
++            </div>
++          </div>
++
++          {/* 更多方案：月卡 / 年卡（折叠） */}
++          <details className="sm:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/40">
++            <summary className="cursor-pointer select-none px-5 py-4 text-sm font-semibold text-neutral-300 transition hover:text-white">
++              更多方案（月卡 / 年卡）
++            </summary>
++            <div className="grid grid-cols-1 gap-5 px-5 pb-5 sm:grid-cols-2">
++
++          {/* 更多方案 #1：月度会员 */}
++          <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
++            <div>
++              <div className="flex items-center justify-between">
++                <h2 className="text-base font-bold text-white">月度会员</h2>
++                <span className="text-xs text-neutral-400">30天标准版</span>
++              </div>
++              <div className="mt-3 flex items-baseline gap-1">
++                <span className="text-2xl font-extrabold text-white font-mono">¥19</span>
++                <span className="text-xs text-neutral-400">/ 月</span>
++                <span className="ml-1 text-[11px] text-neutral-500 font-mono">约0.63元/天</span>
++              </div>
++              <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
++                高频量化看盘标配，全月随时复盘与策略跟踪。
++              </p>
++              <ul className="mt-4 space-y-2 text-xs text-neutral-300">
++                <li className="flex items-center gap-2">
++                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
++                  <span>包含体验卡全部权益</span>
++                </li>
++                <li className="flex items-center gap-2">
++                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
++                  <span>自然语言实时盯盘策略</span>
++                </li>
++                <li className="flex items-center gap-2">
++                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
++                  <span>个股投资论点与跟踪看板</span>
++                </li>
++              </ul>
++            </div>
++
++            <div className="mt-6 pt-4 border-t border-neutral-800/80">
++              <button
++                onClick={() => handleAlipay("monthly")}
++                disabled={paying}
++                className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
++              >
++                {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-blue-400" />}
++                ¥19 开通 30 天
+               </button>
+             </div>
+           </div>
+ 
+-          {/* 4. 年度直通特权 (买3送1) */}
++          {/* 更多方案 #2：年度直通特权 (买3送1) */}
+           <div className="relative flex flex-col justify-between rounded-2xl border border-purple-500/40 bg-gradient-to-b from-purple-950/20 to-neutral-900/60 p-5 shadow-sm hover:border-purple-500/60 transition">
+             <div>
+               <div className="flex items-center justify-between">
+@@ -522,10 +531,6 @@ export function UpgradePageClient({
+                   <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
+                   <span>立省 81 元，享全年 365 天特权</span>
+                 </li>
+-                <li className="flex items-center gap-2">
+-                  <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
+-                  <span>单笔≤50元合规通道，安全秒到账</span>
+-                </li>
+                 <li className="flex items-center gap-2">
+                   <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
+                   <span>自动合并延长，无需人工找客服</span>
+@@ -540,10 +545,12 @@ export function UpgradePageClient({
+                 className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-purple-600/30 border border-purple-500/50 px-3 py-2.5 text-xs font-semibold text-purple-200 hover:bg-purple-600/40 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+               >
+                 {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-purple-400" />}
+-                充值季卡启动直通车
++                ¥49 开通 90 天
+               </button>
+             </div>
+           </div>
++            </div>
++          </details>
+         </div>
+ 
+         {/* 核心双保险保障：找回会员 & 激活码激活 */}
+@@ -593,7 +600,7 @@ export function UpgradePageClient({
+                 <button
+                   type="submit"
+                   disabled={recovering || !recoverInput.trim()}
+-                  className="min-h-11 rounded-lg bg-blue-600 px-5 text-xs font-semibold text-white shadow hover:bg-blue-500 disabled:opacity-50 transition shrink-0 cursor-pointer"
++                  className="min-h-11 rounded-lg border border-neutral-700 bg-neutral-900 px-5 text-xs font-medium text-neutral-300 transition hover:border-neutral-500 hover:text-white disabled:opacity-50 shrink-0 cursor-pointer"
+                 >
+                   {recovering ? "正在核验订单..." : "立即找回会员"}
+                 </button>
+@@ -660,6 +667,7 @@ export function UpgradePageClient({
+             <ShieldCheck className="h-4 w-4 text-neutral-400" />
+             服务说明：爱看盘为行情数据与研究辅助工具软件，不提供任何投资收益保证，请自主决策。
+           </p>
++          <p className="mt-1.5">支付说明：支付宝扫码 → 自动到账 → 秒发激活码；7 天内未开通可全额退。</p>
+         </div>
+       </main>
+ 
+diff --git a/src/components/home/home-content.tsx b/src/components/home/home-content.tsx
+index 6bc0f0f..4bdd9b8 100644
+--- a/src/components/home/home-content.tsx
++++ b/src/components/home/home-content.tsx
+@@ -26,7 +26,7 @@ export function HomeContent() {
+         <ul className="mt-3 space-y-2 text-sm text-neo-mid">
+           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">实时行情</strong>：三大指数、涨跌停个股、强势行业板块，一屏概览</span></li>
+           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">AI 复盘</strong>：收盘后自动生成市场摘要、风险提示与明日关注点</span></li>
+-          <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">个股诊断</strong>：输入代码即可获得 AI 结构化评分、状态判断与决策参考</span></li>
++          <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">个股诊断</strong>：输入代码即可获得 AI 结构化评分与状态判断</span></li>
+           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">智能盯盘</strong>：用自然语言创建盯盘任务（「贵州茅台跌破 1600 就提醒我」），页面打开时轮询触发记录</span></li>
+           <li className="flex gap-2"><span className="text-brand">●</span><span><strong className="text-neo-ink">美股研究台</strong>：自选股、盘前计划、公司档案、投资论点与 AI 评分</span></li>
+         </ul>
+@@ -91,7 +91,7 @@ export function HomeContent() {
+           <div>
+             <h3 className="text-sm font-medium text-neo-ink">爱看盘收费吗？</h3>
+             <p className="mt-1 text-xs leading-relaxed text-neo-dim">
+-              基础功能免费使用；AI 高频功能可通过闲鱼购买 Pro 时长卡，月卡 ¥19/30 天、年卡 ¥199/365 天，不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
++              基础功能免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通，季卡 ¥49/90 天，不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
+             </p>
+           </div>
+         </div>
+diff --git a/src/components/home/home-market-panel.tsx b/src/components/home/home-market-panel.tsx
+index 99bb3a8..e57cbf7 100644
+--- a/src/components/home/home-market-panel.tsx
++++ b/src/components/home/home-market-panel.tsx
+@@ -76,6 +76,7 @@ function MetricCard({ name, code, last, changePct }: {
+ 
+ function AiConclusion({ market, focus }: { market: "cn" | "hk" | "us"; focus: string }) {
+   const label = market === "cn" ? "A股 AI 结论" : market === "hk" ? "港股 AI 结论" : "美股 AI 结论";
++  if (!focus) return null;
+   return (
+     <div className="neo-ai p-4">
+       <div className="flex items-center justify-between">
+@@ -90,7 +91,7 @@ function AiConclusion({ market, focus }: { market: "cn" | "hk" | "us"; focus: st
+         </a>
+       </div>
+       <p className="mt-2 line-clamp-4 text-[13px] leading-relaxed text-neo-ink">
+-        {focus || "AI 结论生成中，请稍后刷新。"}
++        {focus}
+       </p>
+     </div>
+   );
+@@ -299,9 +300,10 @@ export function CnMarketPanel({ dashboard, insights }: { dashboard: Dashboard; i
+   );
+ }
+ 
+-export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
++export function UsMarketPanel({ dashboard, initialReview }: { dashboard: UsDashboard; initialReview?: AIReview | null }) {
+   const { data: review } = useUsDailyReview();
+-  const conclusion = review ? getUsDailyReviewConclusion(review.content) : "";
++  const effectiveReview = review ?? initialReview ?? null;
++  const conclusion = effectiveReview ? getUsDailyReviewConclusion(effectiveReview.content) : "";
+ 
+   return (
+     <div>
+@@ -332,7 +334,7 @@ export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
+           </div>
+         </SectionShell>
+ 
+-        <UsTemperatureCard temperature={dashboard.temperature} review={review} />
++        <UsTemperatureCard temperature={dashboard.temperature} review={effectiveReview} />
+ 
+         <UsEarningsCalendar />
+       </div>
+@@ -374,9 +376,10 @@ function UsEarningsCalendar() {
+   );
+ }
+ 
+-export function HkMarketPanel({ dashboard }: { dashboard: HkDashboard }) {
++export function HkMarketPanel({ dashboard, initialReview }: { dashboard: HkDashboard; initialReview?: AIReview | null }) {
+   const { data: review } = useHkDailyReview();
+-  const conclusion = review ? getHkDailyReviewConclusion(review.content) : "";
++  const effectiveReview = review ?? initialReview ?? null;
++  const conclusion = effectiveReview ? getHkDailyReviewConclusion(effectiveReview.content) : "";
+ 
+   return (
+     <div>
+@@ -489,7 +492,7 @@ function GlobalMarketPulse({
+       badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+       name: usLeader?.name || "标普500 ETF",
+       last: usLeader ? formatPrice(usLeader.last) : "--",
+-      pct: usLeader?.change_pct ? usLeader.change_pct * 100 : undefined,
++      pct: usLeader?.change_pct,
+       subInfo: usDashboard?.temperature ? `市场温度: ${usDashboard.temperature.score}分` : "纽交所/纳斯达克",
+       status: usDashboard?.temperature?.label || "美股交易",
+       href: "/?market=us",
+@@ -555,21 +558,25 @@ export function HomeMarketPanels({
+   insights,
+   usDashboard,
+   hkDashboard,
++  usDailyReview,
++  hkDailyReview,
+ }: {
+   scope: MarketScope;
+   dashboard: Dashboard | null;
+   insights: Insights | null;
+   usDashboard: UsDashboard | null;
+   hkDashboard: HkDashboard | null;
++  usDailyReview?: AIReview | null;
++  hkDailyReview?: AIReview | null;
+ }) {
+   if (scope === "cn") {
+     return dashboard ? <CnMarketPanel dashboard={dashboard} insights={insights} /> : null;
+   }
+   if (scope === "us") {
+-    return usDashboard ? <UsMarketPanel dashboard={usDashboard} /> : null;
++    return usDashboard ? <UsMarketPanel dashboard={usDashboard} initialReview={usDailyReview} /> : null;
+   }
+   if (scope === "hk") {
+-    return hkDashboard ? <HkMarketPanel dashboard={hkDashboard} /> : null;
++    return hkDashboard ? <HkMarketPanel dashboard={hkDashboard} initialReview={hkDailyReview} /> : null;
+   }
+ 
+   return (
+@@ -580,8 +587,8 @@ export function HomeMarketPanels({
+         usDashboard={usDashboard}
+       />
+       {dashboard && <CnMarketPanel dashboard={dashboard} insights={insights} />}
+-      {usDashboard && <UsMarketPanel dashboard={usDashboard} />}
+-      {hkDashboard && <HkMarketPanel dashboard={hkDashboard} />}
++      {usDashboard && <UsMarketPanel dashboard={usDashboard} initialReview={usDailyReview} />}
++      {hkDashboard && <HkMarketPanel dashboard={hkDashboard} initialReview={hkDailyReview} />}
+     </div>
+   );
+ }
+diff --git a/src/components/seo/breadcrumb-schema.tsx b/src/components/seo/breadcrumb-schema.tsx
+new file mode 100644
+index 0000000..fa704da
+--- /dev/null
++++ b/src/components/seo/breadcrumb-schema.tsx
+@@ -0,0 +1,25 @@
++export interface BreadcrumbItem {
++  name: string;
++  path: string;
++}
++
++/** 面包屑结构化数据（BreadcrumbList JSON-LD） */
++export function BreadcrumbSchema({ items }: { items: BreadcrumbItem[] }) {
++  const schema = {
++    "@context": "https://schema.org",
++    "@type": "BreadcrumbList",
++    itemListElement: items.map((item, index) => ({
++      "@type": "ListItem",
++      position: index + 1,
++      name: item.name,
++      item: `https://aikanpan.top${item.path}`,
++    })),
++  };
++
++  return (
++    <script
++      type="application/ld+json"
++      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
++    />
++  );
++}
+diff --git a/src/lib/daily-review-ssr.ts b/src/lib/daily-review-ssr.ts
+new file mode 100644
+index 0000000..4d7eca3
+--- /dev/null
++++ b/src/lib/daily-review-ssr.ts
+@@ -0,0 +1,51 @@
++import { api, type AIReview } from "@/lib/api";
++
++/**
++ * 首屏用的每日复盘结论（预生成 + 进程内缓存）。
++ *
++ * 后端 /us|hk/daily-review 是"生成并缓存"语义：冷缓存时单次要 6~9 秒，
++ * 直接同步等待会把首页 TTFB 拉爆。这里做两件事：
++ * 1. 进程内缓存 10 分钟，命中时首屏 HTML 直接带出结论（不请求后端）；
++ * 2. 未命中时只等 1.2 秒：拿到就渲染，拿不到就让后台请求继续跑，
++ *    本次先渲染"不含占位文案"的完整面板，客户端 SWR 到达后补齐。
++ * 这样爬虫/低峰请求也只会触发有上限的后端调用（每市场最多每 10 分钟一次）。
++ */
++
++const TTL_MS = 10 * 60 * 1000;
++const WAIT_MS = 1200;
++
++type Market = "us" | "hk";
++
++const cache: Record<Market, { at: number; data: AIReview | null; pending: Promise<void> | null }> = {
++  us: { at: 0, data: null, pending: null },
++  hk: { at: 0, data: null, pending: null },
++};
++
++function refresh(market: Market): Promise<void> {
++  const entry = cache[market];
++  if (entry.pending) return entry.pending;
++  entry.pending = (async () => {
++    try {
++      entry.data = market === "us" ? await api.getUsDailyReview() : await api.getHkDailyReview();
++    } catch {
++      // 失败时保留上一次结论，并等待一个 TTL 再重试，避免错误放大成请求风暴
++    } finally {
++      entry.at = Date.now();
++      entry.pending = null;
++    }
++  })();
++  return entry.pending;
++}
++
++export async function getDailyReviewForSSR(market: Market): Promise<AIReview | null> {
++  const entry = cache[market];
++  if (Date.now() - entry.at < TTL_MS) return entry.data;
++
++  const pending = refresh(market);
++  const timedOut = Symbol("timeout");
++  const result = await Promise.race([
++    pending.then(() => cache[market].data),
++    new Promise<typeof timedOut>((resolve) => setTimeout(() => resolve(timedOut), WAIT_MS)),
++  ]);
++  return result === timedOut ? null : result;
++}
+diff --git a/tests/format.test.mjs b/tests/format.test.mjs
+index 9064d5d..91a715c 100644
+--- a/tests/format.test.mjs
++++ b/tests/format.test.mjs
+@@ -1,5 +1,6 @@
+ import test from "node:test";
+ import assert from "node:assert/strict";
++import { readFileSync } from "node:fs";
+ import { formatAmount, formatMarketCap, formatPct, formatVolume } from "../src/lib/format.ts";
+ 
+ test("formatAmount handles negative compact values", () => {
+@@ -25,3 +26,12 @@ test("formatPct keeps explicit sign", () => {
+   assert.equal(formatPct(-1.5), "-1.50%");
+   assert.equal(formatPct(1.5), "+1.50%");
+ });
++
++test("US index change_pct uses one percent scale in pulse card and US panel", () => {
++  // 实测 /api/v1/us/dashboard 返回的 change_pct 已是百分数（SPY 0.5435 → +0.54%），
++  // 全球脉搏卡不得再乘 100，否则会与美股面板出现 +54.35% / +0.54% 双口径。
++  assert.equal(formatPct(0.5435), "+0.54%");
++  const src = readFileSync(new URL("../src/components/home/home-market-panel.tsx", import.meta.url), "utf8");
++  assert.match(src, /pct: usLeader\?\.change_pct,/);
++  assert.doesNotMatch(src, /change_pct \* 100/);
++});
+diff --git a/tests/seo.test.mjs b/tests/seo.test.mjs
+index 70474da..b131309 100644
+--- a/tests/seo.test.mjs
++++ b/tests/seo.test.mjs
+@@ -93,7 +93,15 @@ test("dated review pages have canonical metadata and sitemap coverage", () => {
+ test("pricing copy is consistent and no longer says the site is free", () => {
+   const about = read("src/app/about/page.tsx");
+   const home = read("src/components/home/home-content.tsx");
++  const homepage = read("src/app/page.tsx");
+   assert.ok(!about.includes("网站不收费"));
+-  assert.ok(about.includes("月卡 ¥19/30 天、年卡 ¥199/365 天"));
+-  assert.ok(home.includes("月卡 ¥19/30 天、年卡 ¥199/365 天"));
++  assert.ok(about.includes("季卡 ¥49/90 天"));
++  assert.ok(home.includes("季卡 ¥49/90 天"));
++  assert.ok(homepage.includes("季卡 ¥49/90 天"));
++  assert.ok(!about.includes("闲鱼"));
++  assert.ok(!home.includes("闲鱼"));
++  assert.ok(!homepage.includes("闲鱼"));
++  assert.ok(!about.includes("¥199"));
++  assert.ok(!home.includes("¥199"));
++  assert.ok(!homepage.includes("¥199"));
+ });

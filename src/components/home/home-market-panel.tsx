@@ -76,6 +76,7 @@ function MetricCard({ name, code, last, changePct }: {
 
 function AiConclusion({ market, focus }: { market: "cn" | "hk" | "us"; focus: string }) {
   const label = market === "cn" ? "A股 AI 结论" : market === "hk" ? "港股 AI 结论" : "美股 AI 结论";
+  if (!focus) return null;
   return (
     <div className="neo-ai p-4">
       <div className="flex items-center justify-between">
@@ -90,7 +91,7 @@ function AiConclusion({ market, focus }: { market: "cn" | "hk" | "us"; focus: st
         </a>
       </div>
       <p className="mt-2 line-clamp-4 text-[13px] leading-relaxed text-neo-ink">
-        {focus || "AI 结论生成中，请稍后刷新。"}
+        {focus}
       </p>
     </div>
   );
@@ -299,9 +300,10 @@ export function CnMarketPanel({ dashboard, insights }: { dashboard: Dashboard; i
   );
 }
 
-export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
+export function UsMarketPanel({ dashboard, initialReview }: { dashboard: UsDashboard; initialReview?: AIReview | null }) {
   const { data: review } = useUsDailyReview();
-  const conclusion = review ? getUsDailyReviewConclusion(review.content) : "";
+  const effectiveReview = review ?? initialReview ?? null;
+  const conclusion = effectiveReview ? getUsDailyReviewConclusion(effectiveReview.content) : "";
 
   return (
     <div>
@@ -332,7 +334,7 @@ export function UsMarketPanel({ dashboard }: { dashboard: UsDashboard }) {
           </div>
         </SectionShell>
 
-        <UsTemperatureCard temperature={dashboard.temperature} review={review} />
+        <UsTemperatureCard temperature={dashboard.temperature} review={effectiveReview} />
 
         <UsEarningsCalendar />
       </div>
@@ -374,9 +376,10 @@ function UsEarningsCalendar() {
   );
 }
 
-export function HkMarketPanel({ dashboard }: { dashboard: HkDashboard }) {
+export function HkMarketPanel({ dashboard, initialReview }: { dashboard: HkDashboard; initialReview?: AIReview | null }) {
   const { data: review } = useHkDailyReview();
-  const conclusion = review ? getHkDailyReviewConclusion(review.content) : "";
+  const effectiveReview = review ?? initialReview ?? null;
+  const conclusion = effectiveReview ? getHkDailyReviewConclusion(effectiveReview.content) : "";
 
   return (
     <div>
@@ -489,7 +492,7 @@ function GlobalMarketPulse({
       badgeClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
       name: usLeader?.name || "标普500 ETF",
       last: usLeader ? formatPrice(usLeader.last) : "--",
-      pct: usLeader?.change_pct ? usLeader.change_pct * 100 : undefined,
+      pct: usLeader?.change_pct,
       subInfo: usDashboard?.temperature ? `市场温度: ${usDashboard.temperature.score}分` : "纽交所/纳斯达克",
       status: usDashboard?.temperature?.label || "美股交易",
       href: "/?market=us",
@@ -555,21 +558,25 @@ export function HomeMarketPanels({
   insights,
   usDashboard,
   hkDashboard,
+  usDailyReview,
+  hkDailyReview,
 }: {
   scope: MarketScope;
   dashboard: Dashboard | null;
   insights: Insights | null;
   usDashboard: UsDashboard | null;
   hkDashboard: HkDashboard | null;
+  usDailyReview?: AIReview | null;
+  hkDailyReview?: AIReview | null;
 }) {
   if (scope === "cn") {
     return dashboard ? <CnMarketPanel dashboard={dashboard} insights={insights} /> : null;
   }
   if (scope === "us") {
-    return usDashboard ? <UsMarketPanel dashboard={usDashboard} /> : null;
+    return usDashboard ? <UsMarketPanel dashboard={usDashboard} initialReview={usDailyReview} /> : null;
   }
   if (scope === "hk") {
-    return hkDashboard ? <HkMarketPanel dashboard={hkDashboard} /> : null;
+    return hkDashboard ? <HkMarketPanel dashboard={hkDashboard} initialReview={hkDailyReview} /> : null;
   }
 
   return (
@@ -580,8 +587,8 @@ export function HomeMarketPanels({
         usDashboard={usDashboard}
       />
       {dashboard && <CnMarketPanel dashboard={dashboard} insights={insights} />}
-      {usDashboard && <UsMarketPanel dashboard={usDashboard} />}
-      {hkDashboard && <HkMarketPanel dashboard={hkDashboard} />}
+      {usDashboard && <UsMarketPanel dashboard={usDashboard} initialReview={usDailyReview} />}
+      {hkDashboard && <HkMarketPanel dashboard={hkDashboard} initialReview={hkDailyReview} />}
     </div>
   );
 }

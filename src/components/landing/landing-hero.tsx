@@ -87,7 +87,7 @@ export function LandingHero() {
           <p className="mx-auto mt-8 text-[14px] sm:text-[16px] md:text-[18px] leading-relaxed text-[#8a8a92]">
             实时行情 · AI 智能诊断 · 每日复盘 · 智能盯盘
             <br />
-            一站式 A 股投资决策辅助工具
+            一站式 A 股行情数据与研究辅助工具
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
             <Link

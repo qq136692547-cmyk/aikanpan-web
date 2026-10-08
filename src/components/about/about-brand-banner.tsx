@@ -40,7 +40,7 @@ export function AboutBrandBanner() {
           </div>
           <h2 className="mt-3 text-2xl font-bold text-neo-ink sm:text-3xl">让市场复盘更快一步</h2>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-neo-mid">
-            实时行情、AI 诊断与智能盯盘，一站式辅助 A 股投资决策。
+            实时行情、AI 诊断与智能盯盘，一站式研究 A 股行情数据。
           </p>
         </div>
         <div className="flex items-center gap-2 text-[11px] text-neo-dim">

@@ -3,6 +3,7 @@ import { LimitAnalysisCard } from "@/components/ai/limit-analysis-card";
 import { AutoRefresh } from "@/components/system/auto-refresh";
 import { MarketOverviewTemplate, type MarketOverviewIndex, type MarketOverviewSection } from "@/components/market/market-overview-template";
 import { MarketEarningsCalendar } from "@/components/market/market-earnings-calendar";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import { UsDailyReview } from "@/components/us/us-daily-review";
 import { UsWatchlistButton } from "@/components/us/us-watchlist-button";
 import { HkDailyReview } from "@/components/hk/hk-daily-review";
@@ -210,10 +211,18 @@ export default async function MarketPage({ searchParams }: { searchParams: Promi
     <MarketPageFrame
       market={scope}
       scripts={
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(marketJsonLd) }}
-        />
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(marketJsonLd) }}
+          />
+          <BreadcrumbSchema
+            items={[
+              { name: "首页", path: "/" },
+              { name: "市场总览", path: "/market/" },
+            ]}
+          />
+        </>
       }
     >
         <AutoRefresh />

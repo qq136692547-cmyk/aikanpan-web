@@ -2,7 +2,7 @@
 	email admin@aikanpan.top
 }
 
-aikanpan.top, www.aikanpan.top {
+aikanpan.top {
 	encode gzip
 
 	header {
@@ -36,4 +36,8 @@ aikanpan.top, www.aikanpan.top {
 			header_down Cache-Control "no-cache, no-store, must-revalidate"
 		}
 	}
+}
+
+www.aikanpan.top {
+	redir https://aikanpan.top{uri} permanent
 }

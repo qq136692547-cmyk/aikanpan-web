@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/componen
 import { api } from "@/lib/api";
 import { formatAmount, formatPct } from "@/lib/format";
 import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -48,6 +49,13 @@ export default async function FundFlowPage() {
             url="https://aikanpan.top/market/fund-flow/"
             datePublished={`${northbound.date || new Date().toISOString().slice(0, 10)}T15:30:00+08:00`}
             dateModified={updatedAt}
+          />
+          <BreadcrumbSchema
+            items={[
+              { name: "首页", path: "/" },
+              { name: "市场总览", path: "/market/" },
+              { name: "资金流向", path: "/market/fund-flow/" },
+            ]}
           />
         </>
       }

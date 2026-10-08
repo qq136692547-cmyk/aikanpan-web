@@ -93,7 +93,15 @@ test("dated review pages have canonical metadata and sitemap coverage", () => {
 test("pricing copy is consistent and no longer says the site is free", () => {
   const about = read("src/app/about/page.tsx");
   const home = read("src/components/home/home-content.tsx");
+  const homepage = read("src/app/page.tsx");
   assert.ok(!about.includes("网站不收费"));
-  assert.ok(about.includes("月卡 ¥19/30 天、年卡 ¥199/365 天"));
-  assert.ok(home.includes("月卡 ¥19/30 天、年卡 ¥199/365 天"));
+  assert.ok(about.includes("季卡 ¥49/90 天"));
+  assert.ok(home.includes("季卡 ¥49/90 天"));
+  assert.ok(homepage.includes("季卡 ¥49/90 天"));
+  assert.ok(!about.includes("闲鱼"));
+  assert.ok(!home.includes("闲鱼"));
+  assert.ok(!homepage.includes("闲鱼"));
+  assert.ok(!about.includes("¥199"));
+  assert.ok(!home.includes("¥199"));
+  assert.ok(!homepage.includes("¥199"));
 });

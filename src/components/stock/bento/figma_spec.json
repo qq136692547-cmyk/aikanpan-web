@@ -1,0 +1,6068 @@
+{
+  "name": "爱看盘 · 全球三地市场暗黑新拟态 Bento Grid 终端 (A股 / 港股 / 美股)",
+  "type": "FRAME",
+  "w": 2424,
+  "h": 734,
+  "layoutMode": "HORIZONTAL",
+  "gap": 32,
+  "p": [
+    40,
+    40,
+    40,
+    40
+  ],
+  "r": 0,
+  "bg": {
+    "r": 10,
+    "g": 11,
+    "b": 13,
+    "a": 1
+  },
+  "children": [
+    {
+      "name": "A股量化终端",
+      "type": "FRAME",
+      "w": 760,
+      "h": 654,
+      "layoutMode": "VERTICAL",
+      "gap": 24,
+      "p": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "r": 0,
+      "children": [
+        {
+          "name": "A股-报价与盘口",
+          "type": "FRAME",
+          "w": 760,
+          "h": 286,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 52,
+              "layoutMode": "HORIZONTAL",
+              "gap": 0,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 189,
+                  "h": 50,
+                  "layoutMode": "VERTICAL",
+                  "gap": 4,
+                  "p": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "r": 0,
+                  "children": [
+                    {
+                      "name": "Frame",
+                      "type": "FRAME",
+                      "w": 187,
+                      "h": 31,
+                      "layoutMode": "HORIZONTAL",
+                      "gap": 8,
+                      "p": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "r": 0,
+                      "children": [
+                        {
+                          "name": "贵州茅台",
+                          "type": "TEXT",
+                          "w": 104,
+                          "h": 31,
+                          "bg": {
+                            "r": 237,
+                            "g": 239,
+                            "b": 243,
+                            "a": 1
+                          },
+                          "text": "贵州茅台",
+                          "size": 26,
+                          "font": "Inter",
+                          "style": "Bold"
+                        },
+                        {
+                          "name": "Frame",
+                          "type": "FRAME",
+                          "w": 75,
+                          "h": 21,
+                          "layoutMode": "HORIZONTAL",
+                          "gap": 0,
+                          "p": [
+                            4,
+                            8,
+                            4,
+                            8
+                          ],
+                          "r": 6,
+                          "bg": {
+                            "r": 12,
+                            "g": 14,
+                            "b": 17,
+                            "a": 1
+                          },
+                          "effects": [
+                            {
+                              "type": "INNER_SHADOW",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0,
+                                "a": 0.65
+                              },
+                              "offset": {
+                                "x": 3,
+                                "y": 3
+                              },
+                              "radius": 7,
+                              "spread": 0
+                            },
+                            {
+                              "type": "INNER_SHADOW",
+                              "color": {
+                                "r": 255,
+                                "g": 255,
+                                "b": 255,
+                                "a": 0.045
+                              },
+                              "offset": {
+                                "x": -2,
+                                "y": -2
+                              },
+                              "radius": 5,
+                              "spread": 0
+                            }
+                          ],
+                          "children": [
+                            {
+                              "name": "600519.SH",
+                              "type": "TEXT",
+                              "w": 59,
+                              "h": 13,
+                              "bg": {
+                                "r": 154,
+                                "g": 163,
+                                "b": 178,
+                                "a": 1
+                              },
+                              "text": "600519.SH",
+                              "size": 11,
+                              "font": "Inter",
+                              "style": "Medium"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "沪深主板 · 白酒行业 · 核心蓝筹标杆",
+                      "type": "TEXT",
+                      "w": 189,
+                      "h": 15,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "沪深主板 · 白酒行业 · 核心蓝筹标杆",
+                      "size": 12,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 299,
+                  "h": 39,
+                  "layoutMode": "HORIZONTAL",
+                  "gap": 12,
+                  "p": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "r": 0,
+                  "children": [
+                    {
+                      "name": "¥1,458.00",
+                      "type": "TEXT",
+                      "w": 158,
+                      "h": 39,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "¥1,458.00",
+                      "size": 32,
+                      "font": "Inter",
+                      "style": "Bold"
+                    },
+                    {
+                      "name": "Frame",
+                      "type": "FRAME",
+                      "w": 129,
+                      "h": 30,
+                      "layoutMode": "HORIZONTAL",
+                      "gap": 0,
+                      "p": [
+                        6,
+                        10,
+                        6,
+                        10
+                      ],
+                      "r": 8,
+                      "bg": {
+                        "r": 229,
+                        "g": 72,
+                        "b": 77,
+                        "a": 0.1599999964237213
+                      },
+                      "stroke": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 0.3499999940395355,
+                        "w": 1
+                      },
+                      "children": [
+                        {
+                          "name": "+32.50 (+2.28%)",
+                          "type": "TEXT",
+                          "w": 107,
+                          "h": 16,
+                          "bg": {
+                            "r": 255,
+                            "g": 92,
+                            "b": 97,
+                            "a": 1
+                          },
+                          "text": "+32.50 (+2.28%)",
+                          "size": 13,
+                          "font": "Inter",
+                          "style": "Semi Bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 16,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "今开",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "今开",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "今开",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "1,430.00",
+                      "type": "TEXT",
+                      "w": 69,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "1,430.00",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "幅 -0.32%",
+                      "type": "TEXT",
+                      "w": 47,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "幅 -0.32%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "最高",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "最高",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "最高",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "1,465.00",
+                      "type": "TEXT",
+                      "w": 69,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "1,465.00",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "日内峰值",
+                      "type": "TEXT",
+                      "w": 40,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "日内峰值",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "最低",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "最低",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "最低",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "1,428.50",
+                      "type": "TEXT",
+                      "w": 68,
+                      "h": 19,
+                      "bg": {
+                        "r": 70,
+                        "g": 217,
+                        "b": 147,
+                        "a": 1
+                      },
+                      "text": "1,428.50",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "日内谷值",
+                      "type": "TEXT",
+                      "w": 40,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "日内谷值",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 16,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "昨收",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "昨收",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "昨收",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "1,425.50",
+                      "type": "TEXT",
+                      "w": 68,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "1,425.50",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "基准参考价",
+                      "type": "TEXT",
+                      "w": 50,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "基准参考价",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "成交量",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "成交量",
+                      "type": "TEXT",
+                      "w": 33,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "成交量",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "4.82万手",
+                      "type": "TEXT",
+                      "w": 67,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "4.82万手",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "放量 +18.4%",
+                      "type": "TEXT",
+                      "w": 58,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "放量 +18.4%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "成交额",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "成交额",
+                      "type": "TEXT",
+                      "w": 33,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "成交额",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "70.18亿元",
+                      "type": "TEXT",
+                      "w": 73,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "70.18亿元",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "主板第一梯队",
+                      "type": "TEXT",
+                      "w": 60,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "主板第一梯队",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A股-主力资金博弈",
+          "type": "FRAME",
+          "w": 760,
+          "h": 160,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "主力资金博弈与多空雷达",
+              "type": "TEXT",
+              "w": 165,
+              "h": 18,
+              "bg": {
+                "r": 237,
+                "g": 239,
+                "b": 243,
+                "a": 1
+              },
+              "text": "主力资金博弈与多空雷达",
+              "size": 15,
+              "font": "Inter",
+              "style": "Bold"
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 12,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "主力净流入",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "主力净流入",
+                      "type": "TEXT",
+                      "w": 55,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "主力净流入",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "+8.45 亿",
+                      "type": "TEXT",
+                      "w": 67,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "+8.45 亿",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "净占比 +12.05%",
+                      "type": "TEXT",
+                      "w": 74,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "净占比 +12.05%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "超大单(主攻)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "超大单(主攻)",
+                      "type": "TEXT",
+                      "w": 64,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "超大单(主攻)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "+5.20 亿",
+                      "type": "TEXT",
+                      "w": 66,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "+5.20 亿",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "61.5% 主动买入",
+                      "type": "TEXT",
+                      "w": 71,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "61.5% 主动买入",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "大单(跟随)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "大单(跟随)",
+                      "type": "TEXT",
+                      "w": 53,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "大单(跟随)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "+3.25 亿",
+                      "type": "TEXT",
+                      "w": 66,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "+3.25 亿",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "机构席位加仓",
+                      "type": "TEXT",
+                      "w": 60,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "机构席位加仓",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "散户/中单",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "散户/中单",
+                      "type": "TEXT",
+                      "w": 49,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "散户/中单",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "-4.12 亿",
+                      "type": "TEXT",
+                      "w": 59,
+                      "h": 19,
+                      "bg": {
+                        "r": 70,
+                        "g": 217,
+                        "b": 147,
+                        "a": 1
+                      },
+                      "text": "-4.12 亿",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "筹码沉淀趋向集中",
+                      "type": "TEXT",
+                      "w": 80,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "筹码沉淀趋向集中",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A股-量化指标",
+          "type": "FRAME",
+          "w": 760,
+          "h": 160,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "量化技术指标矩阵 (Technical Indicators)",
+              "type": "TEXT",
+              "w": 285,
+              "h": 18,
+              "bg": {
+                "r": 237,
+                "g": 239,
+                "b": 243,
+                "a": 1
+              },
+              "text": "量化技术指标矩阵 (Technical Indicators)",
+              "size": 15,
+              "font": "Inter",
+              "style": "Bold"
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 12,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "MACD (12,26,9)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "MACD (12,26,9)",
+                      "type": "TEXT",
+                      "w": 84,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "MACD (12,26,9)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "金叉形态",
+                      "type": "TEXT",
+                      "w": 64,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "金叉形态",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "DIF: 14.2 | DEA: 8.5",
+                      "type": "TEXT",
+                      "w": 90,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "DIF: 14.2 | DEA: 8.5",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "KDJ (9,3,3)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "KDJ (9,3,3)",
+                      "type": "TEXT",
+                      "w": 59,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "KDJ (9,3,3)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "超买蓄势",
+                      "type": "TEXT",
+                      "w": 64,
+                      "h": 19,
+                      "bg": {
+                        "r": 245,
+                        "g": 166,
+                        "b": 35,
+                        "a": 1
+                      },
+                      "text": "超买蓄势",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "K: 82.1 | D: 76.4",
+                      "type": "TEXT",
+                      "w": 74,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "K: 82.1 | D: 76.4",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "RSI (6,12,24)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "RSI (6,12,24)",
+                      "type": "TEXT",
+                      "w": 67,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "RSI (6,12,24)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "强劲多头",
+                      "type": "TEXT",
+                      "w": 64,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "强劲多头",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "RSI1: 68.4 | 中轴上方",
+                      "type": "TEXT",
+                      "w": 96,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "RSI1: 68.4 | 中轴上方",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "BOLL (20,2)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "BOLL (20,2)",
+                      "type": "TEXT",
+                      "w": 63,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "BOLL (20,2)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "上轨突破",
+                      "type": "TEXT",
+                      "w": 64,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "上轨突破",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "中轨支撑 1,410.00",
+                      "type": "TEXT",
+                      "w": 82,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "中轨支撑 1,410.00",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "美股量化终端",
+      "type": "FRAME",
+      "w": 760,
+      "h": 654,
+      "layoutMode": "VERTICAL",
+      "gap": 24,
+      "p": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "r": 0,
+      "children": [
+        {
+          "name": "美股-报价与盘口",
+          "type": "FRAME",
+          "w": 760,
+          "h": 286,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 52,
+              "layoutMode": "HORIZONTAL",
+              "gap": 0,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 219,
+                  "h": 50,
+                  "layoutMode": "VERTICAL",
+                  "gap": 4,
+                  "p": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "r": 0,
+                  "children": [
+                    {
+                      "name": "Frame",
+                      "type": "FRAME",
+                      "w": 212,
+                      "h": 31,
+                      "layoutMode": "HORIZONTAL",
+                      "gap": 8,
+                      "p": [
+                        0,
+                        0,
+                        0,
+                        0
+                      ],
+                      "r": 0,
+                      "children": [
+                        {
+                          "name": "苹果公司",
+                          "type": "TEXT",
+                          "w": 104,
+                          "h": 31,
+                          "bg": {
+                            "r": 237,
+                            "g": 239,
+                            "b": 243,
+                            "a": 1
+                          },
+                          "text": "苹果公司",
+                          "size": 26,
+                          "font": "Inter",
+                          "style": "Bold"
+                        },
+                        {
+                          "name": "Frame",
+                          "type": "FRAME",
+                          "w": 100,
+                          "h": 21,
+                          "layoutMode": "HORIZONTAL",
+                          "gap": 0,
+                          "p": [
+                            4,
+                            8,
+                            4,
+                            8
+                          ],
+                          "r": 6,
+                          "bg": {
+                            "r": 12,
+                            "g": 14,
+                            "b": 17,
+                            "a": 1
+                          },
+                          "effects": [
+                            {
+                              "type": "INNER_SHADOW",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0,
+                                "a": 0.65
+                              },
+                              "offset": {
+                                "x": 3,
+                                "y": 3
+                              },
+                              "radius": 7,
+                              "spread": 0
+                            },
+                            {
+                              "type": "INNER_SHADOW",
+                              "color": {
+                                "r": 255,
+                                "g": 255,
+                                "b": 255,
+                                "a": 0.045
+                              },
+                              "offset": {
+                                "x": -2,
+                                "y": -2
+                              },
+                              "radius": 5,
+                              "spread": 0
+                            }
+                          ],
+                          "children": [
+                            {
+                              "name": "AAPL · NASDAQ",
+                              "type": "TEXT",
+                              "w": 84,
+                              "h": 13,
+                              "bg": {
+                                "r": 154,
+                                "g": 163,
+                                "b": 178,
+                                "a": 1
+                              },
+                              "text": "AAPL · NASDAQ",
+                              "size": 11,
+                              "font": "Inter",
+                              "style": "Medium"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Apple Inc. · 消费电子龙头 · 标普500权重",
+                      "type": "TEXT",
+                      "w": 219,
+                      "h": 15,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "Apple Inc. · 消费电子龙头 · 标普500权重",
+                      "size": 12,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 262,
+                  "h": 39,
+                  "layoutMode": "HORIZONTAL",
+                  "gap": 12,
+                  "p": [
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "r": 0,
+                  "children": [
+                    {
+                      "name": "$228.45",
+                      "type": "TEXT",
+                      "w": 134,
+                      "h": 39,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "$228.45",
+                      "size": 32,
+                      "font": "Inter",
+                      "style": "Bold"
+                    },
+                    {
+                      "name": "Frame",
+                      "type": "FRAME",
+                      "w": 116,
+                      "h": 30,
+                      "layoutMode": "HORIZONTAL",
+                      "gap": 0,
+                      "p": [
+                        6,
+                        10,
+                        6,
+                        10
+                      ],
+                      "r": 8,
+                      "bg": {
+                        "r": 229,
+                        "g": 72,
+                        "b": 77,
+                        "a": 0.1599999964237213
+                      },
+                      "stroke": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 0.3499999940395355,
+                        "w": 1
+                      },
+                      "children": [
+                        {
+                          "name": "+3.15 (+1.40%)",
+                          "type": "TEXT",
+                          "w": 94,
+                          "h": 16,
+                          "bg": {
+                            "r": 255,
+                            "g": 92,
+                            "b": 97,
+                            "a": 1
+                          },
+                          "text": "+3.15 (+1.40%)",
+                          "size": 13,
+                          "font": "Inter",
+                          "style": "Semi Bold"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 16,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "今开",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "今开",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "今开",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$226.10",
+                      "type": "TEXT",
+                      "w": 62,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "$226.10",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "高开 +0.35%",
+                      "type": "TEXT",
+                      "w": 59,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "高开 +0.35%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "最高",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "最高",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "最高",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$229.80",
+                      "type": "TEXT",
+                      "w": 66,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "$229.80",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "近高点",
+                      "type": "TEXT",
+                      "w": 30,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "近高点",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "最低",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "最低",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "最低",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$225.40",
+                      "type": "TEXT",
+                      "w": 66,
+                      "h": 19,
+                      "bg": {
+                        "r": 70,
+                        "g": 217,
+                        "b": 147,
+                        "a": 1
+                      },
+                      "text": "$225.40",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "日内低",
+                      "type": "TEXT",
+                      "w": 30,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "日内低",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 16,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "昨收",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "昨收",
+                      "type": "TEXT",
+                      "w": 22,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "昨收",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$225.30",
+                      "type": "TEXT",
+                      "w": 66,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "$225.30",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "常规收盘",
+                      "type": "TEXT",
+                      "w": 40,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "常规收盘",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "成交量",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "成交量",
+                      "type": "TEXT",
+                      "w": 33,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "成交量",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "4,821万股",
+                      "type": "TEXT",
+                      "w": 75,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "4,821万股",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "超 30日均线",
+                      "type": "TEXT",
+                      "w": 56,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "超 30日均线",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "总市值",
+                  "type": "FRAME",
+                  "w": 226,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "总市值",
+                      "type": "TEXT",
+                      "w": 33,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "总市值",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$3.48 万亿",
+                      "type": "TEXT",
+                      "w": 83,
+                      "h": 19,
+                      "bg": {
+                        "r": 167,
+                        "g": 182,
+                        "b": 250,
+                        "a": 1
+                      },
+                      "text": "$3.48 万亿",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "全球第一梯队",
+                      "type": "TEXT",
+                      "w": 60,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "全球第一梯队",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "美股-估值与52周",
+          "type": "FRAME",
+          "w": 760,
+          "h": 160,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "估值倍数与 52 周极值 (Valuation & 52-W Range)",
+              "type": "TEXT",
+              "w": 340,
+              "h": 18,
+              "bg": {
+                "r": 237,
+                "g": 239,
+                "b": 243,
+                "a": 1
+              },
+              "text": "估值倍数与 52 周极值 (Valuation & 52-W Range)",
+              "size": 15,
+              "font": "Inter",
+              "style": "Bold"
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 12,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "市盈率 (P/E TTM)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "市盈率 (P/E TTM)",
+                      "type": "TEXT",
+                      "w": 90,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "市盈率 (P/E TTM)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "34.2x",
+                      "type": "TEXT",
+                      "w": 45,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "34.2x",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "行业中位数 28.5x",
+                      "type": "TEXT",
+                      "w": 79,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "行业中位数 28.5x",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "市销率 (P/S)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "市销率 (P/S)",
+                      "type": "TEXT",
+                      "w": 63,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "市销率 (P/S)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "8.9x",
+                      "type": "TEXT",
+                      "w": 34,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "8.9x",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "软件服务权重溢价",
+                      "type": "TEXT",
+                      "w": 80,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "软件服务权重溢价",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "股息率 (Dividend)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "股息率 (Dividend)",
+                      "type": "TEXT",
+                      "w": 91,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "股息率 (Dividend)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "0.45%",
+                      "type": "TEXT",
+                      "w": 50,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "0.45%",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "连续12年增长",
+                      "type": "TEXT",
+                      "w": 61,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "连续12年增长",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "52 周最高/最低",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "52 周最高/最低",
+                      "type": "TEXT",
+                      "w": 76,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "52 周最高/最低",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$237.2 / $164.1",
+                      "type": "TEXT",
+                      "w": 117,
+                      "h": 19,
+                      "bg": {
+                        "r": 245,
+                        "g": 166,
+                        "b": 35,
+                        "a": 1
+                      },
+                      "text": "$237.2 / $164.1",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "距新高 -3.7%",
+                      "type": "TEXT",
+                      "w": 60,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "距新高 -3.7%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "美股-官方披露与财报",
+          "type": "FRAME",
+          "w": 760,
+          "h": 160,
+          "layoutMode": "VERTICAL",
+          "gap": 16,
+          "p": [
+            24,
+            24,
+            24,
+            24
+          ],
+          "r": 18,
+          "bg": {
+            "r": 16,
+            "g": 18,
+            "b": 22,
+            "a": 1
+          },
+          "stroke": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.05999999865889549,
+            "w": 1
+          },
+          "effects": [
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.045
+              },
+              "offset": {
+                "x": -6,
+                "y": -6
+              },
+              "radius": 16,
+              "spread": 0
+            },
+            {
+              "type": "DROP_SHADOW",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.65
+              },
+              "offset": {
+                "x": 8,
+                "y": 8
+              },
+              "radius": 20,
+              "spread": 0
+            }
+          ],
+          "children": [
+            {
+              "name": "官方披露与财报时间轴 (SEC Intelligence)",
+              "type": "TEXT",
+              "w": 286,
+              "h": 18,
+              "bg": {
+                "r": 237,
+                "g": 239,
+                "b": 243,
+                "a": 1
+              },
+              "text": "官方披露与财报时间轴 (SEC Intelligence)",
+              "size": 15,
+              "font": "Inter",
+              "style": "Bold"
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 712,
+              "h": 76,
+              "layoutMode": "HORIZONTAL",
+              "gap": 12,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "Q3 实际每股收益 (EPS)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "Q3 实际每股收益 (EPS)",
+                      "type": "TEXT",
+                      "w": 117,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "Q3 实际每股收益 (EPS)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$1.40",
+                      "type": "TEXT",
+                      "w": 44,
+                      "h": 19,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "$1.40",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "超预期 +4.48% (预 $1.34)",
+                      "type": "TEXT",
+                      "w": 118,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "超预期 +4.48% (预 $1.34)",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "营收 (Revenue)",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "营收 (Revenue)",
+                      "type": "TEXT",
+                      "w": 79,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "营收 (Revenue)",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "$85.78 B",
+                      "type": "TEXT",
+                      "w": 69,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "$85.78 B",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "同比增长 +4.87%",
+                      "type": "TEXT",
+                      "w": 79,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "同比增长 +4.87%",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "最新 SEC 披露",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "最新 SEC 披露",
+                      "type": "TEXT",
+                      "w": 72,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "最新 SEC 披露",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "10-Q 季报",
+                      "type": "TEXT",
+                      "w": 75,
+                      "h": 19,
+                      "bg": {
+                        "r": 70,
+                        "g": 217,
+                        "b": 147,
+                        "a": 1
+                      },
+                      "text": "10-Q 季报",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "2026-08-02 归档",
+                      "type": "TEXT",
+                      "w": 82,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "2026-08-02 归档",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                },
+                {
+                  "name": "下期财报日",
+                  "type": "FRAME",
+                  "w": 169,
+                  "h": 76,
+                  "layoutMode": "VERTICAL",
+                  "gap": 3,
+                  "p": [
+                    10,
+                    14,
+                    10,
+                    14
+                  ],
+                  "r": 10,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.800000011920929,
+                    "w": 1
+                  },
+                  "effects": [
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 0.65
+                      },
+                      "offset": {
+                        "x": 3,
+                        "y": 3
+                      },
+                      "radius": 7,
+                      "spread": 0
+                    },
+                    {
+                      "type": "INNER_SHADOW",
+                      "color": {
+                        "r": 255,
+                        "g": 255,
+                        "b": 255,
+                        "a": 0.045
+                      },
+                      "offset": {
+                        "x": -2,
+                        "y": -2
+                      },
+                      "radius": 5,
+                      "spread": 0
+                    }
+                  ],
+                  "children": [
+                    {
+                      "name": "下期财报日",
+                      "type": "TEXT",
+                      "w": 55,
+                      "h": 13,
+                      "bg": {
+                        "r": 154,
+                        "g": 163,
+                        "b": 178,
+                        "a": 1
+                      },
+                      "text": "下期财报日",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    },
+                    {
+                      "name": "2026-10-31",
+                      "type": "TEXT",
+                      "w": 93,
+                      "h": 19,
+                      "bg": {
+                        "r": 237,
+                        "g": 239,
+                        "b": 243,
+                        "a": 1
+                      },
+                      "text": "2026-10-31",
+                      "size": 16,
+                      "font": "Inter",
+                      "style": "Semi Bold"
+                    },
+                    {
+                      "name": "盘后发布 (估计)",
+                      "type": "TEXT",
+                      "w": 71,
+                      "h": 12,
+                      "bg": {
+                        "r": 124,
+                        "g": 133,
+                        "b": 149,
+                        "a": 1
+                      },
+                      "text": "盘后发布 (估计)",
+                      "size": 10,
+                      "font": "Inter",
+                      "style": "Regular"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "港股量化终端",
+      "type": "FRAME",
+      "w": 760,
+      "h": 555,
+      "layoutMode": "VERTICAL",
+      "gap": 16,
+      "p": [
+        24,
+        24,
+        24,
+        24
+      ],
+      "r": 18,
+      "bg": {
+        "r": 16,
+        "g": 18,
+        "b": 22,
+        "a": 1
+      },
+      "stroke": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 0.07999999821186066,
+        "w": 1
+      },
+      "effects": [
+        {
+          "type": "DROP_SHADOW",
+          "color": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.045
+          },
+          "offset": {
+            "x": -6,
+            "y": -6
+          },
+          "radius": 16,
+          "spread": 0
+        },
+        {
+          "type": "DROP_SHADOW",
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.65
+          },
+          "offset": {
+            "x": 8,
+            "y": 8
+          },
+          "radius": 20,
+          "spread": 0
+        }
+      ],
+      "children": [
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "w": 712,
+          "h": 50,
+          "layoutMode": "HORIZONTAL",
+          "gap": 0,
+          "p": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "r": 0,
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 236,
+              "h": 27,
+              "layoutMode": "HORIZONTAL",
+              "gap": 10,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "腾讯控股",
+                  "type": "TEXT",
+                  "w": 88,
+                  "h": 27,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "腾讯控股",
+                  "size": 22,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 138,
+                  "h": 21,
+                  "layoutMode": "HORIZONTAL",
+                  "gap": 0,
+                  "p": [
+                    3,
+                    8,
+                    3,
+                    8
+                  ],
+                  "r": 6,
+                  "bg": {
+                    "r": 12,
+                    "g": 14,
+                    "b": 17,
+                    "a": 1
+                  },
+                  "stroke": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.07999999821186066,
+                    "w": 1
+                  },
+                  "children": [
+                    {
+                      "name": "00700 · HKEX 港股主板",
+                      "type": "TEXT",
+                      "w": 120,
+                      "h": 13,
+                      "bg": {
+                        "r": 167,
+                        "g": 182,
+                        "b": 250,
+                        "a": 1
+                      },
+                      "text": "00700 · HKEX 港股主板",
+                      "size": 11,
+                      "font": "Inter",
+                      "style": "Medium"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 303,
+              "h": 36,
+              "layoutMode": "HORIZONTAL",
+              "gap": 12,
+              "p": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "r": 0,
+              "children": [
+                {
+                  "name": "HK$382.40",
+                  "type": "TEXT",
+                  "w": 171,
+                  "h": 36,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "HK$382.40",
+                  "size": 30,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "Frame",
+                  "type": "FRAME",
+                  "w": 120,
+                  "h": 28,
+                  "layoutMode": "HORIZONTAL",
+                  "gap": 0,
+                  "p": [
+                    5,
+                    10,
+                    5,
+                    10
+                  ],
+                  "r": 999,
+                  "bg": {
+                    "r": 255,
+                    "g": 92,
+                    "b": 97,
+                    "a": 0.15000000596046448
+                  },
+                  "stroke": {
+                    "r": 255,
+                    "g": 92,
+                    "b": 97,
+                    "a": 0.3499999940395355,
+                    "w": 1
+                  },
+                  "children": [
+                    {
+                      "name": "+8.20 (+2.19%)",
+                      "type": "TEXT",
+                      "w": 98,
+                      "h": 16,
+                      "bg": {
+                        "r": 255,
+                        "g": 92,
+                        "b": 97,
+                        "a": 1
+                      },
+                      "text": "+8.20 (+2.19%)",
+                      "size": 13,
+                      "font": "Inter",
+                      "style": "Bold"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "日内核心盘口 (HKEX REALTIME)",
+          "type": "TEXT",
+          "w": 166,
+          "h": 13,
+          "bg": {
+            "r": 167,
+            "g": 182,
+            "b": 250,
+            "a": 1
+          },
+          "text": "日内核心盘口 (HKEX REALTIME)",
+          "size": 11,
+          "font": "Inter",
+          "style": "Bold"
+        },
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "w": 712,
+          "h": 76,
+          "layoutMode": "HORIZONTAL",
+          "gap": 17,
+          "p": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "r": 0,
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "今开",
+                  "type": "TEXT",
+                  "w": 22,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "今开",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$378.00",
+                  "type": "TEXT",
+                  "w": 85,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "HK$378.00",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "昨日打平",
+                  "type": "TEXT",
+                  "w": 40,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "昨日打平",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "最高",
+                  "type": "TEXT",
+                  "w": 22,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "最高",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$385.60",
+                  "type": "TEXT",
+                  "w": 85,
+                  "h": 18,
+                  "bg": {
+                    "r": 255,
+                    "g": 92,
+                    "b": 97,
+                    "a": 1
+                  },
+                  "text": "HK$385.60",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "触及日内阻力",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "触及日内阻力",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "最低",
+                  "type": "TEXT",
+                  "w": 22,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "最低",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$376.40",
+                  "type": "TEXT",
+                  "w": 85,
+                  "h": 18,
+                  "bg": {
+                    "r": 70,
+                    "g": 217,
+                    "b": 147,
+                    "a": 1
+                  },
+                  "text": "HK$376.40",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "开盘探底企稳",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "开盘探底企稳",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "w": 712,
+          "h": 76,
+          "layoutMode": "HORIZONTAL",
+          "gap": 17,
+          "p": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "r": 0,
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "昨收",
+                  "type": "TEXT",
+                  "w": 22,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "昨收",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$374.20",
+                  "type": "TEXT",
+                  "w": 84,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "HK$374.20",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "基准价",
+                  "type": "TEXT",
+                  "w": 30,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "基准价",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "成交量",
+                  "type": "TEXT",
+                  "w": 33,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "成交量",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "2,485.6万股",
+                  "type": "TEXT",
+                  "w": 88,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "2,485.6万股",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "较昨日放量 18%",
+                  "type": "TEXT",
+                  "w": 72,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "较昨日放量 18%",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 226,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                14,
+                10,
+                14
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "成交额",
+                  "type": "TEXT",
+                  "w": 33,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "成交额",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$94.68亿",
+                  "type": "TEXT",
+                  "w": 90,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "HK$94.68亿",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "港股成交榜第 1 名",
+                  "type": "TEXT",
+                  "w": 81,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "港股成交榜第 1 名",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "港股特色高股息与估值矩阵 (DIVIDEND & VALUATION)",
+          "type": "TEXT",
+          "w": 274,
+          "h": 13,
+          "bg": {
+            "r": 245,
+            "g": 166,
+            "b": 35,
+            "a": 1
+          },
+          "text": "港股特色高股息与估值矩阵 (DIVIDEND & VALUATION)",
+          "size": 11,
+          "font": "Inter",
+          "style": "Bold"
+        },
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "w": 712,
+          "h": 76,
+          "layoutMode": "HORIZONTAL",
+          "gap": 12,
+          "p": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "r": 0,
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 168,
+                "g": 85,
+                "b": 247,
+                "a": 0.07999999821186066
+              },
+              "stroke": {
+                "r": 168,
+                "g": 85,
+                "b": 247,
+                "a": 0.30000001192092896,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "股息率 (TTM)",
+                  "type": "TEXT",
+                  "w": 69,
+                  "h": 13,
+                  "bg": {
+                    "r": 216,
+                    "g": 180,
+                    "b": 254,
+                    "a": 1
+                  },
+                  "text": "股息率 (TTM)",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "4.85%",
+                  "type": "TEXT",
+                  "w": 47,
+                  "h": 18,
+                  "bg": {
+                    "r": 192,
+                    "g": 132,
+                    "b": 252,
+                    "a": 1
+                  },
+                  "text": "4.85%",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "现金分红保障",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "现金分红保障",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "市盈率 (PE)",
+                  "type": "TEXT",
+                  "w": 58,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "市盈率 (PE)",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "18.4x",
+                  "type": "TEXT",
+                  "w": 41,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "18.4x",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "近5年32%分位",
+                  "type": "TEXT",
+                  "w": 67,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "近5年32%分位",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "每股收益 EPS",
+                  "type": "TEXT",
+                  "w": 68,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "每股收益 EPS",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "HK$18.65",
+                  "type": "TEXT",
+                  "w": 72,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "HK$18.65",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "年报经审核",
+                  "type": "TEXT",
+                  "w": 50,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "年报经审核",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "日内振幅",
+                  "type": "TEXT",
+                  "w": 44,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "日内振幅",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "2.46%",
+                  "type": "TEXT",
+                  "w": 47,
+                  "h": 18,
+                  "bg": {
+                    "r": 245,
+                    "g": 166,
+                    "b": 35,
+                    "a": 1
+                  },
+                  "text": "2.46%",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "低波稳健区间",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "低波稳健区间",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "港股量化指标诊断 (QUANT INDICATORS)",
+          "type": "TEXT",
+          "w": 211,
+          "h": 13,
+          "bg": {
+            "r": 70,
+            "g": 217,
+            "b": 147,
+            "a": 1
+          },
+          "text": "港股量化指标诊断 (QUANT INDICATORS)",
+          "size": 11,
+          "font": "Inter",
+          "style": "Bold"
+        },
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "w": 712,
+          "h": 76,
+          "layoutMode": "HORIZONTAL",
+          "gap": 12,
+          "p": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "r": 0,
+          "children": [
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "MACD (12,26,9)",
+                  "type": "TEXT",
+                  "w": 84,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "MACD (12,26,9)",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "金叉放量",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 18,
+                  "bg": {
+                    "r": 255,
+                    "g": 92,
+                    "b": 97,
+                    "a": 1
+                  },
+                  "text": "金叉放量",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "DIF: 2.45 DEA: 1.88",
+                  "type": "TEXT",
+                  "w": 90,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "DIF: 2.45 DEA: 1.88",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "KDJ (9,3,3)",
+                  "type": "TEXT",
+                  "w": 59,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "KDJ (9,3,3)",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "超买强势",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 18,
+                  "bg": {
+                    "r": 245,
+                    "g": 166,
+                    "b": 35,
+                    "a": 1
+                  },
+                  "text": "超买强势",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "K: 82.5 D: 78.1",
+                  "type": "TEXT",
+                  "w": 67,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "K: 82.5 D: 78.1",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "RSI (14)",
+                  "type": "TEXT",
+                  "w": 41,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "RSI (14)",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "64.8",
+                  "type": "TEXT",
+                  "w": 34,
+                  "h": 18,
+                  "bg": {
+                    "r": 237,
+                    "g": 239,
+                    "b": 243,
+                    "a": 1
+                  },
+                  "text": "64.8",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "多头进攻区间",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "多头进攻区间",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            },
+            {
+              "name": "Frame",
+              "type": "FRAME",
+              "w": 169,
+              "h": 76,
+              "layoutMode": "VERTICAL",
+              "gap": 4,
+              "p": [
+                10,
+                12,
+                10,
+                12
+              ],
+              "r": 10,
+              "bg": {
+                "r": 12,
+                "g": 14,
+                "b": 17,
+                "a": 1
+              },
+              "stroke": {
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 0.05000000074505806,
+                "w": 1
+              },
+              "effects": [
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.045
+                  },
+                  "offset": {
+                    "x": -2,
+                    "y": -2
+                  },
+                  "radius": 5,
+                  "spread": 0
+                },
+                {
+                  "type": "INNER_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.62
+                  },
+                  "offset": {
+                    "x": 3,
+                    "y": 3
+                  },
+                  "radius": 7,
+                  "spread": 0
+                }
+              ],
+              "children": [
+                {
+                  "name": "BOLL 布林带",
+                  "type": "TEXT",
+                  "w": 64,
+                  "h": 13,
+                  "bg": {
+                    "r": 154,
+                    "g": 163,
+                    "b": 178,
+                    "a": 1
+                  },
+                  "text": "BOLL 布林带",
+                  "size": 11,
+                  "font": "Inter",
+                  "style": "Medium"
+                },
+                {
+                  "name": "逼近上轨",
+                  "type": "TEXT",
+                  "w": 60,
+                  "h": 18,
+                  "bg": {
+                    "r": 167,
+                    "g": 182,
+                    "b": 250,
+                    "a": 1
+                  },
+                  "text": "逼近上轨",
+                  "size": 15,
+                  "font": "Inter",
+                  "style": "Bold"
+                },
+                {
+                  "name": "压力位: HK$388.5",
+                  "type": "TEXT",
+                  "w": 84,
+                  "h": 12,
+                  "bg": {
+                    "r": 124,
+                    "g": 133,
+                    "b": 149,
+                    "a": 1
+                  },
+                  "text": "压力位: HK$388.5",
+                  "size": 10,
+                  "font": "Inter",
+                  "style": "Regular"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

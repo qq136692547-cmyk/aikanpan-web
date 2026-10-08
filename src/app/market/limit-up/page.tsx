@@ -2,6 +2,7 @@ import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/componen
 import { api } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -55,6 +56,13 @@ export default async function LimitUpPage() {
             url="https://aikanpan.top/market/limit-up/"
             datePublished={`${dashboard.index.date}T15:30:00+08:00`}
             dateModified={updatedAt}
+          />
+          <BreadcrumbSchema
+            items={[
+              { name: "首页", path: "/" },
+              { name: "市场总览", path: "/market/" },
+              { name: "涨停复盘", path: "/market/limit-up/" },
+            ]}
           />
         </>
       }

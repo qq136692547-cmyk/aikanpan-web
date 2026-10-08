@@ -131,8 +131,8 @@ export function HkDailyReview() {
 
       <AIEvidencePanel evidence={data.evidence} />
 
-      <p className="mt-4 pt-3 text-[11px] text-neo-dim">
-        ⚠ 本内容由 AI 生成，不构成投资建议
+      <p className="mt-4 pt-3 text-[11px] text-neo-mid leading-relaxed">
+        ⚠ 本内容由 AI 自动生成，可能存在错误；数据来自第三方公开接口，可能存在延迟。本内容不构成证券投资建议，据此操作盈亏自负。
       </p>
     </div>
   );

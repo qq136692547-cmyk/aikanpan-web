@@ -23,9 +23,9 @@ import { Footer } from "@/components/layout/footer";
 import { api } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
 import { useAuth } from "@/lib/auth";
-import { isAlipayOrderPaid } from "@/lib/payment";
+import { isAlipayOrderPaid, isAlipayOrderRefused, resolveAlipayOrderStatus } from "@/lib/payment";
 
-type PaymentConfirmation = "idle" | "checking" | "success" | "pending" | "error";
+type PaymentConfirmation = "idle" | "checking" | "success" | "pending" | "error" | "refused";
 
 export function UpgradePageClient({
   market = "cn",
@@ -73,7 +73,20 @@ export function UpgradePageClient({
         const res = await api.checkAlipayOrderStatus(outTradeNo);
         if (cancelled) return;
 
-        if (res && res.ok && isAlipayOrderPaid(res.data.status)) {
+        // 后端 status 是归一化值（PAID / REFUSED），必须优先看 raw_status 才能拿到真实交易状态
+        const orderStatus = resolveAlipayOrderStatus(res?.data?.status, res?.data?.raw_status);
+
+        // 已实付但被拒发（体验卡每支付宝账户限购一次）→ 立即停止轮询并明确告知退款去向
+        if (res && res.ok && isAlipayOrderRefused(orderStatus)) {
+          setPaymentConfirmation("refused");
+          setPaymentMessage(
+            res.data.message ||
+              "该笔款项已收到，但本次未能开通。我们会尽快为您办理原路退回，您也可联系客服协助处理。"
+          );
+          return;
+        }
+
+        if (res && res.ok && isAlipayOrderPaid(orderStatus)) {
           setPaymentConfirmation("success");
           setPaymentMessage("您的 Pro 会员权益已成功开通！");
           if (res.data.recovery_code) {
@@ -117,6 +130,10 @@ export function UpgradePageClient({
 
   const handleAlipay = async (plan: "trial" | "monthly" | "quarterly" = selectedPlan) => {
     setPayError("");
+    if (!isRealUser) {
+      setPayError("下单前需先绑定邮箱或手机号，否则付款后激活码无法绑定到可恢复的账号。请先在用户中心完成绑定。");
+      return;
+    }
     setPaying(true);
     try {
       const res = await api.createAlipayOrder(plan);
@@ -202,22 +219,28 @@ export function UpgradePageClient({
   };
 
   const isPro = membership?.plan === "pro";
+  const freeDailyLimit = membership?.ai_daily_limit ?? 5;
+  const freeRemaining = Math.max(0, freeDailyLimit - (membership?.ai_used_today ?? 0));
   const paymentTone =
     paymentConfirmation === "success"
       ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-      : paymentConfirmation === "error"
-        ? "border-rose-500/30 bg-rose-500/10 text-rose-400"
-        : paymentConfirmation === "pending"
-          ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-          : "border-blue-500/30 bg-blue-500/10 text-blue-400";
+      : paymentConfirmation === "refused"
+        ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+        : paymentConfirmation === "error"
+          ? "border-rose-500/30 bg-rose-500/10 text-rose-400"
+          : paymentConfirmation === "pending"
+            ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+            : "border-blue-500/30 bg-blue-500/10 text-blue-400";
   const paymentTitle =
     paymentConfirmation === "success"
       ? "支付成功，Pro 会员已自动激活！"
-      : paymentConfirmation === "error"
-        ? "暂时无法确认支付结果"
-        : paymentConfirmation === "pending"
-          ? "支付结果确认中"
-          : "正在确认支付结果";
+      : paymentConfirmation === "refused"
+        ? "本次未能开通，费用将原路退回"
+        : paymentConfirmation === "error"
+          ? "暂时无法确认支付结果"
+          : paymentConfirmation === "pending"
+            ? "支付结果确认中"
+            : "正在确认支付结果";
   const paymentDescription =
     paymentConfirmation === "success"
       ? "您的有效时长已实时生效，欢迎体验深度量化 AI 研判。"
@@ -243,6 +266,9 @@ export function UpgradePageClient({
                 )}
                 {paymentConfirmation === "error" && (
                   <TriangleAlert className="h-6 w-6 shrink-0" />
+                )}
+                {paymentConfirmation === "refused" && (
+                  <MessageCircle className="h-6 w-6 shrink-0" />
                 )}
                 <div>
                   <p className="font-semibold text-sm">{paymentTitle}</p>
@@ -276,7 +302,7 @@ export function UpgradePageClient({
                   )}
                 </div>
                 <div className="mt-2.5 text-[11px] text-neutral-400 leading-relaxed">
-                  <p>• <b>重装系统或换电脑防丢保障</b>：如清理了浏览器缓存或更换设备，在本页面凭上述<b>【恢复码】</b>或支付宝账单里的<b>【商户订单号：{outTradeNo || "见支付宝账单"}】</b>均可1秒自助找回并恢复！</p>
+                  <p>• <b>重装系统或换电脑防丢保障</b>：如清理了浏览器缓存或更换设备，在本页面凭上述<b>【恢复码】</b>或支付宝账单里的<b>【商户订单号：{outTradeNo || "见支付宝账单"}】</b>均可自助找回并恢复。</p>
                   <p className="mt-1">• <b>多端同步</b>：您也可前往 <Link href="/account" className="text-emerald-400 underline hover:text-emerald-300">用户中心绑定手机号</Link>，实现手机与多台电脑永久云同步。</p>
                 </div>
               </div>
@@ -292,7 +318,7 @@ export function UpgradePageClient({
             升级爱看盘 Pro 会员
           </h1>
           <p className="mx-auto mt-2 max-w-xl text-xs text-neutral-400 sm:text-sm">
-            解锁三地市场专属深度 AI 研判、多空评级、量化雷达与主力资金监控
+            连续使用三地市场 AI 复盘、个股诊断、批量评分与持仓研究
           </p>
         </div>
 
@@ -305,21 +331,21 @@ export function UpgradePageClient({
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">当前状态：</span>
+                  <span className="text-sm font-semibold text-white">当前：</span>
                   {isPro ? (
                     <span className="inline-flex items-center gap-1 rounded bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-400">
                       <Crown className="h-3 w-3" /> Pro 会员 (有效)
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 rounded bg-neutral-800 px-2 py-0.5 text-xs font-medium text-neutral-400">
-                      免费体验模式
+                      免费版 · 今日剩余 {freeRemaining} 次
                     </span>
                   )}
                 </div>
                 <p className="mt-1 text-xs text-neutral-400">
                   {isPro && membership?.expires_at
-                    ? `会员有效期至：${membership.expires_at.replace("T", " ").slice(0, 16)} · 每日 500 次有效调用`
-                    : "免费用户每日享 10 次深度 AI 研判额度，升级后立即扩充至每日 500 次"}
+                    ? `会员有效期至：${membership.expires_at.replace("T", " ").slice(0, 16)} · 每日可反复使用 AI 分析（上限 500 次）`
+                    : "每日 5 次 AI 分析，可用于复盘、个股诊断与批量评分"}
                 </p>
               </div>
             </div>
@@ -345,37 +371,73 @@ export function UpgradePageClient({
           </div>
         </div>
 
+        {payError && (
+          <div className="mt-5 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-left">
+            <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0 text-rose-400" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-rose-300">无法发起本次下单</p>
+              <p className="mt-1 text-xs leading-relaxed text-neutral-300">{payError}</p>
+              {!isRealUser && (
+                <Link
+                  href="/account"
+                  className="mt-2 inline-flex items-center rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-1.5 text-xs font-medium text-rose-200 transition hover:bg-rose-500/20"
+                >
+                  前往用户中心绑定
+                </Link>
+              )}
+            </div>
+            <button
+              onClick={() => setPayError("")}
+              className="inline-flex min-h-11 items-center px-2 text-xs underline hover:opacity-80 cursor-pointer"
+            >
+              关闭
+            </button>
+          </div>
+        )}
+
+        <div className="mt-5 flex items-start gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+          <div>
+            <p className="text-sm font-semibold text-emerald-300">支付宝付款后自动开通，所有时长卡权益一致</p>
+            <p className="mt-1 text-xs leading-relaxed text-neutral-300">
+              支付宝扫码付款后系统自动开通会员权益并同时发放恢复码，不自动续费、不自动扣款。购买前请先绑定邮箱或手机号。
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-neutral-300">
+              开通保障：若付款后会员权益未自动点亮，可先用支付宝商户订单号在上方自助找回；仍无法开通的，请通过微信 denglio0 或邮箱 qq136692547@gmail.com 提供订单号，我们会核实订单与权益状态后处理。售后条款见<Link href="/terms/" className="text-neutral-300 underline hover:text-white">《用户协议》售后章节</Link>。
+            </p>
+          </div>
+        </div>
+
         {/* 定价卡片 */}
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* 1. 7天体验卡 */}
           <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
             <div>
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-white">7天限时体验</h2>
+                <h2 className="text-base font-bold text-white">7 天体验卡</h2>
                 <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
-                  新客特惠
+                  每位用户限购 1 次
                 </span>
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-2xl font-extrabold text-white font-mono">¥1.9</span>
-                <span className="text-xs text-neutral-400">/ 7天</span>
-                <span className="ml-1.5 text-xs text-neutral-500 line-through font-mono">¥19</span>
+                <span className="text-xs text-neutral-400">/ 7 天</span>
               </div>
               <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-                完整体验 5 个交易日实盘量化 + 周末深度复盘，零决策门槛。
+                先用 7 天体验完整 Pro 权益，覆盖交易日与周末复盘场景。
               </p>
               <ul className="mt-4 space-y-2 text-xs text-neutral-300">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                  <span>每日 500 次有效深度 AI 研判</span>
+                  <span>AI 复盘、个股诊断与批量评分</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                  <span>解锁持仓精准买卖与止损策略</span>
+                  <span>持仓结构诊断与风险提示</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                  <span>三地市场全量化指标</span>
+                  <span>A 股、港股与美股均可使用</span>
                 </li>
               </ul>
             </div>
@@ -387,7 +449,7 @@ export function UpgradePageClient({
                   className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2.5 text-xs font-medium text-neutral-500 cursor-not-allowed opacity-80"
                 >
                   <CheckCircle2 className="h-3.5 w-3.5 text-neutral-500" />
-                  已享受新客特惠 (限购1次)
+                  已使用体验卡（每位用户限购 1 次）
                 </button>
               ) : (
                 <button
@@ -396,59 +458,16 @@ export function UpgradePageClient({
                   className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
                 >
                   {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-emerald-400" />}
-                  ¥1.9 体验 7 天
+                  ¥1.9 开通 7 天
                 </button>
               )}
             </div>
           </div>
 
-          {/* 2. 月度会员 */}
-          <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
-            <div>
-              <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-white">月度会员</h2>
-                <span className="text-xs text-neutral-400">30天标准版</span>
-              </div>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-2xl font-extrabold text-white font-mono">¥19</span>
-                <span className="text-xs text-neutral-400">/ 月</span>
-                <span className="ml-1 text-[11px] text-neutral-500 font-mono">约0.63元/天</span>
-              </div>
-              <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-                高频量化看盘标配，全月随时复盘与策略跟踪。
-              </p>
-              <ul className="mt-4 space-y-2 text-xs text-neutral-300">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-                  <span>包含体验卡全部权益</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-                  <span>自然语言实时盯盘策略</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-                  <span>个股投资论点与跟踪看板</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-neutral-800/80">
-              <button
-                onClick={() => handleAlipay("monthly")}
-                disabled={paying}
-                className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
-              >
-                {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-blue-400" />}
-                ¥19.0 开通月卡
-              </button>
-            </div>
-          </div>
-
-          {/* 3. 季度会员 (爆款推荐) */}
+          {/* 2. 季度会员（C 位主推） */}
           <div className="relative flex flex-col justify-between rounded-2xl border-2 border-amber-500/60 bg-gradient-to-b from-amber-950/20 to-neutral-900/80 p-5 shadow-xl shadow-amber-500/5 scale-[1.02]">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-0.5 text-[10px] font-bold text-black tracking-wide uppercase shadow">
-              🔥 性价比之王 · 80%用户的选择
+              推荐方案
             </div>
 
             <div>
@@ -463,24 +482,24 @@ export function UpgradePageClient({
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-3xl font-extrabold text-amber-400 font-mono">¥49</span>
-                <span className="text-xs text-neutral-400">/ 季 (90天)</span>
+                <span className="text-xs text-neutral-400">/ 季 (90 天)</span>
                 <span className="ml-1 text-[11px] text-neutral-500 line-through font-mono">¥57</span>
               </div>
               <p className="mt-2 text-xs text-neutral-300 leading-relaxed">
-                打满整整一个上市公司财报披露季与大波段行情，折合仅 16.3 元/月。
+                90 天连续使用，适合连续三个月的复盘与盯盘。
               </p>
               <ul className="mt-4 space-y-2 text-xs text-neutral-200 font-medium">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                  <span>90 天全量高阶量化与研报数据</span>
+                  <span>AI 复盘、个股诊断与批量评分</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                  <span>财报季异动雷达与主力席位</span>
+                  <span>自然语言盯盘提醒与触发记录</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-amber-400 shrink-0" />
-                  <span>优先客服响应与技术支持</span>
+                  <span>持仓研究与研究记录</span>
                 </li>
               </ul>
             </div>
@@ -492,43 +511,89 @@ export function UpgradePageClient({
                 className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-2.5 text-xs font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
               >
                 {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 fill-black" />}
-                ¥49.0 极速开通季度卡
+                ¥49 开通 90 天
               </button>
             </div>
           </div>
 
-          {/* 4. 年度直通特权 (买3送1) */}
+          {/* 更多方案：月卡 / 年卡（折叠） */}
+          <details className="sm:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/40">
+            <summary className="cursor-pointer select-none px-5 py-4 text-sm font-semibold text-neutral-300 transition hover:text-white">
+              更多方案（30 天 / 365 天）
+            </summary>
+            <div className="grid grid-cols-1 gap-5 px-5 pb-5 sm:grid-cols-2">
+
+          {/* 更多方案 #1：月度会员 */}
+          <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm hover:border-neutral-700 transition">
+            <div>
+              <div className="flex items-center justify-between">
+                <h2 className="text-base font-bold text-white">月度会员</h2>
+                <span className="text-xs text-neutral-400">30 天标准版</span>
+              </div>
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-2xl font-extrabold text-white font-mono">¥19</span>
+                <span className="text-xs text-neutral-400">/ 月</span>
+                <span className="ml-1 text-[11px] text-neutral-500 font-mono">约 0.63 元/天</span>
+              </div>
+              <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
+                适合按月使用 AI 复盘、个股诊断与盯盘提醒。
+              </p>
+              <ul className="mt-4 space-y-2 text-xs text-neutral-300">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                  <span>包含体验卡全部权益</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                  <span>自然语言盯盘提醒</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                  <span>个股研究笔记与跟踪看板</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-neutral-800/80">
+              <button
+                onClick={() => handleAlipay("monthly")}
+                disabled={paying}
+                className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-neutral-800 px-3 py-2.5 text-xs font-semibold text-white hover:bg-neutral-700 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
+              >
+                {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-blue-400" />}
+                ¥19 开通 30 天
+              </button>
+            </div>
+          </div>
+
+          {/* 更多方案 #2：年度时长方案（3 笔季卡累计） */}
           <div className="relative flex flex-col justify-between rounded-2xl border border-purple-500/40 bg-gradient-to-b from-purple-950/20 to-neutral-900/60 p-5 shadow-sm hover:border-purple-500/60 transition">
             <div>
               <div className="flex items-center justify-between">
                 <h2 className="text-base font-bold text-white flex items-center gap-1.5">
                   <Crown className="h-4 w-4 text-purple-400" />
-                  年度直通特权
+                  年度时长方案
                 </h2>
                 <span className="rounded bg-purple-500/20 px-2 py-0.5 text-[10px] font-semibold text-purple-300">
-                  买3赠1 (限时)
+                  累计 365 天
                 </span>
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-2xl font-extrabold text-white font-mono">¥49</span>
                 <span className="text-xs text-neutral-400">× 3 笔</span>
-                <span className="ml-1 text-[11px] text-purple-400 font-medium font-mono">折合12.2元/月</span>
+                <span className="ml-1 text-[11px] text-purple-400 font-medium font-mono">折合约 12.3 元/月</span>
               </div>
               <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-                24小时内连续充值 3 季（实付147元），系统<b>自动额外赠送第 4 季（免费补赠95天）</b>，直通365天年卡！
+                24 小时内完成 3 笔季卡支付（实付 ¥147），系统自动补赠 95 天，累计 365 天。
               </p>
               <ul className="mt-4 space-y-2 text-xs text-neutral-300">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
-                  <span>立省 81 元，享全年 365 天特权</span>
+                  <span>365 天 Pro 权益，均不自动续费</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
-                  <span>单笔≤50元合规通道，安全秒到账</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-purple-400 shrink-0" />
-                  <span>自动合并延长，无需人工找客服</span>
+                  <span>3 笔季卡支付后自动合并时长</span>
                 </li>
               </ul>
             </div>
@@ -540,8 +605,26 @@ export function UpgradePageClient({
                 className="flex min-h-10 w-full items-center justify-center gap-1.5 rounded-xl bg-purple-600/30 border border-purple-500/50 px-3 py-2.5 text-xs font-semibold text-purple-200 hover:bg-purple-600/40 active:scale-[0.99] disabled:opacity-50 transition cursor-pointer"
               >
                 {paying ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5 text-purple-400" />}
-                充值季卡启动直通车
+                ¥49 开通 90 天
               </button>
+            </div>
+          </div>
+            </div>
+          </details>
+        </div>
+
+        {/* 售后入口 */}
+        <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/40 p-4">
+          <div className="flex items-start gap-2">
+            <HelpCircle className="h-4 w-4 shrink-0 text-neutral-400 mt-0.5" />
+            <div className="text-xs leading-relaxed text-neutral-400">
+              <p className="font-semibold text-neutral-300">付款后有问题怎么办？</p>
+              <p className="mt-1">
+                ① 权益未自动点亮：先在上方「输入激活码兑换 / 换电脑自助找回」里输入恢复码或支付宝商户订单号自助恢复；
+              </p>
+              <p className="mt-1">
+                ② 仍无法开通：请通过微信 denglio0 或邮箱 qq136692547@gmail.com 提供支付宝商户订单号，我们会核实订单与权益状态后处理，详见<Link href="/terms/" className="text-neutral-300 underline hover:text-white">《用户协议》售后章节</Link>。
+              </p>
             </div>
           </div>
         </div>
@@ -593,7 +676,7 @@ export function UpgradePageClient({
                 <button
                   type="submit"
                   disabled={recovering || !recoverInput.trim()}
-                  className="min-h-11 rounded-lg bg-blue-600 px-5 text-xs font-semibold text-white shadow hover:bg-blue-500 disabled:opacity-50 transition shrink-0 cursor-pointer"
+                  className="min-h-11 rounded-lg border border-neutral-700 bg-neutral-900 px-5 text-xs font-medium text-neutral-300 transition hover:border-neutral-500 hover:text-white disabled:opacity-50 shrink-0 cursor-pointer"
                 >
                   {recovering ? "正在核验订单..." : "立即找回会员"}
                 </button>
