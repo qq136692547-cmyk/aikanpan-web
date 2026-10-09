@@ -238,7 +238,7 @@ export function AISharePosterModal({
     ctx.fillText("【已持仓视角数据】", 58, 638);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
-    const holderAdv = report?.holders_advice || "暂无针对已持仓情形的结构化结论，请自行查证并以交易所披露为准。";
+    const holderAdv = report?.holders_advice || "暂无针对已持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
     ctx.fillText(holderAdv.slice(0, 45), 58, 660);
     if (holderAdv.length > 45) {
       ctx.fillText(holderAdv.slice(45, 90), 58, 680);
@@ -250,7 +250,7 @@ export function AISharePosterModal({
     ctx.fillText("【未持仓视角数据】", 58, 718);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
-    const watcherAdv = report?.watchers_advice || "暂无针对未持仓情形的结构化结论，请自行查证并以交易所披露为准。";
+    const watcherAdv = report?.watchers_advice || "暂无针对未持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
     ctx.fillText(watcherAdv.slice(0, 45), 58, 740);
     if (watcherAdv.length > 45) {
       ctx.fillText(watcherAdv.slice(45, 90), 58, 760);

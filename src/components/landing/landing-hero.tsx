@@ -137,7 +137,7 @@ export function LandingHero() {
         <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 md:grid-cols-3">
           {[
             { icon: "📊", title: "实时行情", desc: "三大指数、29 个行业板块、涨跌停实时统计，盘中数据 30 秒刷新" },
-            { icon: "🤖", title: "AI 诊断", desc: "输入股票代码，AI 秒出诊断报告：趋势研判、风险提示、资金分析" },
+            { icon: "🤖", title: "AI 诊断", desc: "输入股票代码，AI 秒出诊断报告：趋势特征、风险提示、资金分析" },
             { icon: "📝", title: "每日复盘", desc: "AI 自动生成每日复盘报告，含市场评分、强势行业、资讯研报" },
             { icon: "🔔", title: "智能盯盘", desc: "自然语言创建盯盘任务，页面打开时轮询触发记录，并支持浏览器通知" },
             { icon: "🔍", title: "快速搜索", desc: "热门股票一键直达，代码搜索跳转个股详情页" },

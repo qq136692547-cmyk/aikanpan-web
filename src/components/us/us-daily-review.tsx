@@ -55,7 +55,7 @@ export function getUsDailyReviewTakeaways(content: string) {
         block.length >= 16,
     ) || getUsDailyReviewExcerpt(body);
   const riskPattern = /风险|警惕|留意|关注|下跌|回调|压力|波动|不确定|谨慎|利空/;
-  const actionPattern = /操作|建议|不宜|保持|控制|等待|持有|空仓|仓位|介入|观望|回踩|止盈|止损/;
+  const actionPattern = /关注|观察|留意|等待|观望|回踩|波动|承压|承接|轮动/;
   const riskText =
     blocks.find((block) => block !== marketText && riskPattern.test(block)) || "";
   const actionText =
@@ -66,7 +66,7 @@ export function getUsDailyReviewTakeaways(content: string) {
   return [
     { label: "市场驱动", text: marketText },
     { label: "主要风险", text: riskText },
-    { label: "操作倾向", text: actionText },
+    { label: "关注要点", text: actionText },
   ].filter((item) => item.text);
 }
 

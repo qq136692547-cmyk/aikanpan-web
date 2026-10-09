@@ -57,7 +57,7 @@ export function HomeContent() {
             <tbody className="divide-y divide-white/5">
               <tr><td className="py-2 pr-4">实时行情</td><td className="py-2 px-4">✓</td><td className="py-2 px-4">✓</td></tr>
               <tr><td className="py-2 pr-4">研究记录与导出</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td></tr>
-              <tr><td className="py-2 pr-4">AI 复盘 / 个股诊断 / 批量评分</td><td className="py-2 px-4">每天可完成 5 次 AI 分析</td><td className="py-2 px-4">每日可反复复盘、诊断与批量评分（上限 500 次）</td></tr>
+              <tr><td className="py-2 pr-4">AI 复盘 / 个股诊断 / 批量评分</td><td className="py-2 px-4">每天可完成 3 次 AI 分析</td><td className="py-2 px-4">每日可反复复盘、诊断与批量评分（上限 500 次）</td></tr>
               <tr><td className="py-2 pr-4">智能盯盘提醒</td><td className="py-2 px-4">浏览器通知 / 可选短信</td><td className="py-2 px-4">浏览器通知 / 可选短信</td></tr>
               <tr><td className="py-2 pr-4">Pro 时长卡</td><td className="py-2 px-4">—</td><td className="py-2 px-4">7 天 / 30 天 / 90 天，不自动续费</td></tr>
             </tbody>

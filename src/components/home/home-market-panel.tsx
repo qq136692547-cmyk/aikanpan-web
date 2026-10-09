@@ -250,7 +250,7 @@ function UsTemperatureCard({
             ))}
           </div>
         ) : (
-          <p className="text-[11px] leading-relaxed text-neo-dim">AI 正在提炼市场驱动、主要风险与操作倾向。</p>
+          <p className="text-[11px] leading-relaxed text-neo-dim">AI 正在提炼市场驱动、主要风险与关注要点。</p>
         )}
       </div>
     </div>

@@ -69,8 +69,8 @@ function parseScoreAndStatus(content: string): {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
   const statusMatch = content.match(/\*\*状态\*\*[:：]\s*(.+)/);
   let bias: string | null = null;
-  if (/偏多|强烈看多|看多|建议买入|超配/.test(content)) bias = "看多";
-  else if (/偏空|强烈看空|看空|建议卖出|低配/.test(content)) bias = "看空";
+  if (/偏多|强烈看多|看多|建议买入|超配/.test(content)) bias = "数据偏强";
+  else if (/偏空|强烈看空|看空|建议卖出|低配/.test(content)) bias = "数据偏弱";
   else if (/中性|震荡|观望/.test(content)) bias = "中性";
 
   return {
@@ -115,17 +115,17 @@ const getScoreTheme = (score: number) => {
   };
 };
 
-/** 多空倾向样式 */
+/** 数据倾向样式 */
 const getBiasBadge = (bias: string | null | undefined, score: number | null) => {
-  const b = bias || (score !== null ? (score >= 7 ? "看多" : score <= 4 ? "看空" : "中性") : "中性");
-  if (b.includes("多")) {
+  const b = bias || (score !== null ? (score >= 7 ? "数据偏强" : score <= 4 ? "数据偏弱" : "中性") : "中性");
+  if (b.includes("强")) {
     return {
       text: b,
       icon: TrendingUp,
       color: "text-neo-up bg-neo-up/10 border-neo-up/20",
     };
   }
-  if (b.includes("空")) {
+  if (b.includes("弱")) {
     return {
       text: b,
       icon: TrendingDown,
@@ -406,7 +406,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         <div className="sm:col-span-8 rounded-xl neo-card p-3.5 flex flex-col justify-between">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-neo-ink">
             <Info size={14} className="text-neo-primary" />
-            <span>核心逻辑判断</span>
+            <span>核心数据特征</span>
           </div>
           <div className="my-2">
             <p className="text-sm leading-relaxed text-neo-ink font-normal">
@@ -416,7 +416,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
           </div>
           {report?.trend && report?.one_sentence && (
             <div className="mt-1 rounded-md bg-[var(--neo-surface-inset)] px-2.5 py-1.5 text-xs text-neo-dim">
-              <span className="font-medium text-neo-mid">短中期研判：</span>
+              <span className="font-medium text-neo-mid">短中期数据特征：</span>
               {report.trend}
             </div>
           )}

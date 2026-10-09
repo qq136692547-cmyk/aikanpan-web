@@ -257,7 +257,7 @@ export function UpgradePageClient({
             : "正在确认支付结果";
   const paymentDescription =
     paymentConfirmation === "success"
-      ? "您的有效时长已实时生效，欢迎体验深度量化 AI 研判。"
+      ? "您的有效时长已实时生效，欢迎体验深度量化数据分析。"
       : paymentMessage || "请勿重复付款，通常几秒内即可完成确认。";
 
   return (
@@ -359,7 +359,7 @@ export function UpgradePageClient({
                 <p className="mt-1 text-xs text-neutral-400">
                   {isPro && membership?.expires_at
                     ? `会员有效期至：${membership.expires_at.replace("T", " ").slice(0, 16)} · 每日可反复使用 AI 分析（上限 500 次）`
-                    : "每日 5 次 AI 分析，可用于复盘、个股诊断与批量评分"}
+                    : "每日 3 次 AI 分析，可用于复盘、个股诊断与批量评分"}
                 </p>
               </div>
             </div>

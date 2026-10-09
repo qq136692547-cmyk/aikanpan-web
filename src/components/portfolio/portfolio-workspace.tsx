@@ -416,8 +416,8 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="truncate font-medium text-neo-ink">{p.name}</span>
                     <span className="text-[10px] text-neo-dim">{p.code}</span>
-                    {p.pnl_pct <= -10 && <span className="rounded bg-[var(--neo-down-soft)] px-1.5 py-0.5 text-[10px] text-neo-down">止损</span>}
-                    {p.pnl_pct >= 20 && <span className="rounded bg-[var(--neo-up-soft)] px-1.5 py-0.5 text-[10px] text-neo-up">止盈</span>}
+                    {p.pnl_pct <= -10 && <span className="rounded bg-[var(--neo-down-soft)] px-1.5 py-0.5 text-[10px] text-neo-down">浮亏≥10%</span>}
+                    {p.pnl_pct >= 20 && <span className="rounded bg-[var(--neo-up-soft)] px-1.5 py-0.5 text-[10px] text-neo-up">浮盈≥20%</span>}
                   </div>
                   <div className="mt-1.5 grid grid-cols-2 gap-1.5 text-[11px]">
                     <span className="text-neo-dim">股数 <b className="text-neo-ink">{p.shares}</b></span>
@@ -453,8 +453,8 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
                     <span className="min-w-0">
                       <span className="flex flex-wrap items-center gap-1.5">
                         <span className="truncate font-medium text-neo-ink">{p.name}</span>
-                        {p.pnl_pct <= -10 && <span className="rounded bg-[var(--neo-down-soft)] px-1.5 py-0.5 text-[10px] text-neo-down">止损</span>}
-                        {p.pnl_pct >= 20 && <span className="rounded bg-[var(--neo-up-soft)] px-1.5 py-0.5 text-[10px] text-neo-up">止盈</span>}
+                        {p.pnl_pct <= -10 && <span className="rounded bg-[var(--neo-down-soft)] px-1.5 py-0.5 text-[10px] text-neo-down">浮亏≥10%</span>}
+                        {p.pnl_pct >= 20 && <span className="rounded bg-[var(--neo-up-soft)] px-1.5 py-0.5 text-[10px] text-neo-up">浮盈≥20%</span>}
                       </span>
                       <span className="block text-[10px] text-neo-dim">{p.code}</span>
                     </span>
