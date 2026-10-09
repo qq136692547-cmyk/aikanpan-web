@@ -36,7 +36,7 @@ export function isAlipayOrderPaid(status: string | null | undefined): boolean {
   return status === "TRADE_SUCCESS" || status === "TRADE_FINISHED" || status === "PAID";
 }
 
-/** 已实付但被拒发（体验卡每支付宝账户限购一次），需走原路退回 */
+/** 已实付但被拒发（限购一次 / 年卡权益已达成后的重复购买），需走原路退回 */
 export function isAlipayOrderRefused(status: string | null | undefined): boolean {
   return status === "REFUSED_TRIAL_LIMIT" || status === "REFUSED";
 }

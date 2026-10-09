@@ -77,7 +77,7 @@ export function UpgradePageClient({
         // 后端 status 是归一化值（PAID / REFUSED），必须优先看 raw_status 才能拿到真实交易状态
         const orderStatus = resolveAlipayOrderStatus(res?.data?.status, res?.data?.raw_status);
 
-        // 已实付但被拒发（体验卡每支付宝账户限购一次）→ 立即停止轮询并明确告知退款去向
+        // 已实付但被拒发（限购一次 / 年卡权益已达成后的重复购买）→ 立即停止轮询并明确告知退款去向
         if (res && res.ok && isAlipayOrderRefused(orderStatus)) {
           setPaymentConfirmation("refused");
           setPaymentMessage(
@@ -334,6 +334,27 @@ export function UpgradePageClient({
           <p className="mx-auto mt-2 max-w-xl text-xs text-neutral-400 sm:text-sm">
             连续使用三地市场 AI 复盘、个股诊断、批量评分与持仓研究
           </p>
+
+          {/* 站点可信信息：决策当场可见（备案可核验 / 资质边界 / 真人客服） */}
+          <div className="mx-auto mt-3.5 flex max-w-2xl flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[11px] text-neutral-400">
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 transition hover:text-neutral-200"
+            >
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+              渝ICP备2026014729号-1 · 工信部官网可核验
+            </a>
+            <span className="inline-flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5 text-neutral-500" />
+              无证券投资咨询资格 · 仅提供行情数据与统计研究
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <HelpCircle className="h-3.5 w-3.5 text-neutral-500" />
+              真人客服：微信 denglio0
+            </span>
+          </div>
         </div>
 
         {/* 当前账户状态栏 */}
@@ -419,6 +440,9 @@ export function UpgradePageClient({
             <p className="mt-1 text-xs leading-relaxed text-neutral-300">
               开通保障：若付款后会员权益未自动点亮，可先用支付宝商户订单号在上方自助找回；仍无法开通的，请通过微信 denglio0 或邮箱 qq136692547@gmail.com 提供订单号，我们会核实订单与权益状态后处理。售后条款见<Link href="/terms/" className="text-neutral-300 underline hover:text-white">《用户协议》售后章节</Link>。
             </p>
+            <p className="mt-1.5 text-[11px] leading-relaxed text-neutral-400">
+              服务边界：行情数据取自第三方公开接口，可能存在延迟或缺失；AI 内容由大语言模型生成，可能存在错误。本站不提供买卖建议、不承诺收益，据此操作盈亏自负。
+            </p>
           </div>
         </div>
 
@@ -501,7 +525,7 @@ export function UpgradePageClient({
               <ul className="mt-4 space-y-2 text-xs text-neutral-300">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-                  <span>包含体验卡全部权益</span>
+                  <span>包含 Pro 全部 AI 分析权益</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-3.5 w-3.5 text-blue-400 shrink-0" />
