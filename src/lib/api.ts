@@ -752,13 +752,23 @@ export class ApiClient {
     return this.request<AlertSettings>("/alerts/settings", { cache: "no-store" as RequestCache });
   }
 
+  /** 盯盘触发未读数 */
+  getAlertUnreadCount() {
+    return this.request<{ count: number }>("/alerts/unread-count", { cache: "no-store" as RequestCache });
+  }
+
+  /** 全部触发记录标记已读 */
+  markAllAlertsRead() {
+    return this.request<{ marked: number }>("/alerts/read-all", { method: "POST" });
+  }
+
   
   getUsFilings(symbol: string, limit = 12) {
     return this.request<UsFilings>(`/us/stocks/${encodeURIComponent(symbol)}/filings?limit=${limit}`);
   }
 
 /** 更新通知设置 */
-  updateAlertSettings(data: { browser_enabled?: boolean; sms_enabled?: boolean }) {
+  updateAlertSettings(data: { browser_enabled?: boolean; sms_enabled?: boolean; email_enabled?: boolean }) {
     return this.request<AlertSettings>("/alerts/settings", { method: "PATCH", body: JSON.stringify(data) });
   }
 }
@@ -1583,6 +1593,7 @@ export interface AlertItem {
   created_at: string;
   last_check?: string;
   triggered_at?: string;
+  read_at?: string | null;
 }
 
 /** 盯盘触发历史 */
@@ -1605,8 +1616,11 @@ export interface AlertHistoryItem {
 export interface AlertSettings {
   browser_enabled: boolean;
   sms_enabled: boolean;
+  email_enabled?: boolean;
   updated_at: string;
   phone_masked: string;
   phone_verified: boolean;
+  email_masked?: string;
+  email_verified?: boolean;
 }
 

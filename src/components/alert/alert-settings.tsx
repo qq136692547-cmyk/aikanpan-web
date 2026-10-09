@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import useSWR from "swr";
-import { Bell, MessageSquareText, Smartphone } from "lucide-react";
+import { Bell, Mail, MessageSquareText, Smartphone } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { ErrorState } from "@/components/ui/state";
@@ -68,7 +68,22 @@ export function AlertSettings() {
     }
   }
 
+  async function toggleEmail(value: boolean) {
+    setSaving(true);
+    setMessage("");
+    try {
+      await api.updateAlertSettings({ email_enabled: value });
+      await mutate();
+      setMessage(value ? "邮件通知已开启" : "邮件通知已关闭");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "设置保存失败");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   const phoneVerified = !!settings?.phone_verified;
+  const emailVerified = !!settings?.email_verified;
 
   return (
     <section className="neo-card p-5">
@@ -120,9 +135,32 @@ export function AlertSettings() {
             <span className="h-5 w-9 rounded-full bg-[var(--neo-surface-inset)] transition-colors peer-checked:bg-neo-primary disabled:opacity-40" />
           </label>
         </div>
+
+        <div className="neo-inset flex items-center gap-3 px-4 py-3">
+          <div className="neo-card-sm flex h-9 w-9 shrink-0 items-center justify-center" style={{ borderRadius: 10 }}>
+            <Mail size={16} style={{ color: emailVerified ? "var(--neo-primary)" : "var(--neo-dim)" }} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[12px] font-medium text-neo-ink">邮件通知</div>
+            <div className="truncate text-[10px] text-neo-dim">
+              {emailVerified ? `绑定邮箱 ${settings?.email_masked || ""}，触发时发送` : "绑定邮箱后可开启"}
+            </div>
+          </div>
+          <label className="relative inline-flex shrink-0 cursor-pointer items-center">
+            <input
+              type="checkbox"
+              checked={!!settings?.email_enabled}
+              onChange={(e) => toggleEmail(e.target.checked)}
+              disabled={saving || !emailVerified}
+              className="peer sr-only"
+              aria-label="邮件通知开关"
+            />
+            <span className="h-5 w-9 rounded-full bg-[var(--neo-surface-inset)] transition-colors peer-checked:bg-neo-primary disabled:opacity-40" />
+          </label>
+        </div>
       </div>
       <p className="mt-3 text-[11px] leading-relaxed text-neo-dim">
-        浏览器通知依赖当前页面保持打开；离开页面后如需提醒，请绑定手机号并开启短信通知。
+        服务端每 30 秒持续监控，关闭页面也照常运行；浏览器通知仅页面打开时弹出，离开页面请开启邮件或短信通知。
       </p>
       {message && <p className="mt-2 text-[11px] text-neo-mid">{message}</p>}
     </section>

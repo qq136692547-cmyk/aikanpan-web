@@ -57,6 +57,12 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     { refreshInterval: 15000 }
   );
   const { data: settings } = useSWR(ready && user ? ["alert-settings", user.user_id] : null, () => api.getAlertSettings(), { refreshInterval: 30000 });
+  const { data: unreadData, mutate: mutateUnread } = useSWR(
+    ready && user ? ["alert-unread", user.user_id] : null,
+    () => api.getAlertUnreadCount(),
+    { refreshInterval: 30000 }
+  );
+  const unreadCount = unreadData?.count || 0;
 
   const alerts = alertData?.alerts || [];
   const history = useMemo(() => historyData?.alerts || [], [historyData]);
@@ -104,6 +110,16 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     }
   }
 
+  async function handleMarkAllRead() {
+    try {
+      await api.markAllAlertsRead();
+      await mutateUnread();
+      mutateHistory();
+    } catch (e: unknown) {
+      console.error(e);
+    }
+  }
+
   if (authLoading || isLoading) {
     return (
       <div className="space-y-3">
@@ -124,10 +140,21 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
 
   return (
     <div className="space-y-4">
+      {unreadCount > 0 && (
+        <div className="neo-card-sm flex flex-wrap items-center justify-between gap-2 border border-rose-200/60 bg-rose-50/60 px-4 py-3">
+          <span className="text-xs font-medium text-rose-600">你有 {unreadCount} 条新的盯盘触发记录</span>
+          <button
+            onClick={handleMarkAllRead}
+            className="inline-flex min-h-11 items-center rounded-md px-2 py-1 text-xs font-medium text-rose-600 hover:text-rose-700"
+          >
+            全部标记已读
+          </button>
+        </div>
+      )}
       <div>
         <div className="mb-3 flex items-center gap-2">
           <h3 className="text-sm font-semibold text-neo-ink">盯盘任务{marketLabel ? ` · ${marketLabel}` : ""}</h3>
-          <span className="text-[10px] font-medium text-neo-dim">页面轮询</span>
+          <span className="text-[10px] font-medium text-neo-dim">服务端监控中</span>
           {alerts.length > 0 && <span className="text-xs text-neo-dim">({alerts.length})</span>}
         </div>
         {alerts.length === 0 ? (
@@ -224,12 +251,12 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
           <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">{market === "us" ? "输入「苹果跌到180」，AI 自动解析股票代码、条件和阈值" : market === "hk" ? "输入「腾讯跌到400」，AI 自动解析股票代码、条件和阈值" : "输入「茅台跌破1500」，AI 自动解析股票代码、条件和阈值"}</p>
         </div>
         <div className="neo-inset p-4">
-          <h3 className="text-[12px] font-medium text-neo-ink">页面轮询</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">页面打开时每 15 秒刷新触发记录；关闭页面后浏览器通知停止</p>
+          <h3 className="text-[12px] font-medium text-neo-ink">服务端持续监控</h3>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">服务端每 30 秒检查一次行情，关闭页面也照常运行；触发后可经邮件 / 短信触达</p>
         </div>
         <div className="neo-inset p-4">
           <h3 className="text-[12px] font-medium text-neo-ink">多渠道提醒</h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">绑定手机号并开启短信后，可由服务端发送短信；触发记录保存在历史中</p>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-mid">绑定邮箱开启邮件、绑定手机号开启短信后，即使不在站内也能收到触发通知</p>
         </div>
       </section>
     </div>
