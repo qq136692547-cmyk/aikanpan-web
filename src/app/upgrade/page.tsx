@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { UpgradePageClient } from "./upgrade-client";
+import UpgradeGate from "./upgrade-gate";
 
 export const metadata: Metadata = {
   title: "升级 Pro",
@@ -25,7 +25,7 @@ export default async function UpgradePage({
   const market = marketParam === "us" ? "us" : "cn";
 
   return (
-    <UpgradePageClient
+    <UpgradeGate
       market={market}
       paySuccess={paySuccessParam === "1"}
       outTradeNo={outTradeNoParam || ""}
