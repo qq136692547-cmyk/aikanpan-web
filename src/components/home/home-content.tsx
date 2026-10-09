@@ -91,7 +91,7 @@ export function HomeContent() {
           <div>
             <h3 className="text-sm font-medium text-neo-ink">爱看盘收费吗？</h3>
             <p className="mt-1 text-xs leading-relaxed text-neo-dim">
-              基础功能免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：7 天体验卡 ¥1.9、30 天 ¥19、季卡 ¥49/90 天；年卡累计方案实付 ¥147/365 天，均不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
+              基础功能免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：30 天 ¥19.9、季卡 ¥49/90 天；48 小时内购满 3 笔季卡（实付 ¥147）自动升级 365 天年卡，均不自动续费。购买前需绑定邮箱或手机号。可在<Link href="/about/" className="text-brand hover:opacity-80">关于页</Link>查看说明。
             </p>
           </div>
         </div>

@@ -42,7 +42,7 @@ const faqSchema = {
     { "@type": "Question", name: "爱看盘的数据可靠吗？", acceptedAnswer: { "@type": "Answer", text: "行情数据来自东方财富、新浪财经、Finnhub、EODHD 等公开接口，直接呈现原始数值。AI 内容由大语言模型生成，仅供参考，不构成投资建议。" } },
     { "@type": "Question", name: "爱看盘支持美股吗？", acceptedAnswer: { "@type": "Answer", text: "支持。美股覆盖真实行情、K 线、新闻、AI 解读、自选、持仓、交易流水、盯盘提醒、财报盈利数据与研究台。" } },
     { "@type": "Question", name: "盯盘提醒怎么用？", acceptedAnswer: { "@type": "Answer", text: "在盯盘页用自然语言输入条件，例如「贵州茅台跌破 1600 就提醒我」，系统自动解析并记录触发历史。页面打开时每 15 秒刷新并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后还可开启短信提醒。" } },
-    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：7 天体验卡 ¥1.9、30 天 ¥19、季卡 ¥49/90 天；年卡累计方案实付 ¥147/365 天，均不自动续费。购买前需绑定邮箱或手机号。" } },
+    { "@type": "Question", name: "爱看盘收费吗？", acceptedAnswer: { "@type": "Answer", text: "基础功能可免费使用；AI 高频功能可升级 Pro 时长卡，支付宝付款后自动开通：30 天 ¥19.9、季卡 ¥49/90 天；48 小时内购满 3 笔季卡（实付 ¥147）自动升级 365 天年卡，均不自动续费。购买前需绑定邮箱或手机号。" } },
   ],
 };
 

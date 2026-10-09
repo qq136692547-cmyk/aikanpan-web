@@ -481,7 +481,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                 className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-[11px] font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
               >
                 <Zap size={12} className="fill-black" />
-                <span>¥1.90 开通 7 天数据权限</span>
+                <span>开通 Pro 解锁</span>
               </Link>
             </div>
           </div>
@@ -563,7 +563,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                       className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
                     >
                       <Zap size={12} className="fill-black" />
-                      <span>¥1.9 开通 7 天数据权限</span>
+                      <span>开通 Pro 解锁</span>
                     </Link>
                   </div>
                 )}
@@ -591,7 +591,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
                       className="mt-2 inline-flex items-center justify-center gap-1 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1.5 text-[11px] font-bold text-black shadow hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
                     >
                       <Zap size={12} className="fill-black" />
-                      <span>¥1.9 开通 7 天数据权限</span>
+                      <span>开通 Pro 解锁</span>
                     </Link>
                   </div>
                 )}
