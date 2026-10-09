@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 import { api, type AlertCondition, type AlertParseResult } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { type MarketScope } from "@/lib/market";
+import { EmailBind } from "@/components/alert/email-bind";
 
 const EXAMPLES = [
   "帮我盯着茅台跌破1500",
@@ -81,6 +83,12 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+  const [needEmail, setNeedEmail] = useState(false);
+  // 与 AlertSettings 共用同一个 SWR key，命中缓存、不产生额外请求
+  const { data: notifySettings } = useSWR(
+    user ? ["alert-settings", user.user_id] : null,
+    () => api.getAlertSettings()
+  );
 
   async function handleParse() {
     if (!ready) {
@@ -155,6 +163,8 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
         note: parsed?.raw_text || text || undefined,
       });
       setSuccess(`已创建盯盘任务：${code}（${valid.length} 个条件）`);
+      // 未绑定邮箱时，建完立即给出绑定入口：否则服务端触发了也送不到
+      setNeedEmail(!notifySettings?.email_verified);
       setParsed(null);
       setConditions([]);
       setCodeInput("");
@@ -225,6 +235,15 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
       {success && (
         <div className="mt-3 neo-up-soft rounded-md px-3 py-2 text-xs text-neo-up">
           ✅ {success}
+        </div>
+      )}
+
+      {needEmail && (
+        <div className="mt-3">
+          <p className="mb-1 text-[11px] text-neo-dim">
+            提醒要发到邮箱才收得到——离开页面也照样提醒。
+          </p>
+          <EmailBind onBound={() => setNeedEmail(false)} />
         </div>
       )}
 

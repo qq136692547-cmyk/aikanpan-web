@@ -6,6 +6,7 @@ import { Bell, Mail, MessageSquareText, Smartphone } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { ErrorState } from "@/components/ui/state";
+import { EmailBind } from "@/components/alert/email-bind";
 
 export function AlertSettings() {
   const { user, loading: authLoading } = useAuth();
@@ -143,7 +144,7 @@ export function AlertSettings() {
           <div className="min-w-0 flex-1">
             <div className="text-[12px] font-medium text-neo-ink">邮件通知</div>
             <div className="truncate text-[10px] text-neo-dim">
-              {emailVerified ? `绑定邮箱 ${settings?.email_masked || ""}，触发时发送` : "绑定邮箱后可开启"}
+              {emailVerified ? `绑定邮箱 ${settings?.email_masked || ""}，触发时发送` : "绑定邮箱后自动开启"}
             </div>
           </div>
           <label className="relative inline-flex shrink-0 cursor-pointer items-center">
@@ -159,6 +160,7 @@ export function AlertSettings() {
           </label>
         </div>
       </div>
+      {!emailVerified && <EmailBind onBound={() => mutate()} />}
       <p className="mt-3 text-[11px] leading-relaxed text-neo-dim">
         服务端每 30 秒持续监控，关闭页面也照常运行；浏览器通知仅页面打开时弹出，离开页面请开启邮件或短信通知。
       </p>
