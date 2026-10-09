@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import useSWR from "swr";
 import { RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api, type AIReview } from "@/lib/api";
+import { isAiQuotaExhaustedError } from "@/lib/ai-quota";
 import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
 
 const US_DAILY_REVIEW_KEY = "us-daily-review";
@@ -125,7 +127,15 @@ export function UsDailyReview() {
           <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">美股 AI 复盘</span>
           <button onClick={() => mutate()} className="rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
         </div>
-        <p className="mt-3 text-[13px] text-neo-down">{error instanceof Error ? error.message : "美股复盘请求失败"}</p>
+        <p className="mt-3 text-[13px] text-neo-down">
+          {error instanceof Error ? error.message : "美股复盘请求失败"}
+          {/* P0-2: 额度耗尽时给稳定的升级入口（错误码优先，文案回退） */}
+          {isAiQuotaExhaustedError(error) && (
+            <Link href="/upgrade/" className="ml-1 text-neo-primary underline hover:text-neo-primary">
+              升级 Pro 解锁更多额度
+            </Link>
+          )}
+        </p>
       </div>
     );
   }

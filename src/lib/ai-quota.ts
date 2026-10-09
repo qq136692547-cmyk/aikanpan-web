@@ -41,3 +41,18 @@ export function shouldReportAiQuotaHit(
   if (!isAiQuotaPath(path)) return false;
   return !isTransportQuotaResponse(headers);
 }
+
+/** 后端会员 AI 额度耗尽的错误码（经 429 响应头 X-Error-Code 透传，api.ts 挂到 err.code） */
+export const AI_QUOTA_EXHAUSTED_CODE = "ai_quota_exhausted";
+
+/**
+ * P0-2: 判定前端捕获的 Error 是否为「会员 AI 额度耗尽」，供错误分支渲染升级 CTA。
+ * 优先匹配后端错误码（稳定契约），回退匹配 detail 文案（兼容未带码的旧响应）。
+ */
+export function isAiQuotaExhaustedError(error: unknown): boolean {
+  if (!error) return false;
+  const code = (error as Error & { code?: string }).code;
+  if (code === AI_QUOTA_EXHAUSTED_CODE) return true;
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("升级 Pro");
+}

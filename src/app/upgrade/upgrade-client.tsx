@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import {
   Crown,
@@ -21,6 +21,7 @@ import {
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { api } from "@/lib/api";
+import { reportConversionEvent } from "@/lib/analytics";
 import { useMembership } from "@/lib/membership";
 import { useAuth } from "@/lib/auth";
 import { isAlipayOrderPaid, isAlipayOrderRefused, resolveAlipayOrderStatus } from "@/lib/payment";
@@ -89,6 +90,7 @@ export function UpgradePageClient({
         if (res && res.ok && isAlipayOrderPaid(orderStatus)) {
           setPaymentConfirmation("success");
           setPaymentMessage("您的 Pro 会员权益已成功开通！");
+          reportConversionEvent("activation_success", { source: "pay_return" });
           if (res.data.recovery_code) {
             setRecoveryCode(res.data.recovery_code);
           }
@@ -126,9 +128,19 @@ export function UpgradePageClient({
     };
   }, [paySuccess, outTradeNo, refresh]);
 
+  // P0-1: 转化漏斗埋点 —— 付费页曝光，每次挂载只发一次
+  const exposureFiredRef = useRef(false);
+  useEffect(() => {
+    if (exposureFiredRef.current) return;
+    exposureFiredRef.current = true;
+    reportConversionEvent("upgrade_exposure");
+  }, []);
+
   const [selectedPlan, setSelectedPlan] = useState<"trial" | "monthly" | "quarterly">("quarterly");
 
   const handleAlipay = async (plan: "trial" | "monthly" | "quarterly" = selectedPlan) => {
+    // P0-1: 点击即报（在登录门槛判定之前——点击意愿本身是漏斗信号）
+    reportConversionEvent("upgrade_click", { source: plan });
     setPayError("");
     if (!isRealUser) {
       setPayError("下单前需先绑定邮箱或手机号，否则付款后激活码无法绑定到可恢复的账号。请先在用户中心完成绑定。");
@@ -165,6 +177,7 @@ export function UpgradePageClient({
           type: "ok",
           text: res.message || "会员资格已成功恢复至当前设备！",
         });
+        reportConversionEvent("activation_success", { source: "recover" });
         if (res.recovery_code) {
           setRecoveryCode(res.recovery_code);
         }
@@ -197,6 +210,7 @@ export function UpgradePageClient({
     try {
       await api.activateMembership(code.trim().toUpperCase());
       setActivateMsg({ type: "ok", text: "激活成功！Pro 会员时长已生效。" });
+      reportConversionEvent("activation_success", { source: "activate_code" });
       setCode("");
       refresh();
     } catch (error: unknown) {

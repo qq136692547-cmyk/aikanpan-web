@@ -118,7 +118,12 @@ export class ApiClient {
         const errorJson = JSON.parse(errorText);
         detail = errorJson?.detail || errorJson?.message || "";
       } catch {}
-      throw new Error(detail || `API ${res.status}: ${res.statusText} — ${url}`);
+      const err = new Error(detail || `API ${res.status}: ${res.statusText} — ${url}`);
+      // P0-2: 透传后端错误码（如 ai_quota_exhausted）到 err.code，
+      // 前端错误分支用 isAiQuotaExhaustedError() 判定，替代文案字符串匹配。
+      const errCode = res.headers.get("X-Error-Code");
+      if (errCode) (err as Error & { code?: string }).code = errCode;
+      throw err;
     }
 
     return res.json() as Promise<T>;
