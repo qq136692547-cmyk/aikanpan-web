@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bot, ExternalLink, FileText, RefreshCw, Activity, BarChart3, LineChart, Newspaper, DollarSign } from "lucide-react";
+import { Bot, ExternalLink, FileText, RefreshCw, Activity, BarChart3, LineChart, Newspaper, DollarSign, BellRing } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 import { Sparkline } from "@/components/chart/sparkline";
 import { UsWatchlistButton } from "./us-watchlist-button";
+import { reportConversionEvent } from "@/lib/analytics";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
@@ -145,6 +147,15 @@ export function UsStockDetail({ symbol, initialData }: { symbol: string; initial
 
           <div className="flex items-center gap-3">
             <UsWatchlistButton code={symbol} name={usNameZh(quote?.name, symbol)} />
+            <Link
+              href={`/alerts/?market=us&code=${encodeURIComponent(symbol)}`}
+              onClick={() => reportConversionEvent("feature_use", { source: "alert_entry_stock_us" })}
+              className="neo-chip flex min-h-11 items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-neo-primary"
+              title="为这只股票创建盯盘提醒"
+            >
+              <BellRing size={14} />
+              盯这只票
+            </Link>
           </div>
         </div>
 

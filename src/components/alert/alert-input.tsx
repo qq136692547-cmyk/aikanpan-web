@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { api, type AlertCondition, type AlertParseResult } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -68,7 +68,7 @@ function opLabel(op: string): string {
   return OP_OPTIONS.find((o) => o.value === op)?.label || op;
 }
 
-export function AlertInput({ market = "all", onCreated }: { market?: MarketScope; onCreated?: () => void }) {
+export function AlertInput({ market = "all", onCreated, initialCode }: { market?: MarketScope; onCreated?: () => void; initialCode?: string }) {
   const activeMarket: "cn" | "hk" | "us" = market === "us" ? "us" : market === "hk" ? "hk" : "cn";
   const examples = market === "us" ? US_EXAMPLES : market === "hk" ? HK_EXAMPLES : EXAMPLES;
   const marketLabel = activeMarket === "us" ? "美股" : activeMarket === "hk" ? "港股" : "A股";
@@ -78,17 +78,42 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
   const [loading, setLoading] = useState(false);
   const [parsed, setParsed] = useState<AlertParseResult | null>(null);
   const [conditions, setConditions] = useState<AlertCondition[]>([]);
-  const [codeInput, setCodeInput] = useState("");
-  const [builderOpen, setBuilderOpen] = useState(false);
+  const [codeInput, setCodeInput] = useState(initialCode || "");
+  const [builderOpen, setBuilderOpen] = useState(!!initialCode);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [needEmail, setNeedEmail] = useState(false);
+  const [prefillName, setPrefillName] = useState<string | null>(null);
+  const [prefillPrice, setPrefillPrice] = useState<number | null>(null);
   // 与 AlertSettings 共用同一个 SWR key，命中缓存、不产生额外请求
   const { data: notifySettings } = useSWR(
     user ? ["alert-settings", user.user_id] : null,
     () => api.getAlertSettings()
   );
+
+  // 从个股页「盯这只票」带入代码时：自动展开条件面板，并按现价下方 3% 预填阈值。
+  // 注意触发是状态判定（任一轮询满足即触发），不能直接拿现价当阈值，否则建好即响。
+  useEffect(() => {
+    if (!initialCode) return;
+    let cancelled = false;
+    api
+      .getStockQuote(initialCode)
+      .then((quote) => {
+        if (cancelled || !quote) return;
+        if (quote.name) setPrefillName(quote.name);
+        if (typeof quote.last === "number" && quote.last > 0) {
+          setPrefillPrice(quote.last);
+          setConditions([{ field: "price", op: "below", threshold: Math.round(quote.last * 97) / 100 }]);
+        }
+      })
+      .catch(() => {
+        // 取价失败不影响使用：保留默认空条件，用户手动填阈值
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [initialCode]);
 
   async function handleParse() {
     if (!ready) {
@@ -255,6 +280,12 @@ export function AlertInput({ market = "all", onCreated }: { market?: MarketScope
             {parsed && (
               <span className="text-[11px] text-neo-dim">
                 解析置信度 {(parsed.confidence * 100).toFixed(0)}% · 模型 {parsed.model}
+              </span>
+            )}
+            {!parsed && prefillName && (
+              <span className="text-[11px] text-neo-dim">
+                已带入 {prefillName}
+                {prefillPrice ? ` · 现价 ${prefillPrice}，阈值按下方 3% 预填，可自行修改` : ""}
               </span>
             )}
           </div>

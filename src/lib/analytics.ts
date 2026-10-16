@@ -58,7 +58,7 @@ function readAuthToken(): string | null {
 }
 
 export function reportConversionEvent(
-  event: UpgradeFunnelEvent,
+  event: UpgradeFunnelEvent | "feature_use",
   options?: { profile?: UpgradeProfile; source?: string }
 ) {
   if (typeof window === "undefined") return;

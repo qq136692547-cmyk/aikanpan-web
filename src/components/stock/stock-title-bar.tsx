@@ -1,9 +1,12 @@
 "use client";
 
 import useSWR from "swr";
+import Link from "next/link";
+import { BellRing } from "lucide-react";
 import { api, type StockQuote } from "@/lib/api";
 import { formatChange, formatPct, formatPrice } from "@/lib/format";
 import { WatchlistButton } from "@/components/stock/watchlist-button";
+import { reportConversionEvent } from "@/lib/analytics";
 
 function trendClass(n: number) {
   if (n > 0) return "text-neo-up";
@@ -44,6 +47,15 @@ export function StockTitleBar({ code, initial }: { code: string; initial: StockQ
               </div>
             </div>
             <WatchlistButton code={code} name={quote.name || code} />
+            <Link
+              href={`/alerts/?market=cn&code=${encodeURIComponent(code)}`}
+              onClick={() => reportConversionEvent("feature_use", { source: "alert_entry_stock_cn" })}
+              className="neo-chip flex min-h-11 items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-neo-primary"
+              title="为这只股票创建盯盘提醒"
+            >
+              <BellRing size={14} />
+              盯这只票
+            </Link>
           </div>
         )}
       </div>

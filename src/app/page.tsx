@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { PremarketBriefingCard } from "@/components/ai/premarket-briefing-card";
 import { HomeMarketPanels } from "@/components/home/home-market-panel";
 import { HomeContent } from "@/components/home/home-content";
+import { HomeAlertEntry } from "@/components/alert/home-alert-entry";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { getDailyReviewForSSR } from "@/lib/daily-review-ssr";
@@ -132,6 +133,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           usDailyReview={usDailyReview}
           hkDailyReview={hkDailyReview}
         />
+
+        <HomeAlertEntry market={scope} className="mt-4" />
 
         {scope !== "all" && <DailyWorkflow className="mt-4" market={scope} />}
 

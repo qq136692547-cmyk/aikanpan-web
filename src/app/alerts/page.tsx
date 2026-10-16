@@ -24,11 +24,12 @@ const alertsJsonLd = {
   offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" },
 };
 
-export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
-  const { market } = await searchParams;
+export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ market?: string; code?: string }> }) {
+  const { market, code } = await searchParams;
   const scope = marketFromSearchParams(market);
   if (scope === "all") {
-    redirect("/alerts/?market=cn");
+    // 带上 code，避免从个股页带入的代码在重定向时丢失
+    redirect(code ? `/alerts/?market=cn&code=${encodeURIComponent(code)}` : "/alerts/?market=cn");
   }
   return (
     <MarketPageFrame market={scope}>
@@ -40,7 +41,7 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
       />
 
         <section className="mt-3">
-          <AlertInput market={scope} />
+          <AlertInput market={scope} initialCode={code} />
         </section>
 
         <section className="mt-4">

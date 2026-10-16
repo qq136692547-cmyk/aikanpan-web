@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { BellRing } from "lucide-react";
 import { Sparkline } from "@/components/chart/sparkline";
 import { HkWatchlistButton } from "./hk-watchlist-button";
+import { reportConversionEvent } from "@/lib/analytics";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { AIComment as StockAIComment } from "@/components/ai/ai-comment";
@@ -150,6 +153,15 @@ export function HkStockDetail({
 
           <div className="flex items-center gap-3">
             <HkWatchlistButton code={symbol} />
+            <Link
+              href={`/alerts/?market=hk&code=${encodeURIComponent(symbol)}`}
+              onClick={() => reportConversionEvent("feature_use", { source: "alert_entry_stock_hk" })}
+              className="neo-chip flex min-h-11 items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-neo-primary"
+              title="为这只股票创建盯盘提醒"
+            >
+              <BellRing size={14} />
+              盯这只票
+            </Link>
           </div>
         </div>
 
