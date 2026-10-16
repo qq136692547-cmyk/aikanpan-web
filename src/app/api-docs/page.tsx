@@ -63,6 +63,38 @@ export default function ApiDocsPage() {
           </p>
         </section>
 
+        <section className="neo-fade-up mt-6" style={{ animationDelay: "30ms" }}>
+          <h2 className="mb-3 text-sm font-semibold text-neo-mid">接口鉴权与调用配额</h2>
+          <div className="neo-card p-4 space-y-3">
+            <p className="text-sm text-neo-mid leading-relaxed">
+              爱看盘 API 服务提供基础开放接口与高频/管理受保护接口。调用受保护接口或获取更高调用限额时，需在请求头携带 API Key 进行身份认证。
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="neo-inset p-3 rounded">
+                <span className="font-semibold text-neo-ink block mb-1">公开基础接口（匿名访问）</span>
+                <p className="text-neo-dim leading-relaxed">
+                  提供基础行情、K线、指标与健康状态查询。按客户端 IP 自动限流，基准配额为 <strong>600 次/分钟</strong>。超限将返回 HTTP 429。
+                </p>
+              </div>
+              <div className="neo-inset p-3 rounded">
+                <span className="font-semibold text-neo-ink block mb-1">受保护接口（API Key 鉴权）</span>
+                <p className="text-neo-dim leading-relaxed">
+                  管理与内部数据接口强制要求有效 Key；请求头须携带 <code style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-brand">X-API-Key: &lt;secret&gt;</code>。Key 配额为 <strong>1200 次/分钟</strong>。
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-neo-dim">
+              <span>状态码规范：</span>
+              <span><code className="text-neo-up font-mono">200 OK</code> 正常响应</span>
+              <span><code className="text-[#e3b341] font-mono">401 Unauthorized</code> 未提供或无效 Key</span>
+              <span><code className="text-neo-down font-mono">429 Too Many Requests</code> 超出频次配额</span>
+            </div>
+            <p className="text-xs text-neo-dim border-t border-[var(--neo-edge)] pt-2">
+              注：健康检查接口 <code style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-brand">/api/v1/health</code> 仅对外返回系统存活状态与服务版本，内部缓存与数据源指标已对公网收敛。
+            </p>
+          </div>
+        </section>
+
         <section className="neo-fade-up mt-6" style={{ animationDelay: "60ms" }}>
           <div className="neo-inset overflow-x-auto neo-scrollbar">
             <table className="w-full min-w-[720px]">
@@ -109,8 +141,11 @@ export default function ApiDocsPage() {
         <section className="neo-fade-up mt-6" style={{ animationDelay: "180ms" }}>
           <h2 className="mb-3 text-sm font-semibold text-neo-mid">示例</h2>
           <div className="neo-inset p-4">
-            <pre style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-xs leading-relaxed text-neo-mid overflow-x-auto"><code>{`# 获取仪表盘数据
+            <pre style={{ fontFamily: 'var(--font-inter), system-ui' }} className="text-xs leading-relaxed text-neo-mid overflow-x-auto"><code>{`# 基础接口（无需 Key）
 curl https://aikanpan.top/api/v1/workbench/dashboard
+
+# 携带 API Key 调用（自定义高配额/受保护接口）
+curl -H "X-API-Key: your_api_key_here" https://aikanpan.top/api/v1/stocks/sh.600519/quote
 
 # 搜索股票
 curl "https://aikanpan.top/api/v1/stocks/search?q=300414"

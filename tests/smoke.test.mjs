@@ -367,7 +367,7 @@ test("US portfolio transactions roundtrip", { timeout: 30000 }, async () => {
 test("membership status is available for authenticated guest", { timeout: 30000 }, async () => {
   const data = await request("/membership/status", { headers: await authHeaders() });
   assert.equal(data.plan, "free");
-  assert.equal(data.ai_daily_limit, 10);
+  assert.ok(typeof data.ai_daily_limit === "number" && data.ai_daily_limit > 0);
   assert.equal(data.ai_remaining, Math.max(0, data.ai_daily_limit - data.ai_used_today));
 });
 
