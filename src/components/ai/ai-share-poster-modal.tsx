@@ -27,9 +27,6 @@ export function AISharePosterModal({
   changePercent,
   report,
   model = "开源深度量化模型",
-  supportLevel = "--",
-  resistanceLevel = "--",
-  riskReward = "--",
 }: AISharePosterModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [dataUrl, setDataUrl] = useState<string>("");
@@ -171,96 +168,52 @@ export function AISharePosterModal({
     scoreGrad.addColorStop(1, stampColor);
     roundRect(58, 276, fillW, 14, 7, scoreGrad);
 
-    // 5. 关键量化点位三联盒
-    roundRect(36, 338, width - 72, 146, 16, "#101216", "rgba(255, 255, 255, 0.08)");
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 14px Inter, sans-serif";
-    ctx.fillText("关键量化参考价位", 58, 368);
-
-    const cellW = (width - 116 - 24) / 3;
-    // 支撑位
-    roundRect(58, 386, cellW, 76, 10, "#0C0E11", "rgba(255, 255, 255, 0.05)");
-    ctx.fillStyle = "#9AA3B2";
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("下方参考价位", 70, 408);
-    ctx.fillStyle = "#46D993";
-    ctx.font = "bold 16px Inter, monospace";
-    ctx.fillText(supportLevel, 70, 434);
-    ctx.fillStyle = "#6B7280";
-    ctx.font = "10px Inter, sans-serif";
-    ctx.fillText("取自公开行情，非操作建议", 70, 452);
-
-    // 压力位
-    roundRect(58 + cellW + 12, 386, cellW, 76, 10, "#0C0E11", "rgba(255, 255, 255, 0.05)");
-    ctx.fillStyle = "#9AA3B2";
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("短期第一压力", 70 + cellW + 12, 408);
-    ctx.fillStyle = "#FF5C61";
-    ctx.font = "bold 16px Inter, monospace";
-    ctx.fillText(resistanceLevel, 70 + cellW + 12, 434);
-    ctx.fillStyle = "#6B7280";
-    ctx.font = "10px Inter, sans-serif";
-    ctx.fillText("阻力密集区", 70 + cellW + 12, 452);
-
-    // 风险参考比值
-    roundRect(58 + (cellW + 12) * 2, 386, cellW, 76, 10, "#0C0E11", "rgba(255, 255, 255, 0.05)");
-    ctx.fillStyle = "#9AA3B2";
-    ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("风险参考比值", 70 + (cellW + 12) * 2, 408);
-    ctx.fillStyle = "#F5A623";
-    ctx.font = "bold 16px Inter, monospace";
-    ctx.fillText(riskReward, 70 + (cellW + 12) * 2, 434);
-    ctx.fillStyle = "#6B7280";
-    ctx.font = "10px Inter, sans-serif";
-    ctx.fillText("风险参考比值", 70 + (cellW + 12) * 2, 452);
-
     // 6. 核心数据摘要
-    roundRect(36, 502, width - 72, 320, 16, "#101216", "rgba(255, 255, 255, 0.08)");
+    roundRect(36, 338, width - 72, 484, 16, "#101216", "rgba(255, 255, 255, 0.08)");
 
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "bold 14px Inter, sans-serif";
-    ctx.fillText("AI 生成的结构化数据摘要", 58, 534);
+    ctx.fillText("AI 生成的结构化数据摘要", 58, 370);
 
     // 一句话总评
-    roundRect(58, 552, width - 116, 54, 8, "#14171D", "rgba(255, 255, 255, 0.04)");
+    roundRect(58, 392, width - 116, 54, 8, "#14171D", "rgba(255, 255, 255, 0.04)");
     ctx.fillStyle = "#EDEFF3";
     ctx.font = "13px Inter, sans-serif";
     const oneSentence = report?.one_sentence || "本次未生成结构化结论，请稍后重试或改用行情数据自行判断。";
-    ctx.fillText(oneSentence.slice(0, 42), 70, 576);
+    ctx.fillText(oneSentence.slice(0, 42), 70, 416);
     if (oneSentence.length > 42) {
-      ctx.fillText(oneSentence.slice(42, 84), 70, 594);
+      ctx.fillText(oneSentence.slice(42, 84), 70, 434);
     }
 
     // 持仓建议
     ctx.fillStyle = "#38BDF8";
     ctx.font = "bold 13px Inter, sans-serif";
-    ctx.fillText("【已持仓视角数据】", 58, 638);
+    ctx.fillText("【已持仓视角数据】", 58, 490);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
     const holderAdv = report?.holders_advice || "暂无针对已持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
-    ctx.fillText(holderAdv.slice(0, 45), 58, 660);
+    ctx.fillText(holderAdv.slice(0, 45), 58, 512);
     if (holderAdv.length > 45) {
-      ctx.fillText(holderAdv.slice(45, 90), 58, 680);
+      ctx.fillText(holderAdv.slice(45, 90), 58, 532);
     }
 
     // 观望建议
     ctx.fillStyle = "#A7B6FA";
     ctx.font = "bold 13px Inter, sans-serif";
-    ctx.fillText("【未持仓视角数据】", 58, 718);
+    ctx.fillText("【未持仓视角数据】", 58, 580);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
     const watcherAdv = report?.watchers_advice || "暂无针对未持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
-    ctx.fillText(watcherAdv.slice(0, 45), 58, 740);
+    ctx.fillText(watcherAdv.slice(0, 45), 58, 602);
     if (watcherAdv.length > 45) {
-      ctx.fillText(watcherAdv.slice(45, 90), 58, 760);
+      ctx.fillText(watcherAdv.slice(45, 90), 58, 622);
     }
 
     // 说明行
-    roundRect(58, 782, width - 116, 26, 6, "rgba(56, 189, 248, 0.08)");
+    roundRect(58, 664, width - 116, 26, 6, "rgba(56, 189, 248, 0.08)");
     ctx.fillStyle = "#38BDF8";
     ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("说明：仓位与资金管理属个人决策范围，本站不提供任何仓位建议", 70, 799);
+    ctx.fillText("说明：行情与资金管理属个人决策范围，本站不提供任何交易建议", 70, 681);
 
     // 7. 底部版权与免责水印
     ctx.fillStyle = "#9AA3B2";
@@ -278,7 +231,7 @@ export function AISharePosterModal({
     const url = canvas.toDataURL("image/png");
     setDataUrl(url);
     setIsRendering(false);
-  }, [isOpen, code, name, price, changePercent, report, model, supportLevel, resistanceLevel, riskReward]);
+  }, [isOpen, code, name, price, changePercent, report, model]);
 
   const handleCopy = async () => {
     if (!dataUrl) return;

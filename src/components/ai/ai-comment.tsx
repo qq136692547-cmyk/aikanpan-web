@@ -22,44 +22,12 @@ import {
 } from "lucide-react";
 import { api, type AIComment, type StockReport } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
-import { Lock, Zap, Target, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
+import { Lock, Zap, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
 import { AIEvidencePanel } from "./ai-evidence-panel";
-import { BentoCard, BentoCell } from "@/components/stock/bento";
+import { BentoCard } from "@/components/stock/bento";
 
 
 /** 提取行情区间统计值（无操作时点含义） */
-function extractQuantitativeLevels(content: string, report: StockReport | null) {
-  let support = report?.support_level ? String(report.support_level) : null;
-  let resistance = report?.resistance_level ? String(report.resistance_level) : null;
-  let stopLoss = report?.stop_loss ? String(report.stop_loss) : null;
-  let ratio = report?.risk_reward_ratio || "--";
-  let position = report?.suggested_position || "--";
-
-  // 正则兜底解析
-  if (!support) {
-    const m = content.match(/(?:支撑位?|防守位?|下方支撑)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
-    if (m) support = m[1];
-  }
-  if (!resistance) {
-    const m = content.match(/(?:压力位?|阻力位?|上方压力)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
-    if (m) resistance = m[1];
-  }
-  if (!stopLoss) {
-    const m = content.match(/(?:止损位?|跌破)[：:\s]*([¥$]?\d+(?:\.\d+)?)/);
-    if (m) stopLoss = m[1];
-  }
-  if (!support && stopLoss) support = stopLoss;
-  if (!stopLoss && support) stopLoss = support;
-
-  return {
-    support: support || "--",
-    resistance: resistance || "--",
-    stopLoss: stopLoss || "--",
-    ratio,
-    position
-  };
-}
-
 /** 从 content 末尾提取评分、状态与多空倾向 (兼容纯文本降级) */
 function parseScoreAndStatus(content: string): {
   score: number | null;
@@ -281,7 +249,6 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   const biasInfo = getBiasBadge(report?.bias || parsed.bias, score);
   const theme = score !== null ? getScoreTheme(score) : null;
   const body = stripTrailingMeta(data!.content);
-  const qLevels = extractQuantitativeLevels(data!.content, report);
 
   // 四维量化卡片提炼
   const dimensions = [
@@ -423,70 +390,6 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
         </div>
       </div>
 
-      {/* 核心统计价位区间 */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-neo-ink">
-            <Target size={13} className="text-neo-primary" />
-            <span>核心统计价位区间</span>
-          </div>
-          {!isPro && (
-            <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-amber-500/20">
-              <Lock size={10} /> 部分扩展数据字段仅 Pro 可见
-            </span>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-          {/* 下方参考价位 */}
-          <BentoCell
-            label="下方参考价位"
-            value={isPro ? qLevels.stopLoss : "¥ ***.**"}
-            sub={isPro ? "取自公开行情，非操作建议" : "开通 Pro 后可见"}
-            trend="down"
-          />
-
-          {/* 上方压力点位 */}
-          <BentoCell
-            label="短期第一压力位"
-            value={isPro ? qLevels.resistance : "¥ ***.**"}
-            sub={isPro ? "逼近此位注意抛压与分歧" : "升级 Pro 即可直接查看"}
-            trend="up"
-          />
-
-          {/* 区间统计与风险参考比值 */}
-          <BentoCell
-            label="区间统计 / 风险参考比值"
-            value={isPro ? qLevels.position : "**% ~ **%"}
-            sub={isPro ? `风险参考比值 ${qLevels.ratio}` : "更多量化字段"}
-            trend="purple"
-          />
-        </div>
-
-        {/* 未解锁 Pro 时的微光极速转化悬浮条 */}
-        {!isPro && (
-          <div className="relative overflow-hidden rounded-[10px] border border-amber-500/20 bg-gradient-to-r from-amber-500/10 via-neutral-900/60 to-amber-500/10 p-3 text-center backdrop-blur-md">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-left">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
-                  <ShieldCheck size={16} />
-                </div>
-                <div>
-                  <div className="text-[12px] font-bold text-amber-300">解锁更多维度的数据字段与历史快照</div>
-                  <div className="text-[10px] text-neo-dim">查看更完整的量化统计与历史对照</div>
-                </div>
-              </div>
-              <Link
-                href="/upgrade"
-                className="inline-flex items-center justify-center gap-1.5 rounded-[8px] bg-gradient-to-r from-amber-500 to-amber-600 px-3.5 py-1.5 text-[11px] font-bold text-black shadow-lg shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
-              >
-                <Zap size={12} className="fill-black" />
-                <span>开通 Pro 解锁</span>
-              </Link>
-            </div>
-          </div>
-        )}
-      </div>
 
       {/* 四维量化卡片组 (技术面、盘口、估值、亮点) */}
       {dimensions.length > 0 && (
