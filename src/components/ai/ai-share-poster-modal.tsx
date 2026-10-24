@@ -188,32 +188,32 @@ export function AISharePosterModal({
     // 持仓建议
     ctx.fillStyle = "#38BDF8";
     ctx.font = "bold 13px Inter, sans-serif";
-    ctx.fillText("【已持仓视角数据】", 58, 490);
+    ctx.fillText("【已持仓视角数据】", 58, 512);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
     const holderAdv = report?.holders_advice || "暂无针对已持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
-    ctx.fillText(holderAdv.slice(0, 45), 58, 512);
+    ctx.fillText(holderAdv.slice(0, 45), 58, 534);
     if (holderAdv.length > 45) {
-      ctx.fillText(holderAdv.slice(45, 90), 58, 532);
+      ctx.fillText(holderAdv.slice(45, 90), 58, 554);
     }
 
     // 观望建议
     ctx.fillStyle = "#A7B6FA";
     ctx.font = "bold 13px Inter, sans-serif";
-    ctx.fillText("【未持仓视角数据】", 58, 580);
+    ctx.fillText("【未持仓视角数据】", 58, 608);
     ctx.fillStyle = "#9AA3B2";
     ctx.font = "12px Inter, sans-serif";
     const watcherAdv = report?.watchers_advice || "暂无针对未持仓情形的结构化数据归纳，请自行查证并以交易所披露为准。";
-    ctx.fillText(watcherAdv.slice(0, 45), 58, 602);
+    ctx.fillText(watcherAdv.slice(0, 45), 58, 630);
     if (watcherAdv.length > 45) {
-      ctx.fillText(watcherAdv.slice(45, 90), 58, 622);
+      ctx.fillText(watcherAdv.slice(45, 90), 58, 650);
     }
 
     // 说明行
-    roundRect(58, 664, width - 116, 26, 6, "rgba(56, 189, 248, 0.08)");
+    roundRect(58, 726, width - 116, 26, 6, "rgba(56, 189, 248, 0.08)");
     ctx.fillStyle = "#38BDF8";
     ctx.font = "11px Inter, sans-serif";
-    ctx.fillText("说明：行情与资金管理属个人决策范围，本站不提供任何交易建议", 70, 681);
+    ctx.fillText("说明：行情与资金管理属个人决策范围，本站不提供任何交易建议", 70, 743);
 
     // 7. 底部版权与免责水印
     ctx.fillStyle = "#9AA3B2";
