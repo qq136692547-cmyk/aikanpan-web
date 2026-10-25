@@ -6,6 +6,7 @@ import { api, type AlertItem } from "@/lib/api";
 import { type MarketScope } from "@/lib/market";
 import { useAuth } from "@/lib/auth";
 import { EmptyState, ErrorState } from "@/components/ui/state";
+import { AuthRetryNotice } from "@/components/system/auth-retry-notice";
 
 function fieldLabel(field: string): string {
   if (field === "price") return "价格";
@@ -43,9 +44,14 @@ function stockHrefFor(item: { code: string; market?: string }): string {
 export function AlertManager({ market = "all" }: { market?: MarketScope }) {
   const activeMarket: "cn" | "hk" | "us" | undefined = market === "us" ? "us" : market === "hk" ? "hk" : market === "cn" ? "cn" : undefined;
   const marketLabel = market === "us" ? "美股" : market === "hk" ? "港股" : market === "cn" ? "A股" : "";
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, retry: retryAuth } = useAuth();
   const ready = !authLoading && !!user;
+  /** 游客登录失败：ready 会永久为 false，必须给出重试入口，否则列表永远空白且无出路 */
+  const authFailed = !authLoading && !user;
   const [deleting, setDeleting] = useState<string | null>(null);
+  // SWR key 保持 `ready && user`：失败态 key 为 null 是**正确**行为（不该匿名请求）；
+  // 重试成功后 ready 变 true，key 从 null 变为数组，SWR 立即发起首次请求 ——
+  // 既不会重复请求，也不会永远不请求。别把这里的判定改成只看 authLoading。
   const { data: alertData, error, isLoading, mutate } = useSWR(
     ready && user ? ["alerts", market, user.user_id] : null,
     () => api.getAlerts(activeMarket),
@@ -120,6 +126,8 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     }
   }
 
+  // 「加载中」与「初始化失败」必须分开判：合并会让失败态停在骨架屏上，
+  // 用户看不到重试入口；反过来把加载中当失败，重试成功后会立刻又弹一次提示。
   if (authLoading || isLoading) {
     return (
       <div className="space-y-3">
@@ -130,12 +138,18 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
     );
   }
 
-  if (!user) {
-    return <ErrorState title="账户初始化失败" description="请刷新页面后重试；当前不会读取匿名盯盘数据。" onRetry={() => window.location.reload()} />;
+  if (authFailed) {
+    return <AuthRetryNotice onRetry={retryAuth} />;
   }
 
   if (error) {
-    return <ErrorState title="盯盘数据加载失败" description="请检查网络后重试" onRetry={() => mutate()} />;
+    return (
+      <ErrorState
+        title="盯盘数据加载失败"
+        description="点「重试」再加载一次，已创建的盯盘任务不会丢"
+        onRetry={() => mutate()}
+      />
+    );
   }
 
   return (

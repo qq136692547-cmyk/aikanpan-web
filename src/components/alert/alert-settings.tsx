@@ -5,11 +5,13 @@ import useSWR from "swr";
 import { Bell, Mail, MessageSquareText, Smartphone } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { ErrorState } from "@/components/ui/state";
+import { AuthRetryNotice } from "@/components/system/auth-retry-notice";
 import { EmailBind } from "@/components/alert/email-bind";
 
 export function AlertSettings() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, retry: retryAuth } = useAuth();
+  /** 游客登录失败：user 恒为 null，下面所有开关都读不到数据，必须给重试入口 */
+  const authFailed = !authLoading && !user;
   const { data: settings, mutate } = useSWR(
     user ? ["alert-settings", user.user_id] : null,
     () => api.getAlertSettings(),
@@ -25,8 +27,10 @@ export function AlertSettings() {
     return <div className="neo-skeleton h-28 rounded-xl" />;
   }
 
-  if (!user) {
-    return <ErrorState title="通知设置不可用" description="账户初始化失败，请刷新页面后重试。" onRetry={() => window.location.reload()} />;
+  if (authFailed) {
+    // 不要用 window.location.reload()：设置页常从账户页进来，整页刷新会丢掉
+    // 用户已经改到一半的表单；retry 只重跑游客登录。
+    return <AuthRetryNotice onRetry={retryAuth} />;
   }
 
   async function toggleBrowser(value: boolean) {

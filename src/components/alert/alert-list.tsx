@@ -57,7 +57,13 @@ export function AlertList({ refreshKey }: { refreshKey?: number }) {
   }
 
   if (error) {
-    return <ErrorState title="盯盘数据加载失败" description="请检查网络后重试" onRetry={() => mutate()} />;
+    return (
+      <ErrorState
+        title="盯盘数据加载失败"
+        description="点「重试」再加载一次，已创建的盯盘任务不会丢"
+        onRetry={() => mutate()}
+      />
+    );
   }
 
   if (alerts.length === 0) {

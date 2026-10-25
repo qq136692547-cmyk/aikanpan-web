@@ -11,6 +11,7 @@ import { AiDisclaimer } from "@/components/ui/ai-disclaimer";
 import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { useAuth } from "@/lib/auth";
+import { AuthRetryNotice } from "@/components/system/auth-retry-notice";
 
 const TX_TYPES = [
   { value: "buy", label: "买入" },
@@ -32,8 +33,10 @@ const TX_TYPE_CLASS: Record<string, string> = {
 
 export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) {
   const isUs = market === "us";
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, retry: retryAuth } = useAuth();
   const ready = !authLoading && !!user;
+  /** 游客登录失败：user 恒为 null，持仓/交易全部不可用，必须给重试入口 */
+  const authFailed = !authLoading && !user;
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [shares, setShares] = useState("");
@@ -281,8 +284,9 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
     );
   }
 
-  if (!user) {
-    return <ErrorState title="账户初始化失败" description="请刷新页面后重试；当前不会展示匿名演示数据。" onRetry={() => window.location.reload()} />;
+  if (authFailed) {
+    // 不用 window.location.reload()：持仓页常带着已输入的买入表单，整页刷新会清空。
+    return <AuthRetryNotice onRetry={retryAuth} />;
   }
 
   if (!positionsData && !error) {

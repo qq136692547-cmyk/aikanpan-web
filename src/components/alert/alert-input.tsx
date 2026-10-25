@@ -234,7 +234,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
         <div className="mb-3 neo-inset rounded-md px-3 py-2.5">
           <p className="text-xs font-medium text-neo-ink">账户初始化失败，暂时无法创建盯盘任务</p>
           <p className="mt-0.5 text-[11px] text-neo-dim">
-            多半是网络波动或服务繁忙。点重试即可，不用刷新页面，已填的内容也不会丢。
+            点重试再加载一次，不用刷新页面，已填的内容也不会丢。
           </p>
           <button
             onClick={retryAuth}
