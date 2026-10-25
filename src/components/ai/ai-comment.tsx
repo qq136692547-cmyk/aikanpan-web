@@ -22,8 +22,10 @@ import {
 } from "lucide-react";
 import { api, type AIComment, type StockReport } from "@/lib/api";
 import { useMembership } from "@/lib/membership";
+import { isAiQuotaExhaustedError } from "@/lib/ai-quota";
 import { Lock, Zap, ArrowDownCircle, ArrowUpCircle, Scale, ShieldCheck } from "lucide-react";
 import { AIEvidencePanel } from "./ai-evidence-panel";
+import { AiQuotaCard } from "./ai-quota-card";
 import { BentoCard } from "@/components/stock/bento";
 
 
@@ -126,6 +128,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
     }
   }, [initialData]);
   const [error, setError] = useState<string>("");
+  const [quotaHit, setQuotaHit] = useState(false);
   const [showRisks, setShowRisks] = useState<boolean>(true);
   const { membership } = useMembership();
   const isPro = membership?.plan === "pro";
@@ -134,6 +137,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
   const handleGenerate = useCallback(async () => {
     setState("loading");
     setError("");
+    setQuotaHit(false);
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
@@ -156,6 +160,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
     } catch (e: unknown) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setError(e instanceof Error ? e.message : "AI 分析请求失败");
+      setQuotaHit(isAiQuotaExhaustedError(e));
       setState("error");
     }
   }, [code]);
@@ -229,14 +234,20 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             重试
           </button>
         </div>
-        <p className="mt-3 text-sm text-neo-down">
-          {error}
-          {error.includes("升级 Pro") && (
-            <Link href="/upgrade" className="ml-1 text-neo-primary underline">
-              查看 Pro
-            </Link>
-          )}
-        </p>
+        {quotaHit ? (
+          <div className="mt-3">
+            <AiQuotaCard source="ai_comment" onRetry={handleGenerate} />
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-neo-down">
+            {error}
+            {error.includes("升级 Pro") && (
+              <Link href="/upgrade" className="ml-1 text-neo-primary underline">
+                查看 Pro
+              </Link>
+            )}
+          </p>
+        )}
       </div>
     );
   }

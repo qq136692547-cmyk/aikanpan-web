@@ -6,7 +6,9 @@ import remarkGfm from "remark-gfm";
 import Link from "next/link";
 import { api, type AIReview } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { isAiQuotaExhaustedError } from "@/lib/ai-quota";
 import { AIEvidencePanel } from "./ai-evidence-panel";
+import { AiQuotaCard } from "./ai-quota-card";
 
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
@@ -38,6 +40,7 @@ export function AIReview({ date, available = true }: { date?: string; available?
   const [state, setState] = useState<LoadState>("loading");
   const [data, setData] = useState<AIReview | null>(null);
   const [error, setError] = useState<string>("");
+  const [quotaHit, setQuotaHit] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const unavailableWithoutAuth = !authLoading && !isAuthenticated;
@@ -54,6 +57,7 @@ export function AIReview({ date, available = true }: { date?: string; available?
   const fetchReview = useCallback(async () => {
     setState("loading");
     setError("");
+    setQuotaHit(false);
 
     // 60 秒超时自动切换到 error
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -74,6 +78,7 @@ export function AIReview({ date, available = true }: { date?: string; available?
         setState("unavailable");
       } else {
         setError(e instanceof Error ? e.message : "AI 复盘请求失败");
+        setQuotaHit(isAiQuotaExhaustedError(e));
         setState("error");
       }
     }
@@ -118,7 +123,20 @@ export function AIReview({ date, available = true }: { date?: string; available?
           <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
           <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
         </div>
-        <p className="mt-3 text-[13px] text-neo-down">{displayError}{displayError.includes("升级 Pro") && <Link href="/upgrade" className="ml-1 text-neo-primary underline">查看 Pro</Link>}</p>
+        {quotaHit ? (
+          <div className="mt-3">
+            <AiQuotaCard source="ai_review" onRetry={fetchReview} />
+          </div>
+        ) : (
+          <p className="mt-3 text-[13px] text-neo-down">
+            {displayError}
+            {displayError.includes("升级 Pro") && (
+              <Link href="/upgrade" className="ml-1 text-neo-primary underline">
+                查看 Pro
+              </Link>
+            )}
+          </p>
+        )}
       </div>
     );
   }
