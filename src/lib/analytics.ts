@@ -1,5 +1,7 @@
 "use client";
 
+import { sanitizeUrl } from "./url-sanitize";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 const FIRST_KEY = "aikanpan_analytics_first";
 const LAST_KEY = "aikanpan_analytics_last";
@@ -34,9 +36,10 @@ async function sendEvent(event: string, path: string, label: string | undefined,
       },
       body: JSON.stringify({
         event,
-        path,
+        path: sanitizeUrl(path, 200),
         label,
-        referrer: typeof document !== "undefined" ? document.referrer.slice(0, 200) : "",
+        // referrer 是上一页的完整 URL，从 /pay/success?out_trade_no=... 跳过来时会带着订单号。
+        referrer: typeof document !== "undefined" ? sanitizeUrl(document.referrer, 200) : "",
         source: utmParam("utm_source"),
         medium: utmParam("utm_medium"),
         campaign: utmParam("utm_campaign"),

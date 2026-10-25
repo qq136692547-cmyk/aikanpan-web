@@ -231,14 +231,37 @@ test("review status exposes task fields", { timeout: 30000 }, async () => {
   assert.equal(typeof data.cached, "boolean");
 });
 
-test("monitor errors endpoint accepts and lists", { timeout: 30000 }, async () => {
-  const saved = await request("/monitor/errors", {
+test("monitor errors: 匿名可上报、匿名不可读取、落库不带查询串", { timeout: 30000 }, async () => {
+  const res = await fetch(`${API_BASE}/monitor/errors`, {
     method: "POST",
-    body: JSON.stringify({ message: "smoke monitor", url: "https://aikanpan.top/tests", type: "test" }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: "smoke monitor",
+      url: "https://aikanpan.top/tests?out_trade_no=smoke&token=x",
+      type: "test",
+    }),
   });
+  const saved = await res.json();
   assert.equal(typeof saved.accepted, "boolean");
-  const list = await request("/monitor/errors?limit=5");
-  assert.ok(Array.isArray(list.errors));
+
+  // A1/P0-2：读接口必须要求管理员令牌——它整表返回客户端错误记录（含 url），
+  // 匿名可读时，支付宝回跳 URL 里的 out_trade_no 能被任何人拉走。
+  const anon = await fetch(`${API_BASE}/monitor/errors?limit=5`);
+  assert.equal(anon.status, 403, `匿名读取应被拒绝，实际 ${anon.status}`);
+
+  const admin = process.env.AIKANPAN_ADMIN_TOKEN;
+  if (admin) {
+    const authed = await fetch(`${API_BASE}/monitor/errors?limit=5`, {
+      headers: { "X-Admin-Token": admin },
+    });
+    assert.equal(authed.status, 200);
+    const list = await authed.json();
+    assert.ok(Array.isArray(list.errors));
+    assert.ok(
+      list.errors.every((e) => !String(e.url || "").includes("out_trade_no=")),
+      "落库的 url 不应带查询串"
+    );
+  }
 });
 
 test("sector stocks return real constituents", { timeout: 40000 }, async () => {

@@ -1,3 +1,5 @@
+import { sanitizeMessage, sanitizeUrl } from "./url-sanitize";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "https://aikanpan.top/api/v1";
 const MIN_INTERVAL_MS = 6000;
 let lastReportAt = 0;
@@ -16,9 +18,9 @@ async function report(message: string, type: string, url: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: truncate(message, 300),
+        message: sanitizeMessage(message, 300),
         type: truncate(type, 50),
-        url: truncate(url, 300),
+        url: sanitizeUrl(url, 300),
       }),
     });
   } catch {
@@ -32,7 +34,8 @@ export function installErrorReporting() {
   installed = true;
   const onError = (event: ErrorEvent) => {
     const message = event.message || (event.error instanceof Error ? event.error.message : "window error");
-    void report(message, "window.onerror", window.location.href);
+    // 只取 pathname：href 会把 ?out_trade_no=... 一起送出去（见 url-sanitize.ts 注释）。
+    void report(message, "window.onerror", window.location.pathname);
   };
   const onRejection = (event: PromiseRejectionEvent) => {
     const reason = event.reason;
@@ -42,7 +45,7 @@ export function installErrorReporting() {
         : typeof reason === "string"
           ? reason
           : "unhandledrejection";
-    void report(message, "unhandledrejection", window.location.href);
+    void report(message, "unhandledrejection", window.location.pathname);
   };
 
   window.addEventListener("error", onError);
