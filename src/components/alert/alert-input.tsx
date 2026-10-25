@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { api, type AlertCondition, type AlertParseResult } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { isAlertQuotaError } from "@/lib/alert-quota";
+import { reportConversionEvent } from "@/lib/analytics";
 import { type MarketScope } from "@/lib/market";
 import { EmailBind } from "@/components/alert/email-bind";
 
@@ -72,8 +75,10 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
   const activeMarket: "cn" | "hk" | "us" = market === "us" ? "us" : market === "hk" ? "hk" : "cn";
   const examples = market === "us" ? US_EXAMPLES : market === "hk" ? HK_EXAMPLES : EXAMPLES;
   const marketLabel = activeMarket === "us" ? "美股" : activeMarket === "hk" ? "港股" : "A股";
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, retry: retryAuth } = useAuth();
   const ready = !authLoading && !!user;
+  /** 游客登录失败：ready 会永久为 false，必须给出重试入口，否则按钮全禁用且无出路 */
+  const authFailed = !authLoading && !user;
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [parsed, setParsed] = useState<AlertParseResult | null>(null);
@@ -84,6 +89,8 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
   const [creating, setCreating] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [needEmail, setNeedEmail] = useState(false);
+  /** 免费额度用尽（403 alert_quota_exhausted）：付费意愿最强的时刻，要给按钮不是给红字 */
+  const [quotaHit, setQuotaHit] = useState(false);
   const [prefillName, setPrefillName] = useState<string | null>(null);
   const [prefillPrice, setPrefillPrice] = useState<number | null>(null);
   // 与 AlertSettings 共用同一个 SWR key，命中缓存、不产生额外请求
@@ -115,9 +122,14 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
     };
   }, [initialCode]);
 
+  // 账户未就绪时的统一提示：不再说「稍后重试」—— 失败时没有重试入口等于骗人
+  const authGateMessage = authLoading
+    ? "账户初始化中，请稍候…"
+    : "账户初始化失败，请点上方「重试」后再试";
+
   async function handleParse() {
     if (!ready) {
-      setError("账户正在初始化，请稍后重试");
+      setError(authGateMessage);
       return;
     }
     if (!text.trim()) return;
@@ -145,7 +157,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
 
   function openManual() {
     if (!ready) {
-      setError("账户正在初始化，请稍后重试");
+      setError(authGateMessage);
       return;
     }
     setBuilderOpen(true);
@@ -169,7 +181,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
 
   async function handleCreate() {
     if (!ready) {
-      setError("账户正在初始化，请稍后重试");
+      setError(authGateMessage);
       return;
     }
     const code = codeInput.trim();
@@ -180,6 +192,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
     }
     setCreating(true);
     setError(null);
+    setQuotaHit(false);
     try {
       await api.createAlert({
         code,
@@ -198,7 +211,13 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
       onCreated?.();
       window.dispatchEvent(new CustomEvent("alerts-refresh"));
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "创建失败，请重试");
+      if (isAlertQuotaError(e)) {
+        // 满额不是错误，是报价时机：给卡片 + 按钮，别只给一行红字
+        setQuotaHit(true);
+        reportConversionEvent("feature_use", { source: "alert_quota_hit" });
+      } else {
+        setError(e instanceof Error ? e.message : "创建失败，请重试");
+      }
     } finally {
       setCreating(false);
     }
@@ -210,6 +229,21 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
         <span className="rounded bg-neo-primary-soft px-2 py-1 text-[11px] font-medium text-neo-primary">智能盯盘</span>
         <h3 className="text-sm font-semibold text-neo-ink">自然语言创建或组合条件</h3>
       </div>
+
+      {authFailed && (
+        <div className="mb-3 neo-inset rounded-md px-3 py-2.5">
+          <p className="text-xs font-medium text-neo-ink">账户初始化失败，暂时无法创建盯盘任务</p>
+          <p className="mt-0.5 text-[11px] text-neo-dim">
+            多半是网络波动或服务繁忙。点重试即可，不用刷新页面，已填的内容也不会丢。
+          </p>
+          <button
+            onClick={retryAuth}
+            className="neo-btn-primary mt-2 min-h-9 rounded-md px-3 py-1 text-xs font-medium text-white"
+          >
+            重试
+          </button>
+        </div>
+      )}
 
       <div className="neo-inset flex items-center gap-1 rounded-md p-1">
         <input
@@ -254,6 +288,25 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
       {error && (
         <div className="mt-3 neo-down-soft rounded-md px-3 py-2 text-xs text-neo-down">
           ⚠ {error}
+        </div>
+      )}
+
+      {quotaHit && (
+        <div className="mt-3 neo-inset rounded-md px-3 py-3">
+          <p className="text-xs font-medium text-neo-ink">
+            免费版同时只能盯 1 只票，这条没能建上
+          </p>
+          <p className="mt-1 text-[11px] leading-relaxed text-neo-dim">
+            Pro 可以同时盯 <span className="font-medium text-neo-ink">10 只</span>，价格 ¥19.9 / 30 天，季卡 ¥49 / 90 天，均不自动续费。
+            已触发或已删除的任务不占名额，也可以先删掉旧的那条再建。
+          </p>
+          <Link
+            href="/upgrade/"
+            onClick={() => reportConversionEvent("upgrade_click", { source: "alert_quota" })}
+            className="neo-btn-primary mt-2 inline-flex min-h-9 items-center rounded-md px-3 py-1 text-xs font-medium text-white"
+          >
+            查看 Pro 方案
+          </Link>
         </div>
       )}
 

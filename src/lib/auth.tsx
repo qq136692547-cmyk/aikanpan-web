@@ -17,7 +17,15 @@ interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
   isAuthenticated: boolean;
+  /**
+   * 游客登录失败的原因（null = 正常）。
+   * 之前失败只是 console.error，user 永远为 null、loading 变 false，
+   * 于是依赖 ready 的按钮全部 disabled 且没有任何重试入口 —— 用户只能刷新页面。
+   */
+  error: string | null;
   loginAsGuest: () => Promise<AuthUser>;
+  /** 重新尝试游客登录（失败态下的「重试」按钮用） */
+  retry: () => void;
   logout: () => void;
   bindUser: (user: AuthUser) => void;
   /** 绑定真实身份（升级游客token到微信/华为账号），后续实现 */
@@ -93,6 +101,30 @@ async function guestLogin(): Promise<AuthUser> {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loginAsGuest = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const u = await guestLogin();
+      saveToStorage(u);
+      setUser(u);
+      return u;
+    } catch (e) {
+      // 暴露给 UI：否则调用方只看到「永远 ready=false」，没有任何可操作入口。
+      setError(e instanceof Error ? e.message : "guest-login failed");
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const retry = useCallback(() => {
+    void loginAsGuest().catch(() => {
+      // 失败已写入 error，UI 会展示重试入口
+    });
+  }, [loginAsGuest]);
 
   // 初始化：从 localStorage 恢复，没有则自动游客登录
   useEffect(() => {
@@ -106,26 +138,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // 自动游客登录
-    guestLogin()
-      .then((u) => {
-        saveToStorage(u);
-        setUser(u);
-      })
-      .catch((err) => {
-        console.error("[auth] guest login failed:", err);
-        // 不阻塞页面，用户可以继续浏览
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  const loginAsGuest = useCallback(async () => {
-    const u = await guestLogin();
-    saveToStorage(u);
-    setUser(u);
-    return u;
-  }, []);
+    void loginAsGuest().catch(() => {
+      // 失败可重试，不阻塞页面浏览
+    });
+  }, [loginAsGuest]);
 
   const bindUser = useCallback((u: AuthUser) => {
     saveToStorage(u);
@@ -135,14 +151,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     clearStorage();
     setUser(null);
-    // 重新游客登录
-    guestLogin()
-      .then((u) => {
-        saveToStorage(u);
-        setUser(u);
-      })
-      .catch(() => {});
-  }, []);
+    // 重新游客登录（失败同样可重试，不再静默吞掉）
+    void loginAsGuest().catch(() => {});
+  }, [loginAsGuest]);
 
   return (
     <AuthContext.Provider
@@ -150,7 +161,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         loading,
         isAuthenticated: !!user,
+        error,
         loginAsGuest,
+        retry,
         logout,
         bindUser,
       }}
