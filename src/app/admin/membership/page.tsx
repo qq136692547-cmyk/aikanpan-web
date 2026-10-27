@@ -140,6 +140,7 @@ export default function AdminMembershipPage() {
                 onChange={(event) => setTokenInput(event.target.value)}
                 type="password"
                 placeholder="管理令牌"
+                aria-label="输入管理令牌"
                 className="neo-input w-full rounded-md px-3 py-2.5 text-[13px]"
                 autoComplete="off"
               />
@@ -180,6 +181,7 @@ export default function AdminMembershipPage() {
                   value={note}
                   onChange={(event) => setNote(event.target.value)}
                   placeholder="备注"
+                  aria-label="生成备注"
                   className="neo-input w-full rounded-md px-3 py-2.5 text-[13px]"
                 />
                 <button

@@ -52,6 +52,7 @@ export function AIQuickDiagnosis() {
           value={code}
           onChange={(e) => setCode(e.target.value)}
           placeholder="000001"
+          aria-label="股票代码"
           className="neo-inset w-full rounded-md px-3 py-1.5 text-[14px] text-neo-ink placeholder:text-neo-dim transition-colors focus:outline-none"
           style={{ fontFamily: 'var(--font-inter), system-ui' }}
           disabled={loading}

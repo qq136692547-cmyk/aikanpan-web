@@ -393,10 +393,10 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
       <section className="neo-card p-5">
         <h2 className="text-[14px] font-semibold text-neo-ink">添加 / 更新持仓</h2>
         <form onSubmit={addPosition} className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
-          <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="代码，如 sh.600519" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="名称（可选）" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input type="number" min="1" step="1" value={shares} onChange={(e) => setShares(e.target.value)} placeholder="股数" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input type="number" min="0.01" step="0.01" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="成本价" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="代码，如 sh.600519" aria-label="持仓代码" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="名称（可选）" aria-label="持仓名称" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input type="number" min="1" step="1" value={shares} onChange={(e) => setShares(e.target.value)} placeholder="股数" aria-label="持仓股数" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input type="number" min="0.01" step="0.01" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="成本价" aria-label="持仓成本价" className="neo-input rounded-md px-3 py-2 text-[12px]" />
           <button type="submit" disabled={mutating} className="neo-btn-primary rounded-md px-4 py-2 text-[13px] font-medium disabled:opacity-60">
             {mutating ? "保存中…" : "保存持仓"}
           </button>
@@ -518,15 +518,15 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
           </div>
         </div>
         <form onSubmit={addTransaction} className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-8">
-          <select value={txType} onChange={(e) => setTxType(e.target.value as "buy" | "sell" | "dividend")} className="neo-input rounded-md px-3 py-2 text-[12px]">
+          <select value={txType} onChange={(e) => setTxType(e.target.value as "buy" | "sell" | "dividend")} aria-label="交易类型" className="neo-input rounded-md px-3 py-2 text-[12px]">
             {TX_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
           </select>
-          <input value={txCode} onChange={(e) => setTxCode(e.target.value)} placeholder="代码" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input value={txName} onChange={(e) => setTxName(e.target.value)} placeholder="名称（可选）" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input type="number" min="0" step="1" value={txShares} onChange={(e) => setTxShares(e.target.value)} placeholder="股数" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input type="number" min="0" step="0.01" value={txPrice} onChange={(e) => setTxPrice(e.target.value)} placeholder="价格" className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input type="date" value={txDate} onChange={(e) => setTxDate(e.target.value)} className="neo-input rounded-md px-3 py-2 text-[12px]" />
-          <input value={txNote} onChange={(e) => setTxNote(e.target.value)} placeholder="备注（可选）" className="neo-input col-span-2 rounded-md px-3 py-2 text-[12px] lg:col-span-1" />
+          <input value={txCode} onChange={(e) => setTxCode(e.target.value)} placeholder="代码" aria-label="交易代码" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input value={txName} onChange={(e) => setTxName(e.target.value)} placeholder="名称（可选）" aria-label="交易名称" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input type="number" min="0" step="1" value={txShares} onChange={(e) => setTxShares(e.target.value)} placeholder="股数" aria-label="交易股数" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input type="number" min="0" step="0.01" value={txPrice} onChange={(e) => setTxPrice(e.target.value)} placeholder="价格" aria-label="交易价格" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input type="date" value={txDate} onChange={(e) => setTxDate(e.target.value)} aria-label="交易日期" className="neo-input rounded-md px-3 py-2 text-[12px]" />
+          <input value={txNote} onChange={(e) => setTxNote(e.target.value)} placeholder="备注（可选）" aria-label="交易备注" className="neo-input col-span-2 rounded-md px-3 py-2 text-[12px] lg:col-span-1" />
           <button type="submit" disabled={mutating} className="neo-btn-primary col-span-2 rounded-md px-4 py-2 text-[12px] font-medium disabled:opacity-60 lg:col-span-1">
             {mutating ? "保存中…" : editingTx ? "保存修改" : "记一笔"}
           </button>

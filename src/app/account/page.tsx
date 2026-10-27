@@ -254,6 +254,7 @@ export default function AccountPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value.trim())}
                       placeholder="邮箱地址"
+                      aria-label="账号邮箱地址"
                       inputMode="email"
                       autoComplete="email"
                       className="neo-input w-full rounded-md py-2.5 pl-9 pr-3 text-[13px]"
@@ -263,6 +264,7 @@ export default function AccountPage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
                       placeholder="手机号"
+                      aria-label="账号手机号"
                       inputMode="numeric"
                       autoComplete="tel"
                       className="neo-input w-full rounded-md py-2.5 pl-9 pr-3 text-[13px]"
@@ -274,6 +276,7 @@ export default function AccountPage() {
                     value={code}
                     onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                     placeholder="验证码"
+                    aria-label="账号验证码"
                     inputMode="numeric"
                     autoComplete="one-time-code"
                     className="neo-input min-w-0 flex-1 rounded-md px-3 py-2.5 text-[13px]"

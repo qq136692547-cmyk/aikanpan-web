@@ -81,6 +81,7 @@ export function GlobalSearch() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索股票代码 / 名称 / 拼音"
+            aria-label="搜索股票代码、名称或拼音"
             className="w-full bg-transparent text-[15px] text-neo-ink outline-none placeholder:text-neo-dim"
           />
         </div>
