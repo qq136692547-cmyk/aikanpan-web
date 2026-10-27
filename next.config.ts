@@ -14,21 +14,15 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: [
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=31536000; includeSubDomains",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
+          // 注意：下面三个头刻意不在这里设置，由 Caddy 站点级 header {} 统一注入
+          //   X-Content-Type-Options / Strict-Transport-Security / Referrer-Policy
+          // 原因：Caddy 覆盖 100% 响应，包括完全不经 Next 的 /api/*（FastAPI 反代）
+          // 以及 Next 自己发出的 301/308 重定向；只写在 Next 侧会让这两类响应丢掉这三个头。
+          // 要改这三个头请去改 /etc/caddy/Caddyfile，不要在这里加回来 —— 加回来就会出现
+          // 同名头重复两份（2026-10-26 已清理过一次，别再制造一次）。
           {
             key: "X-Frame-Options",
             value: "DENY",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
           },
           {
             key: "Content-Security-Policy",
