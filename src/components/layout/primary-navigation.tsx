@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   MAIN_MODES,
   getNavigationSubnav,
@@ -10,6 +10,7 @@ import {
   resolveNavigationContext,
   type MarketMode,
 } from "@/lib/navigation";
+import { useLocationSearch } from "@/components/layout/location-search";
 
 function isActive(pathname: string, activePath: string | null): boolean {
   if (!activePath) return false;
@@ -22,8 +23,8 @@ function isActive(pathname: string, activePath: string | null): boolean {
 export function PrimaryNavigation() {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const context = resolveNavigationContext(pathname, searchParams.toString());
+  const search = useLocationSearch();
+  const context = resolveNavigationContext(pathname, search);
   const subnav = getNavigationSubnav(context.scope);
 
   function selectMode(next: MarketMode) {
@@ -85,8 +86,8 @@ export function PrimaryNavigation() {
 export function MobileNavigation({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const context = resolveNavigationContext(pathname, searchParams.toString());
+  const search = useLocationSearch();
+  const context = resolveNavigationContext(pathname, search);
   const subnav = getNavigationSubnav(context.scope);
 
   function go(next: MarketMode) {

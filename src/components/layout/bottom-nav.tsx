@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Bell, ClipboardList, Home, Info, Microscope, Search, TrendingUp } from "lucide-react";
 import {
   MAIN_MODES,
@@ -11,6 +10,9 @@ import {
   normalizeNavigationPath,
   resolveNavigationContext,
 } from "@/lib/navigation";
+// 与桌面导航、面包屑共用同一个 location.search store：各自建 store 就会各自包装一次
+// history.pushState，跳转时通知被触发多遍且清理顺序容易错。
+import { useLocationSearch } from "@/components/layout/location-search";
 
 const iconMap = {
   "/market/": TrendingUp,
@@ -31,8 +33,8 @@ function isActive(pathname: string, activePath: string | null): boolean {
 
 function BottomNavContent() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const context = resolveNavigationContext(pathname, searchParams.toString());
+  const search = useLocationSearch();
+  const context = resolveNavigationContext(pathname, search);
   const subnav = getNavigationSubnav(context.scope);
 
   return (
@@ -85,9 +87,7 @@ function BottomNavContent() {
 }
 
 export function BottomNav() {
-  return (
-    <Suspense fallback={<div className="neo-navbar fixed bottom-0 left-0 right-0 h-16 md:hidden" />}>
-      <BottomNavContent />
-    </Suspense>
-  );
+  // 不再需要 <Suspense>：这里不调用任何会挂起（suspend）的 API，
+  // 包一层的唯一效果是把整条底部导航挡在 SSR HTML 之外。
+  return <BottomNavContent />;
 }

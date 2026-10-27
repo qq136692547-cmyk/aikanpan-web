@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
@@ -27,9 +27,7 @@ export function Navbar() {
           <span className="text-[15px] font-bold tracking-tight text-neo-ink">爱看盘</span>
         </Link>
 
-        <Suspense fallback={<div className="hidden h-7 w-[520px] neo-skeleton rounded-[10px] lg:block" />}>
-          <PrimaryNavigation />
-        </Suspense>
+        <PrimaryNavigation />
 
         <div className="flex items-center gap-2">
           <Link
@@ -83,9 +81,7 @@ export function Navbar() {
 
       {mobileOpen && (
         <div className="neo-page border-t border-[var(--neo-surface-inset)] px-4 py-3 lg:hidden">
-          <Suspense fallback={<div className="h-24 neo-skeleton rounded-xl" />}>
-            <MobileNavigation onNavigate={() => setMobileOpen(false)} />
-          </Suspense>
+          <MobileNavigation onNavigate={() => setMobileOpen(false)} />
         </div>
       )}
     </header>

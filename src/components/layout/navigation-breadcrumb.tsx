@@ -1,15 +1,19 @@
 "use client";
 
-import { Suspense } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { resolveNavigationContext } from "@/lib/navigation";
+// 面包屑与导航共用同一个 location.search store：/stock/[code] 这类页面有 83 条 URL，
+// 它们的「A股 › 市场 › 个股」是站内最主要的一组内链。原先在这里读 query 的那个 hook
+// 会强制上层套 <Suspense>（此处 fallback 是 null，连占位都没有），等于整块内链对
+// 不执行 JS 的抓取器完全不可见。
+import { useLocationSearch } from "@/components/layout/location-search";
 
 function BreadcrumbContent() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const context = resolveNavigationContext(pathname, searchParams.toString());
+  const search = useLocationSearch();
+  const context = resolveNavigationContext(pathname, search);
 
   if (!context.showBreadcrumb || context.breadcrumb.length < 2) return null;
 
@@ -40,9 +44,7 @@ function BreadcrumbContent() {
 }
 
 export function NavigationBreadcrumb() {
-  return (
-    <Suspense fallback={null}>
-      <BreadcrumbContent />
-    </Suspense>
-  );
+  // 不再需要 <Suspense>：这里不调用任何会挂起（suspend）的 API。
+  // 原先那层 fallback={null} 的唯一效果是把整块面包屑挡在 SSR HTML 之外。
+  return <BreadcrumbContent />;
 }
