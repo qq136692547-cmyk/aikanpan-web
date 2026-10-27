@@ -1,12 +1,18 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { PortfolioWorkspace } from "@/components/portfolio/portfolio-workspace";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "持仓组合",
   description: "爱看盘持仓管理：盈亏汇总、仓位占比、持仓明细。",
   alternates: { canonical: "/portfolio/" },
+  openGraph: buildOpenGraph({
+    title: "持仓组合 · 爱看盘",
+    description: "爱看盘持仓管理：盈亏汇总、仓位占比、持仓明细。",
+    url: "/portfolio/",
+  }),
 };
 
 export default async function PortfolioPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {

@@ -3,6 +3,7 @@ import { AlertInput } from "@/components/alert/alert-input";
 import { AlertManager } from "@/components/alert/alert-manager";
 import { AlertSettings } from "@/components/alert/alert-settings";
 import { marketFromSearchParams } from "@/lib/market";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
   title: "智能盯盘",
   description: "用自然语言创建盯盘任务，AI 自动解析条件。页面打开时轮询触发记录，并支持浏览器通知与短信提醒。",
   alternates: { canonical: "/alerts/" },
+  openGraph: buildOpenGraph({
+    title: "智能盯盘 · 爱看盘",
+    description: "用自然语言创建盯盘任务，AI 自动解析条件。页面打开时轮询触发记录，并支持浏览器通知与短信提醒。",
+    url: "/alerts/",
+  }),
 };
 
 const alertsJsonLd = {
@@ -21,12 +27,20 @@ const alertsJsonLd = {
   description: "用自然语言创建盯盘任务，AI 自动解析条件并记录触发历史",
   applicationCategory: "FinanceApplication",
   featureList: ["自然语言创建", "AI 解析", "页面轮询", "浏览器通知", "短信提醒"],
-  offers: { "@type": "Offer", price: "0", priceCurrency: "CNY" },
+  // 与 src/app/layout.tsx 的 WebApplication 保持一致：真实在售的是月卡 ¥19.9、季卡 ¥49，
+  // 不能写 price:"0"（那等于声明免费用不了）。年卡 ¥147 是自动升级结果，不是标价。
+  offers: {
+    "@type": "AggregateOffer",
+    lowPrice: "19.9",
+    highPrice: "49",
+    priceCurrency: "CNY",
+  },
 };
 
 export default async function AlertsPage({ searchParams }: { searchParams: Promise<{ market?: string; code?: string }> }) {
   const { market, code } = await searchParams;
-  const scope = marketFromSearchParams(market);
+  const scope = marketFromSearchParams(market, "cn");
+  // fallback 已改为 cn，此处 scope 不可能为 "all"，分支不可达，保留作兜底
   if (scope === "all") {
     // 带上 code，避免从个股页带入的代码在重定向时丢失
     redirect(code ? `/alerts/?market=cn&code=${encodeURIComponent(code)}` : "/alerts/?market=cn");

@@ -1,14 +1,25 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AboutBrandBanner } from "@/components/about/about-brand-banner";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
 
+// 根 layout 的 title 模板是 "%s · 爱看盘"，这里的 title 只写页面名，
+// 不要再自带品牌名，否则会叠成「关于爱看盘 · 爱看盘」。
 export const metadata: Metadata = {
-  title: "关于爱看盘",
+  title: "关于我们",
   description: "爱看盘是一款AI驱动的股票复盘工具，提供A股行情、AI复盘、个股分析等功能。",
   alternates: { canonical: "/about/" },
+  // 页面级 openGraph 会整体替换根 layout 的 openGraph（Next 不做深合并），
+  // 所以统一走 buildOpenGraph 构造器，保证 images / siteName / locale 不会漏。
+  openGraph: buildOpenGraph({
+    title: "关于我们 · 爱看盘",
+    description: "爱看盘是一款AI驱动的股票复盘工具，提供A股行情、AI复盘、个股分析等功能。",
+    url: "/about/",
+    imageAlt: "关于我们 · 爱看盘",
+  }),
 };
 
 export default function AboutPage() {

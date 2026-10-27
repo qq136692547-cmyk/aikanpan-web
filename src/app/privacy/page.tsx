@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
   title: "隐私政策",
   description: "爱看盘网站的隐私政策，说明信息收集、使用、存储、统计分析与用户权利。",
   alternates: { canonical: "/privacy/" },
+  openGraph: buildOpenGraph({
+    title: "隐私政策 · 爱看盘",
+    description: "爱看盘网站的隐私政策，说明信息收集、使用、存储、统计分析与用户权利。",
+    url: "/privacy/",
+  }),
 };
 
 const sections = [

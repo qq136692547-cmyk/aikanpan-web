@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildOpenGraph } from "@/lib/open-graph";
 import Link from "next/link";
 import { CheckCircle2, Crown, HelpCircle, ShieldCheck } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
@@ -15,6 +16,11 @@ export const metadata: Metadata = {
   description: "爱看盘 Pro 时长卡：跨设备研究记录、AI 复盘与研究流程。",
   robots: { index: false, follow: true },
   alternates: { canonical: "/upgrade/" },
+  openGraph: buildOpenGraph({
+    title: "升级 Pro · 爱看盘",
+    description: "爱看盘 Pro 时长卡：跨设备研究记录、AI 复盘与研究流程。",
+    url: "/upgrade/",
+  }),
 };
 
 /**
@@ -33,6 +39,12 @@ export const metadata: Metadata = {
  *     找回/激活表单（recover-panel）、曝光埋点（upgrade-exposure）。
  *
  * ⚠️ 本文件里不要再出现任何价格数字（¥xx）。要显示价格就放进 PlanPrice。
+ *
+ * ⚠️ 配色口径（B5 定性结论，2026-10-27）：本页刻意使用 Tailwind 调色板，**不是 neo 配色残留**。
+ *   amber = 主推季卡与主 CTA、purple = 年卡、neutral = 月卡与正文、emerald = 信任/成功、
+ *   rose = 错误、blue = 月卡档勾选与找回表单（蓝色在全站还兼作美股标识色）。实测 57 个调色板类在线上
+ *   CSS 中 57 条规则齐全，且全目录无硬编码色值。**请勿在没有设计稿的情况下"统一"成 neo 紫** ——
+ *   那会抹掉档位层次，而档位层次正是这个页面唯一的转化抓手。
  */
 
 export default async function UpgradePage({
@@ -121,7 +133,7 @@ export default async function UpgradePage({
 
         {/* 定价卡片 */}
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {/* 季度会员（C 位主推） */}
+          {/* 季卡（C 位主推） */}
           <div className="relative flex flex-col justify-between rounded-2xl border-2 border-amber-500/60 bg-gradient-to-b from-amber-950/20 to-neutral-900/80 p-5 shadow-xl shadow-amber-500/5 sm:col-span-2 sm:mx-auto sm:w-full sm:max-w-2xl">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-0.5 text-[10px] font-bold tracking-wide text-black uppercase shadow">
               推荐方案
@@ -131,7 +143,7 @@ export default async function UpgradePage({
               <div className="flex items-center justify-between">
                 <h2 className="flex items-center gap-1.5 text-base font-bold text-white">
                   <Crown className="h-4 w-4 text-amber-400" />
-                  季度 Pro 会员
+                  季卡 Pro 会员
                 </h2>
                 <span className="rounded bg-amber-500/20 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
                   立省 8 元
@@ -164,17 +176,17 @@ export default async function UpgradePage({
             </div>
           </div>
 
-          {/* 更多方案：月卡 / 年卡（折叠，原生 details 不需要 JS） */}
+          {/* 更多方案：月卡 / 年度时长方案（折叠，原生 details 不需要 JS） */}
           <details className="rounded-2xl border border-neutral-800 bg-neutral-900/40 sm:col-span-2">
             <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-neutral-300 transition select-none hover:text-white">
               更多方案（30 天 / 365 天）
             </summary>
             <div className="grid grid-cols-1 gap-5 px-5 pb-5 sm:grid-cols-2">
-              {/* 更多方案 #1：月度会员 */}
+              {/* 更多方案 #1：月卡 */}
               <div className="relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-900/60 p-5 shadow-sm transition hover:border-neutral-700">
                 <div>
                   <div className="flex items-center justify-between">
-                    <h2 className="text-base font-bold text-white">月度会员</h2>
+                    <h2 className="text-base font-bold text-white">月卡</h2>
                     <span className="text-xs text-neutral-400">30 天标准版</span>
                   </div>
                   <div className="mt-3 flex items-baseline gap-1">

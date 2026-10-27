@@ -9,6 +9,7 @@ import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { getDailyReviewForSSR } from "@/lib/daily-review-ssr";
 import { marketFromSearchParams } from "@/lib/market";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 
 export const revalidate = 30;
@@ -22,6 +23,13 @@ export const metadata: Metadata = {
     canonical: "/",
     types: { "application/rss+xml": "https://aikanpan.top/rss.xml" },
   },
+  // 首页是唯一允许继承根 layout 默认 og 的页面，但仍然显式声明，
+  // 这样 og:url 指向首页而不是「未声明」（此前首页 og:url 靠 layout 兜底，值恰好也对）。
+  openGraph: buildOpenGraph({
+    title: "爱看盘 · A股/港股/美股 AI 复盘工作台",
+    description: "A股、港股与美股实时行情、市场温度、AI 复盘与财报日历，一屏看懂的市场复盘工作台。",
+    url: "/",
+  }),
 };
 
 const articleSchema = {

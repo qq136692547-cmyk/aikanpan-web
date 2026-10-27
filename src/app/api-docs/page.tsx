@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;
@@ -8,6 +9,13 @@ export const metadata: Metadata = {
   title: "API 文档",
   description: "爱看盘后端API接口文档与完整接口清单。",
   alternates: { canonical: "/api-docs/" },
+  // G10（2026-10-27）：内部接口清单页不收录。follow 保留 true —— 页面上的站内链接仍可被追踪。
+  robots: { index: false, follow: true },
+  openGraph: buildOpenGraph({
+    title: "API 文档 · 爱看盘",
+    description: "爱看盘后端API接口文档与完整接口清单。",
+    url: "/api-docs/",
+  }),
 };
 
 const apiEndpoints = [
