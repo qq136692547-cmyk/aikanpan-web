@@ -12,9 +12,11 @@ import { HkDashboardSection } from "@/components/hk/hk-dashboard-section";
 import { api, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import { marketFromSearchParams } from "@/lib/market";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { marketPhaseText, marketPhaseLive } from "@/lib/market-status";
-import { getRecentReviewDates } from "@/lib/review-seo";
+import { getExistingReviewDates } from "@/lib/review-dates";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -30,6 +32,11 @@ export const metadata: Metadata = {
     canonical: "/review/",
     types: { "application/rss+xml": "https://aikanpan.top/rss.xml" },
   },
+  openGraph: buildOpenGraph({
+    title: "每日复盘 · 爱看盘",
+    description: "AI驱动的每日复盘报告，支持A股、港股与美股市场数据。",
+    url: "/review/",
+  }),
 };
 
 const reviewJsonLd = {
@@ -55,6 +62,31 @@ function neoTrendBgClass(n: number): string {
   return "neo-inset";
 }
 
+type ReviewMonthGroup = { key: string; label: string; dates: string[] };
+
+/**
+ * 把「2026-10-26」这种日期按「2026-10」分组，组标题写成「2026年10月」。
+ *
+ * 输入已由 getExistingReviewDates() 保证是「新的在前」且同月日期连续，所以顺序扫一遍即可，
+ * 不需要 Map —— 保留原有顺序，避免 10 月的日子被排到 9 月前面之外再乱跳。
+ */
+function groupReviewDatesByMonth(dates: string[]): ReviewMonthGroup[] {
+  const groups: ReviewMonthGroup[] = [];
+  for (const date of dates) {
+    const key = date.slice(0, 7);
+    const [year, month] = key.split("-");
+    const label = `${Number(year)}年${Number(month)}月`;
+    const last = groups[groups.length - 1];
+    if (last && last.key === key) {
+      last.dates.push(date);
+    } else {
+      groups.push({ key, label, dates: [date] });
+    }
+  }
+  return groups;
+}
+
+
 export default async function ReviewPage({
   searchParams,
 }: {
@@ -62,7 +94,8 @@ export default async function ReviewPage({
 }) {
   const params = await searchParams;
   const selectedDate = params?.date;
-  const scope = marketFromSearchParams(params?.market);
+  const scope = marketFromSearchParams(params?.market, "cn");
+  // fallback 已改为 cn，此处 scope 不可能为 "all"，分支不可达，保留作兜底
   if (scope === "all") {
     const nextParams = new URLSearchParams({ market: "cn" });
     if (selectedDate) nextParams.set("date", selectedDate);
@@ -190,6 +223,11 @@ export default async function ReviewPage({
     );
   }
 
+  // 真实存在快照的日期（新的在前）。与 sitemap 共用同一份探针，保证站内图和 sitemap 一致。
+  // 探针 fetch 自带 revalidate: 3600，配合本页 revalidate = 60 不会每次渲染都打后端。
+  const reviewDates = await getExistingReviewDates();
+  const reviewMonthGroups = groupReviewDatesByMonth(reviewDates);
+
   const upCount = dashboard.limit_up_count;
   const downCount = dashboard.limit_down_count;
   const upRatio = upCount + downCount > 0 ? (upCount / (upCount + downCount) * 100).toFixed(1) : "0";
@@ -259,17 +297,6 @@ export default async function ReviewPage({
 
       <section className="mt-3">
         <AIHistoryPanel kind="daily_review" title="A股复盘历史" />
-      </section>
-
-      <section className="mt-3">
-        <h2 className="mb-2 text-[15px] font-semibold text-neo-ink">按日期查看复盘</h2>
-        <div className="flex flex-wrap gap-2">
-          {getRecentReviewDates(10).map((date) => (
-            <a key={date} href={`/review/${date}/`} className="neo-chip px-3 py-2 text-[11px] text-neo-mid">
-              {date}
-            </a>
-          ))}
-        </div>
       </section>
 
       {/* 市场概览 Bento Grid */}
@@ -479,6 +506,44 @@ export default async function ReviewPage({
           </div>
         </div>
       </section>
+
+      {/*
+        复盘归档 —— 复盘 hub 的站内链接入口（D13）。
+        原来是「最近 10 天」的纯日历条，只能链出 10 条且会把 noindex 的断档日一起链出去。
+        现在改成按月的全量归档：只列真实存在快照的日期（与 sitemap 同源），一次给出 60+ 条内链，
+        放在所有内容之后，不挤占首屏看板。
+      */}
+      {reviewMonthGroups.length > 0 && (
+        <section className="mt-4" aria-labelledby="review-archive-heading">
+          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+            <h2 id="review-archive-heading" className="text-[15px] font-semibold text-neo-ink">
+              复盘归档
+            </h2>
+            <span className="text-[11px] text-neo-dim">共 {reviewDates.length} 个交易日</span>
+          </div>
+          <div className="space-y-2">
+            {reviewMonthGroups.map((group) => (
+              <div key={group.key} className="neo-inset px-3 py-3">
+                <h3 className="mb-2 text-[12px] font-medium text-neo-mid">{group.label}</h3>
+                <ul className="flex flex-wrap gap-2">
+                  {group.dates.map((date) => (
+                    <li key={date}>
+                      <Link
+                        href={`/review/${date}/`}
+                        aria-label={`${date} 复盘`}
+                        className="neo-chip flex min-h-11 min-w-11 items-center justify-center px-2.5 text-[12px] tabular-nums text-neo-mid"
+                        style={{ fontFamily: "var(--font-inter), system-ui" }}
+                      >
+                        {date.slice(5)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </MarketPageFrame>
   );
 }

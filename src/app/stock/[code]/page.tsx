@@ -11,7 +11,8 @@ import { StockTitleBar } from "@/components/stock/stock-title-bar";
 import { UsStockDetail, type UsStockDetailInitialData } from "@/components/us/us-stock-detail";
 import { HkStockDetail, type HkStockDetailInitialData } from "@/components/hk/hk-stock-detail";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
-import { api } from "@/lib/api";
+import { api, type UsQuote } from "@/lib/api";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import {
   canonicalStockCode,
@@ -47,14 +48,23 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
     } catch {}
   }
   const displayCode = stockDisplayCode(routeCode);
+  const pageTitle = indexable
+    ? `${displayName}（${displayCode}）股票行情与关键数据`
+    : `个股 ${routeCode}`;
+  const pageDescription = indexable
+    ? `${displayName}（${displayCode}）页面，汇总实时行情、关键指标、财报事件与相关新闻，数据来自公开行情接口。`
+    : `${routeCode} 个股行情页面，汇总公开行情接口的报价与关键数据。`;
 
   return {
-    title: indexable ? `${displayName}（${displayCode}）股票行情与关键数据` : `个股 ${routeCode}`,
-    description: indexable
-      ? `${displayName}（${displayCode}）页面，汇总实时行情、关键指标、财报事件与相关新闻，数据来自公开行情接口。`
-      : undefined,
+    title: pageTitle,
+    description: indexable ? pageDescription : undefined,
     robots: { index: indexable, follow: true },
     alternates: { canonical: `/stock/${routeCode}/` },
+    openGraph: buildOpenGraph({
+      title: `${pageTitle} · 爱看盘`,
+      description: pageDescription,
+      url: `/stock/${routeCode}/`,
+    }),
   };
 }
 
@@ -66,6 +76,20 @@ function latestValue(value: number | number[] | null | undefined): number {
     return vals.length ? vals[vals.length - 1] : 0;
   }
   return Number.isFinite(value) ? value : 0;
+}
+
+/**
+ * 美股行情里是否真有数据。
+ *
+ * 后端对不存在的代码不会返回 404，而是返回 HTTP 200 + 全 0 的占位行情
+ * （name 与 code 相同，last/prev_close 都是 0）。所以「请求成功」不能当作
+ * 「代码存在」的判据，只能看有没有真实价位。
+ */
+function hasUsQuoteData(quote: UsQuote | null | undefined): boolean {
+  if (!quote) return false;
+  const last = Number(quote.last);
+  const prevClose = Number(quote.prev_close);
+  return (Number.isFinite(last) && last > 0) || (Number.isFinite(prevClose) && prevClose > 0);
 }
 
 
@@ -129,6 +153,9 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         api.getUsFilings(routeCode, 12),
         api.getUsNews(routeCode, 8),
       ]);
+      // 这里不按行情做存在性判断：能走到这一步说明代码在 INDEXABLE_STOCKS 白名单里，
+      // 代码本身一定存在；行情缺失只会是数据源问题（Finnhub 限流会返回全 0），
+      // 误判成 404 的代价比渲染一个降级页大得多。
       initialData = {
         quote: settled[0].status === "fulfilled" ? settled[0].value : null,
         history: settled[1].status === "fulfilled" ? settled[1].value : null,
@@ -137,6 +164,16 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         news: settled[5].status === "fulfilled" ? settled[5].value.news : [],
         filings: settled[4].status === "fulfilled" ? settled[4].value : null,
       };
+    } else {
+      // 未登记的美股代码（如 /stock/zzzzzz/）：用一次行情请求确认代码是否存在。
+      // 该请求走 Next 数据缓存（revalidate 30），不会每次访问都打后端。
+      let probe: UsQuote | null = null;
+      try {
+        probe = await api.getUsQuote(routeCode);
+      } catch {
+        probe = null;
+      }
+      if (!hasUsQuoteData(probe)) notFound();
     }
     return (
       <div className="neo-page">
@@ -170,6 +207,10 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
   } catch (e) {
     console.error("Failed to fetch stock data:", e);
   }
+
+  // A 股/指数/ETF 行情取不到（后端对不存在的代码返回 503 "quote data unavailable"）→ 404，
+  // 不再返回一个 200 的空壳页面（软 404）。
+  if (!quote) notFound();
 
   return (
     <div className="neo-page">

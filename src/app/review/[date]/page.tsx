@@ -1,7 +1,7 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
-import { api, type LimitStock } from "@/lib/api";
+import { api, type DailyReview, type LimitStock } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
 import {
   formatChineseDate,
@@ -9,6 +9,7 @@ import {
   isReviewDate,
   shiftReviewDate,
 } from "@/lib/review-seo";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -26,22 +27,96 @@ export async function generateMetadata({ params }: { params: Promise<{ date: str
     return { title: "复盘日期不存在", robots: { index: false, follow: false } };
   }
 
+  let review: DailyReview | null = null;
   try {
-    const review = await api.getDailyReview(date);
-    const up = review.dashboard.limit_up_count;
-    const down = review.dashboard.limit_down_count;
-    return {
-      title: `${date} A股复盘`,
-      description: `${formatChineseDate(date)} A股复盘：涨停 ${up} 只、跌停 ${down} 只，包含主要指数、强势行业、涨停板和跌停板数据。`,
-      alternates: { canonical: `/review/${date}/` },
-    };
+    review = await api.getDailyReview(date);
   } catch {
+    review = null;
+  }
+
+  if (!review) {
+    // 断档日走 200 的「暂无复盘」说明页（站主决定），200 + 无实质内容属于薄页面，
+    // 必须 noindex，否则会被当成低质页面收录；sitemap 那边也已排除这类日期。
     return {
-      title: `${date} A股复盘`,
-      description: `${formatChineseDate(date)} A股市场复盘数据。`,
-      alternates: { canonical: `/review/${date}/` },
+      title: `${date} 暂无复盘数据`,
+      description: `${formatChineseDate(date)}（${date}）暂时没有保存的 A 股复盘快照。`,
+      robots: { index: false, follow: true },
+      openGraph: buildOpenGraph({
+        title: `${date} 暂无复盘数据 · 爱看盘`,
+        description: `${formatChineseDate(date)}（${date}）暂时没有保存的 A 股复盘快照。`,
+        url: `/review/${date}/`,
+      }),
     };
   }
+
+  const up = review.dashboard.limit_up_count;
+  const down = review.dashboard.limit_down_count;
+  const description = `${formatChineseDate(date)} A股复盘：涨停 ${up} 只、跌停 ${down} 只，包含主要指数、强势行业、涨停板和跌停板数据。`;
+  return {
+    title: `${date} A股复盘`,
+    description,
+    alternates: { canonical: `/review/${await resolveCanonicalReviewDate(date)}/` },
+    // og:url 用本页自身 URL（含具体日期），与 canonical 解耦：
+    // 周末页 canonical 归并到周五，但它自己的 URL 仍是这个周末页。
+    openGraph: buildOpenGraph({
+      title: `${date} A股复盘 · 爱看盘`,
+      description,
+      url: `/review/${date}/`,
+    }),
+  };
+}
+
+/**
+ * 某一天是否真有复盘快照。
+ *
+ * 复用本页已经在用的 api.getDailyReview：后端对「这一天没有快照」返回 404、
+ * 对有快照返回 200（只读本地快照文件，是存在性的最便宜探针）。
+ * 请求本身带 Next 数据缓存（revalidate 60），不会每次访问都打后端。
+ * 任何异常（超时/5xx）一律当作「不存在」，宁可少一个按钮，也不产生死链。
+ */
+async function hasDailyReviewSnapshot(date: string): Promise<boolean> {
+  try {
+    await api.getDailyReview(date);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * 该日期所属「同一周最后一个工作日」的日期。
+ *
+ * 周起始约定：**周一为一周的第一天**（ISO-8601），所以周日（getDay() === 0）归入
+ * 「上一周」那一组，它的锚点是周日往前数 2 天的周五；周六往前数 1 天。
+ * 周一至周五一律返回自身（工作日不做任何 canonical 归并）。
+ *
+ * 纯日期运算，无网络请求 —— 后端周末照写快照（2026-10-23/24/25 三份 JSON 的
+ * index.last、change_pct、limit_up 完全相同），所以周末页是周五的复制品，
+ * canonical 要指回周五，让搜索引擎只收一份。
+ */
+function weekdayAnchorDate(date: string): string {
+  const day = new Date(`${date}T12:00:00`).getDay(); // 0=周日, 6=周六
+  if (day === 6) return shiftReviewDate(date, -1);
+  if (day === 0) return shiftReviewDate(date, -2);
+  return date;
+}
+
+/**
+ * 计算某天页面应声明的 canonical 日期。
+ *
+ * 工作日 / 无锚点 → 自身；周末 → 同周周五。但如果那个周五本身没有快照
+ * （例如落在 2026-08-19~08-30 这种断档区），canonical 必须退回自身，
+ * 不能指向一个 noindex 的「暂无复盘」说明页。
+ *
+ * 注意：这里的一次探测只发生在「周末页且自身有数据」时，走的是 Next 数据缓存
+ * （revalidate 60）；周六页的周五恰好等于页面正文里 prev 的那次探测，缓存键相同，
+ * 不会重复打后端。
+ */
+async function resolveCanonicalReviewDate(date: string): Promise<string> {
+  const anchor = weekdayAnchorDate(date);
+  if (anchor === date) return date;
+  const anchorExists = await hasDailyReviewSnapshot(anchor);
+  return anchorExists ? anchor : date;
 }
 
 function trendClass(value: number) {
@@ -90,16 +165,57 @@ function LimitTable({ title, stocks, type }: { title: string; stocks: LimitStock
   );
 }
 
+/**
+ * 断档日的说明页。
+ *
+ * 站主决定：这类页面返回 200（而不是 404），但必须在 generateMetadata 里声明 noindex，
+ * 否则「200 + 没内容」会被当成薄页面收录，反而拖累整站质量分。
+ */
+function ReviewMissingNotice({ date }: { date: string }) {
+  // 与 src/app/review/page.tsx 的 todayLocal() 同口径（sv locale 得到 YYYY-MM-DD）
+  const isFuture = date > new Date().toLocaleDateString("sv");
+  return (
+    <MarketPageFrame market="cn">
+      <MarketPageHeader
+        market="cn"
+        title={`${formatChineseDate(date)} 暂无复盘`}
+        subtitle={`${date} · 该日期没有保存的复盘快照`}
+        image="/images/ai-art/review-decoration-v3.png"
+      />
+      <section className="neo-card mt-3 p-4 sm:p-6">
+        <p className="text-[13px] leading-relaxed text-neo-mid">
+          {isFuture
+            ? `${formatChineseDate(date)}（${date}）还没到，复盘通常在当日收盘后生成，可以晚点再来看看。`
+            : `${formatChineseDate(date)}（${date}）暂时没有可以展示的 A 股复盘数据。可能是该日期没有生成复盘快照，或者历史快照已经被清理。`}
+        </p>
+        <p className="mt-2 text-[13px] leading-relaxed text-neo-mid">
+          你可以回到每日复盘首页查看最近一个交易日的复盘，也可以在首页用日期选择器换一天。
+        </p>
+        <Link
+          href="/review/"
+          className="neo-btn-primary mt-4 inline-flex min-h-11 items-center px-4 py-2 text-[12px]"
+        >
+          返回每日复盘
+        </Link>
+      </section>
+    </MarketPageFrame>
+  );
+}
+
 export default async function ReviewDatePage({ params }: { params: Promise<{ date: string }> }) {
   const { date } = await params;
+  // 日期格式非法（/review/abc/、/review/2026-13-45/ 之类）仍然走 404
   if (!isReviewDate(date)) notFound();
 
-  let review;
+  // 合法日期但没有快照（如 2026-08-19~08-30 那段断档）：站主决定返回 200 说明页而不是 404。
+  // 判据就是「数据是否存在」，不硬编码任何日期。
+  let review: DailyReview | null = null;
   try {
     review = await api.getDailyReview(date);
   } catch {
-    notFound();
+    review = null;
   }
+  if (!review) return <ReviewMissingNotice date={date} />;
 
   const dashboard = review.dashboard;
   const up = dashboard.limit_up_count;
@@ -113,7 +229,11 @@ export default async function ReviewDatePage({ params }: { params: Promise<{ dat
     : "多空均衡";
   const previousDate = shiftReviewDate(date, -1);
   const nextDate = shiftReviewDate(date, 1);
-  const today = getRecentReviewDates(1)[0];
+  // 前后一天是否有真实数据：有才渲染按钮，避免指向 404 或出现「有按钮但点开是空页」
+  const [hasPrevious, hasNext] = await Promise.all([
+    hasDailyReviewSnapshot(previousDate),
+    hasDailyReviewSnapshot(nextDate),
+  ]);
   const recentDates = getRecentReviewDates(8).filter((item) => item !== date);
   const indexSummary = dashboard.indices
     .slice(0, 3)
@@ -155,11 +275,11 @@ export default async function ReviewDatePage({ params }: { params: Promise<{ dat
         image="/images/ai-art/review-decoration-v3.png"
         actions={
           <div className="flex items-center gap-2">
-            {previousDate >= "2026-08-31" && (
-              <Link href={`/review/${previousDate}/`} className="neo-btn px-3 py-2 text-[11px]">前一交易日</Link>
+            {hasPrevious && (
+              <Link href={`/review/${previousDate}/`} className="neo-btn px-3 py-2 text-[11px]">前一天</Link>
             )}
-            {nextDate <= today && (
-              <Link href={`/review/${nextDate}/`} className="neo-btn px-3 py-2 text-[11px]">后一交易日</Link>
+            {hasNext && (
+              <Link href={`/review/${nextDate}/`} className="neo-btn px-3 py-2 text-[11px]">后一天</Link>
             )}
             <Link href="/review/" className="neo-btn-primary px-3 py-2 text-[11px]">今日复盘</Link>
           </div>
