@@ -118,7 +118,13 @@ export class ApiClient {
         const errorJson = JSON.parse(errorText);
         detail = errorJson?.detail || errorJson?.message || "";
       } catch {}
-      const err = new Error(detail || `API ${res.status}: ${res.statusText} — ${url}`);
+      const err = new Error(detail || `API ${res.status}: ${res.statusText} — ${url}`) as Error & {
+        status?: number;
+      };
+      // N6：把 HTTP 状态码挂到错误对象上。上层需要区分「代码不存在」(404/503) 与
+      // 「后端瞬时故障」(500/超时/网络错)，靠 message 文案匹配是不可靠的 —— 后端改一句
+      // detail 文案就会让判定失效。只新增字段，现有调用方读 err.message 的行为不变。
+      err.status = res.status;
       // P0-2: 透传后端错误码（如 ai_quota_exhausted）到 err.code，
       // 前端错误分支用 isAiQuotaExhaustedError() 判定，替代文案字符串匹配。
       const errCode = res.headers.get("X-Error-Code");
@@ -199,9 +205,10 @@ export class ApiClient {
   }
 
   /** 个股行情 */
-  getStockQuote(code: string) {
+  getStockQuote(code: string, options?: Pick<RequestInit, "signal">) {
     return this.request<StockQuote>(`/stocks/${code}/quote`, {
       next: { revalidate: 30 },
+      ...options,
     });
   }
 

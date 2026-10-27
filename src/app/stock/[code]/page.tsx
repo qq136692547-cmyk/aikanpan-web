@@ -13,6 +13,7 @@ import { HkStockDetail, type HkStockDetailInitialData } from "@/components/hk/hk
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import { api, type UsQuote } from "@/lib/api";
 import { buildOpenGraph } from "@/lib/open-graph";
+import { classifyQuoteFailure } from "@/lib/quote-failure";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import {
   canonicalStockCode,
@@ -90,6 +91,26 @@ function hasUsQuoteData(quote: UsQuote | null | undefined): boolean {
   const last = Number(quote.last);
   const prevClose = Number(quote.prev_close);
   return (Number.isFinite(last) && last > 0) || (Number.isFinite(prevClose) && prevClose > 0);
+}
+
+/** 行情首次请求超时。后端读缓存约 70ms，实时拉一次行情约 2s，8s 留足余量。 */
+const QUOTE_TIMEOUT_MS = 8000;
+/** 行情重试超时。只给一次重试，且时限更短——第一次已经耗掉 8s 了，再长时间挂起没意义。 */
+const QUOTE_RETRY_TIMEOUT_MS = 4000;
+
+/**
+ * 把任意异常压成一行可读原因，只用于日志，不参与任何判定。
+ *
+ * 不写成 `err instanceof Error` 是有原因的：`AbortSignal.timeout()` 抛出的是 DOMException，
+ * 它在浏览器和 Node 里都不是 Error 的子类，用 instanceof 会把它降级成 "unknown"。
+ */
+function describeError(err: unknown): string {
+  if (err !== null && typeof err === "object") {
+    const e = err as { name?: string; message?: string; status?: number };
+    const head = [e.name || "Error", e.status].filter((v) => v !== undefined).join("/");
+    return e.message ? `${head}: ${e.message}` : head;
+  }
+  return String(err);
 }
 
 
@@ -170,8 +191,11 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       let probe: UsQuote | null = null;
       try {
         probe = await api.getUsQuote(routeCode);
-      } catch {
-        probe = null;
+      } catch (e) {
+        // N6：Finnhub 限流(429)/5xx 是瞬时故障，不代表这个代码不存在。原来 `catch { probe = null }`
+        // 会把它们一起变成 404 —— 一个有效美股代码被缓存成「不存在」比返回一次 500 严重得多。
+        if (classifyQuoteFailure(e) === "transient") throw e;
+        notFound();
       }
       if (!hasUsQuoteData(probe)) notFound();
     }
@@ -186,31 +210,68 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       </div>
     );
   }
-  let quote = null;
-  let moneyflow = null;
-  let indicators = null;
-  let events = null;
-  let financials = null;
-  try {
-    const settled = await Promise.allSettled([
-      api.getStockQuote(code),
-      api.getStockMoneyflow(code),
-      api.getStockIndicators(code),
-      api.getStockEvents(code),
-      api.getStockFinancials(code),
-    ]);
-    quote = settled[0].status === "fulfilled" ? settled[0].value : null;
-    moneyflow = settled[1].status === "fulfilled" ? settled[1].value : null;
-    indicators = settled[2].status === "fulfilled" ? settled[2].value : null;
-    events = settled[3].status === "fulfilled" ? settled[3].value : null;
-    financials = settled[4].status === "fulfilled" ? settled[4].value : null;
-  } catch (e) {
-    console.error("Failed to fetch stock data:", e);
+  // N6：行情单独取，不并进下面的 allSettled。只有它需要区分「代码不存在」与「后端瞬时故障」，
+  // 也需要独立超时 + 重试。
+  let quote: Awaited<ReturnType<typeof api.getStockQuote>> | null = null;
+  let quoteError: unknown = null;
+  let quoteAttempts = 0;
+  for (const timeoutMs of [QUOTE_TIMEOUT_MS, QUOTE_RETRY_TIMEOUT_MS]) {
+    quoteAttempts += 1;
+    try {
+      quote = await api.getStockQuote(code, { signal: AbortSignal.timeout(timeoutMs) });
+      break;
+    } catch (e) {
+      quoteError = e;
+      // 后端已经明确说「没有行情」，重试也不会变成有，直接跳出省一次 4s。
+      if (classifyQuoteFailure(e) === "not-found") break;
+    }
+  }
+  // 首次失败但重试成功：页面正常，但这说明后端正在抖，必须留下信号，
+  // 否则「页面好着」和「后端在坏」在日志里长得一模一样。
+  if (quote && quoteAttempts > 1) {
+    console.warn(
+      `[stock/${code}] 行情首次请求失败，第 ${quoteAttempts} 次重试后成功 — ${describeError(quoteError)}`
+    );
   }
 
-  // A 股/指数/ETF 行情取不到（后端对不存在的代码返回 503 "quote data unavailable"）→ 404，
-  // 不再返回一个 200 的空壳页面（软 404）。
-  if (!quote) notFound();
+  // 其余 4 个请求是「有则更好」的补充数据，任何一个失败都不该影响页面主体，保持 allSettled。
+  const settled = await Promise.allSettled([
+    api.getStockMoneyflow(code),
+    api.getStockIndicators(code),
+    api.getStockEvents(code),
+    api.getStockFinancials(code),
+  ]);
+  const moneyflow = settled[0].status === "fulfilled" ? settled[0].value : null;
+  const indicators = settled[1].status === "fulfilled" ? settled[1].value : null;
+  const events = settled[2].status === "fulfilled" ? settled[2].value : null;
+  const financials = settled[3].status === "fulfilled" ? settled[3].value : null;
+
+  // N6：失败原因必须留痕。原来这里是一个包着 allSettled 的 try/catch —— allSettled 永不 reject，
+  // 那段 catch 是死代码，所以取数失败从来没有任何日志，线上只能看到「页面空白」。
+  const failureLines: string[] = [];
+  if (!quote) failureLines.push(`quote: ${describeError(quoteError)}`);
+  const optionalResults: Array<[string, PromiseSettledResult<unknown>]> = [
+    ["moneyflow", settled[0]],
+    ["indicators", settled[1]],
+    ["events", settled[2]],
+    ["financials", settled[3]],
+  ];
+  for (const [name, result] of optionalResults) {
+    if (result.status === "rejected") failureLines.push(`${name}: ${describeError(result.reason)}`);
+  }
+  if (failureLines.length > 0) {
+    console.warn(`[stock/${code}] 取数失败 ${failureLines.length}/5 — ${failureLines.join("; ")}`);
+  }
+
+  // 只有后端明确说「这个代码没有行情」才 404（503 "quote data unavailable" / 404）。
+  // 瞬时故障则抛出去让 Next 返回 500：ISR 不缓存 500，下一次请求还能自愈；
+  // 而缓存一个假 404 要等 revalidate 过后才恢复，期间爬虫会把它当成「页面不存在」。
+  if (!quote) {
+    if (classifyQuoteFailure(quoteError) === "not-found") notFound();
+    throw quoteError instanceof Error
+      ? quoteError
+      : new Error(`行情取数失败：${describeError(quoteError)}`);
+  }
 
   return (
     <div className="neo-page">
