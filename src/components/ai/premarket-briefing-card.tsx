@@ -36,7 +36,7 @@ export function PremarketBriefingCard() {
               <h3 className="text-sm font-semibold text-neo-ink">AI 盘前早报 · 隔夜外盘与看盘线索</h3>
               <span className="rounded bg-neo-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-neo-primary">开盘前必读</span>
             </div>
-            <p className="text-[11px] text-neo-dim">基于隔夜美股三大指数、热门中概股与重磅宏观要闻，提炼今日 A 股 3 条关键线索</p>
+            <p className="text-[11px] text-neo-dim">基于隔夜美股三大指数、热门中概股与重磅宏观要闻，提炼今日 A 股关键线索</p>
           </div>
         </div>
 

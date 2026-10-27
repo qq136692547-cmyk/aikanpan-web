@@ -36,7 +36,7 @@ export function HomeContent() {
         <h2 className="text-base font-bold text-neo-ink">如何用爱看盘做每日复盘</h2>
         <ol className="mt-3 space-y-3 text-sm text-neo-mid">
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">1</span><span><strong className="text-neo-ink">开盘前</strong>：打开首页查看市场温度和隔夜美股表现，判断今日市场环境</span></li>
-          <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">2</span><span><strong className="text-neo-ink">盘中</strong>：在盯盘页设置条件提醒，页面打开时接收浏览器通知，也可绑定手机号开启短信</span></li>
+          <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">2</span><span><strong className="text-neo-ink">盘中</strong>：在盯盘页设置条件提醒，页面打开时接收浏览器通知，也可绑定邮箱开启邮件、绑定手机号开启短信提醒</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">3</span><span><strong className="text-neo-ink">收盘后</strong>：打开复盘页，读 AI 生成的当日市场总结和涨跌停分析</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">4</span><span><strong className="text-neo-ink">选股时</strong>：在搜索页输入股票代码，获取 AI 结构化诊断和评分</span></li>
           <li className="flex gap-3"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand/20 text-xs font-bold text-brand">5</span><span><strong className="text-neo-ink">睡前</strong>：在研究台更新投资论点，美股夜盘数据次日同步</span></li>
@@ -59,7 +59,7 @@ export function HomeContent() {
               <tr><td className="py-2 pr-4">研究记录与导出</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td><td className="py-2 px-4">绑定邮箱/手机号后支持</td></tr>
               <tr><td className="py-2 pr-4">AI 复盘 / 个股诊断 / 批量评分</td><td className="py-2 px-4">每天可完成 3 次 AI 分析</td><td className="py-2 px-4">每日可反复复盘、诊断与批量评分（上限 500 次）</td></tr>
               <tr><td className="py-2 pr-4">智能盯盘提醒</td><td className="py-2 px-4">1 条任务 · 浏览器通知</td><td className="py-2 px-4">10 条任务 · 邮件/短信触达</td></tr>
-              <tr><td className="py-2 pr-4">方案规格</td><td className="py-2 px-4">—</td><td className="py-2 px-4">7 天体验 / 90 天季卡（更多：30 天 / 365 天），不自动续费</td></tr>
+              <tr><td className="py-2 pr-4">方案规格</td><td className="py-2 px-4">—</td><td className="py-2 px-4">90 天季卡（更多：30 天 / 365 天），不自动续费</td></tr>
             </tbody>
           </table>
         </div>
@@ -85,7 +85,7 @@ export function HomeContent() {
             <h3 className="text-sm font-medium text-neo-ink">盯盘提醒怎么用？</h3>
             <p className="mt-1 text-xs leading-relaxed text-neo-dim">
               在盯盘页用自然语言输入条件，例如「贵州茅台跌破 1600 就提醒我」。
-              页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定手机号后还可开启短信提醒。
+              页面打开时每 15 秒刷新触发记录并发送浏览器通知；关闭页面后浏览器通知停止，绑定邮箱开启邮件、绑定手机号开启短信提醒。
             </p>
           </div>
           <div>

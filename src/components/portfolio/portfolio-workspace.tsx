@@ -343,7 +343,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
       </section>
 
       {error && (
-        <ErrorState title="持仓数据加载失败" description="请检查网络后重试" onRetry={() => mutate()} />
+        <ErrorState title="持仓数据加载失败" description="点「重新加载」再加载一次，已保存的持仓不会丢" onRetry={() => mutate()} />
       )}
 
       <section className="neo-card p-5">
