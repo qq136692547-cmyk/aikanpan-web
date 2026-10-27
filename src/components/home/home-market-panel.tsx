@@ -37,10 +37,10 @@ function SectionShell({ title, children }: { title: string; children: React.Reac
         boxShadow: "-6px -6px 16px rgba(255, 255, 255, 0.045), 8px 8px 20px rgba(0, 0, 0, 0.65)"
       }}
     >
-      <h3 className="mb-3.5 text-[13px] font-semibold text-[#EDEFF3] flex items-center justify-between">
+      <h2 className="mb-3.5 text-[13px] font-semibold text-[#EDEFF3] flex items-center justify-between">
         <span>{title}</span>
         <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
-      </h3>
+      </h2>
       {children}
     </section>
   );
@@ -164,7 +164,7 @@ function UsTemperatureCard({
   return (
     <div className="neo-card p-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-[13px] font-semibold text-neo-ink">市场温度</h3>
+        <h2 className="text-[13px] font-semibold text-neo-ink">市场温度</h2>
         <span className="neo-chip px-2 py-0.5 text-[10px] text-neo-mid">{temperature.label}</span>
       </div>
       <div className="mt-3 flex items-center justify-between gap-3">

@@ -30,9 +30,9 @@ export function BentoCard({
           <div className="flex items-center gap-2">
             {icon && <span className="text-white/80">{icon}</span>}
             {title && (
-              <h3 className="text-[14px] font-semibold text-white tracking-wide">
+              <h2 className="text-[14px] font-semibold text-white tracking-wide">
                 {title}
-              </h3>
+              </h2>
             )}
             {subtitle && (
               <span className="text-[11px] text-[#7C8595]">{subtitle}</span>

@@ -119,7 +119,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <AutoRefresh />
         <section className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-[18px] font-bold tracking-tight text-neo-ink">
+            <h1 className="text-[24px] font-bold tracking-tight text-neo-ink">
               {scope === "all" ? "爱看盘 · A股/港股/美股 AI 复盘工作台" : scope === "cn" ? "A股复盘" : scope === "hk" ? "港股复盘" : "美股复盘"}
             </h1>
             <p className="mt-0.5 text-[12px] text-neo-dim">

@@ -92,7 +92,7 @@ export function PlanCta({ plan }: { plan: PricePlan }) {
         type="button"
         onClick={handlePay}
         disabled={paying}
-        className={`flex min-h-10 w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-bold transition active:scale-[0.99] disabled:opacity-50 ${VARIANT_CLASS[variant]}`}
+        className={`flex min-h-11 w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-xs font-bold transition active:scale-[0.99] disabled:opacity-50 ${VARIANT_CLASS[variant]}`}
       >
         {paying ? (
           <Loader2 className="h-3.5 w-3.5 animate-spin" />

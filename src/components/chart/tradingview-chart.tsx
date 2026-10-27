@@ -175,7 +175,7 @@ function TradingViewChartInner({ code }: TradingViewChartProps) {
   return (
     <div className="neo-card p-5">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-[14px] font-semibold text-neo-ink">K 线图</h3>
+        <h2 className="text-[14px] font-semibold text-neo-ink">K 线图</h2>
         <div className="flex flex-wrap items-center gap-1.5">
           {PERIODS.map((item) => (
             <button
