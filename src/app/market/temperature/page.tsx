@@ -1,6 +1,7 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { api } from "@/lib/api";
 import { formatPct } from "@/lib/format";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import type { Metadata } from "next";
@@ -12,12 +13,29 @@ export const metadata: Metadata = {
   title: "A股市场温度",
   description: "A股市场温度、指数强度、板块热度、涨停效应与热点行业分析。",
   alternates: { canonical: "/market/temperature/" },
+  openGraph: buildOpenGraph({
+    title: "A股市场温度 · 爱看盘",
+    description: "A股市场温度、指数强度、板块热度、涨停效应与热点行业分析。",
+    url: "/market/temperature/",
+  }),
 };
 
+/** 温度分档：单一来源。数字（scoreColor）与色条（scoreBar）必须共用同一阈值，
+ *  否则会出现「数字是绿的、条还是紫的」这种自相矛盾的展示。 */
+function scoreTone(score: number): "up" | "mid" | "down" {
+  if (score >= 70) return "up";
+  if (score >= 45) return "mid";
+  return "down";
+}
+
 function scoreColor(score: number) {
-  if (score >= 70) return "text-neo-up";
-  if (score >= 45) return "text-neo-primary";
-  return "text-neo-down";
+  const tone = scoreTone(score);
+  return tone === "up" ? "text-neo-up" : tone === "mid" ? "text-neo-primary" : "text-neo-down";
+}
+
+function scoreBar(score: number) {
+  const tone = scoreTone(score);
+  return tone === "up" ? "bg-neo-up" : tone === "mid" ? "bg-neo-primary" : "bg-neo-down";
 }
 
 function trendClass(value: number) {
@@ -91,7 +109,7 @@ export default async function MarketTemperaturePage() {
                 <span className={`text-[16px] font-semibold ${scoreColor(dimension.score)}`}>{dimension.score}</span>
               </div>
               <div className="neo-inset-sm mt-2 h-1.5 overflow-hidden rounded-full">
-                <div className="h-full rounded-full bg-neo-primary" style={{ width: `${dimension.score}%` }} />
+                <div className={`h-full rounded-full ${scoreBar(dimension.score)}`} style={{ width: `${dimension.score}%` }} />
               </div>
               <p className="mt-2 text-[12px] leading-relaxed text-neo-mid">{dimension.detail}</p>
             </div>

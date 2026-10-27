@@ -13,6 +13,7 @@ import { formatPct, formatPrice } from "@/lib/format";
 import { usNameZh } from "@/lib/us-stock-names";
 import { marketPhaseText } from "@/lib/market-status";
 import { marketFromSearchParams } from "@/lib/market";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { redirect } from "next/navigation";
 import type { MarketSectorRow } from "@/components/market/sortable-sector-table";
 import type { Metadata } from "next";
@@ -23,6 +24,11 @@ export const metadata: Metadata = {
   title: "市场总览",
   description: "A股、港股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报。",
   alternates: { canonical: "/market/" },
+  openGraph: buildOpenGraph({
+    title: "市场总览 · 爱看盘",
+    description: "A股、港股与美股市场总览，统一呈现指数、板块、结构、AI 聚焦与近期财报。",
+    url: "/market/",
+  }),
 };
 
 const marketJsonLd = {
@@ -42,7 +48,8 @@ function trendClass(pct: number) {
 
 export default async function MarketPage({ searchParams }: { searchParams: Promise<{ market?: string }> }) {
   const { market: marketParam } = await searchParams;
-  const scope = marketFromSearchParams(marketParam);
+  const scope = marketFromSearchParams(marketParam, "cn");
+  // fallback 已改为 cn，此处 scope 不可能为 "all"，分支不可达，保留作兜底
   if (scope === "all") {
     redirect("/market/?market=cn");
   }

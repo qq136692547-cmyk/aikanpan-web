@@ -1,6 +1,7 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { api } from "@/lib/api";
 import { formatAmount, formatPct } from "@/lib/format";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import type { Metadata } from "next";
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
   title: "板块资金流向",
   description: "A股行业板块主力资金净流入、净流出排行，以及沪股通、深股通和南向资金概览。",
   alternates: { canonical: "/market/fund-flow/" },
+  openGraph: buildOpenGraph({
+    title: "板块资金流向 · 爱看盘",
+    description: "A股行业板块主力资金净流入、净流出排行，以及沪股通、深股通和南向资金概览。",
+    url: "/market/fund-flow/",
+  }),
 };
 
 function trendClass(value: number) {

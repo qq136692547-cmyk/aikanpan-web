@@ -1,6 +1,7 @@
 import { MarketPageFrame, MarketPageHeader, MarketPageSection } from "@/components/market/market-page-shell";
 import { api } from "@/lib/api";
 import { formatPct, formatPrice } from "@/lib/format";
+import { buildOpenGraph } from "@/lib/open-graph";
 import { GeoArticleSchema, GeoByline, GeoFaqSection, GeoReferences } from "@/components/seo/geo-content";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 import type { Metadata } from "next";
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
   title: "今日涨停板复盘",
   description: "今日A股涨停板、跌停板、涨跌停家数、强势行业与市场情绪复盘。",
   alternates: { canonical: "/market/limit-up/" },
+  openGraph: buildOpenGraph({
+    title: "今日涨停板复盘 · 爱看盘",
+    description: "今日A股涨停板、跌停板、涨跌停家数、强势行业与市场情绪复盘。",
+    url: "/market/limit-up/",
+  }),
 };
 
 function trendClass(value: number) {

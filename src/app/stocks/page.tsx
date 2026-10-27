@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { INDEXABLE_STOCKS } from "@/lib/stock-seo";
+import { buildOpenGraph } from "@/lib/open-graph";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,6 +9,11 @@ export const metadata: Metadata = {
   title: "热门股票行情",
   description: "A股、港股与美股热门股票行情入口，覆盖贵州茅台、宁德时代、腾讯控股、阿里巴巴、苹果、英伟达等常见关注标的。",
   alternates: { canonical: "/stocks/" },
+  openGraph: buildOpenGraph({
+    title: "热门股票行情 · 爱看盘",
+    description: "A股、港股与美股热门股票行情入口，覆盖贵州茅台、宁德时代、腾讯控股、阿里巴巴、苹果、英伟达等常见关注标的。",
+    url: "/stocks/",
+  }),
 };
 
 function isCnStock(code: string) {

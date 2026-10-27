@@ -85,7 +85,8 @@ export default async function SearchPage({
   searchParams: Promise<{ q?: string; market?: string }>;
 }) {
   const { q, market } = await searchParams;
-  const scope = marketFromSearchParams(market);
+  const scope = marketFromSearchParams(market, "cn");
+  // fallback 已改为 cn，此处 scope 不可能为 "all"，分支不可达，保留作兜底
   if (scope === "all") {
     const target = new URLSearchParams({ market: "cn" });
     if (q) target.set("q", q);
