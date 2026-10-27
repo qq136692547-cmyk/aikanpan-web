@@ -70,7 +70,7 @@ export default async function UpgradePage({
       <Navbar />
       <UpgradeExposure />
 
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-4xl flex-1 px-4 py-10 sm:px-6">
         <UpgradePayStatus paySuccess={paySuccess} outTradeNo={outTradeNo} />
 
         <div className="text-center">

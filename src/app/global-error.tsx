@@ -4,7 +4,7 @@
 // 需要的是整页硬跳转（顺带丢掉全部客户端状态），而不是再走一层客户端路由。
 /* eslint-disable @next/next/no-html-link-for-pages */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { reportClientError } from "@/lib/analytics";
 
 /**
@@ -73,6 +73,44 @@ const actionsStyle = {
   justifyContent: "center",
 };
 
+/**
+ * 跳到主内容（skip-link）。
+ *
+ * 为什么不用 layout.tsx 那套 Tailwind 的 sr-only / focus:not-sr-only：
+ * global-error 会替换整个 html/body，产物里 **不带任何样式表**
+ * （实测 .next/server/app/_global-error.html 的 <head> 里没有 stylesheet 链接），
+ * 所以那套工具类在这里根本不生效 —— 链接会永久可见，而 body 是 display:flex，
+ * 它会变成 flex item 与居中的错误卡片并排，页面直接走样。
+ * 因此这里全部用内联 style（与本文件「不用 globals.css 的类」一致），
+ * 聚焦态用 React state 切，因为内联 style 优先级高于样式表，:focus 规则盖不住它。
+ */
+const skipHiddenStyle = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+  border: "0",
+} as const;
+
+const skipVisibleStyle = {
+  position: "fixed",
+  top: "16px",
+  left: "16px",
+  zIndex: 100,
+  padding: "8px 16px",
+  borderRadius: "8px",
+  background: "#101216",
+  color: "#FFFFFF",
+  fontSize: "13px",
+  lineHeight: "20px",
+  textDecoration: "none",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
+} as const;
+
 const baseBtn = {
   display: "inline-flex",
   alignItems: "center",
@@ -107,6 +145,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const [skipFocused, setSkipFocused] = useState(false);
+
   useEffect(() => {
     reportClientError({
       scope: "global",
@@ -120,7 +160,16 @@ export default function GlobalError({
   return (
     <html lang="zh-CN">
       <body style={bodyStyle}>
-        <main style={cardStyle}>
+        {/* 跳到主内容：与根 layout 的 skip-link 对应（本页不加载样式表，故用内联 style） */}
+        <a
+          href="#main-content"
+          onFocus={() => setSkipFocused(true)}
+          onBlur={() => setSkipFocused(false)}
+          style={skipFocused ? skipVisibleStyle : skipHiddenStyle}
+        >
+          跳到主内容
+        </a>
+        <main id="main-content" tabIndex={-1} style={cardStyle}>
           <h1 style={headlineStyle}>这个页面出错了</h1>
           <p style={descStyle}>数据没有丢，可以重试</p>
           <div style={actionsStyle}>

@@ -115,7 +115,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
         <AutoRefresh />
         <section className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <div>

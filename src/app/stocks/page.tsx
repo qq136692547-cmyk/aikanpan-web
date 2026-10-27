@@ -32,7 +32,7 @@ export default function StocksPage() {
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6">
         <header className="mb-5">
           <p className="text-[12px] font-medium text-neo-primary">股票行情</p>
           <h1 className="mt-1 text-2xl font-semibold text-neo-ink">热门股票</h1>

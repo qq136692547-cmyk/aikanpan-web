@@ -7,7 +7,7 @@ export function MarketPageFrame({ children, scripts, market }: { children: React
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">{children}</main>
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-3 sm:px-6 sm:py-4">{children}</main>
       <Footer dataSource={dataSource} />
       {scripts}
     </div>

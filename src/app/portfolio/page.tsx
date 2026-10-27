@@ -21,7 +21,7 @@ export default async function PortfolioPage({ searchParams }: { searchParams: Pr
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-5 sm:px-6 sm:py-6">
         <PortfolioWorkspace market={scope} />
       </main>
       <Footer />

@@ -158,7 +158,7 @@ export default function AccountPage() {
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-3xl flex-1 px-6 py-6">
         <section className="neo-card relative overflow-hidden p-6 neo-fade-up">
           <h1 className="text-[22px] font-bold tracking-tight text-neo-ink">账户</h1>
           <p className="mt-1 text-[12px] text-neo-dim">注册后，自选、持仓、计划会在设备间同步</p>

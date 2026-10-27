@@ -75,7 +75,7 @@ export default function TermsPage() {
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-6">
         <section className="neo-fade-up">
           <h1 className="text-xl font-bold text-neo-ink">用户协议</h1>
           <p className="mt-2 text-sm text-neo-mid">更新日期：2026 年 10 月 8 日</p>

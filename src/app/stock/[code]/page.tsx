@@ -156,7 +156,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       <div className="neo-page">
         {breadcrumb}
         <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+        <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <HkStockDetail symbol={routeCode} initialData={initialData} />
         </main>
         <Footer dataSource="腾讯行情 / 东方财富" />
@@ -203,7 +203,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       <div className="neo-page">
         {breadcrumb}
         <Navbar />
-        <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+        <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <UsStockDetail symbol={routeCode} initialData={initialData} />
         </main>
         <Footer dataSource="Finnhub / SEC EDGAR" />
@@ -277,7 +277,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
     <div className="neo-page">
       {breadcrumb}
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
         <StockTitleBar code={code} initial={quote} />
 
         {/* 统计数据网格 (1:1 镜像 Figma Bento Grid 核心盘口 + 主力资金) */}

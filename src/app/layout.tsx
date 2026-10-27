@@ -71,6 +71,14 @@ export default function RootLayout({
       <body
         className="app-bottom-clearance antialiased"
       >
+        {/* 跳到主内容：键盘用户的第一个 Tab 落点。
+            目标主内容区必须可被程序化聚焦（tabIndex 设为 -1），否则回车只滚动不移动焦点。 */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#101216] focus:px-4 focus:py-2 focus:text-[13px] focus:text-white focus:shadow-xl"
+        >
+          跳到主内容
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

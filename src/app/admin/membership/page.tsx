@@ -104,7 +104,7 @@ export default function AdminMembershipPage() {
 
   return (
     <div className="neo-page min-h-screen">
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
         <section className="neo-card p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">

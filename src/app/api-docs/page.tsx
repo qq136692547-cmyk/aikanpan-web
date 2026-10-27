@@ -63,7 +63,7 @@ export default function ApiDocsPage() {
   return (
     <div className="neo-page">
       <Navbar />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
         <section className="neo-fade-up">
           <h1 className="text-xl font-bold text-neo-ink">API 文档</h1>
           <p className="mt-1 text-sm text-neo-mid">
