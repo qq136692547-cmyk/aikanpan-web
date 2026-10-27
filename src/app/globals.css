@@ -195,7 +195,9 @@
     border-radius: 14px;
     transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  @media (hover: hover) {
   .panel:hover { border-color: var(--edge); }
+}
 
   /* === Panel Hero — 主数据, 稍亮底 + 左侧flux线 === */
   .panel-hero {
@@ -244,7 +246,9 @@
     border-radius: 14px;
     transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  @media (hover: hover) {
   .glass:hover { border-color: var(--edge); }
+}
   .glass-card {
     background: var(--panel);
     border: 1px solid var(--edge-faint);
@@ -299,9 +303,13 @@
     border-radius: 10px;
   }
   .card-hover { transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @media (hover: hover) {
   .card-hover:hover { border-color: var(--edge); }
+}
   .row-hover { transition: background-color 150ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @media (hover: hover) {
   .row-hover:hover { background-color: rgba(255,255,255,0.025); }
+}
   .ai-glow { position: relative; }
 
   .text-gradient-cyan {
@@ -337,7 +345,9 @@
     background: var(--flux);
     transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
   }
+  @media (hover: hover) {
   .btn-neon:hover { background: var(--flux-hover); }
+}
   .btn-neon:active { background: var(--flux-active); transform: scale(0.98); }
 
   .scrollbar-thin { scrollbar-width: thin; scrollbar-color: var(--edge) transparent; }
@@ -406,7 +416,9 @@
 .ai-markdown th { background: var(--panel-raised); font-weight: 600; }
 .ai-markdown hr { border: none; border-top: 1px solid var(--edge-faint); margin: 1em 0; }
 .ai-markdown a { color: var(--flux); text-decoration: none; }
-.ai-markdown a:hover { text-decoration: underline; }
+@media (hover: hover) {
+  .ai-markdown a:hover { text-decoration: underline; }
+}
 
 /* ============================================
    Landing Page — 动效系统
@@ -462,6 +474,38 @@
   --neo-surface-raised: #14171C;
   --neo-surface-inset: #0C0E11;
   --neo-surface-active: #181C22;
+
+  /* === 结构色（F2 补齐） ===
+     这三个变量此前被引用但从未定义，导致 33 处边框回落成 currentColor、
+     7 处 hover 底失效。语义：edge/border 是分隔线，surface-* 是交互底。 */
+  --neo-edge: rgba(255,255,255,0.08);
+  --neo-border: var(--neo-edge);            /* 兼容别名：源码里有 11 处用这个名字 */
+  --neo-bg-dim: rgba(255,255,255,0.05);     /* 徽章/标签/悬停行的淡底 */
+  --neo-surface-hover: #171A20;
+  --neo-surface-card: var(--neo-surface-raised);
+
+  /* === 历史命名兼容别名（F2） ===
+     源码另有 3 个旧名字，值与现有 token 完全一致，加别名避免改 15 处调用点。 */
+  --neo-dim: var(--neo-ink-dim);
+  --neo-mid: var(--neo-ink-mid);
+  --neo-primary-light: var(--neo-primary-soft);
+  --neo-danger: #C0392B;
+
+  /* === 半透明变体（F2） ===
+     Tailwind 只会给自己的颜色生成 /10、/40 这类变体，手写的 .bg-neo-* 不会。
+     这里用 hex8 显式给值，不用 color-mix()——微信 X5 等旧内核不支持 color-mix，
+     会静默失效，而 hex8 兼容范围足够。 */
+  --neo-up-10: #E5484D1A;
+  --neo-up-20: #E5484D33;
+  --neo-up-30: #E5484D4D;
+  --neo-down-5: #3DD68C0D;
+  --neo-down-10: #3DD68C1A;
+  --neo-down-20: #3DD68C33;
+  --neo-down-30: #3DD68C4D;
+  --neo-primary-10: #5B52E81A;
+  --neo-primary-40: #5B52E866;
+  --neo-ink-90: #EDEFF3E6;
+  --neo-ink-dim-40: #7C859566;
 
   /* Ink — 加深 dim/faint 提升对比度 */
   --neo-ink: #EDEFF3;
@@ -520,9 +564,11 @@
   transition: transform 0.2s ease, box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(255,255,255,0.06);
 }
-.neo-card:hover {
-  box-shadow: var(--neo-hover);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .neo-card:hover {
+    box-shadow: var(--neo-hover);
+    transform: translateY(-2px);
+  }
 }
 
 /* === Neo Card Small — 小凸起卡片 === */
@@ -533,9 +579,11 @@
   transition: transform 0.2s ease, box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(255,255,255,0.05);
 }
-.neo-card-sm:hover {
-  box-shadow: var(--neo-raised);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .neo-card-sm:hover {
+    box-shadow: var(--neo-raised);
+    transform: translateY(-2px);
+  }
 }
 
 /* === Neo Inset — 凹陷区域 === */
@@ -559,9 +607,11 @@
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 500;
 }
-.neo-btn:hover {
-  box-shadow: var(--neo-raised);
-  color: var(--neo-primary);
+@media (hover: hover) {
+  .neo-btn:hover {
+    box-shadow: var(--neo-raised);
+    color: var(--neo-primary);
+  }
 }
 .neo-btn:active {
   box-shadow: var(--neo-pressed);
@@ -576,9 +626,11 @@
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 600;
 }
-.neo-btn-primary:hover {
-  background: var(--neo-primary-hover);
-  box-shadow: -4px -4px 10px var(--neo-shadow-light), 4px 4px 10px rgba(99,91,238,0.45);
+@media (hover: hover) {
+  .neo-btn-primary:hover {
+    background: var(--neo-primary-hover);
+    box-shadow: -4px -4px 10px var(--neo-shadow-light), 4px 4px 10px rgba(99,91,238,0.45);
+  }
 }
 .neo-btn-primary:active {
   box-shadow: var(--neo-pressed);
@@ -612,9 +664,11 @@
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
   font-weight: 500;
 }
-.neo-chip:hover {
-  color: var(--neo-primary);
-  box-shadow: var(--neo-raised);
+@media (hover: hover) {
+  .neo-chip:hover {
+    color: var(--neo-primary);
+    box-shadow: var(--neo-raised);
+  }
 }
 .neo-chip:active {
   transform: translateY(1px) scale(0.99);
@@ -645,8 +699,69 @@
 .bg-neo-inset { background-color: var(--neo-surface-inset); }
 .bg-neo-primary { background-color: var(--neo-primary-fill); }
 .bg-neo-primary-soft { background-color: var(--neo-primary-soft); }
+/* 涨跌底色：文字色由 .text-neo-* 提供，这里补齐同一套语义色的底色，
+   否则 bg-neo-up / bg-neo-down 找不到规则，涨跌条与进度条会渲染成透明。
+   用 --neo-up / --neo-down（实色），不用 *-soft —— 这些是细条与徽章底，需要实色才看得见。 */
+.bg-neo-up { background-color: var(--neo-up); }
+.bg-neo-down { background-color: var(--neo-down); }
 
-.hover-neo-inset:hover { background-color: var(--neo-surface-inset); }
+/* === Neo 补齐的 16 条基础工具类（F2） ===
+   以下类名在源码里被使用，但构建产物中没有任何规则，等于没写。
+   全部走变量，禁止写死 hex。
+   注：focus-visible:ring-neo-down/20 属变体类，已移至下方 F2-b 变体块。 */
+.text-neo-ink-mid { color: var(--neo-ink-mid); }   /* 与 .text-neo-mid 同值 */
+.text-neo-ink\/90 { color: var(--neo-ink-90); }    /* 正文轻微透明 */
+.bg-neo-bg-dim { background-color: var(--neo-bg-dim); }
+.bg-neo-dim { background-color: var(--neo-ink-dim); }
+.bg-neo-dim\/40 { background-color: var(--neo-ink-dim-40); }
+.border-neo-primary { border-color: var(--neo-primary); }
+.border-neo-primary\/40 { border-color: var(--neo-primary-40); }
+.border-neo-up\/20 { border-color: var(--neo-up-20); }
+.border-neo-up\/30 { border-color: var(--neo-up-30); }
+.border-neo-down\/10 { border-color: var(--neo-down-10); }
+.border-neo-down\/20 { border-color: var(--neo-down-20); }
+.border-neo-down\/30 { border-color: var(--neo-down-30); }
+.bg-neo-up\/10 { background-color: var(--neo-up-10); }
+.bg-neo-down\/5 { background-color: var(--neo-down-5); }
+.bg-neo-down\/10 { background-color: var(--neo-down-10); }
+.bg-neo-primary\/10 { background-color: var(--neo-primary-10); }
+
+/* === Neo / brand 变体补齐（F2-b） ===
+   Tailwind 只为自己认识的工具类生成 hover:/focus-visible:/peer-checked: 等变体，
+   对手写的 .text-neo-* / .bg-neo-* / .text-brand 一律不生成
+   → 源码里 14 种变体、69 处此前全是死代码（实测构建产物命中 0 条）。
+   影响最大的是 hover:text-neo-primary（33 处，全站链接主色反馈从不触发）
+   和 peer-checked:bg-neo-primary（3 处，告警开关圆点开启时不变色）。
+   选择器按 CSS 规则转义，形态与 Tailwind 生成的保持一致。
+   顺序约束：.aria-expanded\:text-neo-ink 与 .hover\:text-neo-ink 特异性相同(0,2,0)，
+   必须排在其后，靠源码顺序让展开态压过 hover 态。 */
+
+/* hover / group-hover 统一包进 (hover: hover)，与 Tailwind v4 自身生成的 hover 变体
+   行为对齐：触屏设备不进入 hover 态。否则手指点一下链接，文字会变主色并粘住不退
+   ——那会是全站唯一一批「手机上也会粘住」的 hover 效果。
+   非 hover 态的 4 条（placeholder / peer-checked / aria-expanded / focus-visible）
+   故意留在外面，包进去会让触屏丢失反馈。 */
+@media (hover: hover) {
+  .hover\:text-neo-primary:hover { color: var(--neo-primary-text); }
+  .hover\:text-neo-ink:hover { color: var(--neo-ink); }
+  .hover\:text-neo-mid:hover { color: var(--neo-ink-mid); }
+  .hover\:text-neo-down:hover { color: var(--neo-down-text); }
+  .hover\:bg-neo-bg-dim:hover { background-color: var(--neo-bg-dim); }
+  .hover\:border-neo-primary:hover { border-color: var(--neo-primary); }
+  .hover\:border-neo-primary\/40:hover { border-color: var(--neo-primary-40); }
+  .hover\:text-brand:hover { color: var(--brand-text); }
+  .group:hover .group-hover\:text-neo-primary { color: var(--neo-primary-text); }
+  .group:hover .group-hover\:text-brand { color: var(--brand-text); }
+}
+
+.placeholder\:text-neo-dim::placeholder { color: var(--neo-ink-dim); }
+.peer:checked ~ .peer-checked\:bg-neo-primary { background-color: var(--neo-primary-fill); }
+.aria-expanded\:text-neo-ink[aria-expanded="true"] { color: var(--neo-ink); }
+.focus-visible\:ring-neo-down\/20:focus-visible { --tw-ring-color: var(--neo-down-20); }
+
+@media (hover: hover) {
+  .hover-neo-inset:hover { background-color: var(--neo-surface-inset); }
+}
 .aria-expanded-neo-inset[aria-expanded="true"] { background-color: var(--neo-surface-inset); }
 
 .neo-art-bright { mix-blend-mode: multiply; filter: brightness(1.55) contrast(1.08) saturate(1.12); }
