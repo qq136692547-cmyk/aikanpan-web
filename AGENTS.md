@@ -10,28 +10,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ---
 
-<!-- BEGIN:codex-stop-work -->
-## 停工令（2026-10-26 起，最高优先级 —— 先读这一节再看下面）
-
-站主在同一台机器、同一个仓库、同一个生产环境上并行作业，已发生真实冲突：`next build` 与 `mv .next` 互相打断、部署产物被另一次改名覆盖、一条提交的归属分不清是谁的。**在你收到「复工」指令前：**
-
-**禁止**
-
-1. **本仓库任何写操作** —— 禁止 `npm run build` / `next build`；禁止改、`mv`、`rm`、`rename` 任何 `.next` 或 `.next*`；禁止编辑/新建/删除任何文件（含 `handoff/`、`docs/`、本文件 `AGENTS.md`、`CLAUDE.md`）
-2. **任何 git 写操作** —— 禁止 `commit` / `push` / `merge` / `rebase` / `reset` / `stash` / `checkout` / `branch` / `worktree`
-3. **任何生产变更** —— 禁止 `scp` / `rsync` / `tar` 上传；禁止 `pm2 restart|reload|stop aikanpan-web`；禁止 `systemctl restart|stop dsa`；禁止改动 `/opt/dsa-mp` 下任何文件（含 `server.py`、`.env`、各数据 JSON、`alipay_keys/`）
-4. **禁止绕过** —— 不许新建分支/worktree/临时目录/脚本/cron/timer 间接实现上述动作；不许「只改一点点」；不许先改后报
-
-**允许**：读文件、读日志、只读排查（`cat` / `grep` / `df` / `systemctl is-active` / `pm2 list` / `curl`）、回答问题。
-
-发现 P0（服务挂 / 数据损坏 / 资金链路异常）**不要动手** —— 在回复第一行写明「P0：现象 + 证据」，交站主处理。唯一例外：站主明确说「授权你修 <具体事项>」，模糊的「你看着办」不算授权。
-
-**复工**：仅当站主明确说「复工」并给出具体授权范围时，本段对该范围失效。默认状态永远是停工。
-**移除方式**：删除 `<!-- BEGIN:codex-stop-work -->` 至 `<!-- END:codex-stop-work -->` 之间的整段。
-<!-- END:codex-stop-work -->
-
----
-
 ## 支付与会员系统 P0 待修（2026-09-23 独立安全审计）
 
 完整审计报告：`docs/pay-audit-2026-09-23.md`（只读审计，未改动生产，含可复现命令与原始返回）
