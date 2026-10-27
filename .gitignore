@@ -17,6 +17,10 @@
 /.next/
 /out/
 /.next-standalone-tmp/
+# 本机构建前会把 .next 改名成 .next-old-<stamp>（Windows 沙箱禁止批量删除），
+# 不忽略的话每构建一次就在 git status 里多出一整棵树。
+/.next-old-*/
+/.next.new-*/
 
 # production
 /build
