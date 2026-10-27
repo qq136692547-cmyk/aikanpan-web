@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { X, Copy, Download, Check, Sparkles } from "lucide-react";
 import type { StockReport } from "@/lib/api";
+import { useDialogFocus } from "@/lib/use-dialog-focus";
 
 interface AISharePosterModalProps {
   isOpen: boolean;
@@ -32,6 +33,8 @@ export function AISharePosterModal({
   const [dataUrl, setDataUrl] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [isRendering, setIsRendering] = useState<boolean>(true);
+  // 打开时焦点进关闭按钮、Esc 关闭、Tab 焦点循环、关闭后焦点归位
+  const { containerRef, focusRef } = useDialogFocus<HTMLDivElement, HTMLButtonElement>(isOpen, onClose);
 
   useEffect(() => {
     if (!isOpen) {
@@ -265,15 +268,23 @@ export function AISharePosterModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative flex max-h-[95vh] w-full max-w-lg flex-col overflow-hidden rounded-[20px] border border-white/[0.12] bg-[#101216] shadow-2xl">
+      <div
+        ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="share-poster-title"
+        className="relative flex max-h-[95vh] w-full max-w-lg flex-col overflow-hidden rounded-[20px] border border-white/[0.12] bg-[#101216] shadow-2xl"
+      >
         {/* 标题栏 */}
         <div className="flex items-center justify-between border-b border-white/[0.08] px-5 py-4">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-sky-400" />
-            <h3 className="text-[15px] font-semibold text-white">AI 数据摘要 · 导出图片</h3>
+            <h3 id="share-poster-title" className="text-[15px] font-semibold text-white">AI 数据摘要 · 导出图片</h3>
           </div>
           <button
+            ref={focusRef}
             onClick={onClose}
+            aria-label="关闭"
             className="rounded-lg p-1.5 text-neutral-400 hover:bg-white/[0.08] hover:text-white transition-colors"
           >
             <X className="h-5 w-5" />

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, type StockSearchResult } from "@/lib/api";
+import { useDialogFocus } from "@/lib/use-dialog-focus";
 
 export function GlobalSearch() {
   const router = useRouter();
@@ -10,7 +11,11 @@ export function GlobalSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<StockSearchResult[]>([]);
   const [loading, setLoading] = useState(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  // 打开时焦点进输入框、Esc 关闭、Tab 焦点循环、关闭后焦点归位
+  const { containerRef, focusRef } = useDialogFocus<HTMLDivElement, HTMLInputElement>(
+    open,
+    () => setOpen(false)
+  );
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -24,7 +29,6 @@ export function GlobalSearch() {
           return !v;
         });
       }
-      if (e.key === "Escape") setOpen(false);
     }
     function onOpen() {
       setQuery("");
@@ -38,12 +42,6 @@ export function GlobalSearch() {
       window.removeEventListener("open-global-search", onOpen);
     };
   }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const timer = setTimeout(() => inputRef.current?.focus(), 50);
-    return () => clearTimeout(timer);
-  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -74,10 +72,17 @@ export function GlobalSearch() {
 
   return (
     <div className="fixed inset-0 z-[70] flex items-start justify-center bg-black/50 px-4 pt-[12vh]" onClick={() => setOpen(false)}>
-      <div className="neo-card w-full max-w-xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+      <div
+        ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="全局搜索"
+        className="neo-card w-full max-w-xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="border-b border-[var(--neo-edge)] px-4 py-3">
           <input
-            ref={inputRef}
+            ref={focusRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索股票代码 / 名称 / 拼音"
