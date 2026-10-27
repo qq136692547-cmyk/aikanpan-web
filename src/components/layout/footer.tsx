@@ -1,6 +1,6 @@
 import { BarChart3 } from "lucide-react";
 
-export function Footer({ dataSource = "东方财富" }: { dataSource?: string }) {
+export function Footer({ dataSource = "第三方行情源" }: { dataSource?: string }) {
   return (
     <footer className="neo-page border-t border-[var(--neo-surface-inset)]">
       <div className="mx-auto w-full max-w-[1440px] px-4 py-4 sm:px-6">

@@ -44,11 +44,11 @@ export function AboutBrandBanner() {
           </p>
         </div>
         <div className="flex items-center gap-2 text-[11px] text-neo-dim">
-          <span>腾讯行情</span>
+          <span>实时行情</span>
           <span>·</span>
-          <span>东方财富</span>
+          <span>市场资讯</span>
           <span>·</span>
-          <span>财联社</span>
+          <span>公开数据</span>
         </div>
       </div>
     </div>

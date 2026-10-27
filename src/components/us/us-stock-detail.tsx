@@ -12,6 +12,7 @@ import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { AIEvidencePanel } from "@/components/ai/ai-evidence-panel";
 import { AIComment as StockAIComment } from "@/components/ai/ai-comment";
 import { formatPct, formatPrice, formatVolume } from "@/lib/format";
+import { friendlyDataSource } from "@/lib/data-source";
 import { usNameZh } from "@/lib/us-stock-names";
 import { useAuth } from "@/lib/auth";
 import { api, type AIComment, type UsEarnings, type UsFilings, type UsFinancials, type UsHistory, type UsNewsItem, type UsQuote } from "@/lib/api";
@@ -137,7 +138,7 @@ export function UsStockDetail({ symbol, initialData }: { symbol: string; initial
             </div>
 
             <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-neutral-400 font-mono">
-              <span>{quote?.source === "unavailable" ? "行情数据不可用" : `实时源：${quote?.source ?? "Finnhub"}`}</span>
+              <span>{quote?.source === "unavailable" ? "行情数据不可用" : `实时源：${friendlyDataSource(quote?.source)}`}</span>
               <span className="text-neutral-600">•</span>
               <span>{quote?.date ? `交易日：${quote.date}` : "交易中"}</span>
               <span className="text-neutral-600">•</span>

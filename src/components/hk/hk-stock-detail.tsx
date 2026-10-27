@@ -10,6 +10,7 @@ import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { AIComment as StockAIComment } from "@/components/ai/ai-comment";
 import { formatPct, formatPrice, formatVolume } from "@/lib/format";
+import { friendlyDataSource } from "@/lib/data-source";
 import { useAuth } from "@/lib/auth";
 import {
   api,
@@ -143,7 +144,7 @@ export function HkStockDetail({
             </div>
 
             <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs text-neutral-400 font-mono">
-              <span>{quote?.source === "unavailable" ? "行情数据不可用" : `实时源：${quote?.source ?? "腾讯行情"}`}</span>
+              <span>{quote?.source === "unavailable" ? "行情数据不可用" : `实时源：${friendlyDataSource(quote?.source)}`}</span>
               <span className="text-neutral-600">•</span>
               <span>{quote?.date ? `交易日：${quote.date}` : "交易中"}</span>
               <span className="text-neutral-600">•</span>

@@ -159,7 +159,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <HkStockDetail symbol={routeCode} initialData={initialData} />
         </main>
-        <Footer dataSource="腾讯行情 / 东方财富" />
+        <Footer dataSource="第三方港股行情源" />
       </div>
     );
   }
@@ -175,7 +175,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         api.getUsNews(routeCode, 8),
       ]);
       // 这里不按行情做存在性判断：能走到这一步说明代码在 INDEXABLE_STOCKS 白名单里，
-      // 代码本身一定存在；行情缺失只会是数据源问题（Finnhub 限流会返回全 0），
+      // 代码本身一定存在；行情缺失只会是数据源问题（行情源限流会返回全 0），
       // 误判成 404 的代价比渲染一个降级页大得多。
       initialData = {
         quote: settled[0].status === "fulfilled" ? settled[0].value : null,
@@ -192,7 +192,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       try {
         probe = await api.getUsQuote(routeCode);
       } catch (e) {
-        // N6：Finnhub 限流(429)/5xx 是瞬时故障，不代表这个代码不存在。原来 `catch { probe = null }`
+        // N6：行情源限流(429)/5xx 是瞬时故障，不代表这个代码不存在。原来 `catch { probe = null }`
         // 会把它们一起变成 404 —— 一个有效美股代码被缓存成「不存在」比返回一次 500 严重得多。
         if (classifyQuoteFailure(e) === "transient") throw e;
         notFound();
@@ -206,7 +206,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
           <UsStockDetail symbol={routeCode} initialData={initialData} />
         </main>
-        <Footer dataSource="Finnhub / SEC EDGAR" />
+        <Footer dataSource="第三方美股行情源 / 公开披露数据" />
       </div>
     );
   }

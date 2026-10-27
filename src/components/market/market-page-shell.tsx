@@ -3,7 +3,9 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
 export function MarketPageFrame({ children, scripts, market }: { children: ReactNode; scripts?: ReactNode; market?: "cn" | "hk" | "us" }) {
-  const dataSource = market === "us" ? "Finnhub" : market === "hk" ? "腾讯行情 / 东方财富" : "东方财富";
+  // F7：页脚数据源统一改为中性表述，不再展示具体数据源商标名。
+  // 具体数据源名称仅保留在隐私政策 / 服务条款的合规披露中。
+  const dataSource = market === "us" ? "第三方美股行情源" : market === "hk" ? "第三方港股行情源" : "第三方A股行情源";
   return (
     <div className="neo-page">
       <Navbar />

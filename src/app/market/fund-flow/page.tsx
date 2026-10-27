@@ -69,7 +69,7 @@ export default async function FundFlowPage() {
       <MarketPageHeader
         market="cn"
         title="板块资金流向"
-        subtitle={northbound.date ? `${northbound.date} · 东方财富` : "东方财富"}
+        subtitle={northbound.date ? `${northbound.date} · 第三方行情源` : "第三方行情源"}
         image="/images/ai-art/market-heatmap-v3.png"
       />
       <GeoByline updatedAt={updatedAt} />
