@@ -155,3 +155,52 @@ test("涨跌色仍在原位（防止矫枉过正把涨跌也改成语义色）",
   const tv = read("src/components/chart/tradingview-chart.tsx");
   assert.ok(tv.includes('up ? "var(--neo-up-text)" : "var(--neo-down-text)"'), "K 线图颜色应保持红涨绿跌");
 });
+
+// ── 5. 质量评级语义：好坏方向不得用涨跌色表达 ────────────────────────────────
+//
+// 「评级」与「涨跌」是两套相反的红绿映射：
+//   涨跌：A 股 红=涨=up
+//   评级：绿=优（后端字段就叫 green_count），红=差
+// 旧实现把后者的 green 接到前者的 up 上，于是实测数据里
+// ROE 16.75%（优秀）显示红徽章、净利润增速 -1.95%（较差）显示绿徽章 —— 正好读反。
+
+test("财务质量评级三档用语义色，方向为 绿=优 / 红=差", () => {
+  const src = read("src/components/stock/stock-tabs.tsx");
+  assert.ok(
+    /color === "green"\)\s*return\s*"neo-success-soft text-neo-success"/.test(src),
+    'stock-tabs: color==="green"（优秀）必须用 neo-success 绿',
+  );
+  assert.ok(
+    /color === "red"\)\s*return\s*"neo-danger-soft text-neo-danger"/.test(src),
+    'stock-tabs: color==="red"（较差）必须用 neo-danger 红',
+  );
+  assert.ok(/return "neo-amber-soft text-neo-amber"/.test(src), "stock-tabs: 中间档应使用 neo-amber");
+});
+
+test("评级汇总「优/中/差」的颜色与徽章一致", () => {
+  const src = read("src/components/stock/stock-tabs.tsx");
+  assert.ok(/text-neo-success">优 /.test(src), "汇总「优」应为绿色");
+  assert.ok(/text-neo-amber">中 /.test(src), "汇总「中」应为琥珀色");
+  assert.ok(/text-neo-danger">差 /.test(src), "汇总「差」应为红色");
+});
+
+test("全库扫描：评级分支不得映射到涨跌色", () => {
+  const hits = [];
+  for (const { path, text } of walk("src")) {
+    text.split("\n").forEach((line, i) => {
+      if (/^\s*(\*|\/\/|\/\*)/.test(line)) return; // 跳过注释（注释里会引用旧写法作反例）
+      const isGrade = /(color|level|grade)\s*===\s*"(green|red|yellow)"|\.(green|red|yellow)_count/.test(line);
+      if (isGrade && /neo-(up|down)/.test(line)) {
+        hits.push(`${path}:${i + 1}  ${line.trim().slice(0, 110)}`);
+      }
+    });
+  }
+  assert.deepEqual(hits, [], `以下位置把「评级」映射到了涨跌色，好坏方向会读反：\n${hits.join("\n")}`);
+});
+
+test("券商评级仍是涨跌色（表达看多/看空，防矫枉过正）", () => {
+  const src = read("src/components/stock/stock-tabs.tsx");
+  const m = src.match(/\{r\.rating_name && <span className="([^"]+)"/);
+  assert.ok(m, "stock-tabs 里找不到 rating_name 徽章（结构变了？）");
+  assert.ok(/neo-up/.test(m[1]), `券商评级表达「看多」方向，应保持涨跌色，当前却是 ${m[1]}`);
+});

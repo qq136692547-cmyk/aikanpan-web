@@ -17,10 +17,24 @@ function toneClass(tone: string): string {
   return "text-neo-mid";
 }
 
+/**
+ * 财务指标「质量评级」配色 —— 必须用语义色，**不能**用涨跌色。
+ *
+ * 后端 evaluation.summary 的字段就叫 green_count / yellow_count / red_count，
+ * 「绿=优秀」是后端既定语义；而 --neo-up 在 A 股是「涨=红」，两者方向相反。
+ * 旧实现写成 `green -> neo-up`，于是实测数据里
+ *   ROE 16.75%（status=优秀, color=green）渲染成**红色**徽章
+ *   净利润增速 -1.95%（status=较差, color=red）渲染成**绿色**徽章
+ * 好坏正好读反。
+ *
+ * 依据 globals.css:546 的分工：--neo-up/--neo-down 只表达「数值方向」（涨/跌），
+ * 而质量评级属「结果好坏」，归 --neo-success / --neo-danger / --neo-amber。
+ * 三色对比度实测 9.81 / 6.16 / 8.44，10px 小字均过 WCAG AA。
+ */
 function statusClass(color: string): string {
-  if (color === "green") return "neo-up-soft text-neo-up";
-  if (color === "red") return "neo-down-soft text-neo-down";
-  return "bg-[var(--neo-amber-soft)] text-[var(--neo-amber)]";
+  if (color === "green") return "neo-success-soft text-neo-success";
+  if (color === "red") return "neo-danger-soft text-neo-danger";
+  return "neo-amber-soft text-neo-amber";
 }
 
 export function StockTabs({
@@ -88,6 +102,9 @@ export function StockTabs({
                       <span className="font-medium text-neo-primary">{r.source || r.org_name}</span>
                       <span>·</span>
                       <span>{r.time || r.publish_at || ""}</span>
+                      {/* 券商评级（买入/增持/中性/减持/卖出）表达的是「看多/看空」方向，
+                          属数值方向语义，按 globals.css:546 的分工保留涨跌色。
+                          它与上面财务质量评级不是一回事，不要一起改成语义色。 */}
                       {r.rating_name && <span className="neo-up-soft rounded px-1.5 py-0.5 text-neo-up">{r.rating_name}</span>}
                     </div>
                   </div>
@@ -111,8 +128,12 @@ export function StockTabs({
                 <span>·</span>
                 <span>{financials.source || "-"}</span>
                 {financials.evaluation?.summary && (
-                  <span className="ml-auto">
-                    优 {financials.evaluation.summary.green_count} · 中 {financials.evaluation.summary.yellow_count} · 差 {financials.evaluation.summary.red_count}
+                  <span className="ml-auto inline-flex items-center gap-1.5">
+                    <span className="text-neo-success">优 {financials.evaluation.summary.green_count}</span>
+                    <span className="text-neo-dim">·</span>
+                    <span className="text-neo-amber">中 {financials.evaluation.summary.yellow_count}</span>
+                    <span className="text-neo-dim">·</span>
+                    <span className="text-neo-danger">差 {financials.evaluation.summary.red_count}</span>
                   </span>
                 )}
               </div>
