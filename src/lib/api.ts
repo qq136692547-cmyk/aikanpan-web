@@ -1207,10 +1207,17 @@ export interface UsFinancials {
   metrics?: {
     pe_ratio?: number;
     pb_ratio?: number;
+    /** 市销率 PS（finnhub psTTM）。原先是前端用 pe_ratio × 0.28 编的假值，已换成真字段。 */
+    ps_ratio?: number;
+    /** 小数口径（0.0137 表示 1.37%），前端负责 ×100。 */
     roe_pct?: number;
+    /** 百分数口径（14.24 表示 14.24%），直接喂 formatPct。 */
     revenue_yoy_pct?: number;
     profit_yoy_pct?: number;
+    /** 小数口径（0.4865 表示 48.65%），前端负责 ×100。 */
     gross_margin_pct?: number;
+    /** 百分数口径（0.5053 表示 0.51% 股息率）。原先是硬编码 "0.48%"，已换成真字段。 */
+    dividend_yield_pct?: number;
     market_cap?: number;
   };
 }

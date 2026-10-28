@@ -207,12 +207,12 @@ export function UsStockDetail({ symbol, initialData }: { symbol: string; initial
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             <BentoCell
               label="市盈率 PE (TTM)"
-              value={financials?.metrics?.pe_ratio != null ? `${financials.metrics.pe_ratio}x` : "--"}
+              value={financials?.metrics?.pe_ratio != null ? `${financials.metrics.pe_ratio.toFixed(2)}x` : "--"}
               trend="highlight"
             />
             <BentoCell
               label="市净率 PB"
-              value={financials?.metrics?.pb_ratio != null ? `${financials.metrics.pb_ratio}x` : "--"}
+              value={financials?.metrics?.pb_ratio != null ? `${financials.metrics.pb_ratio.toFixed(2)}x` : "--"}
             />
             <BentoCell
               label="净资产收益率 ROE"
@@ -226,12 +226,12 @@ export function UsStockDetail({ symbol, initialData }: { symbol: string; initial
             />
             <BentoCell
               label="市销率 PS"
-              value={financials?.metrics?.pe_ratio != null ? `${(financials.metrics.pe_ratio * 0.28).toFixed(1)}x` : "--"}
+              value={financials?.metrics?.ps_ratio != null ? `${financials.metrics.ps_ratio.toFixed(2)}x` : "--"}
             />
             <BentoCell
               label="股息率"
-              value={financials?.metrics?.roe_pct != null ? "0.48%" : "--"}
-              sub="季度定期分红"
+              value={financials?.metrics?.dividend_yield_pct != null ? `${financials.metrics.dividend_yield_pct.toFixed(2)}%` : "--"}
+              sub="年化口径"
             />
           </div>
         </BentoCard>
