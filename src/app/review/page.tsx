@@ -121,7 +121,7 @@ export default async function ReviewPage({
         <MarketPageHeader
           market="us"
           title="每日复盘"
-          image="/images/ai-art/review-decoration-v3.png"
+          image="/images/ai-art/review-decoration-v3.webp"
         />
         <DailyWorkflow className="mt-3" market="us" />
         <DailyLoopCard
@@ -162,7 +162,7 @@ export default async function ReviewPage({
         <MarketPageHeader
           market="hk"
           title="每日复盘"
-          image="/images/ai-art/review-decoration-v3.png"
+          image="/images/ai-art/review-decoration-v3.webp"
         />
         <DailyWorkflow className="mt-3" market="hk" />
         <DailyLoopCard
@@ -254,7 +254,7 @@ export default async function ReviewPage({
         market={scope}
         title="每日复盘"
         subtitle={`${dashboard.index.date} · ${dashboard.market_updated_at}`}
-        image="/images/ai-art/review-decoration-v3.png"
+        image="/images/ai-art/review-decoration-v3.webp"
         meta={
           <>
             <DatePicker initialDate={selectedDate} />

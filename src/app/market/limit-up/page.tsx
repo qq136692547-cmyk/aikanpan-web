@@ -77,7 +77,7 @@ export default async function LimitUpPage() {
         market="cn"
         title="今日涨停板复盘"
         subtitle={`${dashboard.index.date} · ${dashboard.market_updated_at} · ${sentiment}`}
-        image="/images/ai-art/review-decoration-v3.png"
+        image="/images/ai-art/review-decoration-v3.webp"
         actions={<Link href={`/review/${dashboard.index.date}/`} className="neo-btn-primary px-3 py-2 text-[11px]">查看完整复盘</Link>}
       />
       <GeoByline updatedAt={updatedAt} />

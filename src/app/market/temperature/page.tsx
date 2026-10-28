@@ -84,7 +84,7 @@ export default async function MarketTemperaturePage() {
         market="cn"
         title="A股市场温度"
         subtitle={`${temperature.market_updated_at} · ${temperature.market_status}`}
-        image="/images/ai-art/market-heatmap-v3.png"
+        image="/images/ai-art/market-heatmap-v3.webp"
         actions={<Link href="/review/" className="neo-btn-primary px-3 py-2 text-[11px]">查看每日复盘</Link>}
       />
       <GeoByline updatedAt={updatedAt} />

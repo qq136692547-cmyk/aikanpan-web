@@ -59,7 +59,7 @@ export function MarketOverviewTemplate({
         market={market}
         title={title}
         subtitle={subtitle}
-        image="/images/ai-art/market-heatmap-v3.png"
+        image="/images/ai-art/market-heatmap-v3.webp"
       />
 
       <section className="mt-3">

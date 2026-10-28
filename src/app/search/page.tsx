@@ -180,7 +180,7 @@ export default async function SearchPage({
         market={scope}
         title="搜索"
         subtitle="按代码、名称或拼音查找股票"
-        image="/images/ai-art/search-decoration-v3.png"
+        image="/images/ai-art/search-decoration-v3.webp"
       />
 
         <div className="mt-4">
@@ -205,7 +205,7 @@ export default async function SearchPage({
             {!error && searchResults.length === 0 && (
               <div className="mt-4">
                 <EmptyState
-                  image="/images/ai-art/empty-state-robot.png"
+                  image="/images/ai-art/empty-state-robot.webp"
                   title={isUs ? "未找到匹配的美股" : isHk ? "未找到匹配的港股" : "未找到匹配的股票"}
                   description={isUs ? "试试直接输入美股代码（如 AAPL）或公司名称" : isHk ? "试试直接输入港股 5 位代码（如 00700）或公司名称" : "试试直接输入 6 位代码（如 300414）或改用拼音搜索"}
                   action={isUs ? (/^[A-Za-z][A-Za-z0-9.-]{0,9}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().toUpperCase()}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().toUpperCase()} →</a>) : undefined) : isHk ? (/^\d{4,5}$/.test(q.trim()) ? (<a href={`/stock/${q.trim().padStart(5, "0")}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q.trim().padStart(5, "0")} →</a>) : undefined) : (q.match(/^\d{6}$/) ? (<a href={`/stock/${q}/`} className="neo-btn-primary inline-block px-4 py-2 text-sm font-medium">直接查看 {q} →</a>) : undefined)}

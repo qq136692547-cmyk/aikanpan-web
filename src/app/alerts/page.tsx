@@ -51,7 +51,7 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
         market={scope}
         title="盯盘"
         subtitle="用自然语言创建盯盘条件，AI 自动解析并记录触发历史"
-        image="/images/ai-art/alerts-robot-v3.png"
+        image="/images/ai-art/alerts-robot-v3.webp"
       />
 
         <section className="mt-3">

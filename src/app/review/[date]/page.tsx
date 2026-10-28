@@ -180,7 +180,7 @@ function ReviewMissingNotice({ date }: { date: string }) {
         market="cn"
         title={`${formatChineseDate(date)} 暂无复盘`}
         subtitle={`${date} · 该日期没有保存的复盘快照`}
-        image="/images/ai-art/review-decoration-v3.png"
+        image="/images/ai-art/review-decoration-v3.webp"
       />
       <section className="neo-card mt-3 p-4 sm:p-6">
         <p className="text-[13px] leading-relaxed text-neo-mid">
@@ -272,7 +272,7 @@ export default async function ReviewDatePage({ params }: { params: Promise<{ dat
         market="cn"
         title={`${formatChineseDate(date)} A股复盘`}
         subtitle={`${dashboard.market_updated_at} · ${sentiment}`}
-        image="/images/ai-art/review-decoration-v3.png"
+        image="/images/ai-art/review-decoration-v3.webp"
         actions={
           <div className="flex items-center gap-2">
             {hasPrevious && (

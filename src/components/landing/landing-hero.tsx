@@ -35,7 +35,7 @@ export function LandingHero() {
     <div className="relative min-h-screen bg-[#08080c] font-inter">
       {/* Hero 背景图 */}
       <img loading="lazy"
-        src="/images/ai-art/landing-hero-bg-v3.png"
+        src="/images/ai-art/landing-hero-bg-v3.webp"
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-40"
@@ -126,7 +126,7 @@ export function LandingHero() {
       <section className="relative z-10 px-6 py-8">
         <div className="mx-auto max-w-[1200px]">
           <img loading="lazy"
-            src="/images/ai-art/landing-product-preview.png"
+            src="/images/ai-art/landing-product-preview.webp"
             alt="爱看盘产品预览"
             className="w-full rounded-2xl border border-[#16161c] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.6)]"
           />
@@ -169,7 +169,7 @@ export function LandingHero() {
           </div>
           <div className="hidden flex-1 md:block">
             <img loading="lazy"
-              src="/images/ai-art/landing-cta-decoration-v3.png"
+              src="/images/ai-art/landing-cta-decoration-v3.webp"
               alt=""
               aria-hidden
               className="w-full rounded-2xl opacity-80"

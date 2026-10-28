@@ -48,7 +48,7 @@ export default async function ResearchPage({ searchParams }: { searchParams: Pro
         market={scope}
         title="研究"
         subtitle="自选股、盘前计划、公司档案与投资论点"
-        image="/images/ai-art/market-overview-decoration-v3.png"
+        image="/images/ai-art/market-overview-decoration-v3.webp"
       />
       <ResearchWorkspace dashboard={dashboard} market={scope} />
     </MarketPageFrame>

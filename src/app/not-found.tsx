@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="neo-page flex min-h-screen flex-col items-center justify-center px-6 py-10 text-center">
       <img loading="lazy"
-        src="/images/ai-art/404-astronaut.png"
+        src="/images/ai-art/404-astronaut.webp"
         alt="页面不存在"
         className="max-w-md w-full"
       />

@@ -151,7 +151,7 @@ export default function AboutPage() {
         <section className="neo-fade-up mt-8" style={{ animationDelay: "300ms" }}>
           <div className="relative overflow-hidden rounded-2xl">
             <img loading="lazy"
-              src="/images/ai-art/api-doc-decoration.png"
+              src="/images/ai-art/api-doc-decoration.webp"
               alt=""
               aria-hidden
               className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-20"
