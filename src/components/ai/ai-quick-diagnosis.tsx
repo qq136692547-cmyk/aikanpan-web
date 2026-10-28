@@ -66,7 +66,7 @@ export function AIQuickDiagnosis() {
         </button>
       </form>
 
-      {error && <p className="mt-2 text-[11px] text-neo-down">{error}</p>}
+      {error && <p className="mt-2 text-[11px] text-neo-danger">{error}</p>}
 
       <div className="mt-auto pt-3 flex flex-wrap gap-1.5">
         {[

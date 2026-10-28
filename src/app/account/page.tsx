@@ -206,7 +206,7 @@ export default function AccountPage() {
                     {membership.plan === "pro" ? "Pro · 剩余 " : "免费版 · 剩余 "}{membership.ai_remaining}/{membership.ai_daily_limit}
                   </div>
                 ) : (
-                  <div className="text-[12px] text-neo-down">{membershipError || "额度信息暂不可用"}</div>
+                  <div className="text-[12px] text-neo-danger">{membershipError || "额度信息暂不可用"}</div>
                 )}
               </div>
               <div className="flex shrink-0 items-center gap-1.5">
@@ -298,7 +298,7 @@ export default function AccountPage() {
           )}
 
           {message && (
-            <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-up" : "text-neo-down"}`}>{message}</p>
+            <p className={`mt-3 text-[12px] ${messageType === "ok" ? "text-neo-success" : "text-neo-danger"}`}>{message}</p>
           )}
 
           <div className="mt-5 flex flex-wrap gap-2 pt-4" style={{ borderTop: "1px solid var(--neo-edge)" }}>

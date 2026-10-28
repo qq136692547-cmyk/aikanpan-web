@@ -53,7 +53,7 @@ export function AIScorePanel({ codes }: { codes: string[] }) {
             "🤖 一键 AI 评分"
           )}
         </button>
-        {error && <span className="text-xs text-neo-down">{error}</span>}
+        {error && <span className="text-xs text-neo-danger">{error}</span>}
         {/* invisible spacer to maintain layout */}
         <span className="invisible">.</span>
       </div>

@@ -128,7 +128,7 @@ export function AIReview({ date, available = true }: { date?: string; available?
             <AiQuotaCard source="ai_review" onRetry={fetchReview} />
           </div>
         ) : (
-          <p className="mt-3 text-[13px] text-neo-down">
+          <p className="mt-3 text-[13px] text-neo-danger">
             {displayError}
             {displayError.includes("升级 Pro") && (
               <Link href="/upgrade" className="ml-1 text-neo-primary underline">

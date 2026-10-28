@@ -14,7 +14,7 @@ const STATUS_TEXT = {
 function statusClass(status: AdminMembershipCode["status"]) {
   if (status === "active") return "text-neo-primary";
   if (status === "used") return "text-neo-dim";
-  return "text-neo-down";
+  return "text-neo-danger";
 }
 
 export default function AdminMembershipPage() {
@@ -251,8 +251,8 @@ export default function AdminMembershipPage() {
           </>
         )}
 
-        {error && <p className="mt-3 text-[12px] text-neo-down">{error}</p>}
-        {!error && message && <p className="mt-3 text-[12px] text-neo-up">{message}</p>}
+        {error && <p className="mt-3 text-[12px] text-neo-danger">{error}</p>}
+        {!error && message && <p className="mt-3 text-[12px] text-neo-success">{message}</p>}
       </main>
     </div>
   );

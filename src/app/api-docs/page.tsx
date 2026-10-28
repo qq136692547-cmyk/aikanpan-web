@@ -53,10 +53,10 @@ const apiEndpoints = [
 ];
 
 const methodColors: Record<string, string> = {
-  GET: "text-neo-up",
+  GET: "text-neo-success",
   POST: "text-brand",
   PATCH: "text-[#e3b341]",
-  DELETE: "text-neo-down",
+  DELETE: "text-neo-danger",
 };
 
 export default function ApiDocsPage() {
@@ -93,9 +93,9 @@ export default function ApiDocsPage() {
             </div>
             <div className="flex flex-wrap items-center gap-4 pt-1 text-xs text-neo-dim">
               <span>状态码规范：</span>
-              <span><code className="text-neo-up font-mono">200 OK</code> 正常响应</span>
+              <span><code className="text-neo-success font-mono">200 OK</code> 正常响应</span>
               <span><code className="text-[#e3b341] font-mono">401 Unauthorized</code> 未提供或无效 Key</span>
-              <span><code className="text-neo-down font-mono">429 Too Many Requests</code> 超出频次配额</span>
+              <span><code className="text-neo-danger font-mono">429 Too Many Requests</code> 超出频次配额</span>
             </div>
             <p className="text-xs text-neo-dim border-t border-[var(--neo-edge)] pt-2">
               注：健康检查接口 <code style={{ fontFamily: "var(--font-inter), system-ui" }} className="text-brand">/api/v1/health</code> 仅对外返回系统存活状态与服务版本，内部缓存与数据源指标已对公网收敛。

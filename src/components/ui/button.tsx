@@ -16,7 +16,7 @@ const buttonVariants = cva(
         ghost:
           "hover-neo-inset hover:text-neo-ink aria-expanded-neo-inset aria-expanded:text-neo-ink",
         destructive:
-          "neo-down-soft text-neo-down hover:brightness-95 focus-visible:ring-neo-down/20",
+          "neo-danger-soft text-neo-danger hover:brightness-95 focus-visible:ring-neo-danger/20",
         link: "text-neo-primary underline-offset-4 hover:underline",
       },
       size: {

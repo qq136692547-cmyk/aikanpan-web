@@ -146,7 +146,7 @@ export function LimitListWithScore({
               "一键 AI 评分"
             )}
           </button>
-          {error && <span className="text-xs text-neo-down">{error}</span>}
+          {error && <span className="text-xs text-neo-danger">{error}</span>}
           {Object.keys(scores).length > 0 && !loading && (
             <span className="text-xs text-neo-dim">已评分 {Object.keys(scores).length} 只</span>
           )}

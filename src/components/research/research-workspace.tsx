@@ -639,7 +639,7 @@ function ResearchWorkspaceContent({
               <button onClick={scoreWatchlist} disabled={aiScoresLoading} className="neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] text-neo-primary disabled:opacity-60">
                 {aiScoresLoading ? "AI 评分中…" : "AI 评分"}
               </button>
-              {aiScoresError && <span className="text-[11px] text-neo-down">{aiScoresError}</span>}
+              {aiScoresError && <span className="text-[11px] text-neo-danger">{aiScoresError}</span>}
               <span className="text-[11px] text-neo-dim">{watchlist.length} 只</span>
             </div>
           </div>
@@ -771,7 +771,7 @@ function ResearchWorkspaceContent({
                         <span className="neo-chip px-2 py-0.5 text-[10px] text-neo-mid">{p.action}</span>
                         <span className="text-[10px] text-neo-dim">{p.date}</span>
                         {!p.done && !p.archived && p.date < new Date().toISOString().slice(0, 10) && (
-                          <span className="rounded px-1.5 py-0.5 text-[10px] text-neo-down">已过期</span>
+                          <span className="rounded px-1.5 py-0.5 text-[10px] text-neo-amber">已过期</span>
                         )}
                       </div>
                       {p.note && <p className="mt-1 text-[12px] text-neo-mid">{p.note}</p>}

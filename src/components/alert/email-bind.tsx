@@ -141,7 +141,7 @@ export function EmailBind({ onBound }: { onBound?: () => void }) {
         </button>
       </div>
       {message && (
-        <p className="mt-2 text-[11px]" style={{ color: isError ? "var(--neo-danger, #c0392b)" : "var(--neo-mid)" }}>
+        <p className="mt-2 text-[11px]" style={{ color: isError ? "var(--neo-danger-text)" : "var(--neo-mid)" }}>
           {message}
         </p>
       )}

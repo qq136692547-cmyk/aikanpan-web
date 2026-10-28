@@ -27,7 +27,7 @@ export function AIEvidencePanel({ evidence }: { evidence?: AIEvidence }) {
           <span className="text-neo-dim">{sourceCount} 个来源</span>
           <span className="text-neo-dim">{calculationCount} 项计算</span>
           {warningCount > 0 && (
-            <span className="flex items-center gap-1 text-neo-down">
+            <span className="flex items-center gap-1 text-neo-amber">
               <TriangleAlert size={11} />
               {warningCount}
             </span>
@@ -91,8 +91,8 @@ export function AIEvidencePanel({ evidence }: { evidence?: AIEvidence }) {
           )}
 
           {warningCount > 0 && (
-            <div className="mt-3 rounded-md bg-[var(--neo-down-soft)] px-2.5 py-2">
-              <div className="flex items-center gap-1 text-[10px] font-medium text-neo-down">
+            <div className="mt-3 rounded-md bg-[var(--neo-amber-soft)] px-2.5 py-2">
+              <div className="flex items-center gap-1 text-[10px] font-medium text-neo-amber">
                 <TriangleAlert size={11} />
                 数据提示
               </div>

@@ -136,9 +136,9 @@ export function AIHistoryPanel({
                   {task.status === "running" ? (
                     <RefreshCw size={11} className="shrink-0 animate-spin text-neo-primary" />
                   ) : task.status === "failed" ? (
-                    <CircleAlert size={11} className="shrink-0 text-neo-down" />
+                    <CircleAlert size={11} className="shrink-0 text-neo-danger" />
                   ) : (
-                    <CheckCircle2 size={11} className="shrink-0 text-neo-up" />
+                    <CheckCircle2 size={11} className="shrink-0 text-neo-success" />
                   )}
                   <span className="truncate text-[11px] font-medium text-neo-mid">{task.title}</span>
                 </div>

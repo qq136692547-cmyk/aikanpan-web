@@ -35,7 +35,7 @@ export function ErrorState({
   onRetry?: () => void;
 }) {
   return (
-    <div className="neo-card-sm border border-[var(--neo-down-soft)] p-5">
+    <div className="neo-card-sm border border-[var(--neo-danger-soft)] p-5">
       <div className="flex items-center gap-2">
         <div className="text-sm font-semibold text-neo-ink">{title || "数据加载失败"}</div>
       </div>

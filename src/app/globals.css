@@ -97,9 +97,15 @@
   --amber-soft: rgba(255,179,0,0.07);
   --azure: #448AFF;
   --azure-soft: rgba(68,138,255,0.07);
-  --warning: var(--amber);
-  --danger: var(--surge);
-  --success: var(--drop);
+  --warning: var(--neo-amber);
+  /* ⚠ F3 定案：这两个别名此前写成 var(--surge) / var(--drop)，即
+     「危险 = 涨红」「成功 = 跌绿」。这正是「错误提示绿色、成功提示红色」的源头：
+     组件作者要表达失败时，找不到独立的语义色，只能去取 drop（绿）。
+     值已改为独立的 --neo-danger / --neo-success，禁止再绑回涨跌色。
+     涨跌色只表达「数值方向」，语义色只表达「操作结果」，两者不得互借。
+     （实测这两行在 TS/TSX 里零引用，改值不影响任何现有渲染。） */
+  --danger: var(--neo-danger);
+  --success: var(--neo-success);
 
   /* shadcn compat */
   --background: var(--void);
@@ -531,7 +537,31 @@
   --neo-down-text: #46D993;
   --neo-down-soft: rgba(61,214,140,0.14);
   --neo-amber: #F5A623;
+  --neo-amber-text: #F5A623;
   --neo-amber-soft: rgba(245,166,35,0.14);
+  --neo-amber-5: #F5A6230D;
+  --neo-amber-10: #F5A6231A;
+  --neo-amber-20: #F5A62333;
+
+  /* === 语义色（F3）—— 与涨跌色严格分离 ===
+     分工：--neo-up/--neo-down 只表达「数值方向」（涨/跌）；
+           下面这组只表达「操作结果」（失败/成功/警告）。
+     为什么必须分开：涨跌色在 A 股是「红=涨=好」，而操作反馈需要「红=出错=坏」，
+     两套映射方向相反。共用一套变量时，任何一处上下文丢失都会让用户读反。
+     色值只做同色系微调（不刻意拉开与涨跌色的色差，那会变成两套红绿更难认），
+     目的是语义解耦：将来调整涨跌色不会误伤错误提示。
+     对比度实测（最亮背景 #181C22）：danger-text 6.16 / success 9.81 / amber 8.44，
+     均通过 WCAG AA 4.5；旧的 --neo-danger #C0392B 只有 3.62，作小字文本不合格，
+     故文本一律用 -text 变体。 */
+  --neo-danger-text: #FF6B6B;
+  --neo-danger-soft: rgba(255,107,107,0.14);
+  --neo-danger-5: #FF6B6B0D;
+  --neo-danger-10: #FF6B6B1A;
+  --neo-danger-20: #FF6B6B33;
+  --neo-success: #4ADE80;
+  --neo-success-text: #4ADE80;
+  --neo-success-soft: rgba(74,222,128,0.14);
+  --neo-success-10: #4ADE801A;
 
   /* Shadows — 更强对比使阴影清晰可见 */
   --neo-shadow-light: rgba(255,255,255,0.045);
@@ -694,6 +724,10 @@
 .text-neo-primary { color: var(--neo-primary-text); }
 .text-neo-up { color: var(--neo-up-text); }
 .text-neo-down { color: var(--neo-down-text); }
+/* 语义色文本（F3）：失败/成功/警告。与上面两行分属不同语义域，勿混用。 */
+.text-neo-danger { color: var(--neo-danger-text); }
+.text-neo-success { color: var(--neo-success-text); }
+.text-neo-amber { color: var(--neo-amber-text); }
 
 .bg-neo-surface { background-color: var(--neo-surface); }
 .bg-neo-inset { background-color: var(--neo-surface-inset); }
@@ -758,6 +792,7 @@
 .peer:checked ~ .peer-checked\:bg-neo-primary { background-color: var(--neo-primary-fill); }
 .aria-expanded\:text-neo-ink[aria-expanded="true"] { color: var(--neo-ink); }
 .focus-visible\:ring-neo-down\/20:focus-visible { --tw-ring-color: var(--neo-down-20); }
+.focus-visible\:ring-neo-danger\/20:focus-visible { --tw-ring-color: var(--neo-danger-20); }
 
 @media (hover: hover) {
   .hover-neo-inset:hover { background-color: var(--neo-surface-inset); }
@@ -771,6 +806,24 @@
 .neo-down { color: var(--neo-down-text); }
 .neo-up-soft { background-color: var(--neo-up-soft); }
 .neo-down-soft { background-color: var(--neo-down-soft); }
+
+/* === Neo 语义色（F3）—— 操作结果，非涨跌 ===
+   与上面四条并列但不通用：涨跌色表达数值方向，这里表达失败/成功/警告。
+   组件里要表达「操作失败」时请用 text-neo-danger，不要用 text-neo-down。 */
+.neo-danger { color: var(--neo-danger-text); }
+.neo-success { color: var(--neo-success-text); }
+.neo-amber { color: var(--neo-amber-text); }
+.neo-danger-soft { background-color: var(--neo-danger-soft); }
+.neo-success-soft { background-color: var(--neo-success-soft); }
+.neo-amber-soft { background-color: var(--neo-amber-soft); }
+.bg-neo-danger\/5 { background-color: var(--neo-danger-5); }
+.bg-neo-danger\/10 { background-color: var(--neo-danger-10); }
+.bg-neo-amber\/5 { background-color: var(--neo-amber-5); }
+.bg-neo-amber\/10 { background-color: var(--neo-amber-10); }
+.border-neo-danger\/10 { border-color: var(--neo-danger-10); }
+.border-neo-danger\/20 { border-color: var(--neo-danger-20); }
+.border-neo-amber\/10 { border-color: var(--neo-amber-10); }
+.border-neo-amber\/20 { border-color: var(--neo-amber-20); }
 
 /* === Neo AI 区域 — 紫调凸起 === */
 .neo-ai {

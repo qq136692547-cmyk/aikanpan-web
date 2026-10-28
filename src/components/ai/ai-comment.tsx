@@ -239,7 +239,7 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             <AiQuotaCard source="ai_comment" onRetry={handleGenerate} />
           </div>
         ) : (
-          <p className="mt-3 text-sm text-neo-down">
+          <p className="mt-3 text-sm text-neo-danger">
             {error}
             {error.includes("升级 Pro") && (
               <Link href="/upgrade" className="ml-1 text-neo-primary underline">
@@ -530,11 +530,11 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
 
       {/* 风险提示折叠抽屉 */}
       {risks.length > 0 && (
-        <div className="rounded-lg border border-neo-down/20 bg-neo-down/5 overflow-hidden">
+        <div className="rounded-lg border border-neo-amber/20 bg-neo-amber/5 overflow-hidden">
           <button
             type="button"
             onClick={() => setShowRisks((v) => !v)}
-            className="flex min-h-10 w-full items-center justify-between px-3 py-2 text-left text-xs font-medium text-neo-down"
+            className="flex min-h-10 w-full items-center justify-between px-3 py-2 text-left text-xs font-medium text-neo-amber"
           >
             <span className="flex items-center gap-1.5">
               <ShieldAlert size={13} />
@@ -543,11 +543,11 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             {showRisks ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
           </button>
           {showRisks && (
-            <div className="border-t border-neo-down/10 px-3 py-2.5">
+            <div className="border-t border-neo-amber/10 px-3 py-2.5">
               <ul className="space-y-1 text-xs leading-relaxed text-neo-mid">
                 {risks.map((risk, index) => (
                   <li key={index} className="flex items-start gap-1.5">
-                    <span className="text-neo-down font-bold shrink-0">!</span>
+                    <span className="text-neo-amber font-bold shrink-0">!</span>
                     <span>{risk}</span>
                   </li>
                 ))}

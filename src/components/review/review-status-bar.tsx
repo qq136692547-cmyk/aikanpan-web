@@ -32,7 +32,7 @@ export function ReviewStatusBar() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <CheckCircle2 size={15} style={{ color: data?.last_success_at ? "var(--neo-up)" : "var(--neo-dim)" }} />
+          <CheckCircle2 size={15} style={{ color: data?.last_success_at ? "var(--neo-success)" : "var(--neo-dim)" }} />
           <span className="text-[11px] text-neo-dim">最近成功</span>
           <span className="text-[12px] font-medium text-neo-ink" style={{ fontFamily: "var(--font-inter), system-ui" }}>
             {data?.last_success_at ? data.last_success_at.replace("T", " ") : "—"}
@@ -45,8 +45,8 @@ export function ReviewStatusBar() {
         </div>
         {data?.last_error && (
           <div className="flex min-w-0 items-center gap-2">
-            <AlertTriangle size={15} style={{ color: "var(--neo-down)" }} />
-            <span className="truncate text-[11px] text-neo-down">{data.last_error}</span>
+            <AlertTriangle size={15} style={{ color: "var(--neo-danger)" }} />
+            <span className="truncate text-[11px] text-neo-danger">{data.last_error}</span>
           </div>
         )}
         <button

@@ -180,7 +180,7 @@ export function MarketTemperaturePanel({ upCount, downCount }: { upCount: number
       </div>
 
       {error && !data && (
-        <p className="mt-3 text-[10px] text-neo-down">温度接口暂不可用，当前为涨跌停简化评分</p>
+        <p className="mt-3 text-[10px] text-neo-amber">温度接口暂不可用，当前为涨跌停简化评分</p>
       )}
       <AiDisclaimer className="mt-3" />
     </div>

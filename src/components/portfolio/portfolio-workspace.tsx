@@ -401,7 +401,7 @@ export function PortfolioWorkspace({ market = "cn" }: { market?: "cn" | "us" }) 
             {mutating ? "保存中…" : "保存持仓"}
           </button>
         </form>
-        {actionError && <p className="mt-2 text-[11px] text-neo-down">{actionError}</p>}
+        {actionError && <p className="mt-2 text-[11px] text-neo-danger">{actionError}</p>}
       </section>
 
       <section className="grid grid-cols-1 gap-3 lg:grid-cols-3">

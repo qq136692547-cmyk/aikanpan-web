@@ -69,7 +69,7 @@ export function NewsRadarCard() {
       )}
 
       {error && !data && (
-        <p className="mt-3 text-[10px] text-neo-down">舆情雷达生成失败，点击重试</p>
+        <p className="mt-3 text-[10px] text-neo-danger">舆情雷达生成失败，点击重试</p>
       )}
 
       {data && (

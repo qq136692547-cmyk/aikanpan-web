@@ -218,7 +218,7 @@ export function AlertManager({ market = "all" }: { market?: MarketScope }) {
 
       {historyError && (
         <div className="neo-card-sm flex flex-wrap items-center justify-between gap-2 px-4 py-3">
-          <span className="text-xs text-neo-down">触发历史加载失败</span>
+          <span className="text-xs text-neo-danger">触发历史加载失败</span>
           <button onClick={() => mutateHistory()} className="inline-flex min-h-11 items-center text-xs text-neo-primary">重试</button>
         </div>
       )}

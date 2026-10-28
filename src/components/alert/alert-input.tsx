@@ -286,7 +286,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
       </div>
 
       {error && (
-        <div className="mt-3 neo-down-soft rounded-md px-3 py-2 text-xs text-neo-down">
+        <div className="mt-3 neo-danger-soft rounded-md px-3 py-2 text-xs text-neo-danger">
           ⚠ {error}
         </div>
       )}
@@ -311,7 +311,7 @@ export function AlertInput({ market = "all", onCreated, initialCode }: { market?
       )}
 
       {success && (
-        <div className="mt-3 neo-up-soft rounded-md px-3 py-2 text-xs text-neo-up">
+        <div className="mt-3 neo-success-soft rounded-md px-3 py-2 text-xs text-neo-success">
           ✅ {success}
         </div>
       )}

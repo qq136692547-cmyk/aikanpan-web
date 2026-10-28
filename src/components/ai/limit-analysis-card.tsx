@@ -77,7 +77,7 @@ export function LimitAnalysisCard({ date }: { date?: string }) {
       )}
 
       {error && (
-        <div className="mt-3 flex items-center gap-2 rounded-md bg-neo-down/10 px-3 py-2 text-xs text-neo-down">
+        <div className="mt-3 flex items-center gap-2 rounded-md bg-neo-danger/10 px-3 py-2 text-xs text-neo-danger">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{error}</span>
           <button onClick={fetchAnalysis} className="ml-auto inline-flex min-h-11 items-center underline">重试</button>
