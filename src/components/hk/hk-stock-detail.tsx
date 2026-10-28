@@ -301,9 +301,9 @@ export function HkStockDetail({
                 className="group flex flex-col justify-between gap-1 rounded-xl border border-white/[0.04] bg-[#0C0E11]/60 p-3.5 transition-all duration-200 hover:border-white/[0.1] hover:bg-[#12151B]"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-sm font-medium text-neutral-200 group-hover:text-purple-400 transition-colors line-clamp-1">
+                  <h3 className="text-sm font-medium text-neutral-200 group-hover:text-purple-400 transition-colors line-clamp-1">
                     {item.title}
-                  </h4>
+                  </h3>
                   <ArrowUpRight className="h-4 w-4 text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                 </div>
                 <div className="flex items-center gap-3 text-xs text-neutral-400 font-mono">

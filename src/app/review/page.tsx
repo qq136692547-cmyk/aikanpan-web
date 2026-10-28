@@ -431,7 +431,7 @@ export default async function ReviewPage({
                   <span className="text-neo-dim">·</span>
                   <span className="text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{(n.time || "").slice(5, 16)}</span>
                 </div>
-                <h4 className="mt-1.5 line-clamp-2 text-[13px] font-medium text-neo-ink">{n.title}</h4>
+                <h3 className="mt-1.5 line-clamp-2 text-[13px] font-medium text-neo-ink">{n.title}</h3>
                 <p className="mt-1 line-clamp-2 text-[12px] leading-relaxed text-neo-mid">{n.summary}</p>
               </a>
             ))}
@@ -458,7 +458,7 @@ export default async function ReviewPage({
                     <span className="text-neo-dim">·</span>
                     <span className="text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{(r.publish_at || r.time || "").slice(0, 10)}</span>
                   </div>
-                  <h4 className="mt-1 text-[13px] font-medium text-neo-ink">{r.title}</h4>
+                  <h3 className="mt-1 text-[13px] font-medium text-neo-ink">{r.title}</h3>
                   {r.summary && <p className="mt-0.5 line-clamp-2 text-[12px] text-neo-mid">{r.summary}</p>}
                 </div>
               </a>

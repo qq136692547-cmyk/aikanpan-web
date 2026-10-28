@@ -387,3 +387,36 @@ test("src/app/loading.tsx 必须不存在", () => {
   // 根级 loading 会把 404 变成 200 软 404（Next 先渲染 loading 再返回 404 页面）。
   assert.equal(existsSync(LOADING), false, "src/app/loading.tsx 不能存在");
 });
+
+// ── A-6 标题层级（WCAG 1.3.1 / 2.4.10）──────────────────────────────────────
+
+test("全站不出现 h4/h5/h6：标题最深到 h3，出现 h4 必然是从 h2/h3 直接跳级", () => {
+  // 背景：/review/ 曾把「资讯 (8)」「研报 (6)」共 14 条标题写成 h4，
+  // 直接挂在 h2 之下 —— 静态源码里只有 2 处，渲染出来是 14 个跳级元素，
+  // 所以按元素个数数会以为要改 14 处，按源头数只有 2 处。
+  //
+  // 为什么直接禁 h4+ 而不是做层级序列分析：
+  // 页面标题最终由「字面标签 + MarketPageHeader/MarketPageSection 等组件」拼成，
+  // 单文件静态序列看不到跨组件的父子关系，硬做序列分析必然假红。
+  // 当前全站最深就是 h3，所以「出现 h4」与「发生跳级」是等价的。
+  // 将来若真需要四级结构，先把中间层补齐，再连同这条断言一起改 —— 那是一次有意识的决定。
+  const bad = [];
+  for (const path of files) {
+    const src = blankComments(readFileSync(path, "utf8"));
+    for (const t of iterTags(src)) {
+      if (!/^h[456]$/.test(t.name)) continue;
+      bad.push(`${rel(path)}:${lineOf(src, t.start)} <${t.name}>`);
+    }
+  }
+  assert.equal(bad.length, 0, `这些地方用了四级及更深的标题（在 h2/h3 之下必然跳级）：\n${bad.join("\n")}`);
+});
+
+test("/review/ 的资讯与研报条目留在 h3（不得退回 h4）", () => {
+  // 这两处是列表项标题，父级是「资讯」「研报」两个 h2，用 h3 才连得上。
+  // 单独立一条：A-6 上一条是「全站没有 h4」的广度守卫，
+  // 这条钉的是「具体这两个位置用的是 h3」，防止为了排版好看改成 h4 或降成 div。
+  const page = readFileSync(join(SRC_ROOT, "app/review/page.tsx"), "utf8");
+  assert.match(page, /\{n\.title\}<\/h3>/, "资讯条目标题必须是 h3（h2 → h4 是跳级）");
+  assert.match(page, /\{r\.title\}<\/h3>/, "研报条目标题必须是 h3（h2 → h4 是跳级）");
+});
+
