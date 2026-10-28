@@ -8,6 +8,7 @@ import { AIHistoryPanel } from "@/components/ai/ai-history-panel";
 import { StockThesisPanel } from "@/components/research/stock-thesis-panel";
 import { StockTabs } from "@/components/stock/stock-tabs";
 import { StockTitleBar } from "@/components/stock/stock-title-bar";
+import { MarketDisclaimer } from "@/components/ui/market-disclaimer";
 import { UsStockDetail, type UsStockDetailInitialData } from "@/components/us/us-stock-detail";
 import { HkStockDetail, type HkStockDetailInitialData } from "@/components/hk/hk-stock-detail";
 import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
@@ -157,6 +158,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         {breadcrumb}
         <Navbar />
         <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+          <MarketDisclaimer />
           <HkStockDetail symbol={routeCode} initialData={initialData} />
         </main>
         <Footer dataSource="第三方港股行情源" />
@@ -204,6 +206,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
         {breadcrumb}
         <Navbar />
         <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
+          <MarketDisclaimer />
           <UsStockDetail symbol={routeCode} initialData={initialData} />
         </main>
         <Footer dataSource="第三方美股行情源 / 公开披露数据" />
@@ -278,6 +281,7 @@ export default async function StockPage({ params }: { params: Promise<{ code: st
       {breadcrumb}
       <Navbar />
       <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-6 py-6">
+        <MarketDisclaimer />
         <StockTitleBar code={code} initial={quote} />
 
         {/* 统计数据网格 (1:1 镜像 Figma Bento Grid 核心盘口 + 主力资金) */}

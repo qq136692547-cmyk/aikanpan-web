@@ -5,6 +5,7 @@ import { PremarketBriefingCard } from "@/components/ai/premarket-briefing-card";
 import { HomeMarketPanels } from "@/components/home/home-market-panel";
 import { HomeContent } from "@/components/home/home-content";
 import { HomeAlertEntry } from "@/components/alert/home-alert-entry";
+import { GuestNoticeBar } from "@/components/account/guest-notice-bar";
 import { DailyWorkflow } from "@/components/workflow/daily-workflow";
 import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard } from "@/lib/api";
 import { getDailyReviewForSSR } from "@/lib/daily-review-ssr";
@@ -117,6 +118,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <Navbar />
       <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-4 sm:px-6 sm:py-5">
         <AutoRefresh />
+        <GuestNoticeBar />
         <section className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-[24px] font-bold tracking-tight text-neo-ink">

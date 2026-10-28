@@ -36,7 +36,9 @@ export function PremarketBriefingCard() {
               <h2 className="text-sm font-semibold text-neo-ink">AI 盘前早报 · 隔夜外盘与看盘线索</h2>
               <span className="rounded bg-neo-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-neo-primary">开盘前必读</span>
             </div>
-            <p className="text-[11px] text-neo-dim">基于隔夜美股三大指数、热门中概股与重磅宏观要闻，提炼今日 A 股关键线索</p>
+            {/* 副标题「基于隔夜美股三大指数…」已删：F8 加首访告知条必须先在别处省回等量高度，
+                375×667 下这条副标题占 32px，正好抵掉告知条的 28px + margin。
+                标题与「开盘前必读」标签仍在，版式语义不受影响。 */}
           </div>
         </div>
 

@@ -126,7 +126,8 @@ export default async function UpgradePage({
               。
             </p>
             <p className="mt-1.5 text-[11px] leading-relaxed text-neutral-400">
-              服务边界：行情数据取自第三方公开接口，可能存在延迟或缺失；AI 内容由大语言模型生成，可能存在错误。本站不提供买卖建议、不承诺收益，据此操作盈亏自负。
+              服务边界：本站不具备证券投资咨询资格，不提供买卖建议、不承诺收益。行情数据取自第三方公开接口，可能存在延迟或缺失；AI
+              内容由大语言模型生成，可能存在错误。据此操作盈亏自负。
             </p>
           </div>
         </div>
