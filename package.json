@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs tests/navigation.test.mjs tests/seo.test.mjs tests/payment.test.mjs tests/research-storage.test.mjs tests/url-sanitize.test.mjs tests/alert-quota.test.mjs tests/quote-failure.test.mjs tests/error-boundary.test.mjs tests/auto-refresh.test.mjs tests/a11y.test.mjs tests/us-metrics.test.mjs tests/compliance-notice.test.mjs tests/semantic-color.test.mjs tests/data-source.test.mjs tests/image-assets.test.mjs tests/seo-crawl.test.mjs tests/auth-retry-copy.test.mjs tests/upgrade-gate.test.mjs tests/support-copy.test.mjs",
+    "test": "node --experimental-strip-types --test tests/smoke.test.mjs tests/format.test.mjs tests/navigation.test.mjs tests/seo.test.mjs tests/payment.test.mjs tests/research-storage.test.mjs tests/url-sanitize.test.mjs tests/alert-quota.test.mjs tests/quote-failure.test.mjs tests/error-boundary.test.mjs tests/auto-refresh.test.mjs tests/a11y.test.mjs tests/us-metrics.test.mjs tests/compliance-notice.test.mjs tests/semantic-color.test.mjs tests/data-source.test.mjs tests/image-assets.test.mjs tests/seo-crawl.test.mjs tests/auth-retry-copy.test.mjs tests/upgrade-gate.test.mjs tests/support-copy.test.mjs tests/swr-retry.test.mjs",
     "monitor:perf": "node monitor/perf-baseline.mjs",
     "audit:site": "node monitor/site-audit.mjs",
     "test:unit": "node --experimental-strip-types --test tests/format.test.mjs",
