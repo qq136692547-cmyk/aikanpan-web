@@ -23,7 +23,9 @@ const STATUS_TEXT: Record<ThesisItem["status"], string> = {
 };
 
 function statusClass(status: ThesisItem["status"]) {
-  if (status === "active") return "neo-up-soft text-neo-up";
+  // 同 research-workspace.tsx：active 是「跟踪中」状态，不是方向也不是结果，
+  // 用品牌主色；不能用涨跌色（--neo-up 在 A 股是红，会读成告警）。
+  if (status === "active") return "bg-neo-primary-soft text-neo-primary";
   if (status === "watching") return "bg-[var(--neo-amber-soft)] text-[var(--neo-amber)]";
   return "bg-[var(--neo-surface-inset)] text-neo-dim";
 }

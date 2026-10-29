@@ -204,3 +204,41 @@ test("券商评级仍是涨跌色（表达看多/看空，防矫枉过正）", (
   assert.ok(m, "stock-tabs 里找不到 rating_name 徽章（结构变了？）");
   assert.ok(/neo-up/.test(m[1]), `券商评级表达「看多」方向，应保持涨跌色，当前却是 ${m[1]}`);
 });
+
+// ── 6. 状态语义：既不是方向也不是结果，用主色 ───────────────────────────────
+//
+// active =「跟踪中」，是个**状态**：
+//   用涨跌色 → --neo-up 在 A 股是红，「跟踪中」会被读成「告警」
+//   用 success  → 绿=成功，会把「状态」误读成「结果」
+// 故用品牌主色（--neo-primary），语义中性。
+
+test("研究模块的 active（跟踪中）用品牌主色，不用涨跌色", () => {
+  for (const rel of [
+    "src/components/research/research-workspace.tsx",
+    "src/components/research/stock-thesis-panel.tsx",
+  ]) {
+    const src = read(rel);
+    assert.ok(
+      /status === "active"\)\s*return\s*"bg-neo-primary-soft text-neo-primary"/.test(src),
+      `${rel}: active（跟踪中）是状态，应使用品牌主色`,
+    );
+    assert.ok(
+      !/status === "active"\)\s*return\s*"[^"]*neo-(up|down)/.test(src),
+      `${rel}: active 落到涨跌色了——A 股 up 是红，会把「跟踪中」读成告警`,
+    );
+  }
+});
+
+test("全库扫描：状态分支不得映射到涨跌色", () => {
+  const hits = [];
+  for (const { path, text } of walk("src")) {
+    text.split("\n").forEach((line, i) => {
+      if (/^\s*(\*|\/\/|\/\*)/.test(line)) return;
+      const isStatus = /status\s*===\s*"(active|watching|closed|open|done|pending|expired)"/.test(line);
+      if (isStatus && /neo-(up|down)/.test(line)) {
+        hits.push(`${path}:${i + 1}  ${line.trim().slice(0, 110)}`);
+      }
+    });
+  }
+  assert.deepEqual(hits, [], `以下位置把「状态」映射到了涨跌色：\n${hits.join("\n")}`);
+});

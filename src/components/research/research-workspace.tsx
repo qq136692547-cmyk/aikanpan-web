@@ -84,7 +84,11 @@ const TABS: { key: TabKey; label: string }[] = [
 const PLAN_ACTIONS = ["观察", "买入", "卖出", "减仓", "加仓"];
 
 function statusClass(status: string) {
-  if (status === "active") return "neo-up-soft text-neo-up";
+  // active = 「跟踪中」，是一个**状态**，既不是数值方向也不是操作结果，
+  // 所以既不能用涨跌色（--neo-up 在 A 股是红，会读成「告警」），
+  // 也不该用 success（绿 = 成功，会把状态误读成结果）。用品牌主色最中性。
+  // 依据 globals.css:546 的分工。详见 tests/semantic-color.test.mjs 第 5 组。
+  if (status === "active") return "bg-neo-primary-soft text-neo-primary";
   if (status === "watching") return "bg-[var(--neo-amber-soft)] text-[var(--neo-amber)]";
   return "bg-[var(--neo-surface-inset)] text-neo-dim";
 }
