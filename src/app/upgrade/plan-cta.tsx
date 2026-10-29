@@ -3,8 +3,21 @@
 /**
  * 档位支付按钮（客户端岛）。
  *
- * 依赖 useAuth().isRealUser —— 未绑定邮箱/手机号的账号付款后权益无法绑定到
- * 可恢复的账号，所以下单前就拦住。因此按钮必须留在客户端，价格数字同理。
+ * 2026-10-29：取消「未绑定手机号不许下单」的硬门槛。
+ *
+ * 原实现在 handlePay 里 `if (!isRealUser) { setError(BIND_REQUIRED); return; }`，
+ * 连下单接口都不调，直接弹「请先绑定」。后果：全站 8,417 个游客、仅 92 个
+ * 绑定过手机号，等于把 99% 的购买意愿挡在门外。对账结果是订单文件最后一笔
+ * 停在 2026-10-08（正是加这条门槛的当天），此后 21 天 0 单，而 10-13 / 10-28
+ * 各有真人点「开通 90 天」却没留下任何订单。
+ *
+ * 而这条路本来就是通的：历史 21 笔订单里 15 笔的 user_id 就是 guest_ 前缀；
+ * 后端 record_order_paid_and_grant 全文不含 guest 判断，照常发货；
+ * server.py `_merge_user_data` 注释原文「合并 membership 会员权益（游客付款后
+ * 登录手机号继承 Pro）」；付款成功页还会当场发恢复码（upgrade-pay-status.tsx）。
+ *
+ * 现在防刷单改由后端按「同账号 24h 内未支付订单数」限流，前端不再做身份判断。
+ * 身份说明统一放在页面顶部那张说明卡里（page.tsx），避免每个档位重复一遍。
  *
  * ⚠️ 按钮文案里**不能带价格**：`<PlanCta label="¥49 开通 90 天" />` 这种写法会把
  * label 作为 prop 序列化进 RSC flight payload，价格照样出现在 HTML 里（实测 3 处）。
@@ -16,12 +29,10 @@
  * 共享一个 paying 只是历史写法。
  */
 
-import Link from "next/link";
 import { useState } from "react";
 import { Loader2, Zap } from "lucide-react";
 import { api } from "@/lib/api";
 import { reportConversionEvent } from "@/lib/analytics";
-import { useAuth } from "@/lib/auth";
 import type { PricePlan } from "./plan-price";
 
 const VARIANT_CLASS = {
@@ -45,13 +56,8 @@ const PLAN_UI: Record<PricePlan, { label: string; variant: Variant }> = {
   annual: { label: "开通 90 天", variant: "purple" },
 };
 
-const BIND_REQUIRED =
-  "下单前需先绑定邮箱或手机号，否则付款后权益无法绑定到可恢复的账号。请先在用户中心完成绑定。";
-
 export function PlanCta({ plan }: { plan: PricePlan }) {
   const { label, variant } = PLAN_UI[plan];
-  const { user, isAuthenticated } = useAuth();
-  const isRealUser = isAuthenticated && !!user?.type && user.type !== "guest";
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState("");
 
@@ -60,13 +66,9 @@ export function PlanCta({ plan }: { plan: PricePlan }) {
   const orderPlan = plan === "annual" ? "quarterly" : plan;
 
   const handlePay = async () => {
-    // P0-1: 点击即报（在登录门槛判定之前——点击意愿本身是漏斗信号）
+    // P0-1: 点击即报（点击意愿本身是漏斗信号）
     reportConversionEvent("upgrade_click", { source: orderPlan });
     setError("");
-    if (!isRealUser) {
-      setError(BIND_REQUIRED);
-      return;
-    }
     setPaying(true);
     try {
       const res = await api.createAlipayOrder(orderPlan);
@@ -83,8 +85,6 @@ export function PlanCta({ plan }: { plan: PricePlan }) {
       setPaying(false);
     }
   };
-
-  const needBind = !isRealUser;
 
   return (
     <div>
@@ -103,19 +103,9 @@ export function PlanCta({ plan }: { plan: PricePlan }) {
       </button>
 
       {error && (
-        <div className="mt-2 text-left">
-          <p className="text-[11px] leading-relaxed text-rose-300" role="alert">
-            {error}
-          </p>
-          {needBind && (
-            <Link
-              href="/account"
-              className="mt-1.5 inline-flex items-center rounded-md border border-rose-500/40 bg-rose-500/10 px-2.5 py-1 text-[11px] font-medium text-rose-200 transition hover:bg-rose-500/20"
-            >
-              前往用户中心绑定
-            </Link>
-          )}
-        </div>
+        <p className="mt-2 text-left text-[11px] leading-relaxed text-rose-300" role="alert">
+          {error}
+        </p>
       )}
     </div>
   );

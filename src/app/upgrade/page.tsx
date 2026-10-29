@@ -115,7 +115,9 @@ export default async function UpgradePage({
               支付宝付款后自动开通，所有时长卡权益一致
             </p>
             <p className="mt-1 text-xs leading-relaxed text-neutral-300">
-              支付宝扫码付款后系统自动开通会员权益并同时发放恢复码，不自动续费、不自动扣款。购买前请先绑定邮箱或手机号。
+              支付宝扫码付款后系统自动开通会员权益并同时发放恢复码，不自动续费、不自动扣款。
+              <b className="text-neutral-200">无需提前绑定即可直接购买</b>
+              ；绑定手机号后权益可跨设备自动同步，未绑定的请务必保存付款成功页的恢复码，清缓存或换设备时用它自助找回。
             </p>
             <p className="mt-1 text-xs leading-relaxed text-neutral-300">
               开通保障：若付款后会员权益未自动点亮，可先用付款成功页显示的恢复码在上方自助找回；仍无法开通的，请通过微信
