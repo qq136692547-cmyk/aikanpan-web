@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/auth";
 import { isAiQuotaExhaustedError } from "@/lib/ai-quota";
 import { AIEvidencePanel } from "./ai-evidence-panel";
 import { AiQuotaCard } from "./ai-quota-card";
+import { AiQuotaBar } from "./ai-quota-bar";
 
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
@@ -166,6 +167,8 @@ export function AIReview({ date, available = true }: { date?: string; available?
           </span>
           <span className="text-[11px] text-neo-dim" style={{ fontFamily: 'var(--font-inter), system-ui' }}>{data!.generated_at.slice(0, 16).replace("T", " ")}</span>
           {data!.cached && <span className="rounded bg-[var(--neo-surface-inset)] px-1.5 py-0.5 text-[10px] text-neo-dim">缓存</span>}
+          {/* 读完复盘正是「我还剩几次」最该被看到的位置 —— 用户刚消费完一次额度 */}
+          <AiQuotaBar source="ai_review" />
         </div>
         <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">
           重新生成

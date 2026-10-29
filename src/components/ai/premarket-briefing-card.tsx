@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { Sunrise, RefreshCw, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
 import { api, type PremarketBriefing } from "@/lib/api";
+import { AiQuotaBar } from "./ai-quota-bar";
 
 export function PremarketBriefingCard() {
   const [data, setData] = useState<PremarketBriefing | null>(null);
@@ -43,6 +44,14 @@ export function PremarketBriefingCard() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* 常驻余量条：首页是全站流量最大的入口（10 月 / 路径 1075 次浏览），
+              把「AI 还剩几次」放在这里，才有机会被看见。
+              `hidden sm:inline-flex` 是刻意的：卡片标题本身就长
+              （「AI 盘前早报 · 隔夜外盘与看盘线索」+「开盘前必读」标签），
+              375px 宽度下再塞一个 chip 会把标题挤成两行。
+              实测手机只占全站 8.9%（桌面 73.9%），且手机端额度耗尽时
+              仍有 ai-quota-card 兜底，所以这里先保桌面。 */}
+          <AiQuotaBar source="home_premarket" className="hidden sm:inline-flex" />
           {!data && !loading && (
             <button
               onClick={fetchBriefing}

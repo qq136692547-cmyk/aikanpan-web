@@ -20,6 +20,11 @@ export type UpgradeFunnelEvent =
   | "upgrade_click"
   | "activation_success"
   | "ai_quota_hit"
+  // 常驻余量条的曝光（ai-quota-bar.tsx）。
+  // 与 ai_quota_hit 的区别：hit 是「真的用完了」，view 是「看见还剩多少」。
+  // 前者衡量天花板，后者衡量「用户知不知道有额度这回事」——10 月实测
+  // 全站 12 万 PV 但 ai_quota_hit 仅 45 次，说明断点在 view 这一侧。
+  | "ai_quota_view"
   | "daily_workflow_click";
 
 function localDay(): string {
