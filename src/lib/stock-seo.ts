@@ -88,6 +88,27 @@ export const INDEXABLE_STOCK_CODES = INDEXABLE_STOCKS.map((stock) => stock.code)
 
 const INDEXABLE_STOCK_CODE_SET = new Set<string>(INDEXABLE_STOCK_CODES);
 
+/**
+ * 6 位纯数字 → 白名单里的规范 code（`"600519"` → `"sh600519"`）。
+ *
+ * 为什么需要：`/stock/600519/` 这种最自然的写法，`canonicalStockCode` 判断不出前缀 ——
+ * `600519` 既不匹配带前缀的 `^(sh|sz|bj)\.?(\d{6})$`，也不匹配 1–5 位的港股格式，
+ * 于是走兜底原样返回，白名单查不到 → 页面被标 noindex。
+ * 结果同一只股票有两个都能访问的 URL，而**自然写法不可收录、权重白流失**。
+ *
+ * ⚠️ 只收**带前缀**的条目（A 股）。白名单里还有港股（`00388`）与美股（`AAPL`）：
+ * 港股本就是 5 位纯数字、自身即规范形式，若一并收进来会映射到自己、
+ * 触发 `/stock/00388/` → `/stock/00388/` 的**无限重定向**。
+ *
+ * 这里**只对白名单里已知的映射**做重定向，不做前缀推断 ——
+ * “600xxx 推成 sh” 这类规则看着可行，但股本市场会调整，推错就是 404。
+ */
+const BARE_CODE_TO_CANONICAL = new Map<string, string>(
+  INDEXABLE_STOCKS
+    .filter((s) => /^(sh|sz|bj)\d{6}$/.test(s.code))
+    .map((s) => [s.code.slice(2), s.code]),
+);
+
 export function canonicalStockCode(raw: string): string {
   const cn = raw.match(/^(sh|sz|bj)\.?(\d{6})$/i);
   if (cn) return `${cn[1].toLowerCase()}${cn[2]}`;
@@ -118,4 +139,17 @@ export function isHkStockCode(routeCode: string): boolean {
 
 export function isIndexableStockCode(raw: string): boolean {
   return INDEXABLE_STOCK_CODE_SET.has(canonicalStockCode(raw));
+}
+
+/**
+ * 若 `raw` 是 6 位纯数字、且在白名单里有对应的规范 code，返回那个 code；否则 `null`。
+ * 调用方据此做 308 重定向（见 `src/app/stock/[code]/page.tsx`）。
+ *
+ * 港股（4–5 位）与美股（字母）都不在此列：它们本身就是规范形式。
+ * 白名单外的 A 股代码也返回 `null` —— 那些页面本来就不打算收录，
+ * 重定向过去也只是换个 URL，没有意义。
+ */
+export function canonicalCodeForBareNumber(raw: string): string | null {
+  if (!/^\d{6}$/.test(raw)) return null;
+  return BARE_CODE_TO_CANONICAL.get(raw) ?? null;
 }

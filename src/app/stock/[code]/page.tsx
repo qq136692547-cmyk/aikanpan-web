@@ -17,6 +17,7 @@ import { buildOpenGraph } from "@/lib/open-graph";
 import { classifyQuoteFailure } from "@/lib/quote-failure";
 import { formatPrice, formatVolume, formatAmount } from "@/lib/format";
 import {
+  canonicalCodeForBareNumber,
   canonicalStockCode,
   INDEXABLE_STOCKS,
   isHkStockCode,
@@ -27,7 +28,7 @@ import {
 } from "@/lib/stock-seo";
 import { usNameZh } from "@/lib/us-stock-names";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 export const revalidate = 30;
 
@@ -117,6 +118,18 @@ function describeError(err: unknown): string {
 
 export default async function StockPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = await params;
+
+  // P1（2026-10-29）：`/stock/600519/` 这类 6 位纯数字写法 → 308 到白名单里的规范 URL。
+  //
+  // 起因：canonicalStockCode 判断不出 sh/sz/bj 前缀（600519 既不匹配带前缀格式，
+  // 也不匹配 1–5 位的港股格式），于是这种写法落到白名单之外 → 页面被标 noindex。
+  // 结果同一只股票有 `/stock/600519/`（noindex）与 `/stock/sh600519/`（index）两个
+  // 都能访问的 URL，评价权重被分散，而**自然写法永远不可收录**。
+  // 用 308（永久）而非 307，才能让搜索引擎把已有索引迁到规范 URL。
+  // 详细推导见 src/lib/stock-seo.ts 的 canonicalCodeForBareNumber。
+  const canonicalBare = canonicalCodeForBareNumber(rawCode);
+  if (canonicalBare) permanentRedirect(`/stock/${canonicalBare}/`);
+
   const routeCode = canonicalStockCode(rawCode);
   const isCnStockCode = /^(sh|sz|bj)?\d{6}$/.test(routeCode.toLowerCase());
   if (!isCnStockCode && !isHkStockCode(routeCode) && !isUsStockCode(routeCode)) {

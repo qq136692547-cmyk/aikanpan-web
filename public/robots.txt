@@ -1,66 +1,42 @@
 # https://www.robotstxt.org/robotstxt.html
+#
+# 2026-10-29（P0）：新增 Disallow /api/。
+# 起因：14 天日志实测，爬虫 24,846 次请求里有 12,106 次（48.7%）打在 /api/ 上
+#   /api/v1/analytics/events 2838 次、/api/v1/auth/guest-login 1463 次 …
+# 现代爬虫会渲染 JS 并跟着执行页面里的 fetch；不声明就会持续消耗爬虫预算。
+# 对新站尤其要紧——配额有限，浪费在接口上等于少抓内容页。
+# 一并禁 /admin/（管理后台不该进索引）。
+
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
-# AI crawlers
+# AI crawlers —— 同一组规则。
+# robots.txt 规范里，连续多个 User-agent 行属于同一组，与逐个分组写法语义完全相同，
+# 只是更易维护。原有 20 个 UA 一个不少。
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: Claude-SearchBot
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: CCBot
-Allow: /
-
 User-agent: cohere-ai
-Allow: /
-
 User-agent: DuckAssistBot
-Allow: /
-
 User-agent: AI2Bot
-Allow: /
-
 User-agent: xAI-Bot
-Allow: /
-
 User-agent: YouBot
-Allow: /
-
 User-agent: Bytespider
-Allow: /
-
 User-agent: meta-externalagent
-Allow: /
-
 User-agent: Amazonbot
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
 User-agent: PetalBot
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
 Sitemap: https://aikanpan.top/sitemap.xml
