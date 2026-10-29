@@ -10,6 +10,7 @@ import { isAiQuotaExhaustedError } from "@/lib/ai-quota";
 import { AIEvidencePanel } from "./ai-evidence-panel";
 import { AiQuotaCard } from "./ai-quota-card";
 import { AiQuotaBar } from "./ai-quota-bar";
+import { AuthRetryNotice } from "@/components/system/auth-retry-notice";
 
 function parseScoreAndStatus(content: string): { score: number | null; status: string | null } {
   const scoreMatch = content.match(/\*\*评分\*\*[:：]\s*(\d+)\s*\/\s*10/);
@@ -37,7 +38,7 @@ const scoreColor = (score: number) => {
 type LoadState = "loading" | "done" | "error" | "unavailable";
 
 export function AIReview({ date, available = true }: { date?: string; available?: boolean }) {
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated, loading: authLoading, retry: retryAuth } = useAuth();
   const [state, setState] = useState<LoadState>("loading");
   const [data, setData] = useState<AIReview | null>(null);
   const [error, setError] = useState<string>("");
@@ -47,9 +48,10 @@ export function AIReview({ date, available = true }: { date?: string; available?
   const unavailableWithoutAuth = !authLoading && !isAuthenticated;
   const unavailableHistorical = !available;
   const displayState: LoadState = unavailableWithoutAuth || unavailableHistorical ? "unavailable" : state;
-  const displayError = unavailableWithoutAuth
-    ? "账户初始化失败，暂时无法生成或读取 AI 复盘。"
-    : displayState === "unavailable"
+  // 只有「历史复盘缺失」才用 displayError；访客身份失败由 AuthRetryNotice 承担，
+  // 不再复用一句「账户初始化失败」把两种情况混在一起。
+  const displayError =
+    displayState === "unavailable"
       ? date
         ? `${date} 已保存市场数据，但没有可用的 AI 复盘原文。`
         : error || "当前没有可用的 AI 复盘原文。"
@@ -146,9 +148,18 @@ export function AIReview({ date, available = true }: { date?: string; available?
     return (
       <div className="neo-card-sm p-6">
         <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
-        <p className="mt-3 text-[13px] text-neo-mid">{displayError}</p>
-        {!isAuthenticated && (
-          <button onClick={() => window.location.reload()} className="neo-chip mt-3 min-h-11 px-3 py-1.5 text-xs text-neo-primary">刷新页面</button>
+        {unavailableWithoutAuth ? (
+          <div className="mt-3">
+            <AuthRetryNotice onRetry={retryAuth} />
+            {/* 这里失败的只是自动创建的匿名访客身份。写明「无需注册」是为了打消
+                「是不是得先注册才能看」的误会 —— 实测游客 token 调 /ai/daily-review
+                返回 200，游客本来就能用。 */}
+            <p className="mt-2 text-[11px] leading-relaxed text-neo-dim">
+              AI 复盘使用匿名访客身份，无需注册；重试成功后会自动加载。
+            </p>
+          </div>
+        ) : (
+          <p className="mt-3 text-[13px] text-neo-mid">{displayError}</p>
         )}
       </div>
     );

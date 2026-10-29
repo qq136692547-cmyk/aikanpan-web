@@ -1,7 +1,12 @@
 "use client";
 
 /**
- * 账户初始化失败时的统一提示 + 重试入口。
+ * 访客身份未建立时的统一提示 + 重试入口。
+ *
+ * 文案取舍：原先写「账户初始化失败」，但这里失败的**不是用户的账户**，
+ * 而是后台自动建的匿名访客身份（游客 token）。游客看到「账户失败」会以为
+ * 自己注册的账号出问题，甚至以为必须注册才能用——恰好是反的：游客本就能用。
+ * 故标题只说「访客身份未建立」，不碰「账户」二字。
  *
  * 背景：AuthProvider 在没有本地用户时会自动做游客登录（src/lib/auth.tsx）。
  * 登录失败后 user 恒为 null、loading 变 false，于是所有
@@ -30,8 +35,8 @@ export function AuthRetryNotice({
       <button
         type="button"
         onClick={onRetry}
-        title="账户初始化失败，点此重试"
-        aria-label="账户初始化失败，点此重试"
+        title="访客身份未建立，点此重试"
+        aria-label="访客身份未建立，点此重试"
         className="neo-btn-primary min-h-9 shrink-0 rounded-md px-2 py-1 text-xs font-medium text-white"
       >
         重试
@@ -41,8 +46,8 @@ export function AuthRetryNotice({
 
   return (
     <div className="neo-inset rounded-md px-3 py-2.5" role="status">
-      <p className="text-xs font-medium text-neo-ink">账户初始化失败</p>
-      <p className="mt-0.5 text-xs text-neo-dim">点重试再加载一次，不用刷新页面。</p>
+      <p className="text-xs font-medium text-neo-ink">访客身份未建立</p>
+      <p className="mt-0.5 text-xs text-neo-dim">点重试再连一次，不用刷新页面。</p>
       <button
         type="button"
         onClick={onRetry}
