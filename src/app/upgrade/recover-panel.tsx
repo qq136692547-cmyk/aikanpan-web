@@ -19,7 +19,7 @@ import { useMembership } from "@/lib/membership";
 
 type Msg = { type: "ok" | "err"; text: string } | null;
 
-const SUPPORT = "微信 denglio0 或邮箱 qq136692547@gmail.com";
+const SUPPORT = "微信 denglio0（加好友请备注：爱看盘）或邮箱 qq136692547@gmail.com";
 
 export function RecoverPanel() {
   const { user, isAuthenticated } = useAuth();

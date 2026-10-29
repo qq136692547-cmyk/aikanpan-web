@@ -25,7 +25,7 @@ export function Footer({ dataSource = "第三方行情源" }: { dataSource?: str
           </div>
         </div>
         <div className="mt-2 flex flex-col gap-1 border-t border-[var(--neo-surface-inset)] pt-3 text-[12px] text-neo-dim sm:flex-row sm:items-center sm:gap-4">
-          <span>微信：denglio0</span>
+          <span>微信：denglio0（备注：爱看盘）</span>
           <a href="mailto:qq136692547@gmail.com" className="inline-flex min-h-11 items-center transition-colors hover:text-neo-primary sm:min-h-8">qq136692547@gmail.com</a>
         </div>
         <p className="mt-1 text-[12px] text-neo-mid opacity-80">

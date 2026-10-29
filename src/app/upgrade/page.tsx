@@ -121,7 +121,7 @@ export default async function UpgradePage({
             </p>
             <p className="mt-1 text-xs leading-relaxed text-neutral-300">
               开通保障：若付款后会员权益未自动点亮，可先用付款成功页显示的恢复码在上方自助找回；仍无法开通的，请通过微信
-              denglio0 或邮箱 qq136692547@gmail.com 提供订单号，我们会核实订单与权益状态后处理。售后条款见
+              denglio0（加好友请备注：爱看盘）或邮箱 qq136692547@gmail.com 提供支付宝商户订单号，我们会核实订单与权益状态后处理。售后条款见
               <Link href="/terms/" className="text-neutral-300 underline hover:text-white">
                 《用户协议》售后章节
               </Link>
@@ -267,7 +267,7 @@ export default async function UpgradePage({
                 ① 权益未自动点亮：先在下方「换电脑/重装系统自助找回」里输入恢复码自助恢复；
               </p>
               <p className="mt-1">
-                ② 恢复码丢失或仍无法开通：请通过微信 denglio0 或邮箱 qq136692547@gmail.com 提供支付宝商户订单号，我们会核实订单与权益状态后处理，详见
+                ② 恢复码丢失或仍无法开通：请通过微信 denglio0（加好友请备注：爱看盘）或邮箱 qq136692547@gmail.com 提供支付宝商户订单号，我们会核实订单与权益状态后处理。订单号本身不能自助找回，详见
                 <Link href="/terms/" className="text-neutral-300 underline hover:text-white">
                   《用户协议》售后章节
                 </Link>
