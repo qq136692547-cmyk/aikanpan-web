@@ -223,8 +223,10 @@ export default async function ReviewPage({
     );
   }
 
-  // 真实存在快照的日期（新的在前）。与 sitemap 共用同一份探针，保证站内图和 sitemap 一致。
-  // 探针 fetch 自带 revalidate: 3600，配合本页 revalidate = 60 不会每次渲染都打后端。
+  // 真实存在快照的日期（新的在前）。与 sitemap 共用同一份来源，保证站内图和 sitemap 一致。
+  // 2026-11-05 之前这里对 100 个候选日期逐个探针，误以为 revalidate: 3600 能缓存 404 ——
+  // 实际不能，于是每次渲染都全量重探 22 个空日期（实测本页一天 1582 次渲染 → 3.4 万次 404）。
+  // 现在改成后端一次返回日期列表，见 src/lib/review-dates.ts。
   const reviewDates = await getExistingReviewDates();
   const reviewMonthGroups = groupReviewDatesByMonth(reviewDates);
 
