@@ -57,7 +57,7 @@ export function AIScorePanel({ codes }: { codes: string[] }) {
         {/* invisible spacer to maintain layout */}
         <span className="invisible">.</span>
       </div>
-      {quotaHit && <AiQuotaCard source="ai_score" onRetry={handleBatchScore} compact />}
+      {quotaHit && <AiQuotaCard source="ai_score" compact />}
     </div>
   );
 }

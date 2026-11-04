@@ -226,17 +226,22 @@ export function AIComment({ code, market = "cn", initialData }: AICommentProps) 
             <Sparkles size={13} />
             AI 诊断
           </span>
-          <button
-            onClick={handleGenerate}
-            className="flex items-center gap-1 rounded-md px-3 py-1.5 text-xs text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary"
-          >
-            <RefreshCw size={12} />
-            重试
-          </button>
+          {/* 额度耗尽时不渲染「重试」：额度按自然日 0 点重置，此刻重试必然还是 429。
+              11-03 实测有访客在这里连点 7 次、间隔 2–6 秒，每点一次白发一次请求。
+              出口只留卡片里的「去开通 Pro」。 */}
+          {!quotaHit && (
+            <button
+              onClick={handleGenerate}
+              className="flex items-center gap-1 rounded-md px-3 py-1.5 text-xs text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary"
+            >
+              <RefreshCw size={12} />
+              重试
+            </button>
+          )}
         </div>
         {quotaHit ? (
           <div className="mt-3">
-            <AiQuotaCard source="ai_comment" onRetry={handleGenerate} />
+            <AiQuotaCard source="ai_comment" />
           </div>
         ) : (
           <p className="mt-3 text-sm text-neo-danger">

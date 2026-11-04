@@ -124,11 +124,14 @@ export function AIReview({ date, available = true }: { date?: string; available?
       <div className="neo-card-sm p-6">
         <div className="flex items-center justify-between">
           <span className="rounded-md bg-neo-primary-soft px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neo-primary">AI 复盘</span>
-          <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
+          {/* 额度耗尽时收起「重试」：重试必然还是 429，出口只留卡片里的去开通 */}
+          {!quotaHit && (
+            <button onClick={fetchReview} className="inline-flex min-h-11 items-center rounded-md px-3 py-1 text-[12px] text-neo-mid transition-colors hover-neo-inset hover:text-neo-primary">重试</button>
+          )}
         </div>
         {quotaHit ? (
           <div className="mt-3">
-            <AiQuotaCard source="ai_review" onRetry={fetchReview} />
+            <AiQuotaCard source="ai_review" />
           </div>
         ) : (
           <p className="mt-3 text-[13px] text-neo-danger">

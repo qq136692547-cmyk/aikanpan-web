@@ -56,3 +56,43 @@ export function isAiQuotaExhaustedError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error);
   return message.includes("升级 Pro");
 }
+
+/**
+ * 常驻余量条的四种生命周期阶段。
+ *
+ * 背景（10-29 ~ 11-05 实测）：真人曝光 167 次、点击 **0** 次，
+ * 其中 89% 落在 `r3/3` —— 访客一次都还没用过 AI，看到「AI 剩余 3/3」。
+ * 这个数字是在做「余量管理」，而访客还没进入管理余量的心智，所以做成按钮也没人点；
+ * 更糟的是它指向 /upgrade/，一个还没用过 AI 的人直接落到价格页，是断层。
+ *
+ * 于是分四态各给各的语义：idle 讲价值、mid 报余量、low 催一下、out 给出价格。
+ */
+export type QuotaStage = "idle" | "mid" | "low" | "out";
+
+/** 后端 AI_DAILY_PRO_LIMIT 的默认值（server.py），文案里要用到 */
+export const AI_PRO_DAILY_LIMIT = 500;
+
+/** 四态判定。抽成纯函数是为了能被 tests/ai-quota-stage.test.mjs 直接覆盖。 */
+export function quotaStage(remaining: number | undefined, limit: number | undefined): QuotaStage {
+  if (typeof remaining !== "number" || typeof limit !== "number" || limit <= 0) return "idle";
+  if (remaining <= 0) return "out";
+  if (remaining >= limit) return "idle";
+  if (remaining <= 1) return "low";
+  return "mid";
+}
+
+/**
+ * 各阶段文案。
+ * idle 讲「有多少免费额度」，mid/low 讲「还剩几次」，
+ * out 讲「能换到多少」——耗尽时用户关心的是 Pro 值不值，不是还剩 0。
+ */
+export function quotaLabel(
+  stage: QuotaStage,
+  remaining: number,
+  limit: number,
+  proLimit: number = AI_PRO_DAILY_LIMIT
+): string {
+  if (stage === "idle") return `AI 诊断 · 每天 ${limit} 次免费`;
+  if (stage === "out") return `开通 Pro · 每天 ${proLimit} 次`;
+  return `AI 剩余 ${remaining}/${limit}`;
+}
