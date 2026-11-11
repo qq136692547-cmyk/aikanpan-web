@@ -1,0 +1,78 @@
+{
+	email admin@aikanpan.top
+}
+
+aikanpan.top {
+	encode gzip
+
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	}
+
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 100mb
+			roll_keep 5
+		}
+		format json
+	}
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8000
+	}
+
+	handle /_next/static/* {
+		reverse_proxy 127.0.0.1:3000
+	}
+
+	# D10 静态资源缓存（2026-10-26）：跳过下方兜底的 no-store，恢复浏览器缓存。
+	# 顺序敏感：handle 自上而下匹配、命中即止，这三块必须在裸 handle { 之前。
+	# /_next/static/* 已有独立 handle，不在此处、不要动；裸 handle 的 no-store 也不动。
+	handle /images/* {
+		reverse_proxy 127.0.0.1:3000 {
+			header_down Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+		}
+	}
+
+	handle /icons/* {
+		reverse_proxy 127.0.0.1:3000 {
+			header_down Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+		}
+	}
+
+	handle /favicon.ico {
+		reverse_proxy 127.0.0.1:3000 {
+			header_down Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+		}
+	}
+
+	handle {
+		# 2026-11-12：拦截 Server Action 探测。
+		# 构建产物 server-reference-manifest.json 里 action 数 = 0，本站没有 Server Action。
+		# 8 天内 1036 次带 Next-Action 头的请求里，1030 次的值就是字母 "x"，
+		# 950 次 404、5 次 500 —— 纯扫描器噪音，却占了 pm2 错误日志 676 行。
+		# 只放行标准 40 位 hex 的 action id：将来真加了 Server Action 也不会误杀。
+		# 注意：必须放在 handle 内部。放在站点层会被排到所有 handle 之后而永不生效
+		# （handle 命中即止，兜底 handle 会先吃掉全部请求）。
+		@bad_server_action {
+			header Next-Action *
+			not header_regexp sa_id Next-Action ^[0-9a-f]{40}$
+		}
+		respond @bad_server_action 403
+
+		reverse_proxy 127.0.0.1:3000 {
+			header_down Cache-Control "no-cache, no-store, must-revalidate"
+		}
+	}
+}
+
+www.aikanpan.top {
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	}
+	redir https://aikanpan.top{uri} permanent
+}
