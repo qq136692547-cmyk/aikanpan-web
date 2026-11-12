@@ -38,6 +38,7 @@
 import glob
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 
@@ -56,12 +57,24 @@ MIN_REQS = 10             # 样本太少不下结论
 
 
 def parse_t0():
-    if not ROBOTS_DEPLOY_AT:
+    """解析 T0。必须兼容 Python 3.6：线上是 3.6.8，没有 `datetime.fromisoformat`（3.7+）。"""
+    text = ROBOTS_DEPLOY_AT.strip()
+    if not text:
         return None
-    text = ROBOTS_DEPLOY_AT.replace("Z", "+00:00")
-    try:
-        moment = datetime.fromisoformat(text)
-    except ValueError:
+    # 归一化时区写法：Z -> +0000，+08:00 -> +0800（%z 在 3.6 只吃紧凑写法）。
+    # 注意必须先判断「确实带时区」再剥冒号：无时区的 ...T02:01:28 末尾也是 :28，
+    # 无脑剥会把秒切掉（这个坑第一次写就踩了）。
+    text = text.replace("Z", "+0000").replace("z", "+0000")
+    if re.search(r"[+-]\d{2}:\d{2}$", text):
+        text = text[:-3] + text[-2:]
+    moment = None
+    for fmt in ("%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S"):
+        try:
+            moment = datetime.strptime(text, fmt)
+            break
+        except ValueError:
+            moment = None
+    if moment is None:
         return None
     if moment.tzinfo is None:
         moment = moment.replace(tzinfo=timezone.utc)
