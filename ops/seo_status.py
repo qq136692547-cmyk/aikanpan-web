@@ -53,8 +53,13 @@ BAIDU_BLOCKED_IPS = set(
 )
 DAILY_DIR = os.getenv("SEO_DAILY_DIR", "/var/lib/aikanpan-seo/daily")
 CADDY_ACCESS_LOG = os.getenv("CADDY_ACCESS_LOG", "/var/log/caddy/access.log")
-# 只扫最新的几个日志文件：单个 100MB、最多 5 个 gz，全扫太慢且没必要。
-BAIDU_LOG_MAX_FILES = int(os.getenv("BAIDU_LOG_MAX_FILES", "3"))
+# 扫多少个日志文件。0 = 不限制（全部）。
+#
+# 2026-11-12 踩过的坑：默认值是 3，结果 13 天回填时漏掉了 11-05 那个文件
+#（Caddy 实际保留 6 个，11-05 排在第 5），聚合从 49 掉到 36，看起来像「百度少抓了」。
+# 归档脚本的价值就是全量，不能为了省几秒把历史截掉 —— 单文件 100MB、全量扫
+# 也就 1~2 秒，比起漏数据完全不值得省。
+BAIDU_LOG_MAX_FILES = int(os.getenv("BAIDU_LOG_MAX_FILES", "0"))
 BURST_GAP_SECONDS = 60
 CST = timedelta(hours=8)
 
@@ -163,10 +168,11 @@ def classify_uri(uri):
 
 
 def caddy_log_files():
-    """取最新的 N 个 Caddy 日志文件。
+    """取 Caddy 日志文件列表。
 
-    单个文件 roll_size=100mb、roll_keep=5，全量扫太慢；当天的抓取一定落在
-    最新的 1~2 个文件里，默认扫 3 个足够，且留了环境变量可调。
+    `BAIDU_LOG_MAX_FILES` > 0 时只取最新 N 个；默认 0 = 全部。
+    归档脚本宁慢不漏：漏一个文件就会让某天的数字凭空变小，而它长得像
+    「百度少抓了」，是最难排查的那种错。
     """
     found = []
     # Caddy 轮转后的文件名是 `access-<时间戳>.log.gz`，与 `access.log` 同前缀但
@@ -180,7 +186,9 @@ def caddy_log_files():
         except OSError:
             continue
     found.sort(reverse=True)
-    paths = [path for _, path in found[: max(1, BAIDU_LOG_MAX_FILES)]]
+    if BAIDU_LOG_MAX_FILES > 0:
+        found = found[:BAIDU_LOG_MAX_FILES]
+    paths = [path for _, path in found]
     if CADDY_ACCESS_LOG not in paths and os.path.exists(CADDY_ACCESS_LOG):
         paths.insert(0, CADDY_ACCESS_LOG)
     return paths
