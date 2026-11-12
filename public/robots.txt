@@ -11,6 +11,14 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+# 2026-11-12（P0）：挡 JS 分包，只放行 CSS。
+# 依据：10-31~11-12 实测真实 Baiduspider 49 次请求中 29 次（59%）打在 /_next/static/，
+#   内容页 0 次。页面正文 100% 在 SSR HTML 里（个股页可见文本 517 字，已实测），
+#   爬虫拿不到 JS 不影响收录。
+# 全站唯一 CSS 是 /_next/static/chunks/<hash>.css，hash 每次构建都变，
+#   所以必须按 *.css 通配放行，不能写死文件名。全挡会让爬虫拿到无样式页。
+Disallow: /_next/static/
+Allow: /_next/static/chunks/*.css
 
 # AI crawlers —— 同一组规则。
 # robots.txt 规范里，连续多个 User-agent 行属于同一组，与逐个分组写法语义完全相同，
@@ -38,5 +46,13 @@ User-agent: PetalBot
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+# 2026-11-12（P0）：挡 JS 分包，只放行 CSS。
+# 依据：10-31~11-12 实测真实 Baiduspider 49 次请求中 29 次（59%）打在 /_next/static/，
+#   内容页 0 次。页面正文 100% 在 SSR HTML 里（个股页可见文本 517 字，已实测），
+#   爬虫拿不到 JS 不影响收录。
+# 全站唯一 CSS 是 /_next/static/chunks/<hash>.css，hash 每次构建都变，
+#   所以必须按 *.css 通配放行，不能写死文件名。全挡会让爬虫拿到无样式页。
+Disallow: /_next/static/
+Allow: /_next/static/chunks/*.css
 
 Sitemap: https://aikanpan.top/sitemap.xml
