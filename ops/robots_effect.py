@@ -55,6 +55,17 @@ STATIC_SHARE_TARGET = 0.20
 BASELINE_STATIC_SHARE = 29.0 / 49.0   # 0.5918
 MIN_REQS = 10             # 样本太少不下结论
 
+CST = timedelta(hours=8)
+
+# 判定窗口的第一天 = T0 次日的 00:00（北京时间）。
+#
+# 为什么必须跳过 T0 当天：T0 是 2026-11-12 10:01，而 daily/2026-11-12.json 是
+# **全天聚合** —— 里面混了规则生效前的 8 小时和生效后的 14 小时，无法拆分。
+# 若把它当成观测第 1 天，等于把「改造前」的数据算进了窗口，判定会被稀释。
+# 所以 11-12 只留档、不进判定，窗口从 11-13 00:00 起算。
+# 这里硬编码是刻意的：换一次 T0 就要回来改一次，避免默认行为悄悄变。
+EXCLUDE_FROM_JUDGMENT = ("2026-11-12",)
+
 
 def parse_t0():
     """解析 T0。必须兼容 Python 3.6：线上是 3.6.8，没有 `datetime.fromisoformat`（3.7+）。"""
@@ -97,7 +108,8 @@ def load_days():
 
 def aggregate(days):
     counts = {"total": 0, "home": 0, "static": 0, "content": 0, "other": 0}
-    hubs = {}
+    # 预置 hub 键，窗口内没有数据时输出也不会是空串（空行看起来像 bug）
+    hubs = dict((path, 0) for path in ("/stocks/", "/review/", "/market/", "/sitemap.xml", "/robots.txt"))
     bursts = {"count": 0, "home_only": 0, "static_only": 0, "home_static": 0, "other": 0}
     urls = {}
     rows = []
@@ -205,8 +217,17 @@ def main():
         return 0
 
     now = datetime.now(timezone.utc)
-    elapsed_days = max(0, int((now - t0).total_seconds() // 86400))
-    days = [day for day in load_days() if day["date"] >= t0.strftime("%Y-%m-%d")]
+    # 判定窗口从 T0 次日 00:00（北京）起算；T0 当天数据混算，单列不外推。
+    t0_cst = t0 + CST
+    window_start_day = (t0_cst + timedelta(days=1)).strftime("%Y-%m-%d")
+    excluded = set(EXCLUDE_FROM_JUDGMENT) | set([t0_cst.strftime("%Y-%m-%d")])
+    window_start_at = (t0_cst + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+    elapsed_days = max(0, int((now - window_start_at).total_seconds() // 86400))
+    all_days = load_days()
+    days = [day for day in all_days if day["date"] >= window_start_day and day["date"] not in excluded]
+    t0_day = t0_cst.strftime("%Y-%m-%d")
+    excluded_hit = [d for d in all_days if d["date"] in excluded]
+    pre_window = [d for d in all_days if d["date"] < window_start_day and d["date"] not in excluded]
     counts, hubs, bursts, urls, rows = aggregate(days)
     verdict, reason, action = judge(counts, hubs, urls, elapsed_days)
     reqs = counts["total"]
@@ -217,6 +238,12 @@ def main():
         "checked_at": now.replace(microsecond=0).isoformat(),
         "elapsed_days": elapsed_days,
         "window_days": WINDOW_DAYS,
+        "judgment_window": {
+            "start": window_start_day,
+            "excluded": sorted(excluded),
+            "excluded_hit": [d["date"] for d in excluded_hit],
+            "pre_window_days": [d["date"] for d in pre_window],
+        },
         "days_covered": [row["date"] for row in rows],
         "counts": counts,
         "static_share": None if static_share is None else round(static_share, 4),
@@ -238,6 +265,12 @@ def main():
     print("=== ROBOTS 生效判定 ===")
     print("T0            : %s（已过 %d 天 / 窗口 %d 天）" % (t0.isoformat(), elapsed_days, WINDOW_DAYS))
     print("覆盖日期      : %s" % (", ".join(payload["days_covered"]) or "（无）"))
+    if excluded_hit:
+        print("排除日期      : %s（T0 当日混算，不计入判定）" % ", ".join(d["date"] for d in excluded_hit))
+    if pre_window:
+        print("窗口前留档    : %d 天（%s ~ %s），不进判定"
+              % (len(pre_window), pre_window[0]["date"], pre_window[-1]["date"]))
+    print("判定窗口      : %s 00:00 起（北京），窗口 %d 天" % (window_start_day, WINDOW_DAYS))
     print("请求          : total=%d home=%d static=%d content=%d other=%d"
           % (counts["total"], counts["home"], counts["static"], counts["content"], counts["other"]))
     if static_share is None:
