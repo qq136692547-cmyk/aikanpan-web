@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Activity, ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 import { formatPct, formatPrice } from "@/lib/format";
+import { stockHref } from "@/lib/stock-seo";
 import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
 import { getUsDailyReviewConclusion, getUsDailyReviewTakeaways, useUsDailyReview } from "@/components/us/us-daily-review";
@@ -46,23 +47,15 @@ function SectionShell({ title, children }: { title: string; children: React.Reac
   );
 }
 
-function MetricCard({ name, code, last, changePct, linkable = true }: {
+function MetricCard({ name, code, last, changePct }: {
   name?: string;
   code: string;
   last: number;
   changePct: number;
-  /**
-   * 是否生成指向 `/stock/<code>/` 的链接。
-   *
-   * 2026-11-12（P0）：指数代码没有可收录的个股页 —— 港股指数 `HSI`/`HSCEI`/`HSTECH`
-   * 实测 `/stock/HSI/` 返回 404，而首页是全站唯一被百度反复抓的页面（13 天 20 次），
-   * 死链等于把权重直接丢在地上。这类卡片改传 `false`，渲染为纯文本。
-   *
-   * 为什么不在这里统一按 `isIndexableStockCode` 判断：CN/US 指数（sh.000001、SPY…）
-   * 目前是 200 + noindex，改法要跟「首页补 A 股入口」一起动，不在本次改动范围内。
-   */
-  linkable?: boolean;
 }) {
+  // 指数代码没有可收录的个股页（/stock/HSI/ 实测 404、/stock/sh.000001/ 落 noindex），
+  // 用 stockHref 统一判定：null 就渲染纯文本，不把权重丢到不可收录的页面上。
+  const href = stockHref(code);
   const className = "group relative flex flex-col justify-between overflow-hidden rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3 transition-all duration-200 hover:border-white/[0.14] hover:bg-[#14171D] active:scale-[0.98]";
   const style = {
     boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)",
@@ -82,7 +75,7 @@ function MetricCard({ name, code, last, changePct, linkable = true }: {
     </>
   );
 
-  if (!linkable) {
+  if (!href) {
     return (
       <div className={className} style={style}>
         {content}
@@ -91,7 +84,7 @@ function MetricCard({ name, code, last, changePct, linkable = true }: {
   }
 
   return (
-    <a href={`/stock/${code}/`} className={className} style={style}>
+    <a href={href} className={className} style={style}>
       {content}
     </a>
   );
@@ -151,12 +144,26 @@ function CnEarningsCalendar() {
   return (
     <SectionShell title="近期财报">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-2">
-        {items.slice(0, 6).map((item) => (
-          <a key={item.symbol} href={`/stock/${cnStockRoute(item.symbol)}/`} className="neo-card-sm p-3">
-            <div className="truncate text-[12px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
-            <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
-          </a>
-        ))}
+        {items.slice(0, 6).map((item) => {
+          // A 股财报日历：公告里的代码绝大多数不在白名单（会给 200 + noindex），
+          // 统一走 stockHref，非白名单渲染纯文本。
+          const href = stockHref(cnStockRoute(item.symbol));
+          const body = (
+            <>
+              <div className="truncate text-[12px] font-semibold text-neo-ink">{item.name || item.symbol}</div>
+              <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
+            </>
+          );
+          return href ? (
+            <a key={item.symbol} href={href} className="neo-card-sm p-3">
+              {body}
+            </a>
+          ) : (
+            <div key={item.symbol} className="neo-card-sm p-3">
+              {body}
+            </div>
+          );
+        })}
       </div>
     </SectionShell>
   );
@@ -348,12 +355,27 @@ export function UsMarketPanel({ dashboard, initialReview }: { dashboard: UsDashb
 
         <SectionShell title="板块表现">
           <div className="flex flex-wrap gap-1.5">
-            {(dashboard.sectors || []).slice(0, 8).map((item) => (
-              <a key={item.code} href={`/stock/${item.code}/`} className={`neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] ${trendClass(item.change_pct)}`}>
-                {item.name}
-                <span className="ml-1" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPct(item.change_pct ?? 0)}</span>
-              </a>
-            ))}
+            {(dashboard.sectors || []).slice(0, 8).map((item) => {
+              // SPY / QQQ / XLE… 是美股 ETF：页面 200 但 noindex，
+              // 首页不往外送这种链接（权重白漏）。stockHref 为 null 时渲染纯文本。
+              const href = stockHref(item.code);
+              const chipClass = `neo-chip inline-flex min-h-11 items-center px-3 py-1 text-[11px] ${trendClass(item.change_pct)}`;
+              const chip = (
+                <>
+                  {item.name}
+                  <span className="ml-1" style={{ fontFamily: "var(--font-inter), system-ui" }}>{formatPct(item.change_pct ?? 0)}</span>
+                </>
+              );
+              return href ? (
+                <a key={item.code} href={href} className={chipClass}>
+                  {chip}
+                </a>
+              ) : (
+                <div key={item.code} className={chipClass}>
+                  {chip}
+                </div>
+              );
+            })}
           </div>
         </SectionShell>
 
@@ -387,13 +409,27 @@ function UsEarningsCalendar() {
   return (
     <SectionShell title="近期财报">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-2">
-        {items.slice(0, 6).map((item) => (
-          <a key={item.symbol} href={`/stock/${item.symbol}/`} className="neo-card-sm p-3">
-            <div className="truncate text-[12px] font-semibold text-neo-ink">{item.symbol}</div>
-            <div className="truncate text-[12px] font-semibold text-neo-ink">{usNameZh(item.name, item.symbol)}</div>
-            <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
-          </a>
-        ))}
+        {items.slice(0, 6).map((item) => {
+          // 财报日历里的 symbol 多数不在可收录白名单（会给 200 + noindex），
+          // 且这个区块只在有数据时渲染 —— 不统一判定的话，首页出链数会随行情漂移。
+          const href = stockHref(item.symbol);
+          const body = (
+            <>
+              <div className="truncate text-[12px] font-semibold text-neo-ink">{item.symbol}</div>
+              <div className="truncate text-[12px] font-semibold text-neo-ink">{usNameZh(item.name, item.symbol)}</div>
+              <div className="mt-0.5 text-[10px] text-neo-mid">{item.upcoming?.date || "待定"}</div>
+            </>
+          );
+          return href ? (
+            <a key={item.symbol} href={href} className="neo-card-sm p-3">
+              {body}
+            </a>
+          ) : (
+            <div key={item.symbol} className="neo-card-sm p-3">
+              {body}
+            </div>
+          );
+        })}
       </div>
     </SectionShell>
   );
@@ -411,8 +447,7 @@ export function HkMarketPanel({ dashboard, initialReview }: { dashboard: HkDashb
         <AiConclusion market="hk" focus={conclusion} />
         <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {dashboard.indices.slice(0, 3).map((idx) => (
-            // 恒指 / 国企指数 / 恒生科技：`/stock/HSI/` 实测 404，不生成链接
-            <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} linkable={false} />
+            <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
           ))}
           <a href="/market/?market=hk" className="neo-card-sm p-3">
             <div className="text-[10px] uppercase tracking-wider text-neo-dim">领涨 / 领跌</div>
@@ -426,14 +461,30 @@ export function HkMarketPanel({ dashboard, initialReview }: { dashboard: HkDashb
 
         <SectionShell title="热门港股">
           <div className="space-y-1">
-            {(dashboard.hot_stocks || []).slice(0, 5).map((item) => (
-              <a key={item.code} href={`/stock/${item.code}/`} className="flex min-h-11 items-center justify-between rounded-md px-1 py-1.5 text-[12px] hover-neo-inset">
-                <span className="truncate text-neo-ink">{item.name || item.code}</span>
-                <span className={trendClass(item.change_pct)} style={{ fontFamily: "var(--font-inter), system-ui" }}>
-                  {formatPct(item.change_pct ?? 0)}
-                </span>
-              </a>
-            ))}
+            {(dashboard.hot_stocks || []).slice(0, 5).map((item) => {
+              // 热门港股由后端每日给，今天这 5 只恰好都在白名单里，明天不一定。
+              // 走 stockHref：不在白名单的渲染纯文本，避免首页出现 noindex 链、也避免
+              // 「首页 /stock/ 出链数」随热门榜漂移。
+              const href = stockHref(item.code);
+              const rowClass = "flex min-h-11 items-center justify-between rounded-md px-1 py-1.5 text-[12px] hover-neo-inset";
+              const row = (
+                <>
+                  <span className="truncate text-neo-ink">{item.name || item.code}</span>
+                  <span className={trendClass(item.change_pct)} style={{ fontFamily: "var(--font-inter), system-ui" }}>
+                    {formatPct(item.change_pct ?? 0)}
+                  </span>
+                </>
+              );
+              return href ? (
+                <a key={item.code} href={href} className={rowClass}>
+                  {row}
+                </a>
+              ) : (
+                <div key={item.code} className={rowClass}>
+                  {row}
+                </div>
+              );
+            })}
           </div>
         </SectionShell>
       </div>

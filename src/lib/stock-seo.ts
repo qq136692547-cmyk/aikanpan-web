@@ -142,6 +142,25 @@ export function isIndexableStockCode(raw: string): boolean {
 }
 
 /**
+ * 可收录才给链接，否则返回 `null`，调用方渲染纯文本。
+ *
+ * 2026-11-12（P0）：站内到处在无条件拼 `/stock/<code>/`，但 `code` 可能根本不是个股：
+ *   - `HSI` / `HSCEI` / `HSTECH`（港股指数）→ `/stock/HSI/` 实测 **404**
+ *   - `SPY` / `QQQ` / `XLE`…（美股 ETF）→ 200 但 `noindex, follow`
+ *   - `sh.000001` / `sz.399001`（A 股指数带点写法）→ 308 跳一次再落 noindex
+ *   - 复盘页里的涨停股（`sh.688135` 等）→ 200 但 noindex
+ * 首页是百度唯一在抓的页面（13 天 20 次），把这些链接送出去等于把权重丢地上，
+ * 还会白耗抓取配额（每个 noindex 页约 75KB HTML）。
+ *
+ * 统一在这里判一次，调用方只写 `const href = stockHref(code)`，
+ * 有值渲染 `<a>`、`null` 渲染纯文本 —— 一处规则修全站，避免各处各写一套判断。
+ */
+export function stockHref(rawCode: string): string | null {
+  const code = canonicalStockCode(rawCode);
+  return isIndexableStockCode(code) ? `/stock/${code}/` : null;
+}
+
+/**
  * 若 `raw` 是 6 位纯数字、且在白名单里有对应的规范 code，返回那个 code；否则 `null`。
  * 调用方据此做 308 重定向（见 `src/app/stock/[code]/page.tsx`）。
  *
