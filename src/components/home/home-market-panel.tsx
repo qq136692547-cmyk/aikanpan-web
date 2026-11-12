@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Activity, ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
 import { formatPct, formatPrice } from "@/lib/format";
 import { stockHref } from "@/lib/stock-seo";
+import Link from "next/link";
 import { api, type AIReview, type Dashboard, type HkDashboard, type Insights, type UsDashboard, type UsEarningsCalendarItem } from "@/lib/api";
 import { MarketTemperaturePanel } from "@/components/ai/market-temperature-panel";
 import { getUsDailyReviewConclusion, getUsDailyReviewTakeaways, useUsDailyReview } from "@/components/us/us-daily-review";
@@ -155,11 +156,11 @@ function CnEarningsCalendar() {
             </>
           );
           return href ? (
-            <a key={item.symbol} href={href} className="neo-card-sm p-3">
+            <a key={item.symbol} href={href} className="neo-card-sm p-3 block">
               {body}
             </a>
           ) : (
-            <div key={item.symbol} className="neo-card-sm p-3">
+            <div key={item.symbol} className="neo-card-sm p-3 block">
               {body}
             </div>
           );
@@ -263,9 +264,13 @@ function UsTemperatureCard({
             <Sparkles size={13} className="text-neo-primary" />
             AI 深度解读
           </div>
-          <a href="/review/?market=us" className="inline-flex min-h-11 items-center text-[11px] text-neo-primary">
+          {/* 用 Link 而非 <a>：<a> 会整页刷新，且 ESLint no-html-link-for-pages 一直报错。
+              query 保留 —— /review/ 的 metadata 已声明 canonical: "/review/"（实测两个 URL
+              的 canonical 都指向 /review/），重复内容风险已被兜住；去掉 query 会让美股读者
+              落到 A 股复盘，是 UX 倒退。 */}
+          <Link href="/review/?market=us" className="inline-flex min-h-11 items-center text-[11px] text-neo-primary">
             查看完整解析
-          </a>
+          </Link>
         </div>
         {takeaways.length > 0 ? (
           <div className="space-y-2">
@@ -421,11 +426,11 @@ function UsEarningsCalendar() {
             </>
           );
           return href ? (
-            <a key={item.symbol} href={href} className="neo-card-sm p-3">
+            <a key={item.symbol} href={href} className="neo-card-sm p-3 block">
               {body}
             </a>
           ) : (
-            <div key={item.symbol} className="neo-card-sm p-3">
+            <div key={item.symbol} className="neo-card-sm p-3 block">
               {body}
             </div>
           );
