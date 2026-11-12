@@ -46,20 +46,29 @@ function SectionShell({ title, children }: { title: string; children: React.Reac
   );
 }
 
-function MetricCard({ name, code, last, changePct }: {
+function MetricCard({ name, code, last, changePct, linkable = true }: {
   name?: string;
   code: string;
   last: number;
   changePct: number;
+  /**
+   * 是否生成指向 `/stock/<code>/` 的链接。
+   *
+   * 2026-11-12（P0）：指数代码没有可收录的个股页 —— 港股指数 `HSI`/`HSCEI`/`HSTECH`
+   * 实测 `/stock/HSI/` 返回 404，而首页是全站唯一被百度反复抓的页面（13 天 20 次），
+   * 死链等于把权重直接丢在地上。这类卡片改传 `false`，渲染为纯文本。
+   *
+   * 为什么不在这里统一按 `isIndexableStockCode` 判断：CN/US 指数（sh.000001、SPY…）
+   * 目前是 200 + noindex，改法要跟「首页补 A 股入口」一起动，不在本次改动范围内。
+   */
+  linkable?: boolean;
 }) {
-  return (
-    <a 
-      href={`/stock/${code}/`} 
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3 transition-all duration-200 hover:border-white/[0.14] hover:bg-[#14171D] active:scale-[0.98]"
-      style={{
-        boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)"
-      }}
-    >
+  const className = "group relative flex flex-col justify-between overflow-hidden rounded-[10px] border border-white/[0.05] bg-[#0C0E11] p-3 transition-all duration-200 hover:border-white/[0.14] hover:bg-[#14171D] active:scale-[0.98]";
+  const style = {
+    boxShadow: "inset 3px 3px 7px rgba(0, 0, 0, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.045)",
+  };
+  const content = (
+    <>
       <div className="text-[11px] font-medium text-[#9AA3B2] group-hover:text-white transition-colors">{name || code}</div>
       <div className={`mt-1 text-[18px] font-bold tracking-tight ${trendClass(changePct)}`} style={{ fontFamily: "var(--font-inter), system-ui" }}>
         {formatPrice(last)}
@@ -70,6 +79,20 @@ function MetricCard({ name, code, last, changePct }: {
         </span>
         <span className="text-[10px] text-[#7C8595] font-mono">{code}</span>
       </div>
+    </>
+  );
+
+  if (!linkable) {
+    return (
+      <div className={className} style={style}>
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <a href={`/stock/${code}/`} className={className} style={style}>
+      {content}
     </a>
   );
 }
@@ -388,7 +411,8 @@ export function HkMarketPanel({ dashboard, initialReview }: { dashboard: HkDashb
         <AiConclusion market="hk" focus={conclusion} />
         <section className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {dashboard.indices.slice(0, 3).map((idx) => (
-            <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} />
+            // 恒指 / 国企指数 / 恒生科技：`/stock/HSI/` 实测 404，不生成链接
+            <MetricCard key={idx.code} name={idx.name} code={idx.code} last={idx.last} changePct={idx.change_pct ?? 0} linkable={false} />
           ))}
           <a href="/market/?market=hk" className="neo-card-sm p-3">
             <div className="text-[10px] uppercase tracking-wider text-neo-dim">领涨 / 领跌</div>
